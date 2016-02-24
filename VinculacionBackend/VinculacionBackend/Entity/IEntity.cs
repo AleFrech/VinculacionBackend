@@ -1,7 +1,9 @@
-﻿namespace VinculacionBackend.Entity
+﻿using System;
+
+namespace VinculacionBackend.Entity
 {
-    public interface Entity
+    public interface IEntity
     {
-         
+        Guid Id { get; }
     }
 }
