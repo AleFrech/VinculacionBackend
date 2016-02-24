@@ -14,7 +14,7 @@ namespace VinculacionBackend.Database
             
         }
 
-        public DbSet<Student> Students { get; set; }
+      //  public DbSet<Student> Students { get; set; }
     }
 
     public static class ConnectionString

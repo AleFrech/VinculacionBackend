@@ -11,6 +11,10 @@ namespace VinculacionBackend.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
+            if (MailManager.CheckDomainValidity("carlos.varela@gmail.edu"))
+            {
+                MailManager.SendSimpleMessage("carlos.varela@gmail.edu", "holaaa", "probando");
+            }
 
             return View();
         }
