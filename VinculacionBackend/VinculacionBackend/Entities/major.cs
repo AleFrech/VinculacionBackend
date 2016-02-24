@@ -5,10 +5,10 @@ using System.Web;
 
 namespace VinculacionBackend.Entities
 {
-    public class major
+    public class Major
     {
-        public string Nombre { get; set; }
+        public string Name { get; set; }
 
-        public string Codigo { get; set; }
+        public string Id { get; set; }
     }
 }
