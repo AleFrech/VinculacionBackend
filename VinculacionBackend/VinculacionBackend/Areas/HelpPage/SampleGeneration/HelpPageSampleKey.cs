@@ -42,7 +42,7 @@ namespace VinculacionBackend.Areas.HelpPage
 
             ParameterType = type;
         }
-
+       
         /// <summary>
         /// Creates a new <see cref="HelpPageSampleKey"/> based on <see cref="SampleDirection"/>, controller name, action name and parameter names.
         /// </summary>

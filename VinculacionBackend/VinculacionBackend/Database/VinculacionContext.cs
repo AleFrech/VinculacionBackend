@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using VinculacionBackend.Entities;
 
 namespace VinculacionBackend.Database
 {

@@ -1,4 +1,4 @@
-﻿namespace VinculacionBackend.Enum
+﻿namespace VinculacionBackend.Enums
 {
     public enum Status
     {
