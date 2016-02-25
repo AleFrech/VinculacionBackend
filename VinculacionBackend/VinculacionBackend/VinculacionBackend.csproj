@@ -182,6 +182,7 @@
     <Compile Include="Database\VinculacionContext.cs" />
     <Compile Include="Entities\Major.cs" />
     <Compile Include="Entities\Student.cs" />
+    <Compile Include="EntityExistanceManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

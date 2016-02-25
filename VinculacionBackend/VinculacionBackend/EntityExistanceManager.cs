@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 
 namespace VinculacionBackend
 {
-    public class EntityExistanceManager
+    public static class EntityExistanceManager
     {
         public static bool EmailExists(string email)
         {
-            var context = new VinculacionBackend.Database.VinculacionContext();
+            var context = new Database.VinculacionContext();
             return context.Students.Any(x => x.Email == email);
         }
     }

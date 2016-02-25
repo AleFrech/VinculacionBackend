@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using VinculacionBackend.Database;
@@ -51,6 +47,12 @@ namespace VinculacionBackend.Controllers
                 return BadRequest();
             }
 
+            var existEmail = EntityExistanceManager.EmailExists(student.Email);
+            if (existEmail)
+            {
+                return InternalServerError(new Exception("Email already exists in database"));
+            }
+
             var tmpStudent = db.Students.FirstOrDefault(x => x.IdNumber== id);
             tmpStudent.Name = student.Name;
             tmpStudent.IdNumber = student.IdNumber;
@@ -70,11 +72,11 @@ namespace VinculacionBackend.Controllers
                 }
                 else
                 {
-                    throw;
+                    return InternalServerError(new DbUpdateConcurrencyException());
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(tmpStudent);
         }
 
         // POST: api/Students
@@ -85,6 +87,13 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            var existEmail = EntityExistanceManager.EmailExists(student.Email);
+            if (existEmail)
+            {
+                return InternalServerError(new Exception("Email already exists in database"));
+            }
+
             student.Status=Status.Inactive;
             db.Students.Add(student);
             db.SaveChanges();
