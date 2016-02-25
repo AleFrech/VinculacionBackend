@@ -7,7 +7,10 @@ namespace VinculacionBackend.Entities
 {
     public class Major
     {
-        public string Id { get; set; }
+        public long Id { get; set; }
+        public string MayorId { get; set; }
         public string Name { get; set; }
+
+        
     }
 }

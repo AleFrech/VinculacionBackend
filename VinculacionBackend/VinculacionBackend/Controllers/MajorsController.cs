@@ -27,7 +27,7 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(Major))]
         public IHttpActionResult GetMajor(string id)
         {
-            Major major = db.Majors.Find(id);
+            Major major = db.Majors.FirstOrDefault(x => x.MayorId == id);
             if (major == null)
             {
                 return NotFound();
@@ -45,7 +45,7 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != major.Id)
+            if (id != major.MayorId)
             {
                 return BadRequest();
             }
@@ -83,14 +83,14 @@ namespace VinculacionBackend.Controllers
             db.Majors.Add(major);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = major.Id }, major);
+            return CreatedAtRoute("DefaultApi", new { id = major.MayorId }, major);
         }
 
         // DELETE: api/Majors/5
         [ResponseType(typeof(Major))]
         public IHttpActionResult DeleteMajor(string id)
         {
-            Major major = db.Majors.Find(id);
+            Major major = db.Majors.FirstOrDefault(x => x.MayorId == id);
             if (major == null)
             {
                 return NotFound();
@@ -113,7 +113,7 @@ namespace VinculacionBackend.Controllers
 
         private bool MajorExists(string id)
         {
-            return db.Majors.Count(e => e.Id == id) > 0;
+            return db.Majors.Count(e => e.MayorId == id) > 0;
         }
     }
 }
