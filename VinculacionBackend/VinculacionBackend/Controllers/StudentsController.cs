@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
+using VinculacionBackend.Enums;
 
 namespace VinculacionBackend.Controllers
 {
@@ -27,7 +28,7 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(Student))]
         public IHttpActionResult GetStudent(string id)
         {
-            Student student = db.Students.Find(id);
+            Student student = db.Students.FirstOrDefault(x=>x.IdNumber==id);
             if (student == null)
             {
                 return NotFound();
@@ -84,7 +85,7 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            student.Status=Status.Inactive;
             db.Students.Add(student);
             db.SaveChanges();
 
@@ -95,7 +96,7 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(Student))]
         public IHttpActionResult DeleteStudent(string id)
         {
-            Student student = db.Students.Find(id);
+            Student student = db.Students.FirstOrDefault(x=>x.IdNumber==id);
             if (student == null)
             {
                 return NotFound();
