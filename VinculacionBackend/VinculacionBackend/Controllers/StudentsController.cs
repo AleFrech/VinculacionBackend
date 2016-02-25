@@ -50,8 +50,13 @@ namespace VinculacionBackend.Controllers
                 return BadRequest();
             }
 
-            db.Entry(student).State = EntityState.Modified;
-
+            var tmpStudent = db.Students.FirstOrDefault(x => x.IdNumber== id);
+            tmpStudent.Name = student.Name;
+            tmpStudent.IdNumber = student.IdNumber;
+            tmpStudent.Campus = student.Campus;
+            tmpStudent.Email = student.Email;
+            tmpStudent.Major = student.Major;
+            tmpStudent.Status = student.Status;
             try
             {
                 db.SaveChanges();
