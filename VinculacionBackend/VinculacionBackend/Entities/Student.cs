@@ -9,6 +9,7 @@ namespace VinculacionBackend.Entities
     public class Student
     {
 
+        public long Id { get; set; }
         public string Name { get; set; }
         public string IdNumber { get; set; }
         public string Major { get; set; }
