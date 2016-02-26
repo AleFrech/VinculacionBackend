@@ -98,6 +98,31 @@ namespace VinculacionBackend.Controllers
 
 
 
+
+      
+    
+
+
+        [ResponseType(typeof(User))]
+        [Route("api/Students/{studentsId}/Active")]
+        public IHttpActionResult PutActiveStudent(string studentsId)
+        {
+            var student = db.Users.FirstOrDefault(x => x.IdNumber == studentsId);
+            if (student != null)
+            {
+                student.Status = Status.Active;
+                db.SaveChanges();
+                return Ok(student);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
+
+
         [ResponseType(typeof(User))]
         [Route("api/Students/{studentsId}/Rejected")]
         public IHttpActionResult PostRejectStudent(string studentsId, RejectedMessage message)
