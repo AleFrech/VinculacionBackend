@@ -11,19 +11,19 @@ using VinculacionBackend.Enums;
 
 namespace VinculacionBackend.Controllers
 {
-    public class UsersController : ApiController
+    public class StudentsController : ApiController
     {
         private VinculacionContext db = new VinculacionContext();
 
-        // GET: api/Users
-        public IQueryable<User> GetUsers()
+        // GET: api/Students
+        public IQueryable<User> GetStudents()
         {
             return db.Users;
         }
 
-        // GET: api/Users/5
+        // GET: api/Students/5
         [ResponseType(typeof(User))]
-        public IHttpActionResult GetUser(string id)
+        public IHttpActionResult GetStudent(string id)
         {
             User User = db.Users.FirstOrDefault(x=>x.IdNumber==id);
             if (User == null)
@@ -34,9 +34,9 @@ namespace VinculacionBackend.Controllers
             return Ok(User);
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Students/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutUser(string id, User User)
+        public IHttpActionResult PutStudent(string id, User User)
         {
             if (!ModelState.IsValid)
             {
@@ -63,7 +63,7 @@ namespace VinculacionBackend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!StudentExists(id))
                 {
                     return NotFound();
                 }
@@ -76,9 +76,9 @@ namespace VinculacionBackend.Controllers
             return Ok(tmpUser);
         }
 
-        // POST: api/Users
+        // POST: api/Students
         [ResponseType(typeof(User))]
-        public IHttpActionResult PostUser(User User)
+        public IHttpActionResult PostStudent(User User)
         {
             if (!ModelState.IsValid || User == null)
             {
@@ -98,9 +98,9 @@ namespace VinculacionBackend.Controllers
             return CreatedAtRoute("DefaultApi", new { id = User.IdNumber }, User);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Students/5
         [ResponseType(typeof(User))]
-        public IHttpActionResult DeleteUser(string id)
+        public IHttpActionResult DeleteStudent(string id)
         {
             User User = db.Users.FirstOrDefault(x=>x.IdNumber==id);
             if (User == null)
@@ -123,9 +123,15 @@ namespace VinculacionBackend.Controllers
             base.Dispose(disposing);
         }
 
-        private bool UserExists(string id)
+        private bool StudentExists(string id)
         {
             return db.Users.Count(e => e.IdNumber == id) > 0;
         }
+
+
+
+
+
     }
+
 }
