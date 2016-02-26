@@ -19,14 +19,16 @@ namespace VinculacionBackend.Controllers
         // GET: api/Students
         public IQueryable<User> GetStudents()
         {
-            return db.Users.Include(x=>x.Roles).Where(y=>y.Roles.Any(z=>z.Name = "Student"));
+            var userRoleRels = db.UserRoleRels.Include(x=>x.Role).Include(y=>y.Student).Where(z=>z.Role.Name == "Student");
+
+            return db.Users.Where(x=> userRoleRels.Any(y=>y.Student.Id == x.Id));
         }
 
         // GET: api/Students/5
         [ResponseType(typeof(User))]
         public IHttpActionResult GetStudent(string id)
         {
-            User User = db.Users.Include(x=>x.Roles).Where(y=>y.Roles.Any(z=>z.Name == "Student")).FirstOrDefault(u=>u.IdNumber == id);
+            User User = db.Users.Include(x=>x.Roles).FirstOrDefault(y=>y.Roles.Any(z=>z.Name == "Student") && y.IdNumber == id);
             if (User == null)
             {
                 return NotFound();
