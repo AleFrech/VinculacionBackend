@@ -19,7 +19,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Students
         public IQueryable<User> GetStudents()
         {
-            var userRoleRels = db.UserRoleRels.Include(x=>x.Role).Include(y=>y.Student).Where(z=>z.Role.Name == "Student");
+            var userRoleRels = db.UserRoleRels.Include(x=>x.Role).Include(y=>y.Student).Where(z=>z.Role.Name == "Student").ToList();
 
             return db.Users.Where(x=> userRoleRels.Any(y=>y.Student.Id == x.Id));
         }
