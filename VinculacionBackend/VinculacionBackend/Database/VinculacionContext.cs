@@ -24,6 +24,9 @@ namespace VinculacionBackend.Database
         public DbSet<SectionProyect> SectionProyectsRels { get; set; }
         public DbSet<SectionUser> SectionUserRels { get; set; }
         public DbSet<Hour> Hours { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoleRels { get; set; }
+        public DbSet<MajorUser> MajorUsersRels { get; set; }
 
 
     }
