@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web.Http;
@@ -25,7 +26,7 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]
         public IHttpActionResult GetStudent(string id)
         {
-            User User = db.Users.FirstOrDefault(x=>x.IdNumber==id);
+            User User = db.Users.Include(x=>x.Roles).Where(y=>y.Roles.Any(z=>z.Name == "Student")).FirstOrDefault(u=>u.IdNumber == id);
             if (User == null)
             {
                 return NotFound();
