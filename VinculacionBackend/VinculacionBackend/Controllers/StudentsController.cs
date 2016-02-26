@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using VinculacionBackend.Database;
@@ -87,6 +88,8 @@ namespace VinculacionBackend.Controllers
             {
                 student.Status = Status.Verified;
                 db.SaveChanges();
+                MailManager.SendSimpleMessage(student.Email, "Fue Aceptado para participar en proyectos de Vinculación",
+                    "Vinculación");
                 return Ok(student);
             }
             else
@@ -105,7 +108,7 @@ namespace VinculacionBackend.Controllers
 
         [ResponseType(typeof(User))]
         [Route("api/Students/{studentsId}/Active")]
-        public IHttpActionResult PutActiveStudent(string studentsId)
+        public IHttpActionResult GetActiveStudent(string studentsId)
         {
             var student = db.Users.FirstOrDefault(x => x.IdNumber == studentsId);
             if (student != null)
@@ -131,7 +134,7 @@ namespace VinculacionBackend.Controllers
 
             if (student != null)
             {
-
+                MailManager.SendSimpleMessage(student.Email,message.Message,"Vinculación");
                 return Ok(student);
             }
             else
@@ -153,7 +156,7 @@ namespace VinculacionBackend.Controllers
             }
 
             var existEmail = EntityExistanceManager.EmailExists(User.Email);
-            if (existEmail)
+            if (existEmail && !MailManager.CheckDomainValidity(User.Email))
             {
                 return InternalServerError(new Exception("Email already exists in database"));
             }
@@ -161,7 +164,8 @@ namespace VinculacionBackend.Controllers
             User.Status=Status.Inactive;
             db.Users.Add(User);
             db.SaveChanges();
-
+            
+            MailManager.SendSimpleMessage("carlos.varela@unitec.edu","Hacer click en el siguiente link para Activar: "+ HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)+"/api/Students/"+ User.IdNumber+"/Active","Vinculación");
             return CreatedAtRoute("DefaultApi", new { id = User.IdNumber }, User);
         }
 
