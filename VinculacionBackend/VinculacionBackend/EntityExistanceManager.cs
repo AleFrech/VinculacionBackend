@@ -7,7 +7,7 @@ namespace VinculacionBackend
         public static bool EmailExists(string email)
         {
             var context = new Database.VinculacionContext();
-            return context.Students.Any(x => x.Email == email);
+            return context.Users.Any(x => x.Email == email);
         }
     }
 }
