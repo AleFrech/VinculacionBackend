@@ -8,6 +8,7 @@ using System.Web.Http.Description;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
 using VinculacionBackend.Enums;
+using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Controllers
 {
@@ -75,6 +76,72 @@ namespace VinculacionBackend.Controllers
 
             return Ok(tmpUser);
         }
+
+
+        [ResponseType(typeof(User))]
+        [Route("api/Students/{studentsId}/Accepted")]
+        public IHttpActionResult PutAcceptStudent(string studentsId)
+        {
+           var student =  db.Users.FirstOrDefault(x => x.IdNumber == studentsId);
+            if (student != null)
+            {
+                student.Status = Status.Verified;
+                db.SaveChanges();
+                return Ok(student);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
+
+
+
+      
+    
+
+
+        [ResponseType(typeof(User))]
+        [Route("api/Students/{studentsId}/Active")]
+        public IHttpActionResult PutActiveStudent(string studentsId)
+        {
+            var student = db.Users.FirstOrDefault(x => x.IdNumber == studentsId);
+            if (student != null)
+            {
+                student.Status = Status.Active;
+                db.SaveChanges();
+                return Ok(student);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
+
+
+        [ResponseType(typeof(User))]
+        [Route("api/Students/{studentsId}/Rejected")]
+        public IHttpActionResult PostRejectStudent(string studentsId, RejectedMessage message)
+        {
+            var student = db.Users.FirstOrDefault(x => x.IdNumber == studentsId);
+
+            if (student != null)
+            {
+
+                return Ok(student);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
+
 
         // POST: api/Students
         [ResponseType(typeof(User))]
