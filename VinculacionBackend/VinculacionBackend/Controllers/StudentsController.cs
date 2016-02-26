@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web.Http;
 using System.Web.Http.Description;
 using VinculacionBackend.Database;
@@ -10,63 +11,59 @@ using VinculacionBackend.Enums;
 
 namespace VinculacionBackend.Controllers
 {
-    public class StudentsController : ApiController
+    public class UsersController : ApiController
     {
         private VinculacionContext db = new VinculacionContext();
 
-        // GET: api/Students
-        public IQueryable<Student> GetStudents()
+        // GET: api/Users
+        public IQueryable<User> GetUsers()
         {
-            return db.Students;
+            return db.Users;
         }
 
-        // GET: api/Students/5
-        [ResponseType(typeof(Student))]
-        public IHttpActionResult GetStudent(string id)
+        // GET: api/Users/5
+        [ResponseType(typeof(User))]
+        public IHttpActionResult GetUser(string id)
         {
-            Student student = db.Students.FirstOrDefault(x=>x.IdNumber==id);
-            if (student == null)
+            User User = db.Users.FirstOrDefault(x=>x.IdNumber==id);
+            if (User == null)
             {
                 return NotFound();
             }
 
-            return Ok(student);
+            return Ok(User);
         }
 
-        // PUT: api/Students/5
+        // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutStudent(string id, Student student)
+        public IHttpActionResult PutUser(string id, User User)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != student.IdNumber)
+            if (id != User.IdNumber)
             {
                 return BadRequest();
             }
 
-            var existEmail = EntityExistanceManager.EmailExists(student.Email);
+            var existEmail = EntityExistanceManager.EmailExists(User.Email);
             if (existEmail)
             {
                 return InternalServerError(new Exception("Email already exists in database"));
             }
 
-            var tmpStudent = db.Students.FirstOrDefault(x => x.IdNumber== id);
-            tmpStudent.Name = student.Name;
-            tmpStudent.IdNumber = student.IdNumber;
-            tmpStudent.Campus = student.Campus;
-            tmpStudent.Email = student.Email;
-            tmpStudent.Major = student.Major;
-            tmpStudent.Status = student.Status;
+            var tmpUser = db.Users.FirstOrDefault(x => x.IdNumber== id);
+            tmpUser.ModificationDate=DateTime.Now;
+            tmpUser.Password = User.Password;
             try
             {
                 db.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -76,45 +73,45 @@ namespace VinculacionBackend.Controllers
                 }
             }
 
-            return Ok(tmpStudent);
+            return Ok(tmpUser);
         }
 
-        // POST: api/Students
-        [ResponseType(typeof(Student))]
-        public IHttpActionResult PostStudent(Student student)
+        // POST: api/Users
+        [ResponseType(typeof(User))]
+        public IHttpActionResult PostUser(User User)
         {
-            if (!ModelState.IsValid || student == null)
+            if (!ModelState.IsValid || User == null)
             {
                 return BadRequest(ModelState);
             }
 
-            var existEmail = EntityExistanceManager.EmailExists(student.Email);
+            var existEmail = EntityExistanceManager.EmailExists(User.Email);
             if (existEmail)
             {
                 return InternalServerError(new Exception("Email already exists in database"));
             }
 
-            student.Status=Status.Inactive;
-            db.Students.Add(student);
+            User.Status=Status.Inactive;
+            db.Users.Add(User);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = student.IdNumber }, student);
+            return CreatedAtRoute("DefaultApi", new { id = User.IdNumber }, User);
         }
 
-        // DELETE: api/Students/5
-        [ResponseType(typeof(Student))]
-        public IHttpActionResult DeleteStudent(string id)
+        // DELETE: api/Users/5
+        [ResponseType(typeof(User))]
+        public IHttpActionResult DeleteUser(string id)
         {
-            Student student = db.Students.FirstOrDefault(x=>x.IdNumber==id);
-            if (student == null)
+            User User = db.Users.FirstOrDefault(x=>x.IdNumber==id);
+            if (User == null)
             {
                 return NotFound();
             }
 
-            db.Students.Remove(student);
+            db.Users.Remove(User);
             db.SaveChanges();
 
-            return Ok(student);
+            return Ok(User);
         }
 
         protected override void Dispose(bool disposing)
@@ -126,9 +123,9 @@ namespace VinculacionBackend.Controllers
             base.Dispose(disposing);
         }
 
-        private bool StudentExists(string id)
+        private bool UserExists(string id)
         {
-            return db.Students.Count(e => e.IdNumber == id) > 0;
+            return db.Users.Count(e => e.IdNumber == id) > 0;
         }
     }
 }

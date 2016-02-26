@@ -15,8 +15,17 @@ namespace VinculacionBackend.Database
             
         }
 
-        public DbSet<Student> Students { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Major> Majors { get; set; }
+        public DbSet<Class> Classes { get; set; }
+        public DbSet<Period> Periods { get; set; }
+        public DbSet<Section> Sections { get; set; }
+        public DbSet<Proyect> Proyects { get; set; }
+        public DbSet<SectionProyect> SectionProyectsRels { get; set; }
+        public DbSet<SectionUser> SectionUserRels { get; set; }
+        public DbSet<Hour> Hours { get; set; }
+
+
     }
 
     public static class ConnectionString
