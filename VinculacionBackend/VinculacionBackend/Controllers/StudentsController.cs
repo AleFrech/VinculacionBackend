@@ -14,10 +14,13 @@ using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Controllers
 {
+   
     public class StudentsController : ApiController
     {
         private VinculacionContext db = new VinculacionContext();
 
+        [IdentityBasicAuthentication]
+        [Authorize]
         // GET: api/Students
         public IQueryable<User> GetStudents()
         {

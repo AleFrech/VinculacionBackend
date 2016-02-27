@@ -9,6 +9,8 @@ namespace VinculacionBackend
     {
         public static void Register(HttpConfiguration config)
         {
+
+            config.Filters.Add(new IdentityBasicAuthenticationAttribute());
             // Web API configuration and services
 
             // Web API routes
