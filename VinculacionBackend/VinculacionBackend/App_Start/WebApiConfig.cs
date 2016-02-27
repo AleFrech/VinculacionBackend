@@ -7,10 +7,11 @@ namespace VinculacionBackend
 {
     public static class WebApiConfig
     {
+
         public static void Register(HttpConfiguration config)
         {
 
-            config.Filters.Add(new IdentityBasicAuthenticationAttribute());
+            config.Filters.Add(new CustomAuthorizeAttribute());
             // Web API configuration and services
 
             // Web API routes

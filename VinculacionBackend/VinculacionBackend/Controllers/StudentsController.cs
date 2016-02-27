@@ -19,8 +19,7 @@ namespace VinculacionBackend.Controllers
     {
         private VinculacionContext db = new VinculacionContext();
 
-        [IdentityBasicAuthentication]
-        [Authorize]
+        
         // GET: api/Students
         public IQueryable<User> GetStudents()
         {
@@ -82,6 +81,8 @@ namespace VinculacionBackend.Controllers
             return NotFound();
         }
 
+
+        [CustomAuthorize(Roles = "Admin")]
         //Put: api/Students/NumberId/Verified
         [ResponseType(typeof(User))]
         [Route("api/Students/{studentsId}/Verified")]
@@ -120,6 +121,10 @@ namespace VinculacionBackend.Controllers
                 return NotFound();
             }
         }
+
+
+
+        [CustomAuthorize(Roles = "Admin")]
         //Post: api/Students/NumberId/Rejected
         [ResponseType(typeof(User))]
         [Route("api/Students/{studentsId}/Rejected")]
