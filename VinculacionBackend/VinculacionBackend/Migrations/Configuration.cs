@@ -4,7 +4,9 @@ using VinculacionBackend.Enums;
 namespace VinculacionBackend.Migrations
 {
     using System;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<VinculacionBackend.Database.VinculacionContext>
     {
@@ -16,11 +18,11 @@ namespace VinculacionBackend.Migrations
 
         protected override void Seed(VinculacionBackend.Database.VinculacionContext context)
         {
-            var period = new Period {Number = 1, Year = 2016};
-            var clas = new Class {Name = "ANAL. Y DIS. DE SISTEMAS I"};
-            var user = new User {IdNumber = "21111111",Email = "carlos.castroy@unitec.edu",Name = "Carlos Castro" ,Status = Status.Verified,Major = null,Campus = "San Pedro Sula",CreationDate = DateTime.Now,ModificationDate = DateTime.Now,Password = "1234"};
-            var professorRole = new Role {Name = "Professor"};
-            var section = new Section {Code = "INF405", Period = period, Class = clas, User = user};
+            var period = new Period { Number = 1, Year = 2016 };
+            var clas = new Class { Name = "ANAL. Y DIS. DE SISTEMAS I" };
+            var user = new User { IdNumber = "21111111", Email = "carlos.castroy@unitec.edu", Name = "Carlos Castro", Status = Status.Verified, Major = null, Campus = "San Pedro Sula", CreationDate = DateTime.Now, ModificationDate = DateTime.Now, Password = "1234" };
+            var professorRole = new Role { Name = "Professor" };
+            var section = new Section { Code = "INF405", Period = period, Class = clas, User = user };
             var proyect = new Proyect
             {
                 Name = "Proyecto de Vinculacion Unitec",
@@ -28,12 +30,12 @@ namespace VinculacionBackend.Migrations
             };
 
             context.Users.AddOrUpdate(
-                x=>x.Id,
+                x => x.Id,
                 user
                 );
             context.Majors.AddOrUpdate(
-                x=>x.Id,
-                new Major { MajorId = "I - 01", Name  ="INGENIERÍA EN SISTEMAS COMPUTACIONALES" },
+                x => x.Id,
+                new Major { MajorId = "I - 01", Name = "INGENIERÍA EN SISTEMAS COMPUTACIONALES" },
                 new Major { MajorId = "I - 02", Name = "INGENIERÍA INDUSTRIAL Y DE SISTEMAS" },
                 new Major { MajorId = "I - 03", Name = "INGENIERÍA CIVIL" },
                 new Major { MajorId = "I - 04", Name = "INGENIERÍA EN TELECOMUNICACIONES" },
@@ -59,12 +61,12 @@ namespace VinculacionBackend.Migrations
                 new Major { MajorId = "T - 03", Name = "TÉCNICO UNIVERSITARIO EN MERCADOTECNIA Y VENTAS(CEUTEC)" },
                 new Major { MajorId = "T - 05", Name = "TÉCNICO UNIVERSITARIO EN ADMINISTRACIÓN(CEUTEC)" },
                 new Major { MajorId = "T - 07", Name = "TÉCNICO EN DESARROLLO DE SISTEMAS DE INFORMACIÓN(CEUTEC)" },
-                new Major { MajorId = "T - 08", Name = "TÉCNICO UNIVERSITARIO EN DISEÑO GRÁFICO(CEUTEC)" }            
+                new Major { MajorId = "T - 08", Name = "TÉCNICO UNIVERSITARIO EN DISEÑO GRÁFICO(CEUTEC)" }
                 );
 
             context.MajorUsersRels.AddOrUpdate(
-                x=>x.Id,
-                new MajorUser {User=user,Major = null}
+                x => x.Id,
+                new MajorUser { User = user, Major = null }
                 );
 
             context.Roles.AddOrUpdate(
@@ -74,18 +76,18 @@ namespace VinculacionBackend.Migrations
                 new Role { Name = "Admin" }
                 );
             context.UserRoleRels.AddOrUpdate(
-                x=>x.Id,
-                new UserRole {User=user,Role=professorRole}
+                x => x.Id,
+                new UserRole { User = user, Role = professorRole }
                 );
 
 
             context.Classes.AddOrUpdate(
-                x=>x.Id,
+                x => x.Id,
                 clas
                 );
 
             context.Periods.AddOrUpdate(
-              x =>x.Id,
+              x => x.Id,
               period
                 );
 
@@ -95,17 +97,17 @@ namespace VinculacionBackend.Migrations
                 );
 
             context.Sections.AddOrUpdate(
-                x=>x.Id,
+                x => x.Id,
                 section
                 );
 
             context.SectionUserRels.AddOrUpdate(
-                x=>x.Id,
-                new SectionUser {User = user,Section = section}
+                x => x.Id,
+                new SectionUser { User = user, Section = section }
                 );
             context.SectionProyectsRels.AddOrUpdate(
-                x=>x.Id,
-                new SectionProyect {Section = section,Proyect = proyect}
+                x => x.Id,
+                new SectionProyect { Section = section, Proyect = proyect }
                 );
 
             //  This method will be called after migrating to the latest version.

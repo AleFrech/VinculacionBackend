@@ -201,13 +201,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="MailManager.cs" />
-    <Compile Include="Migrations\201602260627344_init.cs" />
-    <Compile Include="Migrations\201602260627344_init.Designer.cs">
-      <DependentUpon>201602260627344_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602260809022_addedClassInSection.cs" />
-    <Compile Include="Migrations\201602260809022_addedClassInSection.Designer.cs">
-      <DependentUpon>201602260809022_addedClassInSection.cs</DependentUpon>
+    <Compile Include="Migrations\201602272058229_init.cs" />
+    <Compile Include="Migrations\201602272058229_init.Designer.cs">
+      <DependentUpon>201602272058229_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\RejectedMessage.cs" />
@@ -275,11 +271,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602260627344_init.resx">
-      <DependentUpon>201602260627344_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602260809022_addedClassInSection.resx">
-      <DependentUpon>201602260809022_addedClassInSection.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602272058229_init.resx">
+      <DependentUpon>201602272058229_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
