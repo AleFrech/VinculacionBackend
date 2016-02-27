@@ -23,14 +23,15 @@ namespace VinculacionBackend.Controllers
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             return db.Users.Include(m=>m.Major).Where(x=>rels.Any(y=>y.User.Id==x.Id));
+            //return db.Users;
         }
 
         // GET: api/Students/5
         [ResponseType(typeof(User))]
-        public IHttpActionResult GetStudent(string id)
+        public IHttpActionResult GetStudent(string studentsId)
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student = db.Users.Include(m => m.Major).FirstOrDefault(x => rels.Any(y => y.User.Id == x.Id));
+            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.IdNumber == studentsId);
             if (User == null)
             {
                 return NotFound();
@@ -40,14 +41,14 @@ namespace VinculacionBackend.Controllers
 
         // PUT: api/Students/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutStudent(string id, User User)
+        public IHttpActionResult PutStudent(string studentsId, User User)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != User.IdNumber)
+            if (studentsId != User.IdNumber)
             {
                 return BadRequest();
             }
@@ -59,7 +60,7 @@ namespace VinculacionBackend.Controllers
             }
 
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var tmpstudent = db.Users.Include(m => m.Major).FirstOrDefault(x => rels.Any(y => y.User.Id == x.Id));
+            var tmpstudent = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.IdNumber == studentsId);
             if (tmpstudent != null)
             {
                 tmpstudent.ModificationDate = DateTime.Now;
@@ -85,7 +86,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PutAcceptVerified(string studentsId)
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student = db.Users.Include(m => m.Major).FirstOrDefault(x => rels.Any(y => y.User.Id == x.Id));
+            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.IdNumber == studentsId);
             if (student != null)
             {
                 student.Status = Status.Verified;
@@ -105,7 +106,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetActiveStudent(string studentsId)
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student = db.Users.Include(m => m.Major).FirstOrDefault(x => rels.Any(y => y.User.Id == x.Id));
+            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.IdNumber == studentsId);
             if (student != null)
             {
                 student.Status = Status.Active;
@@ -123,7 +124,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PostRejectStudent(string studentsId, RejectedMessage message)
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student= db.Users.Include(m => m.Major).FirstOrDefault(x => rels.Any(y => y.User.Id == x.Id));
+            var student= db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.IdNumber == studentsId);
             if (student != null)
             {
                 MailManager.SendSimpleMessage(student.Email,message.Message,"Vinculación");
@@ -168,7 +169,7 @@ namespace VinculacionBackend.Controllers
             if (User != null)
             {
                 User.Status = Status.Inactive;
-                //db.Users.Remove(User);
+               // db.Users.Remove(User);
                 db.SaveChanges();
                 return Ok(User);
             }
