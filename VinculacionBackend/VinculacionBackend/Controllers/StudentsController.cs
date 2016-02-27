@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Security.Cryptography;
@@ -20,20 +21,21 @@ namespace VinculacionBackend.Controllers
         // GET: api/Students
         public IQueryable<User> GetStudents()
         {
-            return db.Users;
+            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            return db.Users.Where(x=>rels.Any(y=>y.User.Id==x.Id));
         }
 
         // GET: api/Students/5
         [ResponseType(typeof(User))]
         public IHttpActionResult GetStudent(string id)
         {
-            User User = db.Users.FirstOrDefault(x=>x.IdNumber==id);
+            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var student = db.Users.FirstOrDefault(x => rels.Any(y => y.User.Id == x.Id));
             if (User == null)
             {
                 return NotFound();
             }
-
-            return Ok(User);
+            return Ok(student);
         }
 
         // PUT: api/Students/5
@@ -56,34 +58,34 @@ namespace VinculacionBackend.Controllers
                 return InternalServerError(new Exception("Email already exists in database"));
             }
 
-            var tmpUser = db.Users.FirstOrDefault(x => x.IdNumber== id);
-            tmpUser.ModificationDate=DateTime.Now;
-            tmpUser.Password = User.Password;
-            try
+            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var tmpstudent = db.Users.FirstOrDefault(x => rels.Any(y => y.User.Id == x.Id));
+            if (tmpstudent != null)
             {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentExists(id))
+                tmpstudent.ModificationDate = DateTime.Now;
+                tmpstudent.Password = User.Password;
+                tmpstudent.Name = User.Name;
+                tmpstudent.Major = User.Major;
+                try
                 {
-                    return NotFound();
+                    db.SaveChanges();
                 }
-                else
-                {
+                catch (DbUpdateConcurrencyException)
+                {  
                     return InternalServerError(new DbUpdateConcurrencyException());
                 }
+                return Ok(tmpstudent);
             }
-
-            return Ok(tmpUser);
+            return NotFound();
         }
 
-
+        //Put: api/Students/NumberId/Verified
         [ResponseType(typeof(User))]
-        [Route("api/Students/{studentsId}/Accepted")]
-        public IHttpActionResult PutAcceptStudent(string studentsId)
+        [Route("api/Students/{studentsId}/Verified")]
+        public IHttpActionResult PutAcceptVerified(string studentsId)
         {
-           var student =  db.Users.FirstOrDefault(x => x.IdNumber == studentsId);
+            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var student = db.Users.FirstOrDefault(x => rels.Any(y => y.User.Id == x.Id));
             if (student != null)
             {
                 student.Status = Status.Verified;
@@ -97,20 +99,13 @@ namespace VinculacionBackend.Controllers
                 return NotFound();
             }
         }
-
-
-
-
-
-      
-    
-
-
+        //Get: api/Students/NumberId/Avtive
         [ResponseType(typeof(User))]
         [Route("api/Students/{studentsId}/Active")]
         public IHttpActionResult GetActiveStudent(string studentsId)
         {
-            var student = db.Users.FirstOrDefault(x => x.IdNumber == studentsId);
+            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var student = db.Users.FirstOrDefault(x => rels.Any(y => y.User.Id == x.Id));
             if (student != null)
             {
                 student.Status = Status.Active;
@@ -122,16 +117,13 @@ namespace VinculacionBackend.Controllers
                 return NotFound();
             }
         }
-
-
-
-
+        //Post: api/Students/NumberId/Rejected
         [ResponseType(typeof(User))]
         [Route("api/Students/{studentsId}/Rejected")]
         public IHttpActionResult PostRejectStudent(string studentsId, RejectedMessage message)
         {
-            var student = db.Users.FirstOrDefault(x => x.IdNumber == studentsId);
-
+            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var student= db.Users.FirstOrDefault(x => rels.Any(y => y.User.Id == x.Id));
             if (student != null)
             {
                 MailManager.SendSimpleMessage(student.Email,message.Message,"Vinculación");
@@ -142,10 +134,6 @@ namespace VinculacionBackend.Controllers
                 return NotFound();
             }
         }
-
-
-
-
         // POST: api/Students
         [ResponseType(typeof(User))]
         public IHttpActionResult PostStudent(User User)
@@ -162,10 +150,13 @@ namespace VinculacionBackend.Controllers
             }
 
             User.Status=Status.Inactive;
+            User.CreationDate=DateTime.Now;
+            User.ModificationDate=DateTime.Now;
             db.Users.Add(User);
+            db.UserRoleRels.Add(new UserRole { User=User,Role=db.Roles.FirstOrDefault(x=>x.Name=="Student")});
             db.SaveChanges();
             
-            MailManager.SendSimpleMessage("carlos.varela@unitec.edu","Hacer click en el siguiente link para Activar: "+ HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)+"/api/Students/"+ User.IdNumber+"/Active","Vinculación");
+            MailManager.SendSimpleMessage(User.Email,"Hacer click en el siguiente link para Activar: "+ HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)+"/api/Students/"+ User.IdNumber+"/Active","Vinculación");
             return CreatedAtRoute("DefaultApi", new { id = User.IdNumber }, User);
         }
 
@@ -174,12 +165,11 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult DeleteStudent(string id)
         {
             User User = db.Users.FirstOrDefault(x=>x.IdNumber==id);
+            User.Status=Status.Inactive;
             if (User == null)
             {
                 return NotFound();
             }
-
-            db.Users.Remove(User);
             db.SaveChanges();
 
             return Ok(User);
