@@ -13,6 +13,7 @@ namespace VinculacionBackend.Controllers
         private VinculacionContext db = new VinculacionContext();
 
         // GET: api/Majors
+        [Route("api/Majors")]
         public IQueryable<Major> GetMajors()
         {
             return db.Majors;
@@ -20,9 +21,10 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Majors/5
         [ResponseType(typeof(Major))]
-        public IHttpActionResult GetMajor(string id)
+        [Route("api/Majors/{majorId}")]
+        public IHttpActionResult GetMajor(string majorId)
         {
-            Major major = db.Majors.FirstOrDefault(x => x.MajorId == id);
+            Major major = db.Majors.FirstOrDefault(x => x.MajorId == majorId);
             if (major == null)
             {
                 return NotFound();
@@ -33,19 +35,20 @@ namespace VinculacionBackend.Controllers
 
         // PUT: api/Majors/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutMajor(string id, Major major)
+        [Route("api/Majors/{majorId}")]
+        public IHttpActionResult PutMajor(string majorId, Major major)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != major.MajorId)
+            if (majorId != major.MajorId)
             {
                 return BadRequest();
             }
 
-            var tmpMajor=db.Majors.FirstOrDefault(x => x.MajorId == id);
+            var tmpMajor=db.Majors.FirstOrDefault(x => x.MajorId == majorId);
             tmpMajor.Name = major.Name;
             tmpMajor.MajorId = major.MajorId;
 
@@ -55,7 +58,7 @@ namespace VinculacionBackend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MajorExists(id))
+                if (!MajorExists(majorId))
                 {
                     return NotFound();
                 }
@@ -70,6 +73,7 @@ namespace VinculacionBackend.Controllers
 
         // POST: api/Majors
         [ResponseType(typeof(Major))]
+        [Route("api/Majors")]
         public IHttpActionResult PostMajor([FromBody] Major major)
         {
             if (!ModelState.IsValid || major == null)
@@ -84,10 +88,11 @@ namespace VinculacionBackend.Controllers
         }
 
         // DELETE: api/Majors/5
+        [Route("api/Majors/{majorId}")]
         [ResponseType(typeof(Major))]
-        public IHttpActionResult DeleteMajor(string id)
+        public IHttpActionResult DeleteMajor(string majorId)
         {
-            Major major = db.Majors.FirstOrDefault(x => x.MajorId == id);
+            Major major = db.Majors.FirstOrDefault(x => x.MajorId == majorId);
             if (major == null)
             {
                 return NotFound();
@@ -108,9 +113,9 @@ namespace VinculacionBackend.Controllers
             base.Dispose(disposing);
         }
 
-        private bool MajorExists(string id)
+        private bool MajorExists(string majorId)
         {
-            return db.Majors.Count(e => e.MajorId == id) > 0;
+            return db.Majors.Count(e => e.MajorId == majorId) > 0;
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -19,15 +17,17 @@ namespace VinculacionBackend.Controllers
         private VinculacionContext db = new VinculacionContext();
 
         // GET: api/Students
+        [Route("api/Students")]
         public IQueryable<User> GetStudents()
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            return db.Users.Include(m=>m.Major).Where(x=>rels.Any(y=>y.User.Id==x.Id));
+            return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id));
             //return db.Users;
         }
 
         // GET: api/Students/5
         [ResponseType(typeof(User))]
+        [Route("api/Students/{studentsId}")]
         public IHttpActionResult GetStudent(string studentsId)
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
@@ -41,6 +41,7 @@ namespace VinculacionBackend.Controllers
 
         // PUT: api/Students/5
         [ResponseType(typeof(void))]
+        [Route("api/Students/{studentsId}")]
         public IHttpActionResult PutStudent(string studentsId, User User)
         {
             if (!ModelState.IsValid)
@@ -137,6 +138,7 @@ namespace VinculacionBackend.Controllers
         }
         // POST: api/Students
         [ResponseType(typeof(User))]
+        [Route("api/Students")]
         public IHttpActionResult PostStudent(User User)
         {
             if (!ModelState.IsValid || User == null)
@@ -162,6 +164,7 @@ namespace VinculacionBackend.Controllers
 
         // DELETE: api/Students/5
         [ResponseType(typeof(User))]
+        [Route("api/Students/{studentsId}")]
         public IHttpActionResult DeleteStudent(string id)
         {
             

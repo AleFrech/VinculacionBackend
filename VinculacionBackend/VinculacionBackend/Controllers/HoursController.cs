@@ -25,9 +25,9 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Hours/5
         [ResponseType(typeof(Hour))]
-        public IHttpActionResult GetHour(string id)
+        public IHttpActionResult GetHour(string studentId)
         {
-            Hour hour = db.Hours.Include(x => x.User).FirstOrDefault(y => y.User.IdNumber == id);
+            Hour hour = db.Hours.Include(x => x.User).FirstOrDefault(y => y.User.IdNumber ==studentId);
             if (hour == null)
             {
                 return NotFound();
