@@ -147,7 +147,7 @@ namespace VinculacionBackend.Controllers
             }
 
             var existEmail = EntityExistanceManager.EmailExists(User.Email);
-            if (existEmail && !MailManager.CheckDomainValidity(User.Email))
+            if (existEmail || !MailManager.CheckDomainValidity(User.Email))
             {
                 return InternalServerError(new Exception("Email already exists in database"));
             }
