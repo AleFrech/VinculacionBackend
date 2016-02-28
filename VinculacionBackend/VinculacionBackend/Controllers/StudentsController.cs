@@ -31,9 +31,10 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]
         public IHttpActionResult GetStudent(string id)
         {
+            
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             var student = db.Users.FirstOrDefault(x => rels.Any(y => y.User.Id == x.Id));
-            if (User == null)
+            if (student == null )
             {
                 return NotFound();
             }
