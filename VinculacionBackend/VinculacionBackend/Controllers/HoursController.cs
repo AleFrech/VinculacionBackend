@@ -95,15 +95,13 @@ namespace VinculacionBackend.Controllers
                 db.Hours.Add(hour);
                 db.SaveChanges();
 
-                return CreatedAtRoute("DefaultApi", new { id = hour.Id }, hour);
+                return Ok(hour);
             }
             else
             {
                 return NotFound();
             }
-
-
-           
+              
         }
 
         // DELETE: api/Hours/5

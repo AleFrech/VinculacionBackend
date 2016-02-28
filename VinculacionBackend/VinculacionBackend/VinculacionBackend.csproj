@@ -181,6 +181,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HoursController.cs" />
     <Compile Include="Controllers\MajorsController.cs" />
+    <Compile Include="Controllers\ProyectsController.cs" />
+    <Compile Include="Controllers\SectionsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Database\VinculacionContext.cs" />
