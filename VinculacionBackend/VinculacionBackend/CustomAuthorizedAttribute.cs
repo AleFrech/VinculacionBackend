@@ -139,7 +139,7 @@ namespace VinculacionBackend
 
                             }
 
-
+                            HttpContext.Current.User = Thread.CurrentPrincipal;
 
                         }
 
