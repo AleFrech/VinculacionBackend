@@ -159,7 +159,7 @@ namespace VinculacionBackend.Controllers
             db.UserRoleRels.Add(new UserRole { User=User,Role=db.Roles.FirstOrDefault(x=>x.Name=="Student")});
             db.SaveChanges();
             MailManager.SendSimpleMessage(User.Email,"Hacer click en el siguiente link para Activar: "+ HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)+"/api/Students/"+ User.IdNumber+"/Active","Vinculación");
-            return CreatedAtRoute("DefaultApi", new { id = User.IdNumber }, User);
+            return Ok(User);
         }
 
         // DELETE: api/Students/5

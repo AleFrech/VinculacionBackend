@@ -81,10 +81,10 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Majors.Add(major);
-            db.SaveChanges();
+            //db.Majors.Add(major);
+            //db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = major.MajorId }, major);
+            return Ok(major);
         }
 
         // DELETE: api/Majors/5
@@ -98,8 +98,8 @@ namespace VinculacionBackend.Controllers
                 return NotFound();
             }
 
-            db.Majors.Remove(major);
-            db.SaveChanges();
+           // db.Majors.Remove(major);
+           // db.SaveChanges();
 
             return Ok(major);
         }
