@@ -39,6 +39,15 @@ namespace VinculacionBackend.Controllers
             return Ok(student);
         }
 
+        [Route("api/Students/Filter/{status}")]
+        public IQueryable<User> GetStudents(int status)
+        {
+            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id )&& (int)x.Status==status);
+            //return db.Users;
+        }
+
+
         // PUT: api/Students/5
         [ResponseType(typeof(void))]
         [Route("api/Students/{studentsId}")]
