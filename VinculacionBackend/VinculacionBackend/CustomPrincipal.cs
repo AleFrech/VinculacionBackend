@@ -45,7 +45,6 @@ namespace VinculacionBackend
         public CustomPrincipal(string Username, string[] roles) : this(Username)
         {
             this.roles = roles;
-          
         }
 
         public int UserId { get; set; }

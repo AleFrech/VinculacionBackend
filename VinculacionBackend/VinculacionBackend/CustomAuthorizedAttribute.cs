@@ -98,10 +98,12 @@ namespace VinculacionBackend
 
 
                             CurrentUser = new CustomPrincipal(parsedCredentials.Username, roles);
+
                             if (HttpContext.Current != null)
                             {
                                 HttpContext.Current.User = CurrentUser;
                             }
+
 
 
                             if (!String.IsNullOrEmpty(Roles))
@@ -142,7 +144,6 @@ namespace VinculacionBackend
 
                             }
 
-                            
                         }
 
                     }
