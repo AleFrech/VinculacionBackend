@@ -12,10 +12,12 @@ using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Controllers
 {
+   
     public class StudentsController : ApiController
     {
         private VinculacionContext db = new VinculacionContext();
 
+        
         // GET: api/Students
         [Route("api/Students")]
         public IQueryable<User> GetStudents()
@@ -30,6 +32,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Students/{studentsId}")]
         public IHttpActionResult GetStudent(string studentsId)
         {
+            
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.IdNumber == studentsId);
             if (User == null)
@@ -81,6 +84,8 @@ namespace VinculacionBackend.Controllers
             return NotFound();
         }
 
+
+        [CustomAuthorize(Roles = "Admin")]
         //Put: api/Students/NumberId/Verified
         [ResponseType(typeof(User))]
         [Route("api/Students/{studentsId}/Verified")]
@@ -119,6 +124,10 @@ namespace VinculacionBackend.Controllers
                 return NotFound();
             }
         }
+
+
+
+        [CustomAuthorize(Roles = "Admin")]
         //Post: api/Students/NumberId/Rejected
         [ResponseType(typeof(User))]
         [Route("api/Students/{studentsId}/Rejected")]
