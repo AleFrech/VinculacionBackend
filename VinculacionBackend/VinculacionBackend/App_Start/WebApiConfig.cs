@@ -11,6 +11,8 @@ namespace VinculacionBackend
         public static void Register(HttpConfiguration config)
         {
 
+            config.EnableCors();
+
             config.Filters.Add(new CustomAuthorizeAttribute());
             // Web API configuration and services
 
