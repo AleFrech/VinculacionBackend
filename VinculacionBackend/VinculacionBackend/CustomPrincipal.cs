@@ -34,15 +34,15 @@ namespace VinculacionBackend
 
 
 
-        public CustomPrincipal(string Username)
+        public CustomPrincipal(string username)
 
         {
 
-            this.Identity = new GenericIdentity(Username);
+            this.Identity = new GenericIdentity(username);
 
         }
 
-        public CustomPrincipal(string Username, string[] roles) : this(Username)
+        public CustomPrincipal(string username, string[] roles) : this(username)
         {
             this.roles = roles;
         }
