@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace VinculacionBackend
 {
@@ -11,7 +12,10 @@ namespace VinculacionBackend
         public static void Register(HttpConfiguration config)
         {
 
-            config.EnableCors();
+            var enableCorsAttribute = new EnableCorsAttribute("http://vinculacionbackend.apphb.com",
+                                                   "Origin, Content-Type, Accept",
+                                                   "GET, PUT, POST, DELETE, OPTIONS");
+            config.EnableCors(enableCorsAttribute);
 
             config.Filters.Add(new CustomAuthorizeAttribute());
             // Web API configuration and services
