@@ -12,10 +12,7 @@ namespace VinculacionBackend
         public static void Register(HttpConfiguration config)
         {
 
-            var enableCorsAttribute = new EnableCorsAttribute("http://vinculacionbackend.apphb.com",
-                                                   "Origin, Content-Type, Accept",
-                                                   "GET, PUT, POST, DELETE, OPTIONS");
-            config.EnableCors(enableCorsAttribute);
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
 
             config.Filters.Add(new CustomAuthorizeAttribute());
             // Web API configuration and services
