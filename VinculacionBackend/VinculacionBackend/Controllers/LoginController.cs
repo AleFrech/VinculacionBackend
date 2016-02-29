@@ -10,9 +10,12 @@ using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
 using VinculacionBackend.Enums;
 using VinculacionBackend.Models;
+using System.Web.Http.Cors;
 
 namespace VinculacionBackend.Controllers
 {
+
+    [EnableCors(origins: "http://vinculacionbackend.apphb.com", headers: "*", methods: "*")]
     public class LoginController : ApiController
     {
 
