@@ -220,6 +220,7 @@
       <DependentUpon>201602272058229_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\HourEntryModel.cs" />
     <Compile Include="Models\LoginUserModel.cs" />
     <Compile Include="Models\RejectedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
