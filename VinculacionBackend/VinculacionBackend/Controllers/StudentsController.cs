@@ -54,22 +54,16 @@ namespace VinculacionBackend.Controllers
         // PUT: api/Students/5
         [ResponseType(typeof(void))]
         [Route("api/Students/{studentsId}")]
-        public IHttpActionResult PutStudent(string studentsId, User User)
+        public IHttpActionResult PutStudent(string studentsId, UserEntryModel userModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (studentsId != User.IdNumber)
+            if (studentsId != userModel.IdNumber)
             {
                 return BadRequest();
-            }
-
-            var existEmail = EntityExistanceManager.EmailExists(User.Email);
-            if (existEmail)
-            {
-                return InternalServerError(new Exception("Email already exists in database"));
             }
 
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
@@ -77,9 +71,8 @@ namespace VinculacionBackend.Controllers
             if (tmpstudent != null)
             {
                 tmpstudent.ModificationDate = DateTime.Now;
-                tmpstudent.Password = User.Password;
-                tmpstudent.Name = User.Name;
-                tmpstudent.Major = User.Major;
+                tmpstudent.Password = userModel.Password;
+                tmpstudent.Name = userModel.Name;
                 try
                 {
                     db.SaveChanges();
@@ -157,27 +150,31 @@ namespace VinculacionBackend.Controllers
         // POST: api/Students
         [ResponseType(typeof(User))]
         [Route("api/Students")]
-        public IHttpActionResult PostStudent(User User)
+        public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
-            if (!ModelState.IsValid || User == null)
+            if (!ModelState.IsValid || userModel == null)
             {
                 return BadRequest(ModelState);
             }
-
-            var existEmail = EntityExistanceManager.EmailExists(User.Email);
-            if (existEmail || !MailManager.CheckDomainValidity(User.Email))
+            var existEmail = EntityExistanceManager.EmailExists(userModel.Email);
+            if (existEmail || !MailManager.CheckDomainValidity(userModel.Email))
             {
                 return InternalServerError(new Exception("Email already exists in database"));
             }
-
-            User.Status=Status.Inactive;
-            User.CreationDate=DateTime.Now;
-            User.ModificationDate=DateTime.Now;
-            db.Users.Add(User);
-            db.UserRoleRels.Add(new UserRole { User=User,Role=db.Roles.FirstOrDefault(x=>x.Name=="Student")});
+            var newUser=new User();
+            newUser.IdNumber = userModel.IdNumber;
+            newUser.Name = userModel.Name;
+            newUser.Password = userModel.Password;
+            newUser.Campus = userModel.Campus;
+            newUser.Status=Status.Inactive;
+            newUser.CreationDate=DateTime.Now;
+            newUser.ModificationDate=DateTime.Now;
+            newUser.Major = db.Majors.FirstOrDefault(x => x.MajorId == userModel.MajorId);
+            db.Users.Add(newUser);
+            db.UserRoleRels.Add(new UserRole { User=newUser,Role=db.Roles.FirstOrDefault(x=>x.Name=="Student")});
             db.SaveChanges();
-            MailManager.SendSimpleMessage(User.Email,"Hacer click en el siguiente link para Activar: "+ HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)+"/api/Students/"+ User.IdNumber+"/Active","Vinculación");
-            return Ok(User);
+            MailManager.SendSimpleMessage(newUser.Email,"Hacer click en el siguiente link para Activar: "+ HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)+"/api/Students/"+ newUser.IdNumber+"/Active","Vinculación");
+            return Ok(newUser);
         }
 
         // DELETE: api/Students/5
