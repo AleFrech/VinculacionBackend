@@ -5,9 +5,12 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
+using System.Web.Http.Cors;
+
 
 namespace VinculacionBackend.Controllers
 {
+    [EnableCors(origins: "fiasps.unitec.edu:8085", headers: "*", methods: "*")]
     public class MajorsController : ApiController
     {
         private VinculacionContext db = new VinculacionContext();

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace VinculacionBackend.Controllers
 {
+    [EnableCors(origins: "fiasps.unitec.edu:8085", headers: "*", methods: "*")]
     public class ValuesController : ApiController
     {
         // GET api/values
