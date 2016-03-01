@@ -223,6 +223,7 @@
     <Compile Include="Models\HourEntryModel.cs" />
     <Compile Include="Models\LoginUserModel.cs" />
     <Compile Include="Models\RejectedMessage.cs" />
+    <Compile Include="Models\UserEntryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enums\Status.cs" />
   </ItemGroup>
