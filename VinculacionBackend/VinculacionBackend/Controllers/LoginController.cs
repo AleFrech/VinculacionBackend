@@ -15,7 +15,7 @@ using System.Web.Http.Cors;
 namespace VinculacionBackend.Controllers
 {
 
-    [EnableCors(origins: "http://vinculacionbackend.apphb.com", headers: "*", methods: "*")]
+   
     public class LoginController : ApiController
     {
 
