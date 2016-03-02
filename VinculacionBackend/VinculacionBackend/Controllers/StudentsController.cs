@@ -25,7 +25,7 @@ namespace VinculacionBackend.Controllers
         public IQueryable<User> GetStudents()
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id));
+            return db.Users.Include(m =>m.Major).Where(x => rels.Any(y => y.User.Id == x.Id));
             //return db.Users;
         }
 
