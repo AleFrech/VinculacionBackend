@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 using VinculacionBackend.Entities;
 
 namespace VinculacionBackend.Database
@@ -27,8 +23,6 @@ namespace VinculacionBackend.Database
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoleRels { get; set; }
         public DbSet<MajorUser> MajorUsersRels { get; set; }
-
-
     }
 
     public static class ConnectionString

@@ -22,10 +22,10 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Projects/5
         [ResponseType(typeof(Project))]
-        [Route("api/Projects/{ProjectId}")]
-        public IHttpActionResult GetProject(long ProjectId)
+        [Route("api/Projects/{projectId}")]
+        public IHttpActionResult GetProject(long projectId)
         {
-            Project Project = db.Projects.Find(ProjectId);
+            Project Project = db.Projects.Find(projectId);
             if (Project == null)
             {
                 return NotFound();
@@ -36,22 +36,22 @@ namespace VinculacionBackend.Controllers
 
         // PUT: api/Projects/5
         [ResponseType(typeof(void))]
-        [Route("api/Projects/{ProjectId}")]
-        public IHttpActionResult PutProject(long ProjectId, Project Project)
+        [Route("api/Projects/{projectId}")]
+        public IHttpActionResult PutProject(long projectId, Project project)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (ProjectId != Project.Id)
+            if (projectId != project.Id)
             {
                 return BadRequest();
             }
 
-            var tmpProject = db.Projects.FirstOrDefault(x => x.Id == ProjectId);
-            tmpProject.Name = Project.Name;
-            tmpProject.Description = Project.Description;
+            var tmpProject = db.Projects.FirstOrDefault(x => x.Id == projectId);
+            tmpProject.Name = project.Name;
+            tmpProject.Description = project.Description;
 
             try
             {
@@ -59,7 +59,7 @@ namespace VinculacionBackend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProjectExists(ProjectId))
+                if (!ProjectExists(projectId))
                 {
                     return NotFound();
                 }
@@ -75,31 +75,31 @@ namespace VinculacionBackend.Controllers
         // POST: api/Projects
         [Route("api/Projects")]
         [ResponseType(typeof(Project))]
-        public IHttpActionResult PostProject(Project Project)
+        public IHttpActionResult PostProject(Project project)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Projects.Add(Project);
+            db.Projects.Add(project);
             db.SaveChanges();
 
-            return Ok(Project);
+            return Ok(project);
         }
 
         // DELETE: api/Projects/5
-        [Route("api/Projects/{ProjectId}")]
+        [Route("api/Projects/{projectId}")]
         [ResponseType(typeof(Project))]
-        public IHttpActionResult DeleteProject(long ProjectId)
+        public IHttpActionResult DeleteProject(long projectId)
         {
-            Project Project = db.Projects.Find(ProjectId);
+            Project Project = db.Projects.Find(projectId);
             if (Project == null)
             {
                 return NotFound();
             }
 
-            //db.Projects.Remove(Project);
+            //db.Projects.Remove(project);
             //db.SaveChanges();
 
             return Ok(Project);
