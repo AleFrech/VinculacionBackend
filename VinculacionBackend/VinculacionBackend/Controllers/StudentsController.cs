@@ -19,7 +19,7 @@ namespace VinculacionBackend.Controllers
     {
         private VinculacionContext db = new VinculacionContext();
 
-        
+
         // GET: api/Students
         [Route("api/Students")]
         public IQueryable<User> GetStudents()
@@ -164,6 +164,7 @@ namespace VinculacionBackend.Controllers
             {
                 MailManager.SendSimpleMessage(student.Email,model.Message,"Vinculación");
                 student.Status=Status.Rejected;
+                db.SaveChanges();
                 return Ok(student);
             }
             else

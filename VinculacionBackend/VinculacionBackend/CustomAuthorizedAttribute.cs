@@ -62,7 +62,8 @@ namespace VinculacionBackend
 
 
 
-                if (authValue != null && !String.IsNullOrWhiteSpace(authValue.Parameter) && authValue.Scheme == BasicAuthResponseHeaderValue)
+                if (authValue != null && !String.IsNullOrWhiteSpace(authValue.Parameter) &&
+                    authValue.Scheme == BasicAuthResponseHeaderValue)
 
                 {
 
@@ -74,7 +75,9 @@ namespace VinculacionBackend
 
                     {
 
-                        var user = Context.Users.FirstOrDefault(u => u.Email == parsedCredentials.Username && u.Password == parsedCredentials.Password);
+                        var user =
+                            Context.Users.FirstOrDefault(
+                                u => u.Email == parsedCredentials.Username && u.Password == parsedCredentials.Password);
 
                         if (user != null)
 
@@ -82,8 +85,8 @@ namespace VinculacionBackend
 
                             var roles =
                                 Context.UserRoleRels.Where(u => u.User.Id == user.Id).Select(m => m.Role.Name).ToArray();
-                          
-                               
+
+
 
                             var authorizedUsers = ConfigurationManager.AppSettings[UsersConfigKey];
 
@@ -114,9 +117,11 @@ namespace VinculacionBackend
 
                                 {
 
-                                    actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
+                                    actionContext.Response =
+                                        actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
 
-                                    actionContext.Response.Headers.Add(BasicAuthResponseHeader, BasicAuthResponseHeaderValue);
+                                    actionContext.Response.Headers.Add(BasicAuthResponseHeader,
+                                        BasicAuthResponseHeaderValue);
 
                                     return;
 
@@ -134,9 +139,11 @@ namespace VinculacionBackend
 
                                 {
 
-                                    actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
+                                    actionContext.Response =
+                                        actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
 
-                                    actionContext.Response.Headers.Add(BasicAuthResponseHeader, BasicAuthResponseHeaderValue);
+                                    actionContext.Response.Headers.Add(BasicAuthResponseHeader,
+                                        BasicAuthResponseHeaderValue);
 
                                     return;
 
@@ -149,6 +156,12 @@ namespace VinculacionBackend
                     }
 
                 }
+                else
+                {
+                    actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
+                    return;
+                }
+
 
             }
 
