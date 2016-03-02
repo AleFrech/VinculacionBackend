@@ -26,7 +26,6 @@ namespace VinculacionBackend.Controllers
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             return db.Users.Include(m =>m.Major).Where(x => rels.Any(y => y.User.Id == x.Id));
-            //return db.Users;
         }
 
         // GET: api/Students/5
@@ -72,7 +71,6 @@ namespace VinculacionBackend.Controllers
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id )&& (int)x.Status==status);
-            //return db.Users;
         }
 
 
@@ -165,6 +163,7 @@ namespace VinculacionBackend.Controllers
             if (student != null)
             {
                 MailManager.SendSimpleMessage(student.Email,model.Message,"Vinculación");
+                student.Status=Status.Rejected;
                 return Ok(student);
             }
             else
