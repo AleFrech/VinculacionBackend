@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+﻿using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using VinculacionBackend.Database;
@@ -15,49 +9,49 @@ using System.Web.Http.Cors;
 namespace VinculacionBackend.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class ProyectsController : ApiController
+    public class ProjectsController : ApiController
     {
         private VinculacionContext db = new VinculacionContext();
 
-        // GET: api/Proyects
-        [Route("api/Proyects")]
-        public IQueryable<Proyect> GetProyects()
+        // GET: api/Projects
+        [Route("api/Projects")]
+        public IQueryable<Project> GetProjects()
         {
-            return db.Proyects;
+            return db.Projects;
         }
 
-        // GET: api/Proyects/5
-        [ResponseType(typeof(Proyect))]
-        [Route("api/Proyects/{proyectId}")]
-        public IHttpActionResult GetProyect(long proyectId)
+        // GET: api/Projects/5
+        [ResponseType(typeof(Project))]
+        [Route("api/Projects/{ProjectId}")]
+        public IHttpActionResult GetProject(long ProjectId)
         {
-            Proyect proyect = db.Proyects.Find(proyectId);
-            if (proyect == null)
+            Project Project = db.Projects.Find(ProjectId);
+            if (Project == null)
             {
                 return NotFound();
             }
 
-            return Ok(proyect);
+            return Ok(Project);
         }
 
-        // PUT: api/Proyects/5
+        // PUT: api/Projects/5
         [ResponseType(typeof(void))]
-        [Route("api/Proyects/{proyectId}")]
-        public IHttpActionResult PutProyect(long proyectId, Proyect proyect)
+        [Route("api/Projects/{ProjectId}")]
+        public IHttpActionResult PutProject(long ProjectId, Project Project)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (proyectId != proyect.Id)
+            if (ProjectId != Project.Id)
             {
                 return BadRequest();
             }
 
-            var tmpProyect = db.Proyects.FirstOrDefault(x => x.Id == proyectId);
-            tmpProyect.Name = proyect.Name;
-            tmpProyect.Description = proyect.Description;
+            var tmpProject = db.Projects.FirstOrDefault(x => x.Id == ProjectId);
+            tmpProject.Name = Project.Name;
+            tmpProject.Description = Project.Description;
 
             try
             {
@@ -65,7 +59,7 @@ namespace VinculacionBackend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProyectExists(proyectId))
+                if (!ProjectExists(ProjectId))
                 {
                     return NotFound();
                 }
@@ -75,40 +69,40 @@ namespace VinculacionBackend.Controllers
                 }
             }
 
-            return Ok(tmpProyect);
+            return Ok(tmpProject);
         }
 
-        // POST: api/Proyects
-        [Route("api/Proyects")]
-        [ResponseType(typeof(Proyect))]
-        public IHttpActionResult PostProyect(Proyect proyect)
+        // POST: api/Projects
+        [Route("api/Projects")]
+        [ResponseType(typeof(Project))]
+        public IHttpActionResult PostProject(Project Project)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Proyects.Add(proyect);
+            db.Projects.Add(Project);
             db.SaveChanges();
 
-            return Ok(proyect);
+            return Ok(Project);
         }
 
-        // DELETE: api/Proyects/5
-        [Route("api/Proyects/{proyectId}")]
-        [ResponseType(typeof(Proyect))]
-        public IHttpActionResult DeleteProyect(long proyectId)
+        // DELETE: api/Projects/5
+        [Route("api/Projects/{ProjectId}")]
+        [ResponseType(typeof(Project))]
+        public IHttpActionResult DeleteProject(long ProjectId)
         {
-            Proyect proyect = db.Proyects.Find(proyectId);
-            if (proyect == null)
+            Project Project = db.Projects.Find(ProjectId);
+            if (Project == null)
             {
                 return NotFound();
             }
 
-            //db.Proyects.Remove(proyect);
+            //db.Projects.Remove(Project);
             //db.SaveChanges();
 
-            return Ok(proyect);
+            return Ok(Project);
         }
 
         protected override void Dispose(bool disposing)
@@ -120,9 +114,9 @@ namespace VinculacionBackend.Controllers
             base.Dispose(disposing);
         }
 
-        private bool ProyectExists(long id)
+        private bool ProjectExists(long id)
         {
-            return db.Proyects.Count(e => e.Id == id) > 0;
+            return db.Projects.Count(e => e.Id == id) > 0;
         }
     }
 }

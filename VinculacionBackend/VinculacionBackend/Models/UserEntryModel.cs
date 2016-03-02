@@ -7,7 +7,7 @@ namespace VinculacionBackend.Models
 {
     public class UserEntryModel
     {
-        public string IdNumber { get; set; }
+        public string AccountId { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public string MajorId { get; set; }

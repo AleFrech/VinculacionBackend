@@ -20,12 +20,12 @@ namespace VinculacionBackend.Migrations
         {
             var period = new Period { Number = 1, Year = 2016 };
             var clas = new Class { Name = "ANAL. Y DIS. DE SISTEMAS I" };
-            var user = new User { IdNumber = "21111111", Email = "carlos.castroy@unitec.edu", Name = "Carlos Castro", Status = Status.Verified, Major = null, Campus = "San Pedro Sula", CreationDate = DateTime.Now, ModificationDate = DateTime.Now, Password = "1234" };
+            var user = new User { AccountId = "21111111", Email = "carlos.castroy@unitec.edu", Name = "Carlos Castro", Status = Status.Verified, Major = null, Campus = "San Pedro Sula", CreationDate = DateTime.Now, ModificationDate = DateTime.Now, Password = "1234" };
             var professorRole = new Role { Name = "Professor" };
             var section = new Section { Code = "INF405", Period = period, Class = clas, User = user };
-            var proyect = new Proyect
+            var Project = new Project
             {
-                Name = "Proyecto de Vinculacion Unitec",
+                Name = "Projecto de Vinculacion Unitec",
                 Description = "Programa para el registro de horas de vinculacion a estudiantes de Unitec sps"
             };
 
@@ -91,9 +91,9 @@ namespace VinculacionBackend.Migrations
               period
                 );
 
-            context.Proyects.AddOrUpdate(
+            context.Projects.AddOrUpdate(
              x => x.Id,
-             proyect
+             Project
                 );
 
             context.Sections.AddOrUpdate(
@@ -105,9 +105,9 @@ namespace VinculacionBackend.Migrations
                 x => x.Id,
                 new SectionUser { User = user, Section = section }
                 );
-            context.SectionProyectsRels.AddOrUpdate(
+            context.SectionProjectsRels.AddOrUpdate(
                 x => x.Id,
-                new SectionProyect { Section = section, Proyect = proyect }
+                new SectionProject { Section = section, Project = Project }
                 );
 
             //  This method will be called after migrating to the latest version.

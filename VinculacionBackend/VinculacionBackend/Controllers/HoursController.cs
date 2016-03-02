@@ -21,66 +21,7 @@ namespace VinculacionBackend.Controllers
     {
         private VinculacionContext db = new VinculacionContext();
 
-        // GET: api/Hours
-        [Route("api/Hours")]
-        public IQueryable<Hour> GetHours()
-        {
-            return db.Hours.Include(a=>a.User).Include(b=>b.SectionProyect);
-        }
-
-        // GET: api/Hours/5
-        [ResponseType(typeof(Hour))]
-        [Route("api/Hours/{studentId}")]
-        public IHttpActionResult GetHour(string studentId)
-        {
-            Hour hour = db.Hours.Include(x => x.User).Include(b => b.SectionProyect).FirstOrDefault(y => y.User.IdNumber ==studentId);
-            if (hour == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(hour);
-        }
-
-        // PUT: api/Hours/5
-        [ResponseType(typeof(void))]
-        [Route("api/Hours")]
-        public IHttpActionResult PutHour(HourEntryModel hourModel)
-        {
-
-            return InternalServerError(new Exception("Method dosent exist yet"));
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-
-
-
-            //var tmpHour = db.Hours.FirstOrDefault(x => x.Id == hour.Id);
-            //if (tmpHour != null)
-            //{
-            //    tmpHour.Amount = (hour.Amount >= 0 ? hour.Amount : tmpHour.Amount);
-            //    db.Entry(hour).State = EntityState.Modified;
-
-
-            //    try
-            //    {
-            //        db.SaveChanges();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        return InternalServerError(new DbUpdateConcurrencyException());
-            //    }
-
-
-            //    return StatusCode(HttpStatusCode.NoContent);
-            //}
-            //else
-            //{
-            //    return NotFound();
-            //}
-        }
+        
 
         // POST: api/Hours
         [ResponseType(typeof(Hour))]
@@ -91,13 +32,13 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var sectionProjectRel = db.SectionProyectsRels.Include(x => x.Proyect).Include(y => y.Section).FirstOrDefault(z => z.Section.Id == hourModel.SectionId && z.Proyect.Id == hourModel.ProyectId);
-            var user = db.Users.FirstOrDefault(x => x.IdNumber == hourModel.NumberId);
+            var sectionProjectRel = db.SectionProjectsRels.Include(x => x.Project).Include(y => y.Section).FirstOrDefault(z => z.Section.Id == hourModel.SectionId && z.Project.Id == hourModel.ProjectId);
+            var user = db.Users.FirstOrDefault(x => x.AccountId == hourModel.AccountId);
             if (user != null && sectionProjectRel != null)
             {
                 var hour = new Hour();
                 hour.Amount = hourModel.Hour;
-                hour.SectionProyect = sectionProjectRel;
+                hour.SectionProject = sectionProjectRel;
                 hour.User = user;
                 db.Hours.Add(hour);
                 db.SaveChanges();
@@ -108,22 +49,6 @@ namespace VinculacionBackend.Controllers
                 return NotFound();
             }
               
-        }
-
-        // DELETE: api/Hours/5
-        [Route("api/Hours/{HourId}")]
-        [ResponseType(typeof(Hour))]
-        public IHttpActionResult DeleteHour(long id)
-        {
-            Hour hour = db.Hours.Find(id);
-            if (hour == null)
-            {
-                return NotFound();
-            }
-
-            //db.Hours.Remove(hour);
-            db.SaveChanges();
-            return Ok(hour);
         }
 
         protected override void Dispose(bool disposing)

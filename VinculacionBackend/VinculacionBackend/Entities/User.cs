@@ -9,7 +9,7 @@ namespace VinculacionBackend.Entities
     public class User
     {
         public long Id { get; set;  }
-        public string IdNumber { get; set; }
+        public string AccountId { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public Major Major { get; set; }

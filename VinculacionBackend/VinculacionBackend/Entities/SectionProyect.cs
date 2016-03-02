@@ -5,11 +5,11 @@ using System.Web;
 
 namespace VinculacionBackend.Entities
 {
-    public class SectionProyect
+    public class SectionProject
     {
         public long Id { get; set; }
         public Section Section { get; set; }
-        public Proyect Proyect { get; set; }
+        public Project Project { get; set; }
 
     }
 }

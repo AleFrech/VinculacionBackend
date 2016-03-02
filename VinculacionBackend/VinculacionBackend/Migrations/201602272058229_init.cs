@@ -22,31 +22,31 @@ namespace VinculacionBackend.Migrations
                     {
                         Id = c.Long(nullable: false, identity: true),
                         Amount = c.Int(nullable: false),
-                        SectionProyect_Id = c.Long(),
+                        SectionProject_Id = c.Long(),
                         User_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.SectionProyects", t => t.SectionProyect_Id)
+                .ForeignKey("dbo.SectionProjects", t => t.SectionProject_Id)
                 .ForeignKey("dbo.Users", t => t.User_Id)
-                .Index(t => t.SectionProyect_Id)
+                .Index(t => t.SectionProject_Id)
                 .Index(t => t.User_Id);
             
             CreateTable(
-                "dbo.SectionProyects",
+                "dbo.SectionProjects",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        Proyect_Id = c.Long(),
+                        Project_Id = c.Long(),
                         Section_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Proyects", t => t.Proyect_Id)
+                .ForeignKey("dbo.Projects", t => t.Project_Id)
                 .ForeignKey("dbo.Sections", t => t.Section_Id)
-                .Index(t => t.Proyect_Id)
+                .Index(t => t.Project_Id)
                 .Index(t => t.Section_Id);
             
             CreateTable(
-                "dbo.Proyects",
+                "dbo.Projects",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
@@ -88,7 +88,7 @@ namespace VinculacionBackend.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        IdNumber = c.String(unicode: false),
+                        AccountId = c.String(unicode: false),
                         Name = c.String(unicode: false),
                         Password = c.String(unicode: false),
                         Campus = c.String(unicode: false),
@@ -174,13 +174,13 @@ namespace VinculacionBackend.Migrations
             DropForeignKey("dbo.MajorUsers", "User_Id", "dbo.Users");
             DropForeignKey("dbo.MajorUsers", "Major_Id", "dbo.Majors");
             DropForeignKey("dbo.Hours", "User_Id", "dbo.Users");
-            DropForeignKey("dbo.Hours", "SectionProyect_Id", "dbo.SectionProyects");
-            DropForeignKey("dbo.SectionProyects", "Section_Id", "dbo.Sections");
+            DropForeignKey("dbo.Hours", "SectionProject_Id", "dbo.SectionProjects");
+            DropForeignKey("dbo.SectionProjects", "Section_Id", "dbo.Sections");
             DropForeignKey("dbo.Sections", "User_Id", "dbo.Users");
             DropForeignKey("dbo.Users", "Major_Id", "dbo.Majors");
             DropForeignKey("dbo.Sections", "Period_Id", "dbo.Periods");
             DropForeignKey("dbo.Sections", "Class_Id", "dbo.Classes");
-            DropForeignKey("dbo.SectionProyects", "Proyect_Id", "dbo.Proyects");
+            DropForeignKey("dbo.SectionProjects", "Project_Id", "dbo.Projects");
             DropIndex("dbo.UserRoles", new[] { "User_Id" });
             DropIndex("dbo.UserRoles", new[] { "Role_Id" });
             DropIndex("dbo.SectionUsers", new[] { "User_Id" });
@@ -191,10 +191,10 @@ namespace VinculacionBackend.Migrations
             DropIndex("dbo.Sections", new[] { "User_Id" });
             DropIndex("dbo.Sections", new[] { "Period_Id" });
             DropIndex("dbo.Sections", new[] { "Class_Id" });
-            DropIndex("dbo.SectionProyects", new[] { "Section_Id" });
-            DropIndex("dbo.SectionProyects", new[] { "Proyect_Id" });
+            DropIndex("dbo.SectionProjects", new[] { "Section_Id" });
+            DropIndex("dbo.SectionProjects", new[] { "Project_Id" });
             DropIndex("dbo.Hours", new[] { "User_Id" });
-            DropIndex("dbo.Hours", new[] { "SectionProyect_Id" });
+            DropIndex("dbo.Hours", new[] { "SectionProject_Id" });
             DropTable("dbo.UserRoles");
             DropTable("dbo.SectionUsers");
             DropTable("dbo.Roles");
@@ -203,8 +203,8 @@ namespace VinculacionBackend.Migrations
             DropTable("dbo.Users");
             DropTable("dbo.Periods");
             DropTable("dbo.Sections");
-            DropTable("dbo.Proyects");
-            DropTable("dbo.SectionProyects");
+            DropTable("dbo.Projects");
+            DropTable("dbo.SectionProjects");
             DropTable("dbo.Hours");
             DropTable("dbo.Classes");
         }

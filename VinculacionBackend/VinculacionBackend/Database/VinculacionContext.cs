@@ -20,8 +20,8 @@ namespace VinculacionBackend.Database
         public DbSet<Class> Classes { get; set; }
         public DbSet<Period> Periods { get; set; }
         public DbSet<Section> Sections { get; set; }
-        public DbSet<Proyect> Proyects { get; set; }
-        public DbSet<SectionProyect> SectionProyectsRels { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<SectionProject> SectionProjectsRels { get; set; }
         public DbSet<SectionUser> SectionUserRels { get; set; }
         public DbSet<Hour> Hours { get; set; }
         public DbSet<Role> Roles { get; set; }

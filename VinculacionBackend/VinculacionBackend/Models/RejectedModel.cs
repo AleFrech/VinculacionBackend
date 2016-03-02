@@ -5,14 +5,9 @@ using System.Web;
 
 namespace VinculacionBackend.Models
 {
-    public class HourEntryModel
+    public class RejectedModel
     {
         public string AccountId { get; set; }
-
-        public long SectionId { get; set; }
-
-        public long ProjectId{ get; set; }
-       
-        public int Hour { get; set; }
+        public string Message { get; set; }
     }
 }
