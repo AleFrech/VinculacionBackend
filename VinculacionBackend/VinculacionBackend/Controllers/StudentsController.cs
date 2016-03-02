@@ -178,14 +178,19 @@ namespace VinculacionBackend.Controllers
         [Route("api/Students")]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
+
             if (!ModelState.IsValid || userModel == null)
             {
                 return BadRequest(ModelState);
             }
             var existEmail = EntityExistanceManager.EmailExists(userModel.Email);
-            if (existEmail || !MailManager.CheckDomainValidity(userModel.Email))
+            if (existEmail)
             {
                 return InternalServerError(new Exception("Email already exists in database"));
+            }
+            if (!MailManager.CheckDomainValidity(userModel.Email))
+            {
+                return InternalServerError(new Exception("Email domain is invalid"));
             }
             var newUser=new User();
             newUser.AccountId = userModel.AccountId;
@@ -207,15 +212,15 @@ namespace VinculacionBackend.Controllers
         // DELETE: api/Students/5
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}")]
-        public IHttpActionResult DeleteStudent(string id)
+        public IHttpActionResult DeleteStudent(string accountId)
         {
             
-            User User = db.Users.FirstOrDefault(x=>x.AccountId==id);
+            User User = db.Users.FirstOrDefault(x=>x.AccountId==accountId);
             if (User != null)
             {
-                User.Status = Status.Inactive;
-               // db.Users.Remove(User);
-                db.SaveChanges();
+                //User.Status = Status.Inactive;
+                //db.Users.Remove(User);
+                //db.SaveChanges();
                 return Ok(User);
             }
             else
