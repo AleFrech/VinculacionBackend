@@ -21,7 +21,6 @@ namespace VinculacionBackend.Controllers
 
 
         // GET: api/Students
-        
         [Route("api/Students")]
         public IQueryable<User> GetStudents()
         {
@@ -33,8 +32,7 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}")]
         public IHttpActionResult GetStudent(string accountId)
-        {
-            
+        {  
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
             if (User == null)
@@ -52,18 +50,15 @@ namespace VinculacionBackend.Controllers
             var total = 0;
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
-
             if (student == null)
             {
                 return NotFound();
-            }
-            
+            }           
             var hour = db.Hours.Include(a => a.User).Where(x => x.User.Id == student.Id);
             hour.ForEach(x =>
             {
                 total += x.Amount;
             });
-
             return Ok(total);
         }
 
@@ -73,7 +68,6 @@ namespace VinculacionBackend.Controllers
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id )&& (int)x.Status==status);
         }
-
 
         // PUT: api/Students/5
         [ResponseType(typeof(void))]
@@ -110,8 +104,6 @@ namespace VinculacionBackend.Controllers
             return NotFound();
         }
 
-
-        [CustomAuthorize(Roles = "Admin")]
         //Put: api/Students/accountId/Verified
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}/Verified")]
@@ -132,6 +124,7 @@ namespace VinculacionBackend.Controllers
                 return NotFound();
             }
         }
+
         //Get: api/Students/accountId/Avtive
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}/Active")]
@@ -151,9 +144,6 @@ namespace VinculacionBackend.Controllers
             }
         }
 
-
-
-        [CustomAuthorize(Roles = "Admin")]
         //Post: api/Students/accountId/Rejected
         [ResponseType(typeof(User))]
         [Route("api/Students/Rejected")]
@@ -214,8 +204,7 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}")]
         public IHttpActionResult DeleteStudent(string accountId)
-        {
-            
+        {            
             User User = db.Users.FirstOrDefault(x=>x.AccountId==accountId);
             if (User != null)
             {
