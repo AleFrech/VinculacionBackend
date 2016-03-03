@@ -28,8 +28,7 @@ namespace VinculacionBackend
 
         private const string BasicAuthResponseHeaderValue = "Basic";
 
-        readonly VinculacionContext Context = new VinculacionContext();
-
+        
 
 
         public string UsersConfigKey { get; set; }
@@ -53,6 +52,7 @@ namespace VinculacionBackend
         public override void OnAuthorization(HttpActionContext actionContext)
 
         {
+            VinculacionContext Context = new VinculacionContext();
 
             try
 
@@ -78,6 +78,7 @@ namespace VinculacionBackend
                         var user =
                             Context.Users.FirstOrDefault(
                                 u => u.Email == parsedCredentials.Username && u.Password == parsedCredentials.Password);
+
 
                         if (user != null)
 
@@ -159,24 +160,18 @@ namespace VinculacionBackend
                 else
                 {
                     actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
-                    return;
+                     return;
                 }
 
 
             }
 
-            catch (Exception)
+            catch (Exception e)
 
             {
-
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
-
-                actionContext.Response.Headers.Add(BasicAuthResponseHeader, BasicAuthResponseHeaderValue);
-
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized,e.Message);
+                //actionContext.Response.Headers.Add(BasicAuthResponseHeader, BasicAuthResponseHeaderValue);
                 return;
-
-
-
             }
 
         }
