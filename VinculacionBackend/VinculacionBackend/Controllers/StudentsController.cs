@@ -15,7 +15,6 @@ using WebGrease.Css.Extensions;
 namespace VinculacionBackend.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [CustomAuthorize(Roles = "Admin, Student, Professor")]
     public class StudentsController : ApiController
     {
         private VinculacionContext db = new VinculacionContext();

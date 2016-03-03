@@ -157,12 +157,6 @@ namespace VinculacionBackend
                     }
 
                 }
-                else
-                {
-                    actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
-                     return;
-                }
-
 
             }
 
