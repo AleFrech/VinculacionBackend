@@ -34,7 +34,7 @@ namespace VinculacionBackend.Controllers
             }
 
             var user = db.Users.FirstOrDefault(u => u.Email == loginUser.User && u.Password == loginUser.Password);
-            if (user != null /*&& user.Status!= Status.Inactive*/)
+            if (user != null && user.Status!= Status.Inactive && user.Status != Status.Rejected)
             {
 
                 string userInfo = user.Email + ":" + user.Password;
