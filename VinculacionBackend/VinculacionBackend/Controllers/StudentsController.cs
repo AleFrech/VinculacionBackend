@@ -10,11 +10,13 @@ using VinculacionBackend.Entities;
 using VinculacionBackend.Enums;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
+using RestSharp;
 using WebGrease.Css.Extensions;
 
 namespace VinculacionBackend.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    
     public class StudentsController : ApiController
     {
         private VinculacionContext db = new VinculacionContext();
@@ -22,8 +24,10 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Students
         [Route("api/Students")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
         public IQueryable<User> GetStudents()
         {
+            var u = HttpContext.Current.User.Identity;
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             return db.Users.Include(m =>m.Major).Where(x => rels.Any(y => y.User.Id == x.Id));
         }
@@ -31,6 +35,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Students/5
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudent(string accountId)
         {  
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
@@ -45,6 +50,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Students/5
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}/Hour")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudentHour(string accountId)
         {
             var total = 0;
@@ -63,6 +69,8 @@ namespace VinculacionBackend.Controllers
         }
 
         [Route("api/Students/Filter/{status}")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
+
         public IQueryable<User> GetStudents(string status)
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
@@ -85,6 +93,7 @@ namespace VinculacionBackend.Controllers
         // PUT: api/Students/5
         [ResponseType(typeof(void))]
         [Route("api/Students/{accountId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult PutStudent(string accountId, UserEntryModel userModel)
         {
             if (!ModelState.IsValid)
@@ -120,7 +129,9 @@ namespace VinculacionBackend.Controllers
         //Put: api/Students/Verified
         [ResponseType(typeof(User))]
         [Route("api/Students/Verified")]
+         [CustomAuthorize(Roles = "Admin")]
         public IHttpActionResult PutAcceptVerified(VerifiedModel model)
+
         {
             if (!ModelState.IsValid || model == null)
             {
@@ -145,7 +156,9 @@ namespace VinculacionBackend.Controllers
         //Get: api/Students/Avtive
         [ResponseType(typeof(User))]
         [Route("api/Students/{guid}/Active")]
+          [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult GetActiveStudent(string guid)
+
         {
             
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
@@ -166,6 +179,7 @@ namespace VinculacionBackend.Controllers
         //Post: api/Students/Rejected
         [ResponseType(typeof(User))]
         [Route("api/Students/Rejected")]
+        [CustomAuthorize(Roles = "Admin")]
         public IHttpActionResult PostRejectStudent(RejectedModel model)
         {
             if (!ModelState.IsValid || model == null)
@@ -191,6 +205,7 @@ namespace VinculacionBackend.Controllers
         // POST: api/Students
         [ResponseType(typeof(User))]
         [Route("api/Students")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
 
@@ -241,6 +256,7 @@ namespace VinculacionBackend.Controllers
         // DELETE: api/Students/5
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult DeleteStudent(string accountId)
         {            
             User User = db.Users.FirstOrDefault(x=>x.AccountId==accountId);

@@ -20,6 +20,7 @@ namespace VinculacionBackend.Controllers
         // POST: api/Hours
         [ResponseType(typeof(Hour))]
         [Route("api/Hours")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult PostHour(HourEntryModel hourModel)
         {
             if (!ModelState.IsValid)

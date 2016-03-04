@@ -15,6 +15,7 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Majors
         [Route("api/Majors")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IQueryable<Major> GetMajors()
         {
             return db.Majors;
@@ -23,6 +24,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Majors/5
         [ResponseType(typeof(Major))]
         [Route("api/Majors/{majorId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetMajor(string majorId)
         {
             Major major = db.Majors.FirstOrDefault(x => x.MajorId == majorId);
