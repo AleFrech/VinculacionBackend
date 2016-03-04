@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -34,7 +35,12 @@ namespace VinculacionBackend.Controllers
             var user = db.Users.FirstOrDefault(u => u.Email == loginUser.User && u.Password == loginUser.Password);
             if (user != null /*&& user.Status!= Status.Inactive*/)
             {
-                return Ok(user);
+
+                string userInfo = user.Email + ":" + user.Password;
+                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(userInfo);
+                string token =  System.Convert.ToBase64String(plainTextBytes);
+              
+                return Ok("Basic "+token);
             }
             else
             {
