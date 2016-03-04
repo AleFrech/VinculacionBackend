@@ -55,7 +55,7 @@ namespace VinculacionBackend.Controllers
 
             if (sectionId != section.Id)
             {
-                return BadRequest();
+                return Unauthorized();
             }
 
             var tmpSection = db.Sections.FirstOrDefault(x => x.Id == sectionId);

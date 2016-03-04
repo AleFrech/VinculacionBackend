@@ -46,7 +46,7 @@ namespace VinculacionBackend.Controllers
 
             if (projectId != project.Id)
             {
-                return BadRequest();
+                return Unauthorized();
             }
 
             var tmpProject = db.Projects.FirstOrDefault(x => x.Id == projectId);

@@ -38,7 +38,7 @@ namespace VinculacionBackend.Controllers
             }
             else
             {
-                return NotFound();
+                return Unauthorized();
             }
         }
     }
