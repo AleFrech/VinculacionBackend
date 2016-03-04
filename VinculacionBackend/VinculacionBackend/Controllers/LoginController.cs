@@ -25,6 +25,7 @@ namespace VinculacionBackend.Controllers
 
         [Route("api/Login")]
         [ResponseType(typeof (User))]
+        [CustomAuthorize(Roles = "Anonymous")]
         public IHttpActionResult PostUserLogin(LoginUserModel loginUser)
         {
             if (!ModelState.IsValid || loginUser == null)

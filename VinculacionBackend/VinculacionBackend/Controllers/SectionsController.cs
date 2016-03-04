@@ -22,6 +22,7 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Sections
         [Route("api/Sections")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
         public IQueryable<Section> GetSections()
         {
             var sections = db.Sections.Include(a => a.Class).Include(b => b.User).Include(c => c.Period);
@@ -31,6 +32,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Sections/5
         [Route("api/Sections/{sectionId}")]
         [ResponseType(typeof(Section))]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetSection(long sectionId)
         {
             var section = db.Sections.Include(a => a.Class).Include(b => b.User).Include(c => c.Period).FirstOrDefault(d => d.Id == sectionId);
@@ -45,6 +47,7 @@ namespace VinculacionBackend.Controllers
         // PUT: api/Sections/5
         [ResponseType(typeof(void))]
         [Route("api/Sections/{sectionId}")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult PutSection(long sectionId, Section section)
         {
 
@@ -82,6 +85,7 @@ namespace VinculacionBackend.Controllers
         // POST: api/Sections
         [Route("api/Sections")]
         [ResponseType(typeof(Section))]
+        [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult PostSection(Section section)
         {
             if (!ModelState.IsValid)
@@ -98,6 +102,7 @@ namespace VinculacionBackend.Controllers
         // DELETE: api/Sections/5
         [ResponseType(typeof(Section))]
         [Route("api/Sections/{sectionId}")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult DeleteSection(long sectionId)
         {
             Section section = db.Sections.Find(sectionId);
