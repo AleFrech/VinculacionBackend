@@ -15,6 +15,7 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Projects
         [Route("api/Projects")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IQueryable<Project> GetProjects()
         {
             return db.Projects;
@@ -23,6 +24,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Projects/5
         [ResponseType(typeof(Project))]
         [Route("api/Projects/{projectId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetProject(long projectId)
         {
             Project Project = db.Projects.Find(projectId);
@@ -37,6 +39,7 @@ namespace VinculacionBackend.Controllers
         // PUT: api/Projects/5
         [ResponseType(typeof(void))]
         [Route("api/Projects/{projectId}")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult PutProject(long projectId, Project project)
         {
             if (!ModelState.IsValid)
@@ -75,6 +78,7 @@ namespace VinculacionBackend.Controllers
         // POST: api/Projects
         [Route("api/Projects")]
         [ResponseType(typeof(Project))]
+        [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult PostProject(Project project)
         {
             if (!ModelState.IsValid)
@@ -90,6 +94,7 @@ namespace VinculacionBackend.Controllers
 
         // DELETE: api/Projects/5
         [Route("api/Projects/{projectId}")]
+        [CustomAuthorize(Roles = "Admin")]
         [ResponseType(typeof(Project))]
         public IHttpActionResult DeleteProject(long projectId)
         {

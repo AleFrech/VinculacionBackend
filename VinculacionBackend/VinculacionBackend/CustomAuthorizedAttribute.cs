@@ -7,11 +7,10 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Web;
-using System.Web.Http;
 using System.Web.Http.Controllers;
+using System.Web.Mvc;
 using VinculacionBackend.Database;
-
-
+using AuthorizeAttribute = System.Web.Http.AuthorizeAttribute;
 
 
 namespace VinculacionBackend
@@ -57,7 +56,30 @@ namespace VinculacionBackend
 
                 AuthenticationHeaderValue authValue = actionContext.Request.Headers.Authorization;
 
+                if (authValue == null)
+                {
+                   CurrentUser = new CustomPrincipal("",new string[] { "Anonymous"});
 
+                    if (!String.IsNullOrEmpty(Roles))
+
+                    {
+
+                        if (!CurrentUser.IsInRole(Roles))
+
+                        {
+
+                            actionContext.Response =
+                                actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
+
+                            actionContext.Response.Headers.Add(BasicAuthResponseHeader,
+                                BasicAuthResponseHeaderValue);
+
+                            return;
+
+                        }
+
+                    }
+                }
 
                 if (authValue != null && !String.IsNullOrWhiteSpace(authValue.Parameter) &&
                     authValue.Scheme == BasicAuthResponseHeaderValue)
@@ -103,6 +125,7 @@ namespace VinculacionBackend
                             if (HttpContext.Current != null)
                             {
                                 HttpContext.Current.User = CurrentUser;
+                               
                             }
 
 
@@ -154,6 +177,7 @@ namespace VinculacionBackend
                     }
 
                 }
+                
 
             }
 
@@ -161,14 +185,13 @@ namespace VinculacionBackend
 
             {
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized,e.Message);
-                //actionContext.Response.Headers.Add(BasicAuthResponseHeader, BasicAuthResponseHeaderValue);
+               actionContext.Response.Headers.Add(BasicAuthResponseHeader, BasicAuthResponseHeaderValue);
                 return;
             }
 
         }
 
-
-
+       
         private Credentials ParseAuthorizationHeader(string authHeader)
 
         {
@@ -187,6 +210,7 @@ namespace VinculacionBackend
 
         }
 
+       
     }
 
     //Client credential
