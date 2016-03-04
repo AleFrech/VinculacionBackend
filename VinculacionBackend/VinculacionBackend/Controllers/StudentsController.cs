@@ -156,7 +156,7 @@ namespace VinculacionBackend.Controllers
         //Get: api/Students/Avtive
         [ResponseType(typeof(User))]
         [Route("api/Students/{guid}/Active")]
-          [CustomAuthorize(Roles = "Admin,Professor")]
+        [CustomAuthorize(Roles = "Anonymous")]
         public IHttpActionResult GetActiveStudent(string guid)
 
         {
@@ -205,7 +205,7 @@ namespace VinculacionBackend.Controllers
         // POST: api/Students
         [ResponseType(typeof(User))]
         [Route("api/Students")]
-        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        [CustomAuthorize(Roles = "Anonymous")]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
 
