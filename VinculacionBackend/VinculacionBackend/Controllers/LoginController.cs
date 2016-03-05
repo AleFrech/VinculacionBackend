@@ -33,20 +33,28 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = db.Users.FirstOrDefault(u => u.Email == loginUser.User && u.Password == loginUser.Password);
-            if (user != null && user.Status!= Status.Inactive && user.Status != Status.Rejected)
-            {
+            var user = db.Users.FirstOrDefault(u => u.Email.Contains(loginUser.User) && u.Password == loginUser.Password);
 
-                string userInfo = user.Email + ":" + user.Password;
-                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(userInfo);
-                string token =  System.Convert.ToBase64String(plainTextBytes);
-              
-                return Ok("Basic "+token);
-            }
-            else
-            {
-                return Unauthorized();
-            }
+          
+                if (user != null)
+                {
+                   
+                    if (!user.Email.Equals(loginUser.User) || !user.Password.Equals(loginUser.Password) || user.Status!= Status.Verified)
+                    {
+                    return Unauthorized();
+                    }
+
+                    string userInfo = user.Email + ":" + user.Password;
+                    var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(userInfo);
+                    string token = System.Convert.ToBase64String(plainTextBytes);
+
+                    return Ok("Basic " + token);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            
         }
     }
 }
