@@ -10,13 +10,11 @@ using VinculacionBackend.Entities;
 using VinculacionBackend.Enums;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
-using RestSharp;
 using WebGrease.Css.Extensions;
 
 namespace VinculacionBackend.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    
     public class StudentsController : ApiController
     {
         private VinculacionContext db = new VinculacionContext();
@@ -77,17 +75,13 @@ namespace VinculacionBackend.Controllers
          
             if(status=="Inactive")
                 return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Inactive);
-            else if (status == "Active")
+            if (status == "Active")
                 return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Active);
-            else if (status == "Verified")
+            if (status == "Verified")
                 return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Verified);
-            else if (status == "Rejected")
+            if (status == "Rejected")
                 return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Rejected);
-            else
-            {
-                return null;
-            }
-
+            return null;
         }
 
         // PUT: api/Students/5
@@ -156,11 +150,9 @@ namespace VinculacionBackend.Controllers
         //Get: api/Students/Avtive
         [ResponseType(typeof(User))]
         [Route("api/Students/{guid}/Active")]
-        [CustomAuthorize(Roles = "Anonymous")]
         public IHttpActionResult GetActiveStudent(string guid)
 
         {
-            
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             var accountId = EncryptDecrypt.Decrypt(HttpContext.Current.Server.UrlDecode(guid));
             var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);

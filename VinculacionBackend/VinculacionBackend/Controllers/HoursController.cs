@@ -15,8 +15,6 @@ namespace VinculacionBackend.Controllers
     {
         private VinculacionContext db = new VinculacionContext();
 
-        
-
         // POST: api/Hours
         [ResponseType(typeof(Hour))]
         [Route("api/Hours")]
