@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -208,23 +208,27 @@ namespace VinculacionBackend.Controllers
 
             if (!CheckUserModel(userModel))
             {
-                return InternalServerError(new Exception("A specific field was null"));
+                return InternalServerError(new Exception("Uno o mas campos vacios"));
             }
 
             if (EntityExistanceManager.EmailExists(userModel.Email))
             {
-                return InternalServerError(new Exception("Email already exists in database"));
+                return InternalServerError(new Exception("El correo ya existe"));
+            }
+            if (EntityExistanceManager.AccountNumberExists(userModel.AccountId))
+            {
+                return InternalServerError(new Exception("El numbero de cuenta ya existe"));
             }
             if (!MailManager.CheckDomainValidity(userModel.Email))
             {
-                return InternalServerError(new Exception("Email domain is invalid"));
+                return InternalServerError(new Exception("Correo no valido"));
             }
 
             var major= db.Majors.FirstOrDefault(x => x.MajorId == userModel.MajorId);
 
             if (major == null)
             {
-                return InternalServerError(new Exception("Please Enter a valid Major Id"));
+                return InternalServerError(new Exception("Id de carrera no valido"));
             }
 
             var newUser=new User();
