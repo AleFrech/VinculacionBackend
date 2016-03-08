@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 
 namespace VinculacionBackend
 {
@@ -8,6 +8,12 @@ namespace VinculacionBackend
         {
             var context = new Database.VinculacionContext();
             return context.Users.Any(x => x.Email == email);
+        }
+        
+        public static bool AccountNumberExists(string accountNumber) 
+        {
+            var context = new Database.VinculacionContext();
+            return context.Users.Any(x=>x.AccountId == accountNumber);
         }
     }
 }
