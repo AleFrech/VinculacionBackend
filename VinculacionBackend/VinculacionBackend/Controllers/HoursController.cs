@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -21,9 +22,13 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult PostHour(HourEntryModel hourModel)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || hourModel== null)
             {
                 return BadRequest(ModelState);
+            }
+            if (!CheckHourModel(hourModel))
+            {
+                return InternalServerError(new Exception("Uno o mas campos vacios"));
             }
             var sectionProjectRel = db.SectionProjectsRels.Include(x => x.Project).Include(y => y.Section).FirstOrDefault(z => z.Section.Id == hourModel.SectionId && z.Project.Id == hourModel.ProjectId);
             var user = db.Users.FirstOrDefault(x => x.AccountId == hourModel.AccountId);
@@ -56,6 +61,13 @@ namespace VinculacionBackend.Controllers
         private bool HourExists(long id)
         {
             return db.Hours.Count(e => e.Id == id) > 0;
+        }
+
+        private bool CheckHourModel(HourEntryModel model)
+        {
+            bool isvalid = (model.AccountId != null) && (model.Hour >= 0) && (model.ProjectId >= 1) &&
+                (model.SectionId >=1);
+            return isvalid;
         }
     }
 }

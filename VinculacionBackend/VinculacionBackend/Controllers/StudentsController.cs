@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -131,6 +131,13 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest();
             }
+
+            if (model.AccountId == null)
+            {
+
+                return InternalServerError(new Exception("El numero de cuenta estas vacio"));
+            }
+
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == model.AccountId);
             if (student != null)
@@ -178,7 +185,10 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest();
             }
-
+            if (model.AccountId == null || model.Message == null)
+            {
+                return InternalServerError(new Exception("Uno o mas campos vacios"));
+            }
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             var student= db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == model.AccountId);
             if (student != null)
@@ -234,7 +244,7 @@ namespace VinculacionBackend.Controllers
             var newUser=new User();
             newUser.AccountId = userModel.AccountId;
             newUser.Name = userModel.Name;
-            newUser.Password = userModel.Password;
+            newUser.Password = EncryptDecrypt.Encrypt(userModel.Password);
             newUser.Major = major;
             newUser.Campus = userModel.Campus;
             newUser.Email = userModel.Email;

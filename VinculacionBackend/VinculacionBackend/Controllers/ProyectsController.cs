@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Http;
@@ -6,6 +7,7 @@ using System.Web.Http.Description;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
 using System.Web.Http.Cors;
+using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Controllers
 {
@@ -54,7 +56,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Projects/{projectId}")]
         public IHttpActionResult PutProject(long projectId, Project project)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid )
             {
                 return BadRequest(ModelState);
             }
@@ -91,13 +93,20 @@ namespace VinculacionBackend.Controllers
         [Route("api/Projects")]
         [ResponseType(typeof(Project))]
         [CustomAuthorize(Roles = "Admin,Professor")]
-        public IHttpActionResult PostProject(Project project)
+        public IHttpActionResult PostProject(ProjectModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || model==null)
             {
                 return BadRequest(ModelState);
             }
 
+            if (!CheckProjectModel(model))
+            {
+                return InternalServerError(new Exception("Uno o mas campos vacios"));
+            }
+            var project= new Project();
+            project.Name = model.Name;
+            project.Description = model.Description;
             db.Projects.Add(project);
             db.SaveChanges();
 
@@ -110,16 +119,16 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(Project))]
         public IHttpActionResult DeleteProject(long projectId)
         {
-            Project Project = db.Projects.Find(projectId);
-            if (Project == null)
+            Project project = db.Projects.Find(projectId);
+            if (project == null)
             {
                 return NotFound();
             }
 
-            //db.Projects.Remove(project);
-            //db.SaveChanges();
+            db.Projects.Remove(project);
+            db.SaveChanges();
 
-            return Ok(Project);
+            return Ok(project);
         }
 
         protected override void Dispose(bool disposing)
@@ -134,6 +143,11 @@ namespace VinculacionBackend.Controllers
         private bool ProjectExists(long id)
         {
             return db.Projects.Count(e => e.Id == id) > 0;
+        }
+        private bool CheckProjectModel(ProjectModel model)
+        {
+            bool isvalid = (model.Name != null) && (model.Description != null);
+            return isvalid;
         }
     }
 }
