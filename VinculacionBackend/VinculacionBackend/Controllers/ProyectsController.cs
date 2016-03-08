@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Infrastructure;
+﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -36,10 +37,21 @@ namespace VinculacionBackend.Controllers
             return Ok(Project);
         }
 
+        // GET: api/Projects/5
+        [ResponseType(typeof(Project))]
+        [Route("api/Projects/Students/{projectId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IQueryable<User> GetProjectStudents(long projectId)
+        {
+            var secProjRel = db.SectionProjectsRels.Include(a => a.Project).Where(c => c.Project.Id == projectId);
+            var horas = db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d=>d.Id == c.SectionProject.Id));
+            var users = db.Users.Include(a => a.Major).Where(b => horas.Any(c => c.User.Id == b.Id));
+            return users;
+        }
+
         // PUT: api/Projects/5
         [ResponseType(typeof(void))]
         [Route("api/Projects/{projectId}")]
-        [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult PutProject(long projectId, Project project)
         {
             if (!ModelState.IsValid)

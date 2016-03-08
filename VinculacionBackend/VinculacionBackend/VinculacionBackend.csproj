@@ -215,9 +215,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="MailManager.cs" />
-    <Compile Include="Migrations\201603022250463_init.cs" />
-    <Compile Include="Migrations\201603022250463_init.Designer.cs">
-      <DependentUpon>201603022250463_init.cs</DependentUpon>
+    <Compile Include="Migrations\201603072340563_init.cs" />
+    <Compile Include="Migrations\201603072340563_init.Designer.cs">
+      <DependentUpon>201603072340563_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\HourEntryModel.cs" />
@@ -290,8 +290,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201603022250463_init.resx">
-      <DependentUpon>201603022250463_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201603072340563_init.resx">
+      <DependentUpon>201603072340563_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

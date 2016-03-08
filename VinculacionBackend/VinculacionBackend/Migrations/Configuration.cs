@@ -22,6 +22,19 @@ namespace VinculacionBackend.Migrations
             var clas = new Class { Name = "ANAL. Y DIS. DE SISTEMAS I" };
             var user = new User { AccountId = "21111111", Email = "carlos.castroy@unitec.edu", Name = "Carlos Castro", Status = Status.Verified, Major = null, Campus = "San Pedro Sula", CreationDate = DateTime.Now, ModificationDate = DateTime.Now, Password = "1234" };
             var professorRole = new Role { Name = "Professor" };
+            var major1 = new Major { MajorId = "I - 01", Name = "INGENIERÍA EN SISTEMAS COMPUTACIONALES" };
+            var user2 = new User
+            {
+                AccountId = "21241095",
+                Campus = "SPS",
+                CreationDate = DateTime.Now,
+                Email = "efherreram@unitec.edu",
+                Name = "Edwin Herrear",
+                ModificationDate = DateTime.Now,
+                Password = "holis",
+                Status = Status.Inactive,
+                Major = major1
+            };
             var section = new Section { Code = "INF405", Period = period, Class = clas, User = user };
             var Project = new Project
             {
@@ -29,13 +42,14 @@ namespace VinculacionBackend.Migrations
                 Description = "Programa para el registro de horas de vinculacion a estudiantes de Unitec sps"
             };
 
+            var sectionProject = new SectionProject { Section = section, Project = Project };
             context.Users.AddOrUpdate(
                 x => x.Id,
                 user
                 );
             context.Majors.AddOrUpdate(
                 x => x.Id,
-                new Major { MajorId = "I - 01", Name = "INGENIERÍA EN SISTEMAS COMPUTACIONALES" },
+                major1,
                 new Major { MajorId = "I - 02", Name = "INGENIERÍA INDUSTRIAL Y DE SISTEMAS" },
                 new Major { MajorId = "I - 03", Name = "INGENIERÍA CIVIL" },
                 new Major { MajorId = "I - 04", Name = "INGENIERÍA EN TELECOMUNICACIONES" },
@@ -107,7 +121,12 @@ namespace VinculacionBackend.Migrations
                 );
             context.SectionProjectsRels.AddOrUpdate(
                 x => x.Id,
-                new SectionProject { Section = section, Project = Project }
+                sectionProject
+                );
+
+            context.Hours.AddOrUpdate(
+                x => x.Id,
+                new Hour { Amount = 5, SectionProject = sectionProject, User = user2 }
                 );
 
             //  This method will be called after migrating to the latest version.
