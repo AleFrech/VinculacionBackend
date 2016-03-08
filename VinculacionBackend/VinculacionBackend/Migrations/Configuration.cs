@@ -4,9 +4,7 @@ using VinculacionBackend.Enums;
 namespace VinculacionBackend.Migrations
 {
     using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<VinculacionBackend.Database.VinculacionContext>
     {
@@ -22,6 +20,7 @@ namespace VinculacionBackend.Migrations
             var clas = new Class { Name = "ANAL. Y DIS. DE SISTEMAS I" };
             var user = new User { AccountId = "21111111", Email = "carlos.castroy@unitec.edu", Name = "Carlos Castro", Status = Status.Verified, Major = null, Campus = "San Pedro Sula", CreationDate = DateTime.Now, ModificationDate = DateTime.Now, Password = "1234" };
             var professorRole = new Role { Name = "Professor" };
+            var studentRole = new Role {Name = "Student"};
             var major1 = new Major { MajorId = "I - 01", Name = "INGENIERÍA EN SISTEMAS COMPUTACIONALES" };
             var user2 = new User
             {
@@ -36,13 +35,13 @@ namespace VinculacionBackend.Migrations
                 Major = major1
             };
             var section = new Section { Code = "INF405", Period = period, Class = clas, User = user };
-            var Project = new Project
+            var project = new Project
             {
-                Name = "Projecto de Vinculacion Unitec",
+                Name = "Proyecto de Vinculacion Unitec",
                 Description = "Programa para el registro de horas de vinculacion a estudiantes de Unitec sps"
             };
 
-            var sectionProject = new SectionProject { Section = section, Project = Project };
+            var sectionProject = new SectionProject { Section = section, Project = project };
             context.Users.AddOrUpdate(
                 x => x.Id,
                 user
@@ -85,13 +84,14 @@ namespace VinculacionBackend.Migrations
 
             context.Roles.AddOrUpdate(
                 x => x.Id,
-                new Role { Name = "Student" },
+                studentRole,
                 professorRole,
                 new Role { Name = "Admin" }
                 );
             context.UserRoleRels.AddOrUpdate(
                 x => x.Id,
-                new UserRole { User = user, Role = professorRole }
+                new UserRole { User = user, Role = professorRole },
+                new UserRole { User = user2, Role=studentRole}
                 );
 
 
@@ -107,7 +107,7 @@ namespace VinculacionBackend.Migrations
 
             context.Projects.AddOrUpdate(
              x => x.Id,
-             Project
+             project
                 );
 
             context.Sections.AddOrUpdate(
@@ -128,19 +128,6 @@ namespace VinculacionBackend.Migrations
                 x => x.Id,
                 new Hour { Amount = 5, SectionProject = sectionProject, User = user2 }
                 );
-
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
         }
     }
 }

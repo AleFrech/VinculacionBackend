@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using VinculacionBackend.Database;
@@ -33,6 +28,12 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (!CheckLoginModel(loginUser))
+            {
+                return InternalServerError(new Exception("Uno o mas campos vacios"));
+            }
+
+
             var user = db.Users.FirstOrDefault(u => u.Email.Contains(loginUser.User) && u.Password == loginUser.Password);
 
           
@@ -55,6 +56,12 @@ namespace VinculacionBackend.Controllers
                     return Unauthorized();
                 }
             
+        }
+
+        private bool CheckLoginModel(LoginUserModel model)
+        {
+            bool isvalid = (model.User != null)  && (model.Password != null);
+            return isvalid;
         }
     }
 }
