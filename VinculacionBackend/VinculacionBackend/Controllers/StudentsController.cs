@@ -17,7 +17,7 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class StudentsController : ApiController
     {
-        private VinculacionContext db = new VinculacionContext();
+        private VinculacionContext db = new VinculacionContext();   //TODO CREAR INTERFAZ
 
 
         // GET: api/Students
@@ -124,7 +124,7 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]
         [Route("api/Students/Verified")]
          [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PutAcceptVerified(VerifiedModel model)
+        public IHttpActionResult PutAcceptVerified(VerifiedModel model)  //TODO crear interfas
 
         {
             if (!ModelState.IsValid || model == null)
@@ -144,7 +144,7 @@ namespace VinculacionBackend.Controllers
             {
                 student.Status = Status.Verified;
                 db.SaveChanges();
-                MailManager.SendSimpleMessage(student.Email, "Fue Aceptado para participar en Projectos de Vinculación",
+                MailManager.SendSimpleMessage(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", //TODO crear interfaz
                     "Vinculación");
                 return Ok(student);
             }
@@ -155,13 +155,13 @@ namespace VinculacionBackend.Controllers
         }
 
         //Get: api/Students/Avtive
-        [ResponseType(typeof(User))]
+        [ResponseType(typeof(User))]  //TODO crear interfaz
         [Route("api/Students/{guid}/Active")]
         public IHttpActionResult GetActiveStudent(string guid)
 
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var accountId = EncryptDecrypt.Decrypt(HttpContext.Current.Server.UrlDecode(guid));
+            var accountId = EncryptDecrypt.Decrypt(HttpContext.Current.Server.UrlDecode(guid));   //TODO Crear interfas
             var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
             if (student != null)
             {
@@ -179,7 +179,7 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]
         [Route("api/Students/Rejected")]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PostRejectStudent(RejectedModel model)
+        public IHttpActionResult PostRejectStudent(RejectedModel model) //TODO crear interefaz
         {
             if (!ModelState.IsValid || model == null)
             {
