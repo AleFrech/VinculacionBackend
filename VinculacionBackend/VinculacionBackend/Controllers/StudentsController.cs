@@ -125,19 +125,11 @@ namespace VinculacionBackend.Controllers
         [Route("api/Students/Verified")]
          [CustomAuthorize(Roles = "Admin")]
         public IHttpActionResult PutAcceptVerified(VerifiedModel model)
-
         {
-            if (!ModelState.IsValid || model == null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-
-            if (model.AccountId == null)
-            {
-
-                return InternalServerError(new Exception("El numero de cuenta estas vacio"));
-            }
-
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == model.AccountId);
             if (student != null)
@@ -181,13 +173,9 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin")]
         public IHttpActionResult PostRejectStudent(RejectedModel model)
         {
-            if (!ModelState.IsValid || model == null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
-            }
-            if (model.AccountId == null || model.Message == null)
-            {
-                return InternalServerError(new Exception("Uno o mas campos vacios"));
             }
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             var student= db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == model.AccountId);
@@ -210,42 +198,15 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Anonymous")]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
-
-            if (!ModelState.IsValid || userModel == null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            if (!CheckUserModel(userModel))
-            {
-                return InternalServerError(new Exception("Uno o mas campos vacios"));
-            }
-
-            if (EntityExistanceManager.EmailExists(userModel.Email))
-            {
-                return InternalServerError(new Exception("El correo ya existe"));
-            }
-            if (EntityExistanceManager.AccountNumberExists(userModel.AccountId))
-            {
-                return InternalServerError(new Exception("El numbero de cuenta ya existe"));
-            }
-            if (!MailManager.CheckDomainValidity(userModel.Email))
-            {
-                return InternalServerError(new Exception("Correo no valido"));
-            }
-
-            var major= db.Majors.FirstOrDefault(x => x.MajorId == userModel.MajorId);
-
-            if (major == null)
-            {
-                return InternalServerError(new Exception("Id de carrera no valido"));
-            }
-
             var newUser=new User();
             newUser.AccountId = userModel.AccountId;
             newUser.Name = userModel.Name;
             newUser.Password = EncryptDecrypt.Encrypt(userModel.Password);
-            newUser.Major = major;
+            newUser.Major = db.Majors.FirstOrDefault(x => x.MajorId == userModel.MajorId);
             newUser.Campus = userModel.Campus;
             newUser.Email = userModel.Email;
             newUser.Status=Status.Inactive;
@@ -287,18 +248,6 @@ namespace VinculacionBackend.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool StudentExists(string id)
-        {
-            return db.Users.Count(e => e.AccountId == id) > 0;
-        }
-
-        private bool CheckUserModel(UserEntryModel model)
-        {
-            bool isvalid = (model.MajorId != null) && (model.AccountId != null) && (model.Campus != null) && (model.Email != null) &&
-                (model.Name != null) && (model.Password != null);
-            return isvalid;
         }
     }
 }

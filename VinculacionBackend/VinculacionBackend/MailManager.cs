@@ -9,13 +9,7 @@ namespace VinculacionBackend
     {
 
 
-        static readonly Regex ValidDomain = new Regex(@"^[a-z0-9]+[.]?[a-z0-9]+@unitec\.edu$");
-
-        public static bool CheckDomainValidity(string email)
-        {
-            return ValidDomain.Match(email).Success;
-        }
-
+        
         public static IRestResponse SendSimpleMessage(string emailAdress, string message, string subject)
         {
 

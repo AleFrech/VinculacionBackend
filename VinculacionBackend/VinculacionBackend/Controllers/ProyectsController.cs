@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Http;
@@ -95,14 +94,9 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult PostProject(ProjectModel model)
         {
-            if (!ModelState.IsValid || model==null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-
-            if (!CheckProjectModel(model))
-            {
-                return InternalServerError(new Exception("Uno o mas campos vacios"));
             }
             var project= new Project();
             project.Name = model.Name;
@@ -143,11 +137,6 @@ namespace VinculacionBackend.Controllers
         private bool ProjectExists(long id)
         {
             return db.Projects.Count(e => e.Id == id) > 0;
-        }
-        private bool CheckProjectModel(ProjectModel model)
-        {
-            bool isvalid = (model.Name != null) && (model.Description != null);
-            return isvalid;
         }
     }
 }
