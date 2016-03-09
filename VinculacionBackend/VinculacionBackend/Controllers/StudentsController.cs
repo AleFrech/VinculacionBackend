@@ -35,9 +35,8 @@ namespace VinculacionBackend.Controllers
         [Route("api/Students/{accountId}")]
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudent(string accountId)
-        {  
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
+        {
+            var student = GetStudentByAccountNumber(accountId);
             if (User == null)
             {
                 return NotFound();
@@ -52,8 +51,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetStudentHour(string accountId)
         {
             var total = 0;
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
+            var student = GetStudentByAccountNumber(accountId);
             if (student == null)
             {
                 return NotFound();
@@ -100,8 +98,7 @@ namespace VinculacionBackend.Controllers
                 return Unauthorized();
             }
 
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var tmpstudent = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
+            var tmpstudent = GetStudentByAccountNumber(accountId);
             if (tmpstudent != null)
             {
                 tmpstudent.ModificationDate = DateTime.Now;
@@ -138,8 +135,7 @@ namespace VinculacionBackend.Controllers
                 return InternalServerError(new Exception("El numero de cuenta estas vacio"));
             }
 
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == model.AccountId);
+            var student = GetStudentByAccountNumber(model.AccountId);
             if (student != null)
             {
                 student.Status = Status.Verified;
@@ -160,9 +156,8 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetActiveStudent(string guid)
 
         {
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             var accountId = EncryptDecrypt.Decrypt(HttpContext.Current.Server.UrlDecode(guid));
-            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
+            var student = GetStudentByAccountNumber(accountId);
             if (student != null)
             {
                 student.Status = Status.Active;
@@ -189,8 +184,7 @@ namespace VinculacionBackend.Controllers
             {
                 return InternalServerError(new Exception("Uno o mas campos vacios"));
             }
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student= db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == model.AccountId);
+            var student = GetStudentByAccountNumber(model.AccountId);
             if (student != null)
             {
                 MailManager.SendSimpleMessage(student.Email,model.Message,"Vinculación");
@@ -299,6 +293,13 @@ namespace VinculacionBackend.Controllers
             bool isvalid = (model.MajorId != null) && (model.AccountId != null) && (model.Campus != null) && (model.Email != null) &&
                 (model.Name != null) && (model.Password != null);
             return isvalid;
+        }
+
+        private User GetStudentByAccountNumber(string accountNumber)
+        {
+            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountNumber);
+            return student;
         }
     }
 }
