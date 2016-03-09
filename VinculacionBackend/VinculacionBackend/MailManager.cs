@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using RestSharp;
 using RestSharp.Authenticators;
 
 namespace VinculacionBackend
 {
     public class MailManager
-    {
-
-
-        
+    {    
         public static IRestResponse SendSimpleMessage(string emailAdress, string message, string subject)
         {
 
@@ -30,7 +26,5 @@ namespace VinculacionBackend
             request.Method = Method.POST;
             return client.Execute(request);
         }
-
-
     }
 }
