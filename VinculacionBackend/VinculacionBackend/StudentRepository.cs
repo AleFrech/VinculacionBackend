@@ -7,6 +7,7 @@ using VinculacionBackend.Entities;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using WebGrease.Css.Extensions;
+using VinculacionBackend.Enums;
 
 namespace VinculacionBackend
 {
@@ -67,6 +68,27 @@ namespace VinculacionBackend
             });
 
             return total;
+        }
+
+        public IEnumerable<User> GetStudentsByStatus(string status)
+        {
+            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            if (status == "Inactive")
+                return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Inactive);
+            if (status == "Active")
+                return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Active);
+            if (status == "Verified")
+                return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Verified);
+            if (status == "Rejected")
+                return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Rejected);
+
+            return new List<User>();
+        }
+
+        public IEnumerable<User> GetStudentsByStatus(Status status)
+        {
+            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Inactive).ToList();
         }
 
         public void Insert(User ent)
