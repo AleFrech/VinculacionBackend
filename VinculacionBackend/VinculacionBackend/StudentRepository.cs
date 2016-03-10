@@ -34,21 +34,21 @@ namespace VinculacionBackend
 
         public User Get(long id)
         {
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var rels = GetUserRoleRelationships();
             var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.Id == id);
             return student;
         }
 
         public IEnumerable<User> GetAll()
         {
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var rels = GetUserRoleRelationships();
             var students = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id));
             return students;
         }
 
         public User GetByAccountNumber(string accountNumber)
         {
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var rels = GetUserRoleRelationships();
             var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountNumber);
             return student;
         }
@@ -56,7 +56,7 @@ namespace VinculacionBackend
         public int GetStudentHours(string accountNumber)
         {
             var total = 0;
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var rels = GetUserRoleRelationships();
             var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountNumber);
             if (student == null)
             {
@@ -73,7 +73,7 @@ namespace VinculacionBackend
 
         public IEnumerable<User> GetStudentsByStatus(string status)
         {
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var rels = GetUserRoleRelationships();
             if (status == "Inactive")
                 return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Inactive);
             if (status == "Active")
@@ -88,7 +88,7 @@ namespace VinculacionBackend
 
         public IEnumerable<User> GetStudentsByStatus(Status status)
         {
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var rels = GetUserRoleRelationships();
             return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Inactive).ToList();
         }
 
@@ -105,6 +105,11 @@ namespace VinculacionBackend
         public void Update(User ent)
         {
             db.Entry(ent).State = EntityState.Modified;
+        }
+
+        private IEnumerable<UserRole> GetUserRoleRelationships()
+        {
+            return db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
         }
     }
 }
