@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
+using System.Data.Entity;
 
 namespace VinculacionBackend
 {
@@ -22,12 +23,19 @@ namespace VinculacionBackend
 
         public Major Get(long id)
         {
+            db.Majors.Include(x => x.Id
+            );
             return db.Majors.Find(id);
         }
 
         public IEnumerable<Major> GetAll()
         {
             return db.Majors;
+        }
+
+        public Major GetMajorByMajorId(string majorId)
+        {
+            return db.Majors.FirstOrDefault(x => x.MajorId == majorId);
         }
 
         public void Insert(Major ent)

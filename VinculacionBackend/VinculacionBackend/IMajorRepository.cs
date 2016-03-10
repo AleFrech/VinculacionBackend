@@ -9,5 +9,6 @@ namespace VinculacionBackend
 {
     interface IMajorRepository : IRepository<Major>
     {
+        Major GetMajorByMajorId(string majorId);
     }
 }
