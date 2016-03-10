@@ -9,6 +9,5 @@ namespace VinculacionBackend
 {
     interface IProjectRepository : IRepository<Project>
     {
-        IEnumerable<User> GetProjectParticipants(long id);
     }
 }

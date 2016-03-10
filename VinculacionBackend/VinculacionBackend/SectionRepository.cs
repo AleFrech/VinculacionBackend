@@ -8,33 +8,33 @@ using System.Data.Entity;
 
 namespace VinculacionBackend
 {
-    public class ProjectRepository : IProjectRepository
+    public class SectionRepository : ISectionRepository
     {
         private VinculacionContext db;
-        public ProjectRepository()
+
+        public SectionRepository()
         {
             db = new VinculacionContext();
         }
-
         public void Delete(long id)
         {
             var found = Get(id);
-            db.Projects.Remove(found);
+            db.Sections.Remove(found);
         }
 
-        public Project Get(long id)
+        public Section Get(long id)
         {
-            return db.Projects.Find(id);
+            return db.Sections.Include(a => a.Class).Include(b => b.User).Include(c => c.Period).FirstOrDefault(d=>d.Id==id);
         }
 
-        public IEnumerable<Project> GetAll()
+        public IEnumerable<Section> GetAll()
         {
-            return db.Projects;
+            return db.Sections.Include(a => a.Class).Include(b => b.User).Include(c => c.Period);
         }
 
-        public void Insert(Project ent)
+        public void Insert(Section ent)
         {
-            db.Projects.Add(ent);
+            db.Sections.Add(ent);
         }
 
         public void Save()
@@ -42,7 +42,7 @@ namespace VinculacionBackend
             db.SaveChanges();
         }
 
-        public void Update(Project ent)
+        public void Update(Section ent)
         {
             db.Entry(ent).State = EntityState.Modified;
         }
