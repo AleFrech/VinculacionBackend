@@ -13,13 +13,15 @@ namespace VinculacionBackend.Services
     public class StudentsServices : IUsersServices
     {
         private VinculacionContext db = new VinculacionContext();
+        private readonly StudentRepository _studentRepository = new StudentRepository();
+        private readonly MajorRepository _majorRepository = new
         public  User Map(User user, UserEntryModel userModel)
         {
             var newUser = new User();
             newUser.AccountId = userModel.AccountId;
             newUser.Name = userModel.Name;
             newUser.Password = EncryptDecrypt.Encrypt(userModel.Password);
-            newUser.Major = db.Majors.FirstOrDefault(x => x.MajorId == userModel.MajorId);
+            newUser.Major = _majorRepository.GetMajorByMajorId(userModel.MajorId); ;
             newUser.Campus = userModel.Campus;
             newUser.Email = userModel.Email;
             newUser.Status = Status.Inactive;
@@ -38,47 +40,64 @@ namespace VinculacionBackend.Services
 
         public User Find(string accountId)
         {
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
-            return student;
+        return _studentRepository.GetByAccountNumber(accountId);
         }
 
         public IQueryable<User> ListbyStatus(string status)
         {
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-       
-            if (status == "Inactive")
-                return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Inactive);
-            if (status == "Active")
-                return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Active);
-            if (status == "Verified")
-                return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Verified);
-            if (status == "Rejected")
-                return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Rejected);
-            return null;
+            return _studentRepository.GetStudentsByStatus(status) as IQueryable<User>;
         }
 
-        public User RejectUser(string accountId, string message)
+        public User RejectUser(string accountId)
         {
 
             var student = Find(accountId);
             if (student != null)
             {
-                MailManager.SendSimpleMessage(student.Email, message, "Vinculación");
                 student.Status = Status.Rejected;
-                db.SaveChanges();
+                _studentRepository.Save();
            }
             return student;
         }
 
-        public bool AcceptUser(string accountId)
+        public User ActivateUser(string accountId)
         {
-            throw new NotImplementedException();
+            var student = Find(accountId);
+            if (student != null)
+            {
+                student.Status = Status.Active;
+                _studentRepository.Save();
+                
+            }
+            return student;
+        }
+
+        public User VerifyUser(string accountId)
+        {
+            var student = Find(accountId);
+            if (student != null)
+            {
+                student.Status = Status.Verified;
+                _studentRepository.Save();
+            }
+            return student;
         }
 
         public User DeleteUser(string accountId)
         {
-            throw new NotImplementedException();
+            var user = _studentRepository.DeleteByAccountNumber(accountId);
+
+            return user;
+        }
+
+        public IQueryable<User> AllUsers()
+        {
+            return _studentRepository.GetAll() as IQueryable<User>;
+        }
+
+        public int StudentHours(string accountId)
+        {
+           return _studentRepository.GetStudentHours(accountId);
         }
     }
 }
