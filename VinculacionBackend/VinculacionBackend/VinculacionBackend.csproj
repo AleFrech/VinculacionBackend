@@ -214,9 +214,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="IMajorRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IStudentRepository.cs" />
     <Compile Include="MailManager.cs" />
+    <Compile Include="MajorRepository.cs" />
     <Compile Include="Migrations\201603072340563_init.cs" />
     <Compile Include="Migrations\201603072340563_init.Designer.cs">
       <DependentUpon>201603072340563_init.cs</DependentUpon>

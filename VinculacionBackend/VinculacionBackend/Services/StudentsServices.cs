@@ -14,7 +14,7 @@ namespace VinculacionBackend.Services
     {
         private VinculacionContext db = new VinculacionContext();
         private readonly StudentRepository _studentRepository = new StudentRepository();
-        private readonly MajorRepository _majorRepository = new
+        private readonly MajorRepository _majorRepository = new MajorRepository();
         public  User Map(User user, UserEntryModel userModel)
         {
             var newUser = new User();
@@ -82,6 +82,8 @@ namespace VinculacionBackend.Services
             }
             return student;
         }
+
+       
 
         public User DeleteUser(string accountId)
         {

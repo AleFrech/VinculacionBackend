@@ -27,8 +27,8 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IQueryable<User> GetStudents()
         {
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            return db.Users.Include(m =>m.Major).Where(x => rels.Any(y => y.User.Id == x.Id));
+
+            return _studentsServices.AllUsers();
         }
 
         // GET: api/Students/5
@@ -56,13 +56,9 @@ namespace VinculacionBackend.Controllers
             if (student == null)
             {
                 return NotFound();
-            }           
+            }
 
-            var hour = db.Hours.Include(a => a.User).Where(x => x.User.Id == student.Id);
-            hour.ForEach(x =>
-            {
-                total += x.Amount;
-            });
+            total = _studentsServices.StudentHours(accountId);
             return Ok(total);
         }
 
@@ -97,8 +93,6 @@ namespace VinculacionBackend.Controllers
             var student = _studentsServices.Find(model.AccountId);
             if (student != null)
             {
-                student.Status = Status.Verified;
-                db.SaveChanges();
                 MailManager.SendSimpleMessage(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", //TODO crear interfaz
                     "Vinculación");
                 return Ok(student);
@@ -115,19 +109,17 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetActiveStudent(string guid)
 
         {
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+           
             var accountId = EncryptDecrypt.Decrypt(HttpContext.Current.Server.UrlDecode(guid));   //TODO Crear interfas
-            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
+            var student = _studentsServices.ActivateUser(accountId);
             if (student != null)
             {
-                student.Status = Status.Active;
-                db.SaveChanges();
+             
                 return Ok(student);
             }
-            else
-            {
+            
                 return NotFound();
-            }
+        
         }
 
         //Post: api/Students/Rejected
@@ -144,9 +136,10 @@ namespace VinculacionBackend.Controllers
             {
                 return InternalServerError(new Exception("Uno o mas campos vacios"));
             }
-            var student = _studentsServices.RejectUser(model.AccountId, model.Message);
+            var student = _studentsServices.RejectUser(model.AccountId);
             if (student!=null)
             {
+                MailManager.SendSimpleMessage(student.Email, model.Message, "Vinculación");
                 return Ok(student);
             }
             else
@@ -183,13 +176,6 @@ namespace VinculacionBackend.Controllers
             if (!MailManager.CheckDomainValidity(userModel.Email))
             {
                 return InternalServerError(new Exception("Correo no valido"));
-            }
-
-            var major= db.Majors.FirstOrDefault(x => x.MajorId == userModel.MajorId);
-
-            if (major == null)
-            {
-                return InternalServerError(new Exception("Id de carrera no valido"));
             }
             var newUser = new User();
             _studentsServices.Map(newUser, userModel);
