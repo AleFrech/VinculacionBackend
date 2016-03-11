@@ -26,10 +26,11 @@ namespace VinculacionBackend
             db.Users.Remove(found);
         }
 
-        public void DeleteByAccountNumber(string accountNumber)
+        public User DeleteByAccountNumber(string accountNumber)
         {
             var found = GetByAccountNumber(accountNumber);
             db.Users.Remove(found);
+            return found;
         }
 
         public User Get(long id)
