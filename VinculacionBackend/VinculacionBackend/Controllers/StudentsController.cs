@@ -160,23 +160,6 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (!CheckUserModel(userModel))
-            {
-                return InternalServerError(new Exception("Uno o mas campos vacios"));
-            }
-
-            if (EntityExistanceManager.EmailExists(userModel.Email))
-            {
-                return InternalServerError(new Exception("El correo ya existe"));
-            }
-            if (EntityExistanceManager.AccountNumberExists(userModel.AccountId))
-            {
-                return InternalServerError(new Exception("El numbero de cuenta ya existe"));
-            }
-            if (!MailManager.CheckDomainValidity(userModel.Email))
-            {
-                return InternalServerError(new Exception("Correo no valido"));
-            }
             var newUser = new User();
             _studentsServices.Map(newUser, userModel);
             _studentsServices.Add(newUser);
