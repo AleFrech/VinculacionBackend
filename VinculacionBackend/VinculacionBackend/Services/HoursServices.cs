@@ -9,13 +9,11 @@ namespace VinculacionBackend.Services
 {
     public class HoursServices
     {
-        public Hour Map(Hour hour, HourEntryModel hourModel)
+        readonly HourRepository _hourRepository = new HourRepository();
+        public Hour Add(HourEntryModel hourModel)
         {
-            Hour newHour = new Hour();
-            newHour.Amount = hourModel.Hour;
-            newHour.SectionProject = sectionProjectRel;
-            newHour.User = user;
-
+            var hour = _hourRepository.InsertHourFromModel(hourModel);
+            _hourRepository.Save();
             return hour;
         }
     }

@@ -22,14 +22,7 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult PostHour(HourEntryModel hourModel)
         {
-            if (!ModelState.IsValid || hourModel== null)
-            {
-                return BadRequest(ModelState);
-            }
-            if (!CheckHourModel(hourModel))
-            {
-                return InternalServerError(new Exception("Uno o mas campos vacios"));
-            }
+        
             var hour = _hoursServices.Add(hourModel);
             if (hour!=null)
             {
