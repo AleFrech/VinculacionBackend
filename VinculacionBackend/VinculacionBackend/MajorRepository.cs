@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,10 +15,11 @@ namespace VinculacionBackend
         {
             db = new VinculacionContext();
         }
-        public void Delete(long id)
+        public Major Delete(long id)
         {
             var found = Get(id);
             db.Majors.Remove(found);
+            return found;
         }
 
         public Major Get(long id)

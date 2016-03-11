@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -20,16 +20,22 @@ namespace VinculacionBackend
         {
             db = new VinculacionContext();
         }
-        public void Delete(long id)
+        public User Delete(long id)
         {
             var found = Get(id);
             db.Users.Remove(found);
+            return found;
         }
 
-        public void DeleteByAccountNumber(string accountNumber)
+        public User DeleteByAccountNumber(string accountNumber)
         {
             var found = GetByAccountNumber(accountNumber);
-            db.Users.Remove(found);
+            if (found != null) {
+                var userrole =db.UserRoleRels.FirstOrDefault(x => x.User.AccountId == User.AccountId);
+                db.UserRoleRels.Remove(userrole);
+                db.Users.Remove(found);
+            }
+            return found;
         }
 
         public User Get(long id)
@@ -95,6 +101,7 @@ namespace VinculacionBackend
         public void Insert(User ent)
         {
             db.Users.Add(ent);
+            db.UserRoleRels.Add(new UserRole { User=newUser,Role=db.Roles.FirstOrDefault(x=>x.Name=="Student")});
         }
 
         public void Save()

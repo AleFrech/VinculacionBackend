@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +10,7 @@ namespace VinculacionBackend
     {
         IEnumerable<T> GetAll();
         T Get(long id);
-        void Delete(long id);
+        T Delete(long id);
         void Save();
         void Update(T ent);
         void Insert(T ent);
