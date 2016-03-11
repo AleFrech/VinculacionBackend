@@ -29,7 +29,11 @@ namespace VinculacionBackend
         public User DeleteByAccountNumber(string accountNumber)
         {
             var found = GetByAccountNumber(accountNumber);
-            db.Users.Remove(found);
+            if (found != null) {
+                var userrole =db.UserRoleRels.FirstOrDefault(x => x.User.AccountId == User.AccountId);
+                db.UserRoleRels.Remove(userrole);
+                db.Users.Remove(found);
+            }
             return found;
         }
 
