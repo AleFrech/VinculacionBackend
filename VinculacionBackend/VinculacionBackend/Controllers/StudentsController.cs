@@ -82,14 +82,6 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest();
             }
-
-            if (model.AccountId == null)
-            {
-
-                return InternalServerError(new Exception("El numero de cuenta estas vacio"));
-            }
-
-
             var student = _studentsServices.Find(model.AccountId);
             if (student != null)
             {
@@ -97,10 +89,8 @@ namespace VinculacionBackend.Controllers
                     "Vinculación");
                 return Ok(student);
             }
-            else
-            {
+            
                 return NotFound();
-            }
         }
 
         //Get: api/Students/Avtive
@@ -132,21 +122,14 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest();
             }
-            if (model.AccountId == null || model.Message == null)
-            {
-                return InternalServerError(new Exception("Uno o mas campos vacios"));
-            }
             var student = _studentsServices.RejectUser(model.AccountId);
             if (student!=null)
             {
                 MailManager.SendSimpleMessage(student.Email, model.Message, "Vinculación");
                 return Ok(student);
             }
-            else
-            {
+           
                 return NotFound();
-
-            }
         }
         // POST: api/Students
         [ResponseType(typeof(User))]
@@ -160,23 +143,6 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (!CheckUserModel(userModel))
-            {
-                return InternalServerError(new Exception("Uno o mas campos vacios"));
-            }
-
-            if (EntityExistanceManager.EmailExists(userModel.Email))
-            {
-                return InternalServerError(new Exception("El correo ya existe"));
-            }
-            if (EntityExistanceManager.AccountNumberExists(userModel.AccountId))
-            {
-                return InternalServerError(new Exception("El numbero de cuenta ya existe"));
-            }
-            if (!MailManager.CheckDomainValidity(userModel.Email))
-            {
-                return InternalServerError(new Exception("Correo no valido"));
-            }
             var newUser = new User();
             _studentsServices.Map(newUser, userModel);
             _studentsServices.Add(newUser);
@@ -190,20 +156,15 @@ namespace VinculacionBackend.Controllers
         [Route("api/Students/{accountId}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult DeleteStudent(string accountId)
-        {            
-            User User = db.Users.FirstOrDefault(x=>x.AccountId==accountId);
-            if (User != null)
+        {
+            User user = _studentsServices.DeleteUser(accountId);
+            if (user != null)
             {
-                var userrole =db.UserRoleRels.FirstOrDefault(x => x.User.AccountId == User.AccountId);
-                db.UserRoleRels.Remove(userrole);
-                db.Users.Remove(User);
-                db.SaveChanges();
-                return Ok(User);
+                return Ok(user);
             }
-            else
-            {
+            
                 return NotFound();
-            } 
+     
         }
 
      
