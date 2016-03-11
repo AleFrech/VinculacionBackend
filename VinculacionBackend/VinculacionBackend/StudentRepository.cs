@@ -31,7 +31,7 @@ namespace VinculacionBackend
         {
             var found = GetByAccountNumber(accountNumber);
             if (found != null) {
-                var userrole =db.UserRoleRels.FirstOrDefault(x => x.User.AccountId == User.AccountId);
+                var userrole =db.UserRoleRels.FirstOrDefault(x => x.User.AccountId == found.AccountId);
                 db.UserRoleRels.Remove(userrole);
                 db.Users.Remove(found);
             }
@@ -101,7 +101,7 @@ namespace VinculacionBackend
         public void Insert(User ent)
         {
             db.Users.Add(ent);
-            db.UserRoleRels.Add(new UserRole { User=newUser,Role=db.Roles.FirstOrDefault(x=>x.Name=="Student")});
+            db.UserRoleRels.Add(new UserRole { User=ent,Role=db.Roles.FirstOrDefault(x=>x.Name=="Student")});
         }
 
         public void Save()
