@@ -88,7 +88,7 @@ namespace VinculacionBackend.Services
         public User DeleteUser(string accountId)
         {
             var user = _studentRepository.DeleteByAccountNumber(accountId);
-
+            _studentRepository.Save();
             return user;
         }
 

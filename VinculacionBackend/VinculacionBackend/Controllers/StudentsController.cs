@@ -190,20 +190,15 @@ namespace VinculacionBackend.Controllers
         [Route("api/Students/{accountId}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult DeleteStudent(string accountId)
-        {            
-            User User = db.Users.FirstOrDefault(x=>x.AccountId==accountId);
+        {
+            User User = _studentsServices.DeleteUser(accountId);
             if (User != null)
             {
-                var userrole =db.UserRoleRels.FirstOrDefault(x => x.User.AccountId == User.AccountId);
-                db.UserRoleRels.Remove(userrole);
-                db.Users.Remove(User);
-                db.SaveChanges();
                 return Ok(User);
             }
-            else
-            {
+           
                 return NotFound();
-            } 
+
         }
 
      
