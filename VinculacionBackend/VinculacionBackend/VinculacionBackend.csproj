@@ -236,6 +236,7 @@
     <Compile Include="Enums\Status.cs" />
     <Compile Include="Services\HoursServices.cs" />
     <Compile Include="Services\IUsersServices.cs" />
+    <Compile Include="Services\MajorsServices.cs" />
     <Compile Include="Services\StudentsServices.cs" />
     <Compile Include="StudentRepository.cs" />
   </ItemGroup>

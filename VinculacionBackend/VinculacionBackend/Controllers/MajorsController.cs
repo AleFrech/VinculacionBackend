@@ -4,20 +4,21 @@ using System.Web.Http.Description;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
 using System.Web.Http.Cors;
+using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class MajorsController : ApiController
     {
-        private VinculacionContext db = new VinculacionContext();
+        readonly MajorsServices _majorsServices = new MajorsServices();
 
         // GET: api/Majors
         [Route("api/Majors")]
         [CustomAuthorize(Roles = "Anonymous")]
         public IQueryable<Major> GetMajors()
         {
-            return db.Majors;
+            return _majorsServices.All();
         }
 
         // GET: api/Majors/5
@@ -26,7 +27,7 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Anonymous")]
         public IHttpActionResult GetMajor(string majorId)
         {
-            Major major = db.Majors.FirstOrDefault(x => x.MajorId == majorId);
+            Major major = _majorsServices.Find(majorId);
             if (major == null)
             {
                 return NotFound();
@@ -35,18 +36,6 @@ namespace VinculacionBackend.Controllers
             return Ok(major);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool MajorExists(string majorId)
-        {
-            return db.Majors.Count(e => e.MajorId == majorId) > 0;
-        }
+       
     }
 }
