@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -95,6 +95,7 @@ namespace VinculacionBackend
         public void Insert(User ent)
         {
             db.Users.Add(ent);
+            db.UserRoleRels.Add(new UserRole { User=newUser,Role=db.Roles.FirstOrDefault(x=>x.Name=="Student")});
         }
 
         public void Save()
