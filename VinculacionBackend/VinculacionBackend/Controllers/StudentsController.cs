@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Http.Description;
 using VinculacionBackend.Database;
@@ -10,6 +11,7 @@ using VinculacionBackend.Entities;
 using VinculacionBackend.Enums;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
+using VinculacionBackend.Services;
 using WebGrease.Css.Extensions;
 
 namespace VinculacionBackend.Controllers
@@ -17,7 +19,7 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class StudentsController : ApiController
     {
-        private VinculacionContext db = new VinculacionContext();   //TODO CREAR INTERFAZ
+        readonly StudentsServices _studentsServices = new StudentsServices();
 
 
         // GET: api/Students
@@ -25,7 +27,6 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IQueryable<User> GetStudents()
         {
-            var u = HttpContext.Current.User.Identity;
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             return db.Users.Include(m =>m.Major).Where(x => rels.Any(y => y.User.Id == x.Id));
         }
@@ -35,10 +36,9 @@ namespace VinculacionBackend.Controllers
         [Route("api/Students/{accountId}")]
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudent(string accountId)
-        {  
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
-            if (User == null)
+        {
+            var student = _studentsServices.Find(accountId);
+            if (student == null)
             {
                 return NotFound();
             }
@@ -52,12 +52,12 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetStudentHour(string accountId)
         {
             var total = 0;
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
+            var student = _studentsServices.Find(accountId);
             if (student == null)
             {
                 return NotFound();
             }           
+
             var hour = db.Hours.Include(a => a.User).Where(x => x.User.Id == student.Id);
             hour.ForEach(x =>
             {
@@ -71,55 +71,10 @@ namespace VinculacionBackend.Controllers
 
         public IQueryable<User> GetStudents(string status)
         {
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-         
-            if(status=="Inactive")
-                return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Inactive);
-            if (status == "Active")
-                return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Active);
-            if (status == "Verified")
-                return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Verified);
-            if (status == "Rejected")
-                return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Rejected);
-            return null;
+           return _studentsServices.ListbyStatus(status);
+
         }
-
-        // PUT: api/Students/5
-        [ResponseType(typeof(void))]
-        [Route("api/Students/{accountId}")]
-        [CustomAuthorize(Roles = "Admin,Professor,Student")]
-        public IHttpActionResult PutStudent(string accountId, UserEntryModel userModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (accountId != userModel.AccountId)
-            {
-                return Unauthorized();
-            }
-
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var tmpstudent = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
-            if (tmpstudent != null)
-            {
-                tmpstudent.ModificationDate = DateTime.Now;
-                tmpstudent.Password = userModel.Password;
-                tmpstudent.Name = userModel.Name;
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (DbUpdateConcurrencyException)
-                {  
-                    return InternalServerError(new DbUpdateConcurrencyException());
-                }
-                return Ok(tmpstudent);
-            }
-            return NotFound();
-        }
-
+        
         //Put: api/Students/Verified
         [ResponseType(typeof(User))]
         [Route("api/Students/Verified")]
@@ -138,8 +93,8 @@ namespace VinculacionBackend.Controllers
                 return InternalServerError(new Exception("El numero de cuenta estas vacio"));
             }
 
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == model.AccountId);
+
+            var student = _studentsServices.Find(model.AccountId);
             if (student != null)
             {
                 student.Status = Status.Verified;
@@ -189,19 +144,15 @@ namespace VinculacionBackend.Controllers
             {
                 return InternalServerError(new Exception("Uno o mas campos vacios"));
             }
-            var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student= db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == model.AccountId);
-            if (student != null)
+            var student = _studentsServices.RejectUser(model.AccountId, model.Message);
+            if (student!=null)
             {
-                MailManager.SendSimpleMessage(student.Email,model.Message,"Vinculación");
-                student.Status=Status.Rejected;
-                db.SaveChanges();
                 return Ok(student);
             }
             else
             {
                 return NotFound();
-           
+
             }
         }
         // POST: api/Students
@@ -240,20 +191,9 @@ namespace VinculacionBackend.Controllers
             {
                 return InternalServerError(new Exception("Id de carrera no valido"));
             }
-
-            var newUser=new User();
-            newUser.AccountId = userModel.AccountId;
-            newUser.Name = userModel.Name;
-            newUser.Password = EncryptDecrypt.Encrypt(userModel.Password);
-            newUser.Major = major;
-            newUser.Campus = userModel.Campus;
-            newUser.Email = userModel.Email;
-            newUser.Status=Status.Inactive;
-            newUser.CreationDate=DateTime.Now;
-            newUser.ModificationDate=DateTime.Now;
-            db.Users.Add(newUser);
-            db.UserRoleRels.Add(new UserRole { User=newUser,Role=db.Roles.FirstOrDefault(x=>x.Name=="Student")});
-            db.SaveChanges();
+            var newUser = new User();
+            _studentsServices.Map(newUser, userModel);
+            _studentsServices.Add(newUser);
             var stringparameter = EncryptDecrypt.Encrypt(newUser.AccountId);
             MailManager.SendSimpleMessage(newUser.Email,"Hacer click en el siguiente link para Activar: "+ HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)+"/api/Students/"+HttpContext.Current.Server.UrlEncode(stringparameter)+"/Active","Vinculación");
             return Ok(newUser);
@@ -280,25 +220,6 @@ namespace VinculacionBackend.Controllers
             } 
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool StudentExists(string id)
-        {
-            return db.Users.Count(e => e.AccountId == id) > 0;
-        }
-
-        private bool CheckUserModel(UserEntryModel model)
-        {
-            bool isvalid = (model.MajorId != null) && (model.AccountId != null) && (model.Campus != null) && (model.Email != null) &&
-                (model.Name != null) && (model.Password != null);
-            return isvalid;
-        }
+     
     }
 }
