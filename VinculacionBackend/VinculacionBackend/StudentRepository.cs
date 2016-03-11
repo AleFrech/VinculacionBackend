@@ -20,10 +20,11 @@ namespace VinculacionBackend
         {
             db = new VinculacionContext();
         }
-        public void Delete(long id)
+        public User Delete(long id)
         {
             var found = Get(id);
             db.Users.Remove(found);
+            return found;
         }
 
         public User DeleteByAccountNumber(string accountNumber)
