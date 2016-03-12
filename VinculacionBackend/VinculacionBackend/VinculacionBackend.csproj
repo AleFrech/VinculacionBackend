@@ -217,6 +217,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="IRepository.cs" />
+    <Compile Include="IStudentRepository.cs" />
     <Compile Include="MailManager.cs" />
     <Compile Include="Migrations\201603072340563_init.cs" />
     <Compile Include="Migrations\201603072340563_init.Designer.cs">
@@ -233,6 +235,7 @@
     <Compile Include="Enums\Status.cs" />
     <Compile Include="Services\IUsersServices.cs" />
     <Compile Include="Services\StudentsServices.cs" />
+    <Compile Include="StudentRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
