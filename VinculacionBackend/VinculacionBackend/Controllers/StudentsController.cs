@@ -67,14 +67,14 @@ namespace VinculacionBackend.Controllers
 
         public IQueryable<User> GetStudents(string status)
         {
-           return _studentsServices.ListbyStatus(status);
+            return _studentsServices.ListbyStatus(status);
 
         }
-        
+
         //Put: api/Students/Verified
         [ResponseType(typeof(User))]
         [Route("api/Students/Verified")]
-         [CustomAuthorize(Roles = "Admin")]
+        [CustomAuthorize(Roles = "Admin")]
         public IHttpActionResult PutAcceptVerified(VerifiedModel model)  //TODO crear interfas
 
         {
@@ -89,8 +89,8 @@ namespace VinculacionBackend.Controllers
                     "Vinculación");
                 return Ok(student);
             }
-            
-                return NotFound();
+
+            return NotFound();
         }
 
         //Get: api/Students/Avtive
@@ -99,17 +99,17 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetActiveStudent(string guid)
 
         {
-           
+
             var accountId = EncryptDecrypt.Decrypt(HttpContext.Current.Server.UrlDecode(guid));   //TODO Crear interfas
             var student = _studentsServices.ActivateUser(accountId);
             if (student != null)
             {
-             
+
                 return Ok(student);
             }
-            
-                return NotFound();
-        
+
+            return NotFound();
+
         }
 
         //Post: api/Students/Rejected
@@ -123,13 +123,13 @@ namespace VinculacionBackend.Controllers
                 return BadRequest();
             }
             var student = _studentsServices.RejectUser(model.AccountId);
-            if (student!=null)
+            if (student != null)
             {
                 MailManager.SendSimpleMessage(student.Email, model.Message, "Vinculación");
                 return Ok(student);
             }
-           
-                return NotFound();
+
+            return NotFound();
         }
         // POST: api/Students
         [ResponseType(typeof(User))]
@@ -147,7 +147,7 @@ namespace VinculacionBackend.Controllers
             _studentsServices.Map(newUser, userModel);
             _studentsServices.Add(newUser);
             var stringparameter = EncryptDecrypt.Encrypt(newUser.AccountId);
-            MailManager.SendSimpleMessage(newUser.Email,"Hacer click en el siguiente link para Activar: "+ HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)+"/api/Students/"+HttpContext.Current.Server.UrlEncode(stringparameter)+"/Active","Vinculación");
+            MailManager.SendSimpleMessage(newUser.Email, "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
             return Ok(newUser);
         }
 
@@ -162,11 +162,11 @@ namespace VinculacionBackend.Controllers
             {
                 return Ok(user);
             }
-            
-                return NotFound();
-     
+
+            return NotFound();
+
         }
 
-     
+
     }
 }

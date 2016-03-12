@@ -8,17 +8,13 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Http.Controllers;
-using System.Web.Mvc;
 using VinculacionBackend.Database;
 using AuthorizeAttribute = System.Web.Http.AuthorizeAttribute;
 
 
-//TUCU MIFI!
 namespace VinculacionBackend
 {
-
     public class CustomAuthorizeAttribute : AuthorizeAttribute
-
     {
         private const string BasicAuthResponseHeader = "WWW-Authenticate";
         private const string BasicAuthResponseHeaderValue = "Basic";
@@ -37,7 +33,7 @@ namespace VinculacionBackend
                 AuthenticationHeaderValue authValue = actionContext.Request.Headers.Authorization;
                 if (authValue == null)
                 {
-                   CurrentUser = new CustomPrincipal("",new string[] { "Anonymous"});
+                    CurrentUser = new CustomPrincipal("", new string[] { "Anonymous" });
                     if (!String.IsNullOrEmpty(Roles))
                     {
                         if (!CurrentUser.IsInRole(Roles))
@@ -100,41 +96,17 @@ namespace VinculacionBackend
             }
             catch (Exception e)
             {
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized,e.Message);
-               actionContext.Response.Headers.Add(BasicAuthResponseHeader, BasicAuthResponseHeaderValue);
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, e.Message);
+                actionContext.Response.Headers.Add(BasicAuthResponseHeader, BasicAuthResponseHeaderValue);
                 return;
             }
         }
         private Credentials ParseAuthorizationHeader(string authHeader)
         {
-
             string[] credentials = Encoding.ASCII.GetString(Convert.FromBase64String(authHeader)).Split(new[] { ':' });
-
-
-
             if (credentials.Length != 2 || string.IsNullOrEmpty(credentials[0]) || string.IsNullOrEmpty(credentials[1]))
-
                 return null;
-
-
-
             return new Credentials() { Username = credentials[0], Password = credentials[1], };
-
         }
-
-       
     }
-
-    //Client credential
-
-    public class Credentials
-
-    {
-
-        public string Username { get; set; }
-
-        public string Password { get; set; }
-
-    }
-
 }
