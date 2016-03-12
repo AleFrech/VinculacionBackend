@@ -7,7 +7,7 @@ namespace VinculacionBackend
 {
     public static class EncryptDecrypt
     {
-        public static string Encrypt(string StringValue)
+        public static string Encrypt(string stringValue)
         {
             byte[] key = { };
             byte[] IV = { 0x32, 0x41, 0x54, 0x67, 0x73, 0x21, 0x47, 0x19 };
@@ -17,7 +17,7 @@ namespace VinculacionBackend
             {
                 string encryptionKey = "bd5ygNc8";
                 key = Encoding.UTF8.GetBytes(encryptionKey);
-                byte[] bytes = Encoding.UTF8.GetBytes(StringValue);
+                byte[] bytes = Encoding.UTF8.GetBytes(stringValue);
                 DESCryptoServiceProvider dcp = new DESCryptoServiceProvider();
                 ICryptoTransform ict = dcp.CreateEncryptor(key, IV);
                 ms = new MemoryStream();
@@ -32,7 +32,7 @@ namespace VinculacionBackend
             return Convert.ToBase64String(ms.ToArray());
         }
 
-        public static string Decrypt(string StringValue)
+        public static string Decrypt(string stringValue)
         {
             byte[] key = { };
             byte[] IV = { 0x32, 0x41, 0x54, 0x67, 0x73, 0x21, 0x47, 0x19 };
@@ -42,8 +42,8 @@ namespace VinculacionBackend
             {
                 string encryptionKey = "bd5ygNc8";
                 key = Encoding.UTF8.GetBytes(encryptionKey);
-                byte[] bytes = new byte[StringValue.Length];
-                bytes = Convert.FromBase64String(StringValue);
+                byte[] bytes = new byte[stringValue.Length];
+                bytes = Convert.FromBase64String(stringValue);
                 DESCryptoServiceProvider dcp = new DESCryptoServiceProvider();
                 ICryptoTransform ict = dcp.CreateDecryptor(key, IV);
                 ms = new MemoryStream();
@@ -53,7 +53,7 @@ namespace VinculacionBackend
             }
             catch (Exception ex)
             {
-                
+                Console.WriteLine(ex.Message);
             }
             Encoding en = Encoding.UTF8;
             return en.GetString(ms.ToArray());

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace VinculacionBackend.Models
 {
     public class RejectedModel
     {
+        [Required(ErrorMessage = "*requerido")]
         public string AccountId { get; set; }
+        [Required(ErrorMessage = "*requerido")]
         public string Message { get; set; }
     }
 }

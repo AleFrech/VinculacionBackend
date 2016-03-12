@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using VinculacionBackend.Database;
@@ -23,16 +22,10 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Anonymous")]
         public IHttpActionResult PostUserLogin(LoginUserModel loginUser)
         {
-            if (!ModelState.IsValid || loginUser == null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            if (!CheckLoginModel(loginUser))
-            {
-                return InternalServerError(new Exception("Uno o mas campos vacios"));
-            }
-
 
             var user = db.Users.FirstOrDefault(u => u.Email.Contains(loginUser.User) && u.Password == loginUser.Password);
 
@@ -56,12 +49,6 @@ namespace VinculacionBackend.Controllers
                     return Unauthorized();
                 }
             
-        }
-
-        private bool CheckLoginModel(LoginUserModel model)
-        {
-            bool isvalid = (model.User != null)  && (model.Password != null);
-            return isvalid;
         }
     }
 }
