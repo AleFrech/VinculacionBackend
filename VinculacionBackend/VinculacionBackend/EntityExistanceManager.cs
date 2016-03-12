@@ -7,13 +7,15 @@ namespace VinculacionBackend
         public static bool EmailExists(string email)
         {
             var context = new Database.VinculacionContext();
-            return context.Users.Any(x => x.Email == email);
+            var found = context.Users.FirstOrDefault(x => x.Email == email);
+            return found != null;
         }
         
         public static bool AccountNumberExists(string accountNumber) 
         {
             var context = new Database.VinculacionContext();
-            return context.Users.Any(x=>x.AccountId == accountNumber);
+            var found = context.Users.FirstOrDefault(x => x.AccountId == accountNumber);
+            return found != null;
         }
     }
 }
