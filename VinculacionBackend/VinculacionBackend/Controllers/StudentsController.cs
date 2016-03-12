@@ -27,7 +27,7 @@ namespace VinculacionBackend.Controllers
         {
             var u = HttpContext.Current.User.Identity;
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            return db.Users.Include(m =>m.Major).Where(x => rels.Any(y => y.User.Id == x.Id));
+            return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id));
         }
 
         // GET: api/Students/5
@@ -35,7 +35,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Students/{accountId}")]
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudent(string accountId)
-        {  
+        {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
             var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == accountId);
             if (User == null)
@@ -57,7 +57,7 @@ namespace VinculacionBackend.Controllers
             if (student == null)
             {
                 return NotFound();
-            }           
+            }
             var hour = db.Hours.Include(a => a.User).Where(x => x.User.Id == student.Id);
             hour.ForEach(x =>
             {
@@ -72,8 +72,8 @@ namespace VinculacionBackend.Controllers
         public IQueryable<User> GetStudents(string status)
         {
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-         
-            if(status=="Inactive")
+
+            if (status == "Inactive")
                 return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Inactive);
             if (status == "Active")
                 return db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Active);
@@ -112,7 +112,7 @@ namespace VinculacionBackend.Controllers
                     db.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
-                {  
+                {
                     return InternalServerError(new DbUpdateConcurrencyException());
                 }
                 return Ok(tmpstudent);
@@ -123,7 +123,7 @@ namespace VinculacionBackend.Controllers
         //Put: api/Students/Verified
         [ResponseType(typeof(User))]
         [Route("api/Students/Verified")]
-         [CustomAuthorize(Roles = "Admin")]
+        [CustomAuthorize(Roles = "Admin")]
         public IHttpActionResult PutAcceptVerified(VerifiedModel model)
         {
             if (!ModelState.IsValid)
@@ -178,18 +178,18 @@ namespace VinculacionBackend.Controllers
                 return BadRequest();
             }
             var rels = db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
-            var student= db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == model.AccountId);
+            var student = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.AccountId == model.AccountId);
             if (student != null)
             {
-                MailManager.SendSimpleMessage(student.Email,model.Message,"Vinculación");
-                student.Status=Status.Rejected;
+                MailManager.SendSimpleMessage(student.Email, model.Message, "Vinculación");
+                student.Status = Status.Rejected;
                 db.SaveChanges();
                 return Ok(student);
             }
             else
             {
                 return NotFound();
-           
+
             }
         }
         // POST: api/Students
@@ -202,21 +202,21 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var newUser=new User();
+            var newUser = new User();
             newUser.AccountId = userModel.AccountId;
             newUser.Name = userModel.Name;
             newUser.Password = EncryptDecrypt.Encrypt(userModel.Password);
             newUser.Major = db.Majors.FirstOrDefault(x => x.MajorId == userModel.MajorId);
             newUser.Campus = userModel.Campus;
             newUser.Email = userModel.Email;
-            newUser.Status=Status.Inactive;
-            newUser.CreationDate=DateTime.Now;
-            newUser.ModificationDate=DateTime.Now;
+            newUser.Status = Status.Inactive;
+            newUser.CreationDate = DateTime.Now;
+            newUser.ModificationDate = DateTime.Now;
             db.Users.Add(newUser);
-            db.UserRoleRels.Add(new UserRole { User=newUser,Role=db.Roles.FirstOrDefault(x=>x.Name=="Student")});
+            db.UserRoleRels.Add(new UserRole { User = newUser, Role = db.Roles.FirstOrDefault(x => x.Name == "Student") });
             db.SaveChanges();
             var stringparameter = EncryptDecrypt.Encrypt(newUser.AccountId);
-            MailManager.SendSimpleMessage(newUser.Email,"Hacer click en el siguiente link para Activar: "+ HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)+"/api/Students/"+HttpContext.Current.Server.UrlEncode(stringparameter)+"/Active","Vinculación");
+            MailManager.SendSimpleMessage(newUser.Email, "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
             return Ok(newUser);
         }
 
@@ -225,11 +225,11 @@ namespace VinculacionBackend.Controllers
         [Route("api/Students/{accountId}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult DeleteStudent(string accountId)
-        {            
-            User User = db.Users.FirstOrDefault(x=>x.AccountId==accountId);
+        {
+            User User = db.Users.FirstOrDefault(x => x.AccountId == accountId);
             if (User != null)
             {
-                var userrole =db.UserRoleRels.FirstOrDefault(x => x.User.AccountId == User.AccountId);
+                var userrole = db.UserRoleRels.FirstOrDefault(x => x.User.AccountId == User.AccountId);
                 db.UserRoleRels.Remove(userrole);
                 db.Users.Remove(User);
                 db.SaveChanges();
@@ -238,7 +238,7 @@ namespace VinculacionBackend.Controllers
             else
             {
                 return NotFound();
-            } 
+            }
         }
 
         protected override void Dispose(bool disposing)

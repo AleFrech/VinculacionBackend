@@ -33,7 +33,7 @@ namespace VinculacionBackend
                 AuthenticationHeaderValue authValue = actionContext.Request.Headers.Authorization;
                 if (authValue == null)
                 {
-                   CurrentUser = new CustomPrincipal("",new string[] { "Anonymous"});
+                    CurrentUser = new CustomPrincipal("", new string[] { "Anonymous" });
                     if (!String.IsNullOrEmpty(Roles))
                     {
                         if (!CurrentUser.IsInRole(Roles))
@@ -66,7 +66,7 @@ namespace VinculacionBackend
                             CurrentUser = new CustomPrincipal(parsedCredentials.Username, roles);
                             if (HttpContext.Current != null)
                             {
-                                HttpContext.Current.User = CurrentUser;                              
+                                HttpContext.Current.User = CurrentUser;
                             }
                             if (!String.IsNullOrEmpty(Roles))
                             {
@@ -76,7 +76,7 @@ namespace VinculacionBackend
                                         actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
                                     actionContext.Response.Headers.Add(BasicAuthResponseHeader,
                                         BasicAuthResponseHeaderValue);
-                                    return;                              
+                                    return;
                                 }
                             }
                             if (!String.IsNullOrEmpty(Users))
@@ -92,21 +92,21 @@ namespace VinculacionBackend
                             }
                         }
                     }
-                }               
+                }
             }
             catch (Exception e)
             {
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized,e.Message);
-               actionContext.Response.Headers.Add(BasicAuthResponseHeader, BasicAuthResponseHeaderValue);
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, e.Message);
+                actionContext.Response.Headers.Add(BasicAuthResponseHeader, BasicAuthResponseHeaderValue);
                 return;
             }
-        }     
+        }
         private Credentials ParseAuthorizationHeader(string authHeader)
         {
             string[] credentials = Encoding.ASCII.GetString(Convert.FromBase64String(authHeader)).Split(new[] { ':' });
             if (credentials.Length != 2 || string.IsNullOrEmpty(credentials[0]) || string.IsNullOrEmpty(credentials[1]))
                 return null;
             return new Credentials() { Username = credentials[0], Password = credentials[1], };
-        }      
+        }
     }
 }
