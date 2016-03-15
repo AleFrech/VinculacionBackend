@@ -1,16 +1,12 @@
-using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using WebGrease.Css.Extensions;
 using VinculacionBackend.Enums;
-using System.Data.Entity;
+using WebGrease.Css.Extensions;
 
-namespace VinculacionBackend
+namespace VinculacionBackend.Repositories
 {
     public class StudentRepository : IStudentRepository
     {
