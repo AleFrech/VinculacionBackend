@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VinculacionBackend.Entities;
 using VinculacionBackend.Enums;
 
-namespace VinculacionBackend
+namespace VinculacionBackend.Repositories
 {
     interface IStudentRepository : IRepository<User>
     {
