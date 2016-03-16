@@ -15,7 +15,7 @@ namespace VinculacionBackend.Services
         private VinculacionContext db = new VinculacionContext();
         private readonly StudentRepository _studentRepository = new StudentRepository();
         private readonly MajorRepository _majorRepository = new MajorRepository();
-        public  User Map(User user, UserEntryModel userModel)
+        public  User Map(UserEntryModel userModel)
         {
             var newUser = new User();
             newUser.AccountId = userModel.AccountId;

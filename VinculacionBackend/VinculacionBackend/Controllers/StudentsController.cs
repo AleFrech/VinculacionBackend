@@ -64,7 +64,6 @@ namespace VinculacionBackend.Controllers
 
         [Route("api/Students/Filter/{status}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
-
         public IQueryable<User> GetStudents(string status)
         {
             return _studentsServices.ListbyStatus(status);
@@ -82,7 +81,7 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest();
             }
-            var student = _studentsServices.Find(model.AccountId);
+            var student = _studentsServices.VerifyUser(model.AccountId);
             if (student != null)
             {
                 MailManager.SendSimpleMessage(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", //TODO crear interfaz
@@ -125,6 +124,7 @@ namespace VinculacionBackend.Controllers
             var student = _studentsServices.RejectUser(model.AccountId);
             if (student != null)
             {
+                
                 MailManager.SendSimpleMessage(student.Email, model.Message, "Vinculación");
                 return Ok(student);
             }
@@ -143,8 +143,7 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            var newUser = new User();
-            _studentsServices.Map(newUser, userModel);
+            var newUser = _studentsServices.Map(userModel);
             _studentsServices.Add(newUser);
             var stringparameter = EncryptDecrypt.Encrypt(newUser.AccountId);
             MailManager.SendSimpleMessage(newUser.Email, "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
