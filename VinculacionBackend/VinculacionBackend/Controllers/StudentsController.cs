@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
-using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Http.Description;
-using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
-using VinculacionBackend.Enums;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using VinculacionBackend.Services;
-using WebGrease.Css.Extensions;
 
 namespace VinculacionBackend.Controllers
 {
@@ -51,14 +45,13 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudentHour(string accountId)
         {
-            var total = 0;
             var student = _studentsServices.Find(accountId);
             if (student == null)
             {
                 return NotFound();
             }
 
-            total = _studentsServices.StudentHours(accountId);
+            var total = _studentsServices.StudentHours(accountId);
             return Ok(total);
         }
 
@@ -77,7 +70,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PutAcceptVerified(VerifiedModel model)  //TODO crear interfas
 
         {
-            if (!ModelState.IsValid || model == null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
@@ -96,7 +89,6 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]  //TODO crear interfaz
         [Route("api/Students/{guid}/Active")]
         public IHttpActionResult GetActiveStudent(string guid)
-
         {
 
             var accountId = EncryptDecrypt.Decrypt(HttpContext.Current.Server.UrlDecode(guid));   //TODO Crear interfas
@@ -117,14 +109,13 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin")]
         public IHttpActionResult PostRejectStudent(RejectedModel model) //TODO crear interefaz
         {
-            if (!ModelState.IsValid || model == null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
             var student = _studentsServices.RejectUser(model.AccountId);
             if (student != null)
             {
-                
                 MailManager.SendSimpleMessage(student.Email, model.Message, "Vinculación");
                 return Ok(student);
             }
@@ -137,8 +128,7 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Anonymous")]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
-
-            if (!ModelState.IsValid || userModel == null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -161,11 +151,7 @@ namespace VinculacionBackend.Controllers
             {
                 return Ok(user);
             }
-
             return NotFound();
-
         }
-
-
     }
 }
