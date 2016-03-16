@@ -6,7 +6,7 @@ namespace VinculacionBackend.Models
     public class UserEntryModel
     {
         [Required(ErrorMessage = "*requerido")]
-        [AccountNumberExist(ErrorMessage = "El numbero de cuenta ya existe")]
+        [AccountNumberExist(ErrorMessage = "El numero de cuenta ya existe")]
         public string AccountId { get; set; }
         [Required(ErrorMessage = "*requerido")]
         public string Name { get; set; }
