@@ -6,6 +6,7 @@ using System.Web.Http.Description;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
 using System.Web.Http.Cors;
+using System.Web.OData;
 
 namespace VinculacionBackend.Controllers
 {
@@ -17,6 +18,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Sections
         [Route("api/Sections")]
         [CustomAuthorize(Roles = "Admin,Professor")]
+        [EnableQuery]
         public IQueryable<Section> GetSections()
         {
             var sections = db.Sections.Include(a => a.Class).Include(b => b.User).Include(c => c.Period);

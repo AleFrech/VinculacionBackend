@@ -10,6 +10,7 @@ using VinculacionBackend.Entities;
 using VinculacionBackend.Enums;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
+using System.Web.OData;
 using WebGrease.Css.Extensions;
 
 namespace VinculacionBackend.Controllers
@@ -23,6 +24,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Students
         [Route("api/Students")]
         [CustomAuthorize(Roles = "Admin,Professor")]
+        [EnableQuery]
         public IQueryable<User> GetStudents()
         {
             var u = HttpContext.Current.User.Identity;

@@ -4,6 +4,7 @@ using System.Web.Http.Description;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
 using System.Web.Http.Cors;
+using System.Web.OData;
 
 namespace VinculacionBackend.Controllers
 {
@@ -15,6 +16,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Majors
         [Route("api/Majors")]
         [CustomAuthorize(Roles = "Anonymous")]
+        [EnableQuery]
         public IQueryable<Major> GetMajors()
         {
             return db.Majors;
