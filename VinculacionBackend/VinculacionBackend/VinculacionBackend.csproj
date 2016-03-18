@@ -231,6 +231,7 @@
     <Compile Include="Models\VerifiedModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enums\Status.cs" />
+    <Compile Include="Services\HoursServices.cs" />
     <Compile Include="Repositories\HourRepository.cs" />
     <Compile Include="Repositories\IHourRepository.cs" />
     <Compile Include="Repositories\IMajorRepository.cs" />
@@ -243,6 +244,7 @@
     <Compile Include="Repositories\SectionRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Services\IUsersServices.cs" />
+    <Compile Include="Services\MajorsServices.cs" />
     <Compile Include="Services\StudentsServices.cs" />
   </ItemGroup>
   <ItemGroup>
