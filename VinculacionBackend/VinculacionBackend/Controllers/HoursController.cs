@@ -1,9 +1,5 @@
-﻿using System;
-using System.Data.Entity;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Description;
-using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
@@ -22,20 +18,12 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult PostHour(HourEntryModel hourModel)
         {
-        
             var hour = _hoursServices.Add(hourModel);
             if (hour!=null)
             {
-     
                 return Ok(hour);
             }
-           
-                return NotFound();
-
+            return NotFound();
         }
-
-       
-
-     
     }
 }

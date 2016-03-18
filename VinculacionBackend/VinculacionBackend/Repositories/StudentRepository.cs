@@ -1,16 +1,12 @@
-using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using WebGrease.Css.Extensions;
 using VinculacionBackend.Enums;
-using System.Data.Entity;
+using WebGrease.Css.Extensions;
 
-namespace VinculacionBackend
+namespace VinculacionBackend.Repositories
 {
     public class StudentRepository : IStudentRepository
     {
@@ -31,7 +27,7 @@ namespace VinculacionBackend
         {
             var found = GetByAccountNumber(accountNumber);
             if (found != null) {
-                var userrole =db.UserRoleRels.FirstOrDefault(x => x.User.AccountId == User.AccountId);
+                var userrole =db.UserRoleRels.FirstOrDefault(x => x.User.AccountId == found.AccountId);
                 db.UserRoleRels.Remove(userrole);
                 db.Users.Remove(found);
             }
@@ -101,7 +97,7 @@ namespace VinculacionBackend
         public void Insert(User ent)
         {
             db.Users.Add(ent);
-            db.UserRoleRels.Add(new UserRole { User=newUser,Role=db.Roles.FirstOrDefault(x=>x.Name=="Student")});
+            db.UserRoleRels.Add(new UserRole { User=ent,Role=db.Roles.FirstOrDefault(x=>x.Name=="Student")});
         }
 
         public void Save()

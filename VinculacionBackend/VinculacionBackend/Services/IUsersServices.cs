@@ -11,7 +11,7 @@ namespace VinculacionBackend.Services
 {
     interface IUsersServices
     {
-        User Map(User user, UserEntryModel userModel);
+        User Map(UserEntryModel userModel);
         void Add(User user);
         User Find(string accountId);
         IQueryable<User> ListbyStatus(string status);

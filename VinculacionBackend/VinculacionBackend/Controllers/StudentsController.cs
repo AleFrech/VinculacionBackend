@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
-using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Http.Description;
-using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
-using VinculacionBackend.Enums;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using VinculacionBackend.Services;
-using WebGrease.Css.Extensions;
 
 namespace VinculacionBackend.Controllers
 {
@@ -51,75 +45,62 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudentHour(string accountId)
         {
-            var total = 0;
             var student = _studentsServices.Find(accountId);
             if (student == null)
             {
                 return NotFound();
             }
 
-            total = _studentsServices.StudentHours(accountId);
+            var total = _studentsServices.StudentHours(accountId);
             return Ok(total);
         }
 
         [Route("api/Students/Filter/{status}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
-
         public IQueryable<User> GetStudents(string status)
         {
-           return _studentsServices.ListbyStatus(status);
+            return _studentsServices.ListbyStatus(status);
 
         }
-        
+
         //Put: api/Students/Verified
         [ResponseType(typeof(User))]
         [Route("api/Students/Verified")]
-         [CustomAuthorize(Roles = "Admin")]
+        [CustomAuthorize(Roles = "Admin")]
         public IHttpActionResult PutAcceptVerified(VerifiedModel model)  //TODO crear interfas
 
         {
-            if (!ModelState.IsValid || model == null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-
-            if (model.AccountId == null)
-            {
-
-                return InternalServerError(new Exception("El numero de cuenta estas vacio"));
-            }
-
-
-            var student = _studentsServices.Find(model.AccountId);
+            var student = _studentsServices.VerifyUser(model.AccountId);
             if (student != null)
             {
                 MailManager.SendSimpleMessage(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", //TODO crear interfaz
                     "Vinculación");
                 return Ok(student);
             }
-            else
-            {
-                return NotFound();
-            }
+
+            return NotFound();
         }
 
         //Get: api/Students/Avtive
         [ResponseType(typeof(User))]  //TODO crear interfaz
         [Route("api/Students/{guid}/Active")]
         public IHttpActionResult GetActiveStudent(string guid)
-
         {
-           
+
             var accountId = EncryptDecrypt.Decrypt(HttpContext.Current.Server.UrlDecode(guid));   //TODO Crear interfas
             var student = _studentsServices.ActivateUser(accountId);
             if (student != null)
             {
-             
+
                 return Ok(student);
             }
-            
-                return NotFound();
-        
+
+            return NotFound();
+
         }
 
         //Post: api/Students/Rejected
@@ -128,25 +109,18 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin")]
         public IHttpActionResult PostRejectStudent(RejectedModel model) //TODO crear interefaz
         {
-            if (!ModelState.IsValid || model == null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            if (model.AccountId == null || model.Message == null)
-            {
-                return InternalServerError(new Exception("Uno o mas campos vacios"));
-            }
             var student = _studentsServices.RejectUser(model.AccountId);
-            if (student!=null)
+            if (student != null)
             {
                 MailManager.SendSimpleMessage(student.Email, model.Message, "Vinculación");
                 return Ok(student);
             }
-            else
-            {
-                return NotFound();
 
-            }
+            return NotFound();
         }
         // POST: api/Students
         [ResponseType(typeof(User))]
@@ -154,17 +128,15 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Anonymous")]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
-
-            if (!ModelState.IsValid || userModel == null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var newUser = new User();
-            _studentsServices.Map(newUser, userModel);
+            var newUser = _studentsServices.Map(userModel);
             _studentsServices.Add(newUser);
             var stringparameter = EncryptDecrypt.Encrypt(newUser.AccountId);
-            MailManager.SendSimpleMessage(newUser.Email,"Hacer click en el siguiente link para Activar: "+ HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)+"/api/Students/"+HttpContext.Current.Server.UrlEncode(stringparameter)+"/Active","Vinculación");
+            MailManager.SendSimpleMessage(newUser.Email, "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
             return Ok(newUser);
         }
 
@@ -174,16 +146,13 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult DeleteStudent(string accountId)
         {
-            User User = _studentsServices.DeleteUser(accountId);
-            if (User != null)
+
+            User user = _studentsServices.DeleteUser(accountId);
+            if (user != null)
             {
-                return Ok(User);
+                return Ok(user);
             }
-           
-                return NotFound();
-
+            return NotFound();
         }
-
-     
     }
 }
