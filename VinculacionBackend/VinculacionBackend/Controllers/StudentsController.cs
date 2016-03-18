@@ -6,6 +6,7 @@ using System.Web.Http.Description;
 using VinculacionBackend.Entities;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
+using System.Web.OData;
 using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
@@ -19,6 +20,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Students
         [Route("api/Students")]
         [CustomAuthorize(Roles = "Admin,Professor")]
+        [EnableQuery]
         public IQueryable<User> GetStudents()
         {
 
