@@ -8,13 +8,14 @@ using VinculacionBackend.Entities;
 using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Models;
+using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ProjectsController : ApiController
     {
-        private VinculacionContext db = new VinculacionContext();
+        private ProjectSevices _services = new ProjectServices();
 
         // GET: api/Projects
         [Route("api/Projects")]
@@ -22,7 +23,7 @@ namespace VinculacionBackend.Controllers
         [EnableQuery]
         public IQueryable<Project> GetProjects()
         {
-            return db.Projects;
+            return _services.All();
         }
 
         // GET: api/Projects/5
@@ -31,7 +32,7 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetProject(long projectId)
         {
-            Project Project = db.Projects.Find(projectId);
+            Project Project = _services.Find(projectId);
             if (Project == null)
             {
                 return NotFound();
@@ -46,10 +47,7 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IQueryable<User> GetProjectStudents(long projectId)
         {
-            var secProjRel = db.SectionProjectsRels.Include(a => a.Project).Where(c => c.Project.Id == projectId);
-            var horas = db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d=>d.Id == c.SectionProject.Id));
-            var users = db.Users.Include(a => a.Major).Where(b => horas.Any(c => c.User.Id == b.Id));
-            return users;
+            return _services.GetProjectStudents(projectId);
         }
 
         // PUT: api/Projects/5
@@ -105,8 +103,7 @@ namespace VinculacionBackend.Controllers
             var project= new Project();
             project.Name = model.Name;
             project.Description = model.Description;
-            db.Projects.Add(project);
-            db.SaveChanges();
+            _services.Add(project);
 
             return Ok(project);
         }
@@ -117,14 +114,11 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(Project))]
         public IHttpActionResult DeleteProject(long projectId)
         {
-            Project project = db.Projects.Find(projectId);
+            Project project = _services.Delete(projectId);
             if (project == null)
             {
                 return NotFound();
             }
-
-            db.Projects.Remove(project);
-            db.SaveChanges();
 
             return Ok(project);
         }

@@ -44,5 +44,13 @@ namespace VinculacionBackend.Repositories
         {
             db.Entry(ent).State = EntityState.Modified;
         }
+
+        public IEnumerable<User> GetProjectStudents(long projectId)
+        {
+            var secProjRel = db.SectionProjectsRels.Include(a => a.Project).Where(c => c.Project.Id == projectId);
+            var horas = db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d => d.Id == c.SectionProject.Id));
+            var users = db.Users.Include(a => a.Major).Where(b => horas.Any(c => c.User.Id == b.Id));
+            return users;
+        }
     }
 }
