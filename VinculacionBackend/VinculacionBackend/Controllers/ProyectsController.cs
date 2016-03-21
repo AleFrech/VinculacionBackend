@@ -1,9 +1,7 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+﻿using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
-using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
 using System.Web.Http.Cors;
 using System.Web.OData;
@@ -15,7 +13,7 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ProjectsController : ApiController
     {
-        private ProjectSevices _services = new ProjectServices();
+        private ProjectServices _services = new ProjectServices();
 
         // GET: api/Projects
         [Route("api/Projects")]
@@ -70,7 +68,7 @@ namespace VinculacionBackend.Controllers
             {
                 return NotFound();
             }
-            
+
             try
             {
                 db.SaveChanges();
@@ -104,7 +102,6 @@ namespace VinculacionBackend.Controllers
             project.Name = model.Name;
             project.Description = model.Description;
             _services.Add(project);
-
             return Ok(project);
         }
 
@@ -121,20 +118,6 @@ namespace VinculacionBackend.Controllers
             }
 
             return Ok(project);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool ProjectExists(long id)
-        {
-            return db.Projects.Count(e => e.Id == id) > 0;
         }
     }
 }

@@ -41,7 +41,7 @@ namespace VinculacionBackend.Repositories
             return student;
         }
 
-        public IEnumerable<User> GetAll()
+        public IQueryable<User> GetAll()
         {
             var rels = GetUserRoleRelationships();
             var students = db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id));

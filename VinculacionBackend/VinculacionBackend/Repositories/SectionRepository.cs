@@ -26,7 +26,7 @@ namespace VinculacionBackend.Repositories
             return db.Sections.Include(a => a.Class).Include(b => b.User).Include(c => c.Period).FirstOrDefault(d=>d.Id==id);
         }
 
-        public IEnumerable<Section> GetAll()
+        public IQueryable<Section> GetAll()
         {
             return db.Sections.Include(a => a.Class).Include(b => b.User).Include(c => c.Period);
         }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
 using VinculacionBackend.Enums;
@@ -95,7 +92,7 @@ namespace VinculacionBackend.Services
 
         public IQueryable<User> AllUsers()
         {
-            return _studentRepository.GetAll() as IQueryable<User>;
+            return _studentRepository.GetAll();
         }
 
         public int StudentHours(string accountId)

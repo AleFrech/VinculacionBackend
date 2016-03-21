@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
 
@@ -25,7 +26,7 @@ namespace VinculacionBackend.Repositories
             return db.Projects.Find(id);
         }
 
-        public IEnumerable<Project> GetAll()
+        public IQueryable<Project> GetAll()
         {
             return db.Projects;
         }
@@ -45,7 +46,7 @@ namespace VinculacionBackend.Repositories
             db.Entry(ent).State = EntityState.Modified;
         }
 
-        public IEnumerable<User> GetProjectStudents(long projectId)
+        public IQueryable<User> GetProjectStudents(long projectId)
         {
             var secProjRel = db.SectionProjectsRels.Include(a => a.Project).Where(c => c.Project.Id == projectId);
             var horas = db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d => d.Id == c.SectionProject.Id));

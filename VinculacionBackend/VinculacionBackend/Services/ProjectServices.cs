@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using VinculacionBackend.Entities;
 using VinculacionBackend.Repositories;
 
@@ -10,13 +7,12 @@ namespace VinculacionBackend.Services
     public class ProjectServices
     {
         readonly IProjectRepository _projectRepository = new ProjectRepository();
-        readonly IStudentRepository _studentRepository = new StudentRepository();
         public Project Find(long id)
         {
             return _projectRepository.Get(id);
         }
 
-        public IEnumerable<Project> All()
+        public IQueryable<Project> All()
         {
             return _projectRepository.GetAll();
         }
@@ -34,7 +30,7 @@ namespace VinculacionBackend.Services
             return project;
         }
 
-        public IEnumerable<User> GetProjectStudents(long projectId)
+        public IQueryable<User> GetProjectStudents(long projectId)
         {
             return _projectRepository.GetProjectStudents(projectId);
         }

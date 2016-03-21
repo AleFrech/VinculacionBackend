@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
+using VinculacionBackend.Entities;
 
 namespace VinculacionBackend.Repositories
 {
     interface IRepository<T> where T : class
     {
-        IEnumerable<T> GetAll();
+        IQueryable<T> GetAll();
         T Get(long id);
         T Delete(long id);
         void Save();
