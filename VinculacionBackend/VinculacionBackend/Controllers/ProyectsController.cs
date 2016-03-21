@@ -55,22 +55,24 @@ namespace VinculacionBackend.Controllers
         // PUT: api/Projects/5
         [ResponseType(typeof(void))]
         [Route("api/Projects/{projectId}")]
-        public IHttpActionResult PutProject(long projectId, Project project)
+        public IHttpActionResult PutProject(long projectId, ProjectModel model)
         {
-            if (!ModelState.IsValid )
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (projectId != project.Id)
-            {
-                return Unauthorized();
-            }
-
             var tmpProject = db.Projects.FirstOrDefault(x => x.Id == projectId);
-            tmpProject.Name = project.Name;
-            tmpProject.Description = project.Description;
-
+            if (tmpProject != null)
+            {
+                tmpProject.Name = model.Name;
+                tmpProject.Description = model.Description;
+            }
+            else
+            {
+                return NotFound();
+            }
+            
             try
             {
                 db.SaveChanges();
