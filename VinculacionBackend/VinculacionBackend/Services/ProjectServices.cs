@@ -1,6 +1,7 @@
-﻿using System.Linq;
+using System.Linq;
 using VinculacionBackend.Entities;
 using VinculacionBackend.Repositories;
+using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Services
 {
@@ -33,6 +34,30 @@ namespace VinculacionBackend.Services
         public IQueryable<User> GetProjectStudents(long projectId)
         {
             return _projectRepository.GetProjectStudents(projectId);
+        }
+        
+        public IHttpActionResult UpdateProject(long projectId, ProjectModel model) 
+        {
+            var tmpProject = _projectRepository.Get(projectId);
+            if (tmpProject != null)
+            {
+                tmpProject.Name = model.Name;
+                tmpProject.Description = model.Description;
+            }
+            else
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                _projectRepository.Save();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+               return InternalServerError(new DbUpdateConcurrencyException());
+            }
+            return Ok(tmpProject);
         }
     }
 }

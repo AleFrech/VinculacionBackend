@@ -1,4 +1,4 @@
-﻿using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -58,34 +58,7 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            var tmpProject = db.Projects.FirstOrDefault(x => x.Id == projectId);
-            if (tmpProject != null)
-            {
-                tmpProject.Name = model.Name;
-                tmpProject.Description = model.Description;
-            }
-            else
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProjectExists(projectId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    return InternalServerError(new DbUpdateConcurrencyException());
-                }
-            }
-
-            return Ok(tmpProject);
+            return _services.UpdateProject(projectId, model);
         }
 
         // POST: api/Projects
