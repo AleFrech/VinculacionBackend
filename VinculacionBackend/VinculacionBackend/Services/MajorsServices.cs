@@ -14,7 +14,7 @@ namespace VinculacionBackend.Services
 
         public IQueryable<Major> All()
         {
-            return _majorRepository.GetAll() as IQueryable<Major>;
+            return _majorRepository.GetAll();
         }
     }
 }

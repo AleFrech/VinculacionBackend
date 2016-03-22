@@ -261,6 +261,7 @@
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Services\IUsersServices.cs" />
     <Compile Include="Services\MajorsServices.cs" />
+    <Compile Include="Services\ProjectServices.cs" />
     <Compile Include="Services\StudentsServices.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -27,7 +27,7 @@ namespace VinculacionBackend.Repositories
             return db.Majors.Find(id);
         }
 
-        public IEnumerable<Major> GetAll()
+        public IQueryable<Major> GetAll()
         {
             return db.Majors;
         }

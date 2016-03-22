@@ -26,7 +26,7 @@ namespace VinculacionBackend.Repositories
             return db.Hours.Find(id);
         }
 
-        public IEnumerable<Hour> GetAll()
+        public IQueryable<Hour> GetAll()
         {
             return db.Hours;
         }     
