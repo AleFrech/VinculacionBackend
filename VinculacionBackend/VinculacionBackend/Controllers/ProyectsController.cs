@@ -1,4 +1,3 @@
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -30,13 +29,13 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetProject(long projectId)
         {
-            Project Project = _services.Find(projectId);
-            if (Project == null)
+            Project project = _services.Find(projectId);
+            if (project == null)
             {
                 return NotFound();
             }
 
-            return Ok(Project);
+            return Ok(project);
         }
 
         // GET: api/Projects/5
