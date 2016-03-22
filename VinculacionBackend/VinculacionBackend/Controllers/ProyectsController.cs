@@ -58,7 +58,14 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            return _services.UpdateProject(projectId, model);
+            var tmpProject = _services.UpdateProject(projectId, model);
+            
+            if (tmpProject == null)
+            {
+                return NotFound();
+            }
+            
+            return Ok(tmpProject);
         }
 
         // POST: api/Projects

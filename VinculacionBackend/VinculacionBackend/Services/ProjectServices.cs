@@ -36,28 +36,18 @@ namespace VinculacionBackend.Services
             return _projectRepository.GetProjectStudents(projectId);
         }
         
-        public IHttpActionResult UpdateProject(long projectId, ProjectModel model) 
+        public Project UpdateProject(long projectId, ProjectModel model) 
         {
             var tmpProject = _projectRepository.Get(projectId);
-            if (tmpProject != null)
-            {
-                tmpProject.Name = model.Name;
-                tmpProject.Description = model.Description;
-            }
-            else
-            {
-                return NotFound();
+            if (tmpProject == null) {
+                return null;
             }
 
-            try
-            {
-                _projectRepository.Save();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-               return InternalServerError(new DbUpdateConcurrencyException());
-            }
-            return Ok(tmpProject);
+            tmpProject.Name = model.Name;
+            tmpProject.Description = model.Description;
+            _projectRepository.Update(tmpProject);
+            _projectRepository.Save();
+            return tmpProject;
         }
     }
 }
