@@ -6,7 +6,13 @@ namespace VinculacionBackend.Services
 {
     public class HoursServices
     {
-        readonly HourRepository _hourRepository = new HourRepository();
+        private readonly IHourRepository _hourRepository;
+
+        public HoursServices(IHourRepository hourRepository)
+        {
+            this._hourRepository = hourRepository;
+        }
+
 
         public Hour Add(HourEntryModel hourModel)
         {

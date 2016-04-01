@@ -10,9 +10,15 @@ namespace VinculacionBackend.Services
 {
     public class StudentsServices : IUsersServices
     {
-        private VinculacionContext db = new VinculacionContext();
-        private readonly StudentRepository _studentRepository = new StudentRepository();
-        private readonly MajorRepository _majorRepository = new MajorRepository();
+        private readonly StudentRepository _studentRepository;
+        private readonly MajorRepository _majorRepository;
+
+        public StudentsServices(StudentRepository studentRepository, MajorRepository majorRepository)
+        {
+            _studentRepository = studentRepository;
+            _majorRepository = majorRepository;
+        }
+
         public  User Map(UserEntryModel userModel)
         {
             var newUser = new User();
@@ -30,9 +36,8 @@ namespace VinculacionBackend.Services
 
         public void Add(User user)
         {
-            db.Users.Add(user);
-            db.UserRoleRels.Add(new UserRole { User = user, Role = db.Roles.FirstOrDefault(x => x.Name == "Student") });
-            db.SaveChanges();
+            _studentRepository.Insert(user);
+            _studentRepository.Save();
             
         }
 
