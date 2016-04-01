@@ -4,7 +4,7 @@ using VinculacionBackend.Entities;
 
 namespace VinculacionBackend.Repositories
 {
-    interface IRepository<T> where T : class
+    public interface IRepository<T> where T : class
     {
         IQueryable<T> GetAll();
         T Get(long id);

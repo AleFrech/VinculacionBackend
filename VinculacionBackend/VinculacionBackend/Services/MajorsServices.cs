@@ -6,7 +6,13 @@ namespace VinculacionBackend.Services
 {
     public class MajorsServices
     {
-        readonly MajorRepository _majorRepository = new MajorRepository();
+        private readonly IMajorRepository _majorRepository;
+
+        public MajorsServices(IMajorRepository majorRepository)
+        {
+            _majorRepository = majorRepository;
+        }
+
         public Major Find(string majorId)
         {
             return _majorRepository.GetMajorByMajorId(majorId);

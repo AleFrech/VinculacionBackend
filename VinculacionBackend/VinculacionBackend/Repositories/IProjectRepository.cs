@@ -4,7 +4,7 @@ using VinculacionBackend.Entities;
 
 namespace VinculacionBackend.Repositories
 {
-    interface IProjectRepository : IRepository<Project>
+    public interface IProjectRepository : IRepository<Project>
     {
         IQueryable<User> GetProjectStudents(long projectId);
     }

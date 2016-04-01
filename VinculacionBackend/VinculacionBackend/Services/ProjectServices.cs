@@ -7,7 +7,13 @@ namespace VinculacionBackend.Services
 {
     public class ProjectServices
     {
-        readonly IProjectRepository _projectRepository = new ProjectRepository();
+        readonly IProjectRepository _projectRepository;
+
+        public ProjectServices(IProjectRepository projectRepository)
+        {
+            _projectRepository = projectRepository;
+        }
+
         public Project Find(long id)
         {
             return _projectRepository.Get(id);

@@ -7,6 +7,7 @@ using VinculacionBackend.Entities;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using System.Web.OData;
+using VinculacionBackend.Repositories;
 using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
@@ -14,7 +15,7 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class StudentsController : ApiController
     {
-        readonly StudentsServices _studentsServices = new StudentsServices();
+        public readonly StudentsServices StudentsServices = new StudentsServices(new StudentRepository(),new MajorRepository());
 
 
         // GET: api/Students
@@ -24,7 +25,7 @@ namespace VinculacionBackend.Controllers
         public IQueryable<User> GetStudents()
         {
 
-            return _studentsServices.AllUsers();
+            return StudentsServices.AllUsers();
         }
 
         // GET: api/Students/5
@@ -33,7 +34,7 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudent(string accountId)
         {
-            var student = _studentsServices.Find(accountId);
+            var student = StudentsServices.Find(accountId);
             if (student == null)
             {
                 return NotFound();
@@ -47,13 +48,13 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudentHour(string accountId)
         {
-            var student = _studentsServices.Find(accountId);
+            var student = StudentsServices.Find(accountId);
             if (student == null)
             {
                 return NotFound();
             }
 
-            var total = _studentsServices.StudentHours(accountId);
+            var total = StudentsServices.StudentHours(accountId);
             return Ok(total);
         }
 
@@ -61,7 +62,7 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IQueryable<User> GetStudents(string status)
         {
-            return _studentsServices.ListbyStatus(status);
+            return StudentsServices.ListbyStatus(status);
 
         }
 
@@ -76,7 +77,7 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest();
             }
-            var student = _studentsServices.VerifyUser(model.AccountId);
+            var student = StudentsServices.VerifyUser(model.AccountId);
             if (student != null)
             {
                 MailManager.SendSimpleMessage(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", //TODO crear interfaz
@@ -94,7 +95,7 @@ namespace VinculacionBackend.Controllers
         {
 
             var accountId = EncryptDecrypt.Decrypt(HttpContext.Current.Server.UrlDecode(guid));   //TODO Crear interfas
-            var student = _studentsServices.ActivateUser(accountId);
+            var student = StudentsServices.ActivateUser(accountId);
             if (student != null)
             {
 
@@ -115,7 +116,7 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest();
             }
-            var student = _studentsServices.RejectUser(model.AccountId);
+            var student = StudentsServices.RejectUser(model.AccountId);
             if (student != null)
             {
                 MailManager.SendSimpleMessage(student.Email, model.Message, "Vinculación");
@@ -135,8 +136,8 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            var newUser = _studentsServices.Map(userModel);
-            _studentsServices.Add(newUser);
+            var newUser = StudentsServices.Map(userModel);
+            StudentsServices.Add(newUser);
             var stringparameter = EncryptDecrypt.Encrypt(newUser.AccountId);
             MailManager.SendSimpleMessage(newUser.Email, "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
             return Ok(newUser);
@@ -149,7 +150,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult DeleteStudent(string accountId)
         {
 
-            User user = _studentsServices.DeleteUser(accountId);
+            User user = StudentsServices.DeleteUser(accountId);
             if (user != null)
             {
                 return Ok(user);
