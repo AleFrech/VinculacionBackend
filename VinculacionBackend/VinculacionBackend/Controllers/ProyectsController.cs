@@ -5,6 +5,7 @@ using VinculacionBackend.Entities;
 using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Models;
+using VinculacionBackend.Repositories;
 using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
@@ -12,7 +13,12 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ProjectsController : ApiController
     {
-        private ProjectServices _services = new ProjectServices();
+        private readonly ProjectServices _services;
+
+        public ProjectsController(ProjectServices services)
+        {
+            _services = services;
+        }
 
         // GET: api/Projects
         [Route("api/Projects")]

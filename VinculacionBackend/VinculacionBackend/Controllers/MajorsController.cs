@@ -4,6 +4,7 @@ using System.Web.Http.Description;
 using VinculacionBackend.Entities;
 using System.Web.Http.Cors;
 using System.Web.OData;
+using VinculacionBackend.Repositories;
 using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
@@ -11,7 +12,12 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class MajorsController : ApiController
     {
-        readonly MajorsServices _majorsServices = new MajorsServices();
+        private readonly MajorsServices _majorsServices;
+
+        public MajorsController(MajorsServices majorsServices)
+        {
+            _majorsServices = majorsServices;
+        }
 
         // GET: api/Majors
         [Route("api/Majors")]
