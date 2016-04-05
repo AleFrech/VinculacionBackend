@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
 using VinculacionBackend.Enums;
 using VinculacionBackend.Models;
@@ -8,7 +7,7 @@ using VinculacionBackend.Repositories;
 
 namespace VinculacionBackend.Services
 {
-    public class StudentsServices : IUsersServices
+    public class StudentsServices : IStudentsServices
     {
         private readonly StudentRepository _studentRepository;
         private readonly MajorRepository _majorRepository;
@@ -100,7 +99,7 @@ namespace VinculacionBackend.Services
             return _studentRepository.GetAll();
         }
 
-        public int StudentHours(string accountId)
+        public int GetStudentHours(string accountId)
         {
            return _studentRepository.GetStudentHours(accountId);
         }

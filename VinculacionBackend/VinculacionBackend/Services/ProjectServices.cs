@@ -7,7 +7,7 @@ namespace VinculacionBackend.Services
 {
     public class ProjectServices
     {
-        readonly IProjectRepository _projectRepository;
+        private readonly IProjectRepository _projectRepository;
 
         public ProjectServices(IProjectRepository projectRepository)
         {

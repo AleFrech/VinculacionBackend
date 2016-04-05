@@ -4,7 +4,7 @@ using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Services
 {
-    interface IUsersServices
+    interface IStudentsServices
     {
         User Map(UserEntryModel userModel);
         void Add(User user);

@@ -54,7 +54,7 @@ namespace VinculacionBackend.Controllers
                 return NotFound();
             }
 
-            var total = StudentsServices.StudentHours(accountId);
+            var total = StudentsServices.GetStudentHours(accountId);
             return Ok(total);
         }
 
