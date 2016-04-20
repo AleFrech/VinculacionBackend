@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
+using VinculacionBackend.Interfaces;
 
 namespace VinculacionBackend.Repositories
 {

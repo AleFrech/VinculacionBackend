@@ -16,6 +16,7 @@ namespace VinculacionBackend.Controllers
     public class StudentsController : ApiController
     {
         public readonly StudentsServices StudentsServices = new StudentsServices(new StudentRepository(),new MajorRepository());
+        public readonly SendEmail SendEmail = new SendEmail();
 
 
         // GET: api/Students
@@ -70,7 +71,7 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]
         [Route("api/Students/Verified")]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PutAcceptVerified(VerifiedModel model)  //TODO crear interfas
+        public IHttpActionResult PutAcceptVerified(VerifiedModel model) 
 
         {
             if (!ModelState.IsValid)
@@ -80,8 +81,7 @@ namespace VinculacionBackend.Controllers
             var student = StudentsServices.VerifyUser(model.AccountId);
             if (student != null)
             {
-                MailManager.SendSimpleMessage(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", //TODO crear interfaz
-                    "Vinculación");
+                SendEmail.Send(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", "Vinculación");
                 return Ok(student);
             }
 
@@ -89,12 +89,12 @@ namespace VinculacionBackend.Controllers
         }
 
         //Get: api/Students/Avtive
-        [ResponseType(typeof(User))]  //TODO crear interfaz
+        [ResponseType(typeof(User))] 
         [Route("api/Students/{guid}/Active")]
         public IHttpActionResult GetActiveStudent(string guid)
         {
 
-            var accountId = EncryptDecrypt.Decrypt(HttpContext.Current.Server.UrlDecode(guid));   //TODO Crear interfas
+            var accountId = EncryptDecrypt.Decrypt(HttpContext.Current.Server.UrlDecode(guid));
             var student = StudentsServices.ActivateUser(accountId);
             if (student != null)
             {
@@ -110,7 +110,7 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]
         [Route("api/Students/Rejected")]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PostRejectStudent(RejectedModel model) //TODO crear interefaz
+        public IHttpActionResult PostRejectStudent(RejectedModel model) 
         {
             if (!ModelState.IsValid)
             {
@@ -119,7 +119,7 @@ namespace VinculacionBackend.Controllers
             var student = StudentsServices.RejectUser(model.AccountId);
             if (student != null)
             {
-                MailManager.SendSimpleMessage(student.Email, model.Message, "Vinculación");
+                SendEmail.Send(student.Email, model.Message, "Vinculación");
                 return Ok(student);
             }
 
@@ -139,7 +139,9 @@ namespace VinculacionBackend.Controllers
             var newUser = StudentsServices.Map(userModel);
             StudentsServices.Add(newUser);
             var stringparameter = EncryptDecrypt.Encrypt(newUser.AccountId);
-            MailManager.SendSimpleMessage(newUser.Email, "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
+            SendEmail.Send(newUser.Email, 
+                "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)
+                + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active","Vinculación");
             return Ok(newUser);
         }
 

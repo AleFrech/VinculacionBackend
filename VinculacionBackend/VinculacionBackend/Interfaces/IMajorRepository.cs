@@ -1,6 +1,7 @@
 ﻿using VinculacionBackend.Entities;
+using VinculacionBackend.Repositories;
 
-namespace VinculacionBackend.Repositories
+namespace VinculacionBackend.Interfaces
 {
     public interface IMajorRepository : IRepository<Major>
     {

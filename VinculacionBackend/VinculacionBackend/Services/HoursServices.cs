@@ -1,6 +1,6 @@
 ﻿using VinculacionBackend.Entities;
+using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
-using VinculacionBackend.Repositories;
 
 namespace VinculacionBackend.Services
 {

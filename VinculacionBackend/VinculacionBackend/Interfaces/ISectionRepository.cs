@@ -1,6 +1,6 @@
 ﻿using VinculacionBackend.Entities;
 
-namespace VinculacionBackend.Repositories
+namespace VinculacionBackend.Interfaces
 {
     interface ISectionRepository : IRepository<Section>
     {

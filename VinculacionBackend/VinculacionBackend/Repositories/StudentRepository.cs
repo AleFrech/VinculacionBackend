@@ -4,6 +4,7 @@ using System.Linq;
 using VinculacionBackend.Database;
 using VinculacionBackend.Entities;
 using VinculacionBackend.Enums;
+using VinculacionBackend.Interfaces;
 using WebGrease.Css.Extensions;
 
 namespace VinculacionBackend.Repositories

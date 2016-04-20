@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using VinculacionBackend.Entities;
 using VinculacionBackend.Enums;
 
-namespace VinculacionBackend.Repositories
+namespace VinculacionBackend.Interfaces
 {
     interface IStudentRepository : IRepository<User>
     {
