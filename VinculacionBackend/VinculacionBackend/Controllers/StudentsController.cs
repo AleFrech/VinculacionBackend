@@ -9,6 +9,7 @@ using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Security;
+using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
@@ -73,13 +74,11 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]
         [Route("api/Students/Verified")]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PutAcceptVerified(VerifiedModel model) 
+
+        [ValidateModel]
+        public IHttpActionResult PutAcceptVerified(VerifiedModel model)  //TODO crear interfas
 
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
             var student = _studentsServices.VerifyUser(model.AccountId);
             if (student != null)
             {
@@ -112,12 +111,9 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]
         [Route("api/Students/Rejected")]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PostRejectStudent(RejectedModel model) 
+        [ValidateModel]
+        public IHttpActionResult PostRejectStudent(RejectedModel model) //TODO crear interefaz
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
             var student = _studentsServices.RejectUser(model.AccountId);
             if (student != null)
             {
@@ -131,19 +127,13 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]
         [Route("api/Students")]
         [CustomAuthorize(Roles = "Anonymous")]
+        [ValidateModel]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var newUser = _studentsServices.Map(userModel);
             _studentsServices.Add(newUser);
             var stringparameter = _encryption.Encrypt(newUser.AccountId);
-            _sendEmail.Send(newUser.Email, 
-                "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)
-                + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active","Vinculación");
+            _sendEmail.Send(newUser.Email, "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
             return Ok(newUser);
         }
 

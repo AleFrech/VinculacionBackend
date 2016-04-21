@@ -4,6 +4,7 @@ using System.Web.Http.Description;
 using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Models;
 using VinculacionBackend.Security;
 using VinculacionBackend.Services;
@@ -56,13 +57,9 @@ namespace VinculacionBackend.Controllers
         // PUT: api/Projects/5
         [ResponseType(typeof(void))]
         [Route("api/Projects/{projectId}")]
+        [ValidateModel]
         public IHttpActionResult PutProject(long projectId, ProjectModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var tmpProject = _services.UpdateProject(projectId, model);
             
             if (tmpProject == null)
@@ -77,12 +74,10 @@ namespace VinculacionBackend.Controllers
         [Route("api/Projects")]
         [ResponseType(typeof(Project))]
         [CustomAuthorize(Roles = "Admin,Professor")]
+        [ValidateModel]
         public IHttpActionResult PostProject(ProjectModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+
             var project =_services.Add(model);
             return Ok(project);
         }
