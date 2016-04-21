@@ -12,7 +12,13 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class HoursController : ApiController
     {
-        public readonly HoursServices HoursServices = new HoursServices(new HourRepository());
+        public readonly IHoursServices HoursServices;
+
+        public HoursController(IHoursServices hoursServices)
+        {
+            HoursServices = hoursServices;
+        }
+
         // POST: api/Hours
         [ResponseType(typeof(Hour))]
         [Route("api/Hours")]

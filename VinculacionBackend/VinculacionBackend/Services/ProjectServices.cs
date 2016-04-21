@@ -5,7 +5,7 @@ using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Services
 {
-    public class ProjectServices
+    public class ProjectServices : IProjectServices
     {
         private readonly IProjectRepository _projectRepository;
 

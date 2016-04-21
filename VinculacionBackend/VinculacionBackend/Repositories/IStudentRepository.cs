@@ -4,7 +4,7 @@ using VinculacionBackend.Enums;
 
 namespace VinculacionBackend.Repositories
 {
-    interface IStudentRepository : IRepository<User>
+    public interface IStudentRepository : IRepository<User>
     {
         User GetByAccountNumber(string accountNumber);
         User DeleteByAccountNumber(string accountNumber);

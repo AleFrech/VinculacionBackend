@@ -15,8 +15,12 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class StudentsController : ApiController
     {
-        public readonly StudentsServices StudentsServices = new StudentsServices(new StudentRepository(),new MajorRepository());
+        public readonly IStudentsServices StudentsServices;
 
+        public StudentsController(IStudentsServices studentServices)
+        {
+            StudentsServices = studentServices;
+        }
 
         // GET: api/Students
         [Route("api/Students")]

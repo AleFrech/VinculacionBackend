@@ -9,10 +9,10 @@ namespace VinculacionBackend.Services
 {
     public class StudentsServices : IStudentsServices
     {
-        private readonly StudentRepository _studentRepository;
-        private readonly MajorRepository _majorRepository;
+        private readonly IStudentRepository _studentRepository;
+        private readonly IMajorRepository _majorRepository;
 
-        public StudentsServices(StudentRepository studentRepository, MajorRepository majorRepository)
+        public StudentsServices(IStudentRepository studentRepository, IMajorRepository majorRepository)
         {
             _studentRepository = studentRepository;
             _majorRepository = majorRepository;
