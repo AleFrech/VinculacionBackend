@@ -13,6 +13,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using VinculacionBackend.Areas.HelpPage.ModelDescriptions;
 using VinculacionBackend.Areas.HelpPage.Models;
+using VinculacionBackend.Areas.HelpPage.SampleGeneration;
 
 namespace VinculacionBackend.Areas.HelpPage
 {
