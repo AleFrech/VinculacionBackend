@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using VinculacionBackend.Entities;
+using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
 
 namespace VinculacionBackend.Services

@@ -3,11 +3,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
-using VinculacionBackend.Entities;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using System.Web.OData;
-using VinculacionBackend.Repositories;
+using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Repositories;
+using VinculacionBackend.Security;
 using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
@@ -15,8 +16,9 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class StudentsController : ApiController
     {
-        public readonly StudentsServices StudentsServices = new StudentsServices(new StudentRepository(),new MajorRepository());
-        public readonly SendEmail SendEmail = new SendEmail();
+        private readonly StudentsServices _studentsServices = new StudentsServices(new StudentRepository(),new MajorRepository());
+        private readonly SendEmail _sendEmail = new SendEmail();
+        private readonly Encryption _encryption = new Encryption();
 
 
         // GET: api/Students
@@ -26,7 +28,7 @@ namespace VinculacionBackend.Controllers
         public IQueryable<User> GetStudents()
         {
 
-            return StudentsServices.AllUsers();
+            return _studentsServices.AllUsers();
         }
 
         // GET: api/Students/5
@@ -35,7 +37,7 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudent(string accountId)
         {
-            var student = StudentsServices.Find(accountId);
+            var student = _studentsServices.Find(accountId);
             if (student == null)
             {
                 return NotFound();
@@ -49,13 +51,13 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudentHour(string accountId)
         {
-            var student = StudentsServices.Find(accountId);
+            var student = _studentsServices.Find(accountId);
             if (student == null)
             {
                 return NotFound();
             }
 
-            var total = StudentsServices.GetStudentHours(accountId);
+            var total = _studentsServices.GetStudentHours(accountId);
             return Ok(total);
         }
 
@@ -63,7 +65,7 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IQueryable<User> GetStudents(string status)
         {
-            return StudentsServices.ListbyStatus(status);
+            return _studentsServices.ListbyStatus(status);
 
         }
 
@@ -78,10 +80,10 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest();
             }
-            var student = StudentsServices.VerifyUser(model.AccountId);
+            var student = _studentsServices.VerifyUser(model.AccountId);
             if (student != null)
             {
-                SendEmail.Send(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", "Vinculación");
+                _sendEmail.Send(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", "Vinculación");
                 return Ok(student);
             }
 
@@ -94,8 +96,8 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetActiveStudent(string guid)
         {
 
-            var accountId = EncryptDecrypt.Decrypt(HttpContext.Current.Server.UrlDecode(guid));
-            var student = StudentsServices.ActivateUser(accountId);
+            var accountId = _encryption.Decrypt(HttpContext.Current.Server.UrlDecode(guid));
+            var student = _studentsServices.ActivateUser(accountId);
             if (student != null)
             {
 
@@ -116,10 +118,10 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest();
             }
-            var student = StudentsServices.RejectUser(model.AccountId);
+            var student = _studentsServices.RejectUser(model.AccountId);
             if (student != null)
             {
-                SendEmail.Send(student.Email, model.Message, "Vinculación");
+                _sendEmail.Send(student.Email, model.Message, "Vinculación");
                 return Ok(student);
             }
 
@@ -136,10 +138,10 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            var newUser = StudentsServices.Map(userModel);
-            StudentsServices.Add(newUser);
-            var stringparameter = EncryptDecrypt.Encrypt(newUser.AccountId);
-            SendEmail.Send(newUser.Email, 
+            var newUser = _studentsServices.Map(userModel);
+            _studentsServices.Add(newUser);
+            var stringparameter = _encryption.Encrypt(newUser.AccountId);
+            _sendEmail.Send(newUser.Email, 
                 "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)
                 + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active","Vinculación");
             return Ok(newUser);
@@ -152,7 +154,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult DeleteStudent(string accountId)
         {
 
-            User user = StudentsServices.DeleteUser(accountId);
+            User user = _studentsServices.DeleteUser(accountId);
             if (user != null)
             {
                 return Ok(user);

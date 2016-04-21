@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
-using VinculacionBackend.Entities;
 using System.Web.Http.Cors;
 using System.Web.OData;
-using VinculacionBackend.Repositories;
+using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Security;
 using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
