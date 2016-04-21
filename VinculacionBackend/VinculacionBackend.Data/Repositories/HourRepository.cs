@@ -35,21 +35,21 @@ namespace VinculacionBackend.Data.Repositories
             db.Hours.Add(ent);
         }
 
-        //public Hour InsertHourFromModel(HourEntryModel model)
-        //{
-        //    var sectionProjectRel = Queryable.FirstOrDefault(db.SectionProjectsRels.Include(x => x.Project).Include(y => y.Section), z => z.Section.Id == model.SectionId && z.Project.Id == model.ProjectId);
-        //    var user = Queryable.FirstOrDefault(db.Users, x => x.AccountId == model.AccountId);
-        //    if (user != null && sectionProjectRel != null)
-        //    {
-        //        var hour = new Hour();
-        //        hour.Amount = model.Hour;
-        //        hour.SectionProject = sectionProjectRel;
-        //        hour.User = user;
-        //        Insert(hour);
-        //        return hour;
-        //    }
-        //    return null;
-        //}
+        public Hour InsertHourFromModel(string accountId,long sectionId,long projectId, int hour )
+        {
+            var sectionProjectRel = Queryable.FirstOrDefault(db.SectionProjectsRels.Include(x => x.Project).Include(y => y.Section), z => z.Section.Id == sectionId && z.Project.Id == projectId);
+            var user = Queryable.FirstOrDefault(db.Users, x => x.AccountId == accountId);
+            if (user != null && sectionProjectRel != null)
+            {
+                var Hour = new Hour();
+                Hour.Amount = hour;
+                Hour.SectionProject = sectionProjectRel;
+                Hour.User = user;
+                Insert(Hour);
+                return Hour;
+            }
+            return null;
+        }
 
         public void Save()
         {

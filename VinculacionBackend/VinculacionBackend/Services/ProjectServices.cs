@@ -33,11 +33,12 @@ namespace VinculacionBackend.Services
             return newProject;
         }
 
-        public void Add(ProjectModel model)
+        public Project Add(ProjectModel model)
         {
             var project = Map(model);
             _projectRepository.Insert(project);
             _projectRepository.Save();
+            return project;
         }
 
         public Project Delete(long projectId)

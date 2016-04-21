@@ -83,10 +83,7 @@ namespace VinculacionBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var project= new Project();
-            project.Name = model.Name;
-            project.Description = model.Description;
-            _services.Add(project);
+            var project =_services.Add(model);
             return Ok(project);
         }
 
