@@ -10,6 +10,7 @@ using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Security;
 using VinculacionBackend.ActionFilters;
+using VinculacionBackend.Interfaces;
 using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
@@ -17,10 +18,18 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class StudentsController : ApiController
     {
-        private readonly StudentsServices _studentsServices = new StudentsServices(new StudentRepository(),new MajorRepository());
-        private readonly SendEmail _sendEmail = new SendEmail();
-        private readonly Encryption _encryption = new Encryption();
 
+            
+        private readonly IStudentsServices _studentsServices;
+        private readonly ISendEmail _sendEmail;
+        private readonly IEncryption _encryption;
+
+        public StudentsController(IStudentsServices studentServices,ISendEmail sendEmail,IEncryption encryption)
+        {
+            _studentsServices = studentServices;
+            _sendEmail = sendEmail;
+            _encryption = encryption;
+        }
 
         // GET: api/Students
         [Route("api/Students")]

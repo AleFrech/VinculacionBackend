@@ -12,9 +12,9 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class MajorsController : ApiController
     {
-        private readonly MajorsServices _majorsServices;
+        private readonly IMajorsServices _majorsServices;
 
-        public MajorsController(MajorsServices majorsServices)
+        public MajorsController(IMajorsServices majorsServices)
         {
             _majorsServices = majorsServices;
         }

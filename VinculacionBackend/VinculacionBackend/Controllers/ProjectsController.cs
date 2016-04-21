@@ -14,9 +14,9 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ProjectsController : ApiController
     {
-        private readonly ProjectServices _services;
+        private readonly IProjectServices _services;
 
-        public ProjectsController(ProjectServices services)
+        public ProjectsController(IProjectServices services)
         {
             _services = services;
         }

@@ -6,7 +6,7 @@ using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Services
 {
-    public class ProjectServices
+    public class ProjectServices : IProjectServices
     {
         private readonly IProjectRepository _projectRepository;
 
@@ -24,6 +24,7 @@ namespace VinculacionBackend.Services
         {
             return _projectRepository.GetAll();
         }
+
 
         private Project Map(ProjectModel model )
         {

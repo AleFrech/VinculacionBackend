@@ -5,7 +5,7 @@ using VinculacionBackend.Interfaces;
 
 namespace VinculacionBackend.Services
 {
-    public class MajorsServices
+    public class MajorsServices : IMajorsServices
     {
         private readonly IMajorRepository _majorRepository;
 

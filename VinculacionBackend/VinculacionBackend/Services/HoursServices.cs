@@ -4,7 +4,7 @@ using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Services
 {
-    public class HoursServices
+    public class HoursServices : IHoursServices
     {
         private readonly IHourRepository _hourRepository;
 
