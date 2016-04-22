@@ -6,7 +6,7 @@ using System.Web.Http.Cors;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
-using VinculacionBackend.Security;
+using VinculacionBackend.Security.Security;
 
 
 namespace VinculacionBackend.Controllers

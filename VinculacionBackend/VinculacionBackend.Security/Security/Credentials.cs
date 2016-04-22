@@ -1,4 +1,4 @@
-namespace VinculacionBackend.Security
+namespace VinculacionBackend.Security.Security
 {
     public class Credentials
     {

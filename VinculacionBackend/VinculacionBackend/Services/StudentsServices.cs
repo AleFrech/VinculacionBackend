@@ -3,10 +3,9 @@ using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
-using VinculacionBackend.Security;
+using VinculacionBackend.Security.Interfaces;
 
 namespace VinculacionBackend.Services
 {

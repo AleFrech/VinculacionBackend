@@ -127,9 +127,7 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="ActionFilters\ValidateModelAttribute.cs" />
     <Compile Include="App_Start\AutofacConfig.cs" />
@@ -168,9 +166,6 @@
     <Compile Include="CustomDataNotations\AccountNumberExistAttribute.cs" />
     <Compile Include="CustomDataNotations\EmailExistAttribute.cs" />
     <Compile Include="CustomDataNotations\ValidDomainAttribute.cs" />
-    <Compile Include="Security\Credentials.cs" />
-    <Compile Include="Security\CustomAuthorizedAttribute.cs" />
-    <Compile Include="Security\Encryption.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HoursController.cs" />
     <Compile Include="Controllers\MajorsController.cs" />
@@ -178,11 +173,9 @@
     <Compile Include="Controllers\SectionsController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
-    <Compile Include="Security\CustomPrincipal.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IEncryption.cs" />
     <Compile Include="Interfaces\ISendEmail.cs" />
     <Compile Include="Models\HourEntryModel.cs" />
     <Compile Include="Models\LoginUserModel.cs" />
@@ -263,12 +256,13 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\VinculacionBackend.Data\VinculacionBackend.Data.csproj">
       <Project>{B0B0C837-EBA0-40BB-927F-3F857733C03A}</Project>
       <Name>VinculacionBackend.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VinculacionBackend.Security\VinculacionBackend.Security.csproj">
+      <Project>{AE6E75C5-1047-44E7-9EE9-1033355129FB}</Project>
+      <Name>VinculacionBackend.Security</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
