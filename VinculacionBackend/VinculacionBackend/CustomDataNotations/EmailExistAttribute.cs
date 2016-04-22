@@ -12,7 +12,7 @@ namespace VinculacionBackend.CustomDataNotations
                 return false;
             var email = value.ToString();
             var context = new VinculacionContext();
-            return Enumerable.All(context.Users, u => !u.Email.Equals(email));
+            return Enumerable.All(context.Users, u => !email.Equals(u.Email));
         }
     }
 }

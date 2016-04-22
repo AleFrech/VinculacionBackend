@@ -2,6 +2,7 @@
 using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
+using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
@@ -11,14 +12,15 @@ namespace VinculacionBackend.Services
 {
     public class StudentsServices : IStudentsServices
     {
-        private readonly StudentRepository _studentRepository;
-        private readonly MajorRepository _majorRepository;
-        private readonly Encryption _encryption= new Encryption();
+        private readonly IStudentRepository _studentRepository;
+        private readonly IMajorRepository _majorRepository;
+        private readonly IEncryption _encryption;
 
-        public StudentsServices(StudentRepository studentRepository, MajorRepository majorRepository)
+        public StudentsServices(IStudentRepository studentRepository, IMajorRepository majorRepository,IEncryption encryption)
         {
             _studentRepository = studentRepository;
             _majorRepository = majorRepository;
+            _encryption = encryption;
         }
 
         public  User Map(UserEntryModel userModel)
