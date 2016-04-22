@@ -12,7 +12,7 @@ namespace VinculacionBackend.CustomDataNotations
                 return false;
             var accountNumber = value.ToString();
             var context = new VinculacionContext();
-            return Enumerable.All(context.Users, u => !u.AccountId.Equals(accountNumber));
+            return Enumerable.All(context.Users, u => !accountNumber.Equals(u.AccountId));
 
         }
     }
