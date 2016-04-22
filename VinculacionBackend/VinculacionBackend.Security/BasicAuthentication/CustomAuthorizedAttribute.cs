@@ -12,7 +12,7 @@ using VinculacionBackend.Data.Database;
 using AuthorizeAttribute = System.Web.Http.AuthorizeAttribute;
 
 
-namespace VinculacionBackend.Security.Security
+namespace VinculacionBackend.Security.BasicAuthentication
 {
     public class CustomAuthorizeAttribute : AuthorizeAttribute
     {

@@ -4,7 +4,7 @@ using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Repositories;
-using VinculacionBackend.Security.Security;
+using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers

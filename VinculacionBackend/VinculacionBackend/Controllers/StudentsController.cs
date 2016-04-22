@@ -9,8 +9,8 @@ using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Interfaces;
+using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Security.Interfaces;
-using VinculacionBackend.Security.Security;
 
 namespace VinculacionBackend.Controllers
 {

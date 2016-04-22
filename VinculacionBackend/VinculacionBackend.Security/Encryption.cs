@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using VinculacionBackend.Security.Interfaces;
 
-namespace VinculacionBackend.Security.Security
+namespace VinculacionBackend.Security
 {
     public  class Encryption:IEncryption
     {

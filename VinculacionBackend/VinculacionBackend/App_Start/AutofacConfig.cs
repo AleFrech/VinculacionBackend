@@ -5,8 +5,8 @@ using Autofac.Integration.WebApi;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Interfaces;
+using VinculacionBackend.Security;
 using VinculacionBackend.Security.Interfaces;
-using VinculacionBackend.Security.Security;
 using VinculacionBackend.Services;
 
 namespace VinculacionBackend
