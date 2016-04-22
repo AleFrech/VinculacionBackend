@@ -6,7 +6,7 @@ using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Models;
-using VinculacionBackend.Security;
+using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers

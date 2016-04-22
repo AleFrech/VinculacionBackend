@@ -1,5 +1,5 @@
 ﻿using System.Web.Http;
-using VinculacionBackend.Security;
+using VinculacionBackend.Security.BasicAuthentication;
 
 namespace VinculacionBackend
 {

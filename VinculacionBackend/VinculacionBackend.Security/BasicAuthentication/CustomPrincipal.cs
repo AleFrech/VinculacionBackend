@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Principal;
 
-namespace VinculacionBackend.Security
+namespace VinculacionBackend.Security.BasicAuthentication
 {
     public class CustomPrincipal : IPrincipal
     {

@@ -7,19 +7,16 @@ using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
-using VinculacionBackend.Data.Repositories;
-using VinculacionBackend.Security;
 using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Interfaces;
-using VinculacionBackend.Services;
+using VinculacionBackend.Security.BasicAuthentication;
+using VinculacionBackend.Security.Interfaces;
 
 namespace VinculacionBackend.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class StudentsController : ApiController
-    {
-
-            
+    {            
         private readonly IStudentsServices _studentsServices;
         private readonly ISendEmail _sendEmail;
         private readonly IEncryption _encryption;
@@ -37,7 +34,6 @@ namespace VinculacionBackend.Controllers
         [EnableQuery]
         public IQueryable<User> GetStudents()
         {
-
             return _studentsServices.AllUsers();
         }
 
@@ -83,10 +79,8 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(User))]
         [Route("api/Students/Verified")]
         [CustomAuthorize(Roles = "Admin")]
-
         [ValidateModel]
-        public IHttpActionResult PutAcceptVerified(VerifiedModel model)  //TODO crear interfas
-
+        public IHttpActionResult PutAcceptVerified(VerifiedModel model) 
         {
             var student = _studentsServices.VerifyUser(model.AccountId);
             if (student != null)
@@ -121,7 +115,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Students/Rejected")]
         [CustomAuthorize(Roles = "Admin")]
         [ValidateModel]
-        public IHttpActionResult PostRejectStudent(RejectedModel model) //TODO crear interefaz
+        public IHttpActionResult PostRejectStudent(RejectedModel model)
         {
             var student = _studentsServices.RejectUser(model.AccountId);
             if (student != null)
@@ -145,7 +139,6 @@ namespace VinculacionBackend.Controllers
             _sendEmail.Send(newUser.Email, "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
             return Ok(newUser);
         }
-
         // DELETE: api/Students/5
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}")]

@@ -12,7 +12,7 @@ using VinculacionBackend.Data.Database;
 using AuthorizeAttribute = System.Web.Http.AuthorizeAttribute;
 
 
-namespace VinculacionBackend.Security
+namespace VinculacionBackend.Security.BasicAuthentication
 {
     public class CustomAuthorizeAttribute : AuthorizeAttribute
     {
@@ -27,7 +27,7 @@ namespace VinculacionBackend.Security
         }
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            VinculacionContext Context = new VinculacionContext();
+            VinculacionContext context = new VinculacionContext();
             try
             {
                 AuthenticationHeaderValue authValue = actionContext.Request.Headers.Authorization;
@@ -53,12 +53,12 @@ namespace VinculacionBackend.Security
                     if (parsedCredentials != null)
                     {
                         var user =
-                            Context.Users.FirstOrDefault(
+                            context.Users.FirstOrDefault(
                                 u => u.Email == parsedCredentials.Username && u.Password == parsedCredentials.Password);
                         if (user != null)
                         {
                             var roles =
-                                Context.UserRoleRels.Where(u => u.User.Id == user.Id).Select(m => m.Role.Name).ToArray();
+                                Enumerable.ToArray<string>(context.UserRoleRels.Where(u => u.User.Id == user.Id).Select(m => m.Role.Name));
                             var authorizedUsers = ConfigurationManager.AppSettings[UsersConfigKey];
                             var authorizedRoles = ConfigurationManager.AppSettings[RolesConfigKey];
                             Users = String.IsNullOrEmpty(Users) ? authorizedUsers : Users;

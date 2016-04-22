@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using VinculacionBackend.Interfaces;
+using VinculacionBackend.Security.Interfaces;
 
 namespace VinculacionBackend.Security
 {
