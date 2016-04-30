@@ -229,7 +229,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\ISendEmail.cs" />
+    <Compile Include="Interfaces\IEmail.cs" />
     <Compile Include="Models\HourEntryModel.cs" />
     <Compile Include="Models\LoginUserModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
@@ -237,15 +237,17 @@
     <Compile Include="Models\UserEntryModel.cs" />
     <Compile Include="Models\VerifiedModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SendEmail.cs" />
+    <Compile Include="Email.cs" />
     <Compile Include="Services\HoursServices.cs" />
     <Compile Include="Interfaces\IStudentsServices.cs" />
     <Compile Include="Services\IHoursServices.cs" />
     <Compile Include="Services\IMajorsServices.cs" />
     <Compile Include="Services\IProjectServices.cs" />
+    <Compile Include="Services\IUsersServices.cs" />
     <Compile Include="Services\MajorsServices.cs" />
     <Compile Include="Services\ProjectServices.cs" />
     <Compile Include="Services\StudentsServices.cs" />
+    <Compile Include="Services\UsersServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
