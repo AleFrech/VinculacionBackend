@@ -15,21 +15,21 @@ namespace VinculacionBackend.Data.Repositories
 		{
 			_db = new VinculacionContext();
 		}
-		public Section Delete(long id)
+		public User Delete(long id)
 		{
 			var found = Get(id);
 			_db.Users.Remove(found);
 			return found;
 		}
 
-		public Section Get(long id)
+		public User Get(long id)
 		{
-			return _db.Users.Include(a => a.Major).Include(b => b.Section).FirstOrDefault(d=>d.Id==id);
+			return _db.Users.FirstOrDefault(d=>d.Id==id);
 		}
 
-		public IQueryable<Section> GetAll()
+		public IQueryable<User> GetAll()
 		{
-			return _db.Users.Include(a => a.Major).Include(b => b.Section);
+			return _db.Users;
 		}
 
 		public void Insert(User ent)
@@ -47,9 +47,9 @@ namespace VinculacionBackend.Data.Repositories
 			_db.Entry(ent).State = EntityState.Modified;
 		}
 		
-		public IEnumerable<User> GetUserByEmailAndPassword(string email, string password)
+		public User GetUserByEmailAndPassword(string email, string password)
 		{
-			return _db.Users.Include(a => a.Major).Include(b => b.Section).FirstOrDefault(d=>d.Email == email && d.Password == password);
+			return _db.Users.FirstOrDefault(d=>d.Email == email && d.Password == password);
 		}
 	}
 }
