@@ -31,7 +31,6 @@ namespace VinculacionBackend.Services
             var newProject= new Project();
             newProject.Name = model.Name;
             newProject.Description = model.Description;
-            newProject.MajorIds = model.MajorIds;
 
             return newProject;
         }

@@ -12,6 +12,6 @@ namespace VinculacionBackend.Models
         public string Description { get; set; }
         [Required(ErrorMessage = "*requerido")]
         [MajorListIsNotEmpty(ErrorMessage = "*lista no puede ir vacia")]
-        public List<long> MajorIds { get; set; }
+        public List<string> MajorIds { get; set; }
     }
 }

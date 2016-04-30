@@ -218,6 +218,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="CustomDataNotations\AccountNumberExistAttribute.cs" />
     <Compile Include="CustomDataNotations\EmailExistAttribute.cs" />
+    <Compile Include="CustomDataNotations\MajorListIsNotEmptyAttribute.cs" />
     <Compile Include="CustomDataNotations\ValidDomainAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HoursController.cs" />

@@ -6,6 +6,7 @@ using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Services;
+using System.Web.Security;
 
 namespace VinculacionBackend.Controllers
 {

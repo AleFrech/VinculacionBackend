@@ -13,7 +13,7 @@ namespace VinculacionBackend.CustomDataNotations
         {
             if (value == null)
                 return false;
-            var list = (List<long>)value;
+            var list = (List<string>)value;
 
             return list.Count > 0;
         }
