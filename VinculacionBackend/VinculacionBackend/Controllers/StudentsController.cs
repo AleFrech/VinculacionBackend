@@ -133,6 +133,11 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+         
             var newUser = _studentsServices.Map(userModel);
             _studentsServices.Add(newUser);
             var stringparameter = _encryption.Encrypt(newUser.AccountId);

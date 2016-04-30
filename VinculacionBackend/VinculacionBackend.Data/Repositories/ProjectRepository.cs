@@ -19,7 +19,18 @@ namespace VinculacionBackend.Data.Repositories
         public Project Delete(long id)
         {
             var found = Get(id);
+            var majorRels = db.ProjectMajorRels.Where(x => x.Project.Id == found.Id);
+            foreach (var rel in majorRels)
+            {
+                db.ProjectMajorRels.Remove(rel);
+            }
+            var sectionRels = db.SectionProjectsRels.Where(x => x.Project.Id == found.Id);
+            foreach (var r in sectionRels)
+            {
+                db.SectionProjectsRels.Remove(r);
+            }
             db.Projects.Remove(found);
+           
             return found;
         }
 

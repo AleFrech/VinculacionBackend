@@ -16,7 +16,13 @@ namespace VinculacionBackend.Data.Repositories
         public Major Delete(long id)
         {
             var found = Get(id);
+            var rels = db.ProjectMajorRels.Where(x => x.Major.Id == found.Id);
+            foreach (var rel in rels)
+            {
+                db.ProjectMajorRels.Remove(rel);
+            }
             db.Majors.Remove(found);
+           
             return found;
         }
 
