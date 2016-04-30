@@ -32,7 +32,7 @@ namespace VinculacionBackend
             builder.RegisterType<HourRepository>().As<IHourRepository>().InstancePerRequest();
             builder.RegisterType<ProjectRepository>().As<IProjectRepository>().InstancePerRequest();
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerRequest();
-         builder.RegisterType<Email>().As<IEmail>().InstancePerRequest();
+            builder.RegisterType<Email>().As<IEmail>().InstancePerRequest();
             builder.RegisterType<Encryption>().As<IEncryption>().InstancePerRequest();
         }
 

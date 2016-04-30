@@ -23,7 +23,6 @@ namespace VinculacionBackend.Controllers
             _usersServices = usersServices;
         }
 
-
         [Route("api/Login")]
         [ResponseType(typeof (User))]
         [CustomAuthorize(Roles = "Anonymous")]
