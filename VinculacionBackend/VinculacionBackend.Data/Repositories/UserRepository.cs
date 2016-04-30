@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using VinculacionBackend.Data.Database;
@@ -8,47 +9,47 @@ namespace VinculacionBackend.Data.Repositories
 {
 	public class UserRepository : IUserRepository
 	{
-		private VinculacionContext db;
+		private readonly VinculacionContext _db;
 
 		public UserRepository()
 		{
-			db = new VinculacionContext();
+			_db = new VinculacionContext();
 		}
 		public Section Delete(long id)
 		{
 			var found = Get(id);
-			db.Users.Remove(found);
+			_db.Users.Remove(found);
 			return found;
 		}
 
 		public Section Get(long id)
 		{
-			return db.Users.Include(a => a.Major).Include(b => b.Section).FirstOrDefault(d=>d.Id==id);
+			return _db.Users.Include(a => a.Major).Include(b => b.Section).FirstOrDefault(d=>d.Id==id);
 		}
 
 		public IQueryable<Section> GetAll()
 		{
-			return db.Users.Include(a => a.Major).Include(b => b.Section);
+			return _db.Users.Include(a => a.Major).Include(b => b.Section);
 		}
 
 		public void Insert(User ent)
 		{
-			db.Users.Add(ent);
+			_db.Users.Add(ent);
 		}
 
 		public void Save()
 		{
-			db.SaveChanges();
+			_db.SaveChanges();
 		}
 
 		public void Update(User ent)
 		{
-			db.Entry(ent).State = EntityState.Modified;
+			_db.Entry(ent).State = EntityState.Modified;
 		}
 		
 		public IEnumerable<User> GetUserByEmailAndPassword(string email, string password)
 		{
-			return db.Users.Include(a => a.Major).Include(b => b.Section).FirstOrDefault(d=>d.Email == email && d.Password == password);
+			return _db.Users.Include(a => a.Major).Include(b => b.Section).FirstOrDefault(d=>d.Email == email && d.Password == password);
 		}
 	}
 }
