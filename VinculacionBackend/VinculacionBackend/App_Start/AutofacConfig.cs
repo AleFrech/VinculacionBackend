@@ -41,6 +41,7 @@ namespace VinculacionBackend
             builder.RegisterType<MajorsServices>().As<IMajorsServices>().InstancePerRequest();
             builder.RegisterType<HoursServices>().As<IHoursServices>().InstancePerRequest();
             builder.RegisterType<ProjectServices>().As<IProjectServices>().InstancePerRequest();
+            builder.RegisterType<SectionsServices>().As<ISectionsServices>().InstancePerRequest();
         }
     }
 }

@@ -63,11 +63,13 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\ISectionRepository.cs" />
     <Compile Include="Interfaces\IStudentRepository.cs" />
+    <Compile Include="Interfaces\IProfessorRepository.cs" />
     <Compile Include="Migrations\201603072340563_init.cs" />
     <Compile Include="Migrations\201603072340563_init.Designer.cs">
       <DependentUpon>201603072340563_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Repositories\ProfessorRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\HourRepository.cs" />
     <Compile Include="Repositories\MajorRepository.cs" />

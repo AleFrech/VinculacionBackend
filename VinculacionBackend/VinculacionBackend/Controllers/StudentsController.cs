@@ -8,6 +8,7 @@ using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
+using VinculacionBackend.CustomDataNotations;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Security.Interfaces;
@@ -38,16 +39,13 @@ namespace VinculacionBackend.Controllers
         }
 
         // GET: api/Students/5
+        [HandleApiError]
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}")]
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudent(string accountId)
         {
-            var student = _studentsServices.Find(accountId);
-            if (student == null)
-            {
-                return NotFound();
-            }
+            var student = _studentsServices.Find(accountId);  
             return Ok(student);
         }
 
