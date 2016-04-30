@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using VinculacionBackend.Data.Entities;
 
 namespace VinculacionBackend.Data.Interfaces
 {
-	interface IUserRepository : IRepository<User>
+	public interface IUserRepository : IRepository<User>
 	{
-		IEnumerable<User> GetUserByEmailAndPassword(string email, string password);
+		User GetUserByEmailAndPassword(string email, string password);
 	}
 }

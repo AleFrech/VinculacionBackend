@@ -3,10 +3,12 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
+using System.Web.UI;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Security.BasicAuthentication;
+using VinculacionBackend.Services;
 
 
 namespace VinculacionBackend.Controllers
@@ -14,8 +16,12 @@ namespace VinculacionBackend.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class LoginController : ApiController
     {
+        private readonly IUsersServices _usersServices;
 
-        private VinculacionContext db = new VinculacionContext();
+        public LoginController(IUsersServices usersServices)
+        {
+            _usersServices = usersServices;
+        }
 
 
         [Route("api/Login")]
@@ -28,7 +34,7 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = db.Users.FirstOrDefault(u => u.Email.Contains(loginUser.User) && u.Password == loginUser.Password);
+            var user = _usersServices.Find(loginUser.User, loginUser.Password);
 
           
                 if (user != null)

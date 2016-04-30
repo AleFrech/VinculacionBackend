@@ -63,6 +63,7 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\ISectionRepository.cs" />
     <Compile Include="Interfaces\IStudentRepository.cs" />
+    <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Migrations\201603072340563_init.cs" />
     <Compile Include="Migrations\201603072340563_init.Designer.cs">
       <DependentUpon>201603072340563_init.cs</DependentUpon>
@@ -74,6 +75,7 @@
     <Compile Include="Repositories\ProjectRepository.cs" />
     <Compile Include="Repositories\SectionRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

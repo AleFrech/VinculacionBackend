@@ -2,7 +2,7 @@
 
 namespace VinculacionBackend.Interfaces
 {
-    public interface ISendEmail
+    public interface IEmail
     {
         IRestResponse Send(string emailAdress, string message, string subject);
     }
