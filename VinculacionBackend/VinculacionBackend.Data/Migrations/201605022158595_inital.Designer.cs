@@ -7,13 +7,13 @@ namespace VinculacionBackend.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Inital : IMigrationMetadata
+    public sealed partial class inital : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Inital));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(inital));
         
         string IMigrationMetadata.Id
         {
-            get { return "201605022009210_Inital"; }
+            get { return "201605022158595_inital"; }
         }
         
         string IMigrationMetadata.Source
