@@ -1,8 +1,9 @@
-using System.Data.Entity.Migrations;
-
 namespace VinculacionBackend.Data.Migrations
 {
-    public partial class init : DbMigration
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class Inital : DbMigration
     {
         public override void Up()
         {

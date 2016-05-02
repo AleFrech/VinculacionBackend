@@ -1,11 +1,14 @@
-using System;
-using System.Data.Entity.Migrations;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 
 namespace VinculacionBackend.Data.Migrations
 {
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+
     internal sealed class Configuration : DbMigrationsConfiguration<VinculacionContext>
     {
         public Configuration()
@@ -20,7 +23,7 @@ namespace VinculacionBackend.Data.Migrations
             var clas = new Class { Name = "ANAL. Y DIS. DE SISTEMAS I" };
             var user = new User { AccountId = "21111111", Email = "carlos.castroy@unitec.edu", Name = "Carlos Castro", Status = Status.Verified, Major = null, Campus = "San Pedro Sula", CreationDate = DateTime.Now, ModificationDate = DateTime.Now, Password = "1234" };
             var professorRole = new Role { Name = "Professor" };
-            var studentRole = new Role {Name = "Student"};
+            var studentRole = new Role { Name = "Student" };
             var major1 = new Major { MajorId = "I - 01", Name = "INGENIERÍA EN SISTEMAS COMPUTACIONALES" };
             var user2 = new User
             {
@@ -40,6 +43,8 @@ namespace VinculacionBackend.Data.Migrations
                 Name = "Proyecto de Vinculacion Unitec",
                 Description = "Programa para el registro de horas de vinculacion a estudiantes de Unitec sps"
             };
+
+            var projectMajor = new ProjectMajor {Major = major1, Project = project};
 
             var sectionProject = new SectionProject { Section = section, Project = project };
             context.Users.AddOrUpdate(
@@ -91,7 +96,7 @@ namespace VinculacionBackend.Data.Migrations
             context.UserRoleRels.AddOrUpdate(
                 x => x.Id,
                 new UserRole { User = user, Role = professorRole },
-                new UserRole { User = user2, Role=studentRole}
+                new UserRole { User = user2, Role = studentRole }
                 );
 
 
@@ -108,6 +113,11 @@ namespace VinculacionBackend.Data.Migrations
             context.Projects.AddOrUpdate(
              x => x.Id,
              project
+                );
+
+            context.ProjectMajorRels.AddOrUpdate(
+                x => x.Id,
+                projectMajor
                 );
 
             context.Sections.AddOrUpdate(

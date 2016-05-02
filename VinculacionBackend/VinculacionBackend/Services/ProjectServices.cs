@@ -1,7 +1,6 @@
 using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Services
@@ -26,11 +25,12 @@ namespace VinculacionBackend.Services
         }
 
 
-        private Project Map(ProjectModel model )
+        private Project Map(ProjectModel model)
         {
-            var newProject= new Project();
+            var newProject = new Project();
             newProject.Name = model.Name;
             newProject.Description = model.Description;
+
             return newProject;
         }
 
@@ -53,11 +53,12 @@ namespace VinculacionBackend.Services
         {
             return _projectRepository.GetProjectStudents(projectId);
         }
-        
-        public Project UpdateProject(long projectId, ProjectModel model) 
+
+        public Project UpdateProject(long projectId, ProjectModel model)
         {
             var tmpProject = _projectRepository.Get(projectId);
-            if (tmpProject == null) {
+            if (tmpProject == null)
+            {
                 return null;
             }
 
@@ -68,4 +69,5 @@ namespace VinculacionBackend.Services
             return tmpProject;
         }
     }
+
 }

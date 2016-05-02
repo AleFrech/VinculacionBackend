@@ -5,6 +5,8 @@ using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
+using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Models;
 using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Services;
@@ -61,40 +63,41 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PutProject(long projectId, ProjectModel model)
         {
             var tmpProject = _services.UpdateProject(projectId, model);
-            
+
             if (tmpProject == null)
             {
                 return NotFound();
             }
-            
+
             return Ok(tmpProject);
         }
 
         // POST: api/Projects
         [Route("api/Projects")]
         [ResponseType(typeof(Project))]
-        [CustomAuthorize(Roles = "Admin,Professor")]
+        [CustomAuthorize(Roles = "Admin")]
         [ValidateModel]
         public IHttpActionResult PostProject(ProjectModel model)
         {
 
-            var project =_services.Add(model);
+            var project = _services.Add(model);
             return Ok(project);
+
         }
 
         // DELETE: api/Projects/5
-        [Route("api/Projects/{projectId}")]
-        [CustomAuthorize(Roles = "Admin")]
-        [ResponseType(typeof(Project))]
-        public IHttpActionResult DeleteProject(long projectId)
-        {
-            Project project = _services.Delete(projectId);
-            if (project == null)
-            {
-                return NotFound();
-            }
+        //[Route("api/Projects/{projectId}")]
+        //[CustomAuthorize(Roles = "Admin")]
+        //[ResponseType(typeof(Project))]
+        //public IHttpActionResult DeleteProject(long projectId)
+        //{
+        //    Project project = _services.Delete(projectId);
+        //    if (project == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(project);
-        }
+        //    return Ok(project);
+        //}
     }
 }
