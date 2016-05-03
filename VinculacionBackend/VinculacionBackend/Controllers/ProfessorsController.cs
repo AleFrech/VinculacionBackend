@@ -59,6 +59,7 @@ namespace VinculacionBackend.Controllers
 
         // DELETE: api/Professors/5
         [ResponseType(typeof(User))]
+        [Route("api/Professors/{accountId}")]
         [CustomAuthorize(Roles = "Admin")]
         public IHttpActionResult DeleteUser(string accountId)
         {
