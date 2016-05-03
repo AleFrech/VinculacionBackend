@@ -4,8 +4,8 @@ using System.Web.Http.Description;
 using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security.BasicAuthentication;
-using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
 {

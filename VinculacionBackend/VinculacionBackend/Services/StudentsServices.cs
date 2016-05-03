@@ -28,7 +28,7 @@ namespace VinculacionBackend.Services
             newUser.AccountId = userModel.AccountId;
             newUser.Name = userModel.Name;
             newUser.Password = _encryption.Encrypt(userModel.Password);
-            newUser.Major = _majorRepository.GetMajorByMajorId(userModel.MajorId); ;
+            newUser.Major = _majorRepository.GetMajorByMajorId(userModel.MajorId);
             newUser.Campus = userModel.Campus;
             newUser.Email = userModel.Email;
             newUser.Status = Status.Inactive;

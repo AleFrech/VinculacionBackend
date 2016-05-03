@@ -51,7 +51,7 @@ namespace VinculacionBackend.Controllers
             return Ok(student);
         }
 
-        // GET: api/Students/5
+
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}/Hour")]
         [CustomAuthorize(Roles = "Admin,Professor,Student")]

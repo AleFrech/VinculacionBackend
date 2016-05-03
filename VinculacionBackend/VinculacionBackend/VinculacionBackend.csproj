@@ -216,13 +216,13 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\ProfessorsController.cs" />
     <Compile Include="CustomDataNotations\AccountNumberExistAttribute.cs" />
     <Compile Include="CustomDataNotations\EmailExistAttribute.cs" />
     <Compile Include="CustomDataNotations\ValidDomainAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HoursController.cs" />
     <Compile Include="Controllers\MajorsController.cs" />
-    <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\SectionsController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
@@ -232,6 +232,7 @@
     <Compile Include="Interfaces\ISendEmail.cs" />
     <Compile Include="Models\HourEntryModel.cs" />
     <Compile Include="Models\LoginUserModel.cs" />
+    <Compile Include="Models\ProfessorEntryModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Models\RejectedModel.cs" />
     <Compile Include="Models\UserEntryModel.cs" />
@@ -240,10 +241,12 @@
     <Compile Include="SendEmail.cs" />
     <Compile Include="Services\HoursServices.cs" />
     <Compile Include="Interfaces\IStudentsServices.cs" />
-    <Compile Include="Services\IHoursServices.cs" />
-    <Compile Include="Services\IMajorsServices.cs" />
-    <Compile Include="Services\IProjectServices.cs" />
+    <Compile Include="Interfaces\IHoursServices.cs" />
+    <Compile Include="Interfaces\IMajorsServices.cs" />
+    <Compile Include="Interfaces\IProfessorsServices.cs" />
+    <Compile Include="Interfaces\IProjectServices.cs" />
     <Compile Include="Services\MajorsServices.cs" />
+    <Compile Include="Services\ProfessorsServices.cs" />
     <Compile Include="Services\ProjectServices.cs" />
     <Compile Include="Services\StudentsServices.cs" />
   </ItemGroup>
