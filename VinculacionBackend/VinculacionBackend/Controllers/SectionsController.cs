@@ -1,14 +1,10 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.ActionFilters;
-using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
-using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Services;
 

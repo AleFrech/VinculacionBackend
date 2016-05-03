@@ -1,4 +1,8 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
@@ -31,7 +35,8 @@ namespace VinculacionBackend
             builder.RegisterType<MajorRepository>().As<IMajorRepository>().InstancePerRequest();
             builder.RegisterType<HourRepository>().As<IHourRepository>().InstancePerRequest();
             builder.RegisterType<ProjectRepository>().As<IProjectRepository>().InstancePerRequest();
-            builder.RegisterType<SendEmail>().As<ISendEmail>().InstancePerRequest();
+            builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerRequest();
+            builder.RegisterType<Email>().As<IEmail>().InstancePerRequest();
             builder.RegisterType<Encryption>().As<IEncryption>().InstancePerRequest();
         }
 
@@ -40,8 +45,12 @@ namespace VinculacionBackend
             builder.RegisterType<StudentsServices>().As<IStudentsServices>().InstancePerRequest();
             builder.RegisterType<MajorsServices>().As<IMajorsServices>().InstancePerRequest();
             builder.RegisterType<HoursServices>().As<IHoursServices>().InstancePerRequest();
+            builder.RegisterType<UsersServices>().As<IUsersServices>().InstancePerRequest();
             builder.RegisterType<ProjectServices>().As<IProjectServices>().InstancePerRequest();
             builder.RegisterType<SectionsServices>().As<ISectionsServices>().InstancePerRequest();
         }
     }
+
+   
+
 }

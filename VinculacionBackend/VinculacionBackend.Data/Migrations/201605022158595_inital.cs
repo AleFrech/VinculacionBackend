@@ -1,8 +1,9 @@
-using System.Data.Entity.Migrations;
-
 namespace VinculacionBackend.Data.Migrations
 {
-    public partial class init : DbMigration
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class inital : DbMigration
     {
         public override void Up()
         {
@@ -126,6 +127,20 @@ namespace VinculacionBackend.Data.Migrations
                 .Index(t => t.User_Id);
             
             CreateTable(
+                "dbo.ProjectMajors",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                        Major_Id = c.Long(),
+                        Project_Id = c.Long(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Majors", t => t.Major_Id)
+                .ForeignKey("dbo.Projects", t => t.Project_Id)
+                .Index(t => t.Major_Id)
+                .Index(t => t.Project_Id);
+            
+            CreateTable(
                 "dbo.Roles",
                 c => new
                     {
@@ -170,6 +185,8 @@ namespace VinculacionBackend.Data.Migrations
             DropForeignKey("dbo.UserRoles", "Role_Id", "dbo.Roles");
             DropForeignKey("dbo.SectionUsers", "User_Id", "dbo.Users");
             DropForeignKey("dbo.SectionUsers", "Section_Id", "dbo.Sections");
+            DropForeignKey("dbo.ProjectMajors", "Project_Id", "dbo.Projects");
+            DropForeignKey("dbo.ProjectMajors", "Major_Id", "dbo.Majors");
             DropForeignKey("dbo.MajorUsers", "User_Id", "dbo.Users");
             DropForeignKey("dbo.MajorUsers", "Major_Id", "dbo.Majors");
             DropForeignKey("dbo.Hours", "User_Id", "dbo.Users");
@@ -184,6 +201,8 @@ namespace VinculacionBackend.Data.Migrations
             DropIndex("dbo.UserRoles", new[] { "Role_Id" });
             DropIndex("dbo.SectionUsers", new[] { "User_Id" });
             DropIndex("dbo.SectionUsers", new[] { "Section_Id" });
+            DropIndex("dbo.ProjectMajors", new[] { "Project_Id" });
+            DropIndex("dbo.ProjectMajors", new[] { "Major_Id" });
             DropIndex("dbo.MajorUsers", new[] { "User_Id" });
             DropIndex("dbo.MajorUsers", new[] { "Major_Id" });
             DropIndex("dbo.Users", new[] { "Major_Id" });
@@ -197,6 +216,7 @@ namespace VinculacionBackend.Data.Migrations
             DropTable("dbo.UserRoles");
             DropTable("dbo.SectionUsers");
             DropTable("dbo.Roles");
+            DropTable("dbo.ProjectMajors");
             DropTable("dbo.MajorUsers");
             DropTable("dbo.Majors");
             DropTable("dbo.Users");

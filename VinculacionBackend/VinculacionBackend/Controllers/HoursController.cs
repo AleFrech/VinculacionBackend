@@ -3,7 +3,6 @@ using System.Web.Http.Description;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using VinculacionBackend.Data.Entities;
-using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Services;
 
@@ -27,7 +26,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PostHour(HourEntryModel hourModel)
         {
             var hour = _hoursServices.Add(hourModel);
-            if (hour!=null)
+            if (hour != null)
             {
                 return Ok(hour);
             }

@@ -28,7 +28,7 @@ namespace VinculacionBackend.Security
             }
             catch (Exception ex)
             {
-                
+                Console.WriteLine(ex.Message);
             }
             return Convert.ToBase64String(ms.ToArray());
         }
