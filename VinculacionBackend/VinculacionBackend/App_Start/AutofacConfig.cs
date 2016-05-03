@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
-using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security;
 using VinculacionBackend.Security.Interfaces;
 using VinculacionBackend.Services;
+using VinculacionBackend.Data.Repositories;
+using VinculacionBackend.Data.Interfaces;
 
 namespace VinculacionBackend
 {
@@ -30,12 +26,14 @@ namespace VinculacionBackend
         }
 
         private static void RegisterRepositories(ContainerBuilder builder)
+
         {
             builder.RegisterType<StudentRepository>().As<IStudentRepository>().InstancePerRequest();
             builder.RegisterType<MajorRepository>().As<IMajorRepository>().InstancePerRequest();
             builder.RegisterType<HourRepository>().As<IHourRepository>().InstancePerRequest();
             builder.RegisterType<ProjectRepository>().As<IProjectRepository>().InstancePerRequest();
             builder.RegisterType<ProfessorRepository>().As<IProfessorRepository>().InstancePerRequest();
+            builder.RegisterType<SectionRepository>().As<ISectionRepository>().InstancePerRequest();
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerRequest();
             builder.RegisterType<Email>().As<IEmail>().InstancePerRequest();
             builder.RegisterType<Encryption>().As<IEncryption>().InstancePerRequest();
@@ -49,6 +47,7 @@ namespace VinculacionBackend
             builder.RegisterType<HoursServices>().As<IHoursServices>().InstancePerRequest();
             builder.RegisterType<UsersServices>().As<IUsersServices>().InstancePerRequest();
             builder.RegisterType<ProjectServices>().As<IProjectServices>().InstancePerRequest();
+            builder.RegisterType<SectionsServices>().As<ISectionsServices>().InstancePerRequest();
         }
     }
 

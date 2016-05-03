@@ -46,7 +46,10 @@ namespace VinculacionBackend.Services
 
         public User Find(string accountId)
         {
-        return _studentRepository.GetByAccountNumber(accountId);
+            var student = _studentRepository.GetByAccountNumber(accountId);
+            if(student==null)
+                throw new System.InvalidOperationException("Logfile cannot be read-only");
+            return student;
         }
 
         public IQueryable<User> ListbyStatus(string status)
