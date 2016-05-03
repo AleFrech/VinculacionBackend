@@ -26,11 +26,13 @@ namespace VinculacionBackend.Services
         }
 
 
-        private Project Map(ProjectModel model )
+        private Project Map(ProjectModel model)
         {
-            var newProject= new Project();
+            var newProject = new Project();
+            newProject.ProjectId = model.ProjectId;
             newProject.Name = model.Name;
             newProject.Description = model.Description;
+            newProject.Cost = model.Cost;
             return newProject;
         }
 
@@ -53,19 +55,22 @@ namespace VinculacionBackend.Services
         {
             return _projectRepository.GetProjectStudents(projectId);
         }
-        
-        public Project UpdateProject(long projectId, ProjectModel model) 
+
+        public Project UpdateProject(long projectId, ProjectModel model)
         {
             var tmpProject = _projectRepository.Get(projectId);
-            if (tmpProject == null) {
+            if (tmpProject == null)
+            {
                 return null;
             }
-
+            tmpProject.ProjectId = model.ProjectId;
             tmpProject.Name = model.Name;
             tmpProject.Description = model.Description;
+            tmpProject.Cost = model.Cost;
             _projectRepository.Update(tmpProject);
             _projectRepository.Save();
             return tmpProject;
         }
     }
+
 }

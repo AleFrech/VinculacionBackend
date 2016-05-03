@@ -26,7 +26,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PostHour(HourEntryModel hourModel)
         {
             var hour = _hoursServices.Add(hourModel);
-            if (hour!=null)
+            if (hour != null)
             {
                 return Ok(hour);
             }
