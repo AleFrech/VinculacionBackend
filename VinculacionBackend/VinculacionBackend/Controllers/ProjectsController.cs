@@ -5,8 +5,6 @@ using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
-using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Models;
 using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Services;

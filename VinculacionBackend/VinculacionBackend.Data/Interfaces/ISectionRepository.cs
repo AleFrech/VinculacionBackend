@@ -2,7 +2,7 @@
 
 namespace VinculacionBackend.Data.Interfaces
 {
-    interface ISectionRepository : IRepository<Section>
+    public interface ISectionRepository : IRepository<Section>
     {
         
     }
