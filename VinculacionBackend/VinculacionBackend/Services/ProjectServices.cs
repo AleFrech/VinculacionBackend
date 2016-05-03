@@ -28,9 +28,10 @@ namespace VinculacionBackend.Services
         private Project Map(ProjectModel model)
         {
             var newProject = new Project();
+            newProject.ProjectId = model.ProjectId;
             newProject.Name = model.Name;
             newProject.Description = model.Description;
-
+            newProject.Cost = model.Cost;
             return newProject;
         }
 
@@ -61,9 +62,10 @@ namespace VinculacionBackend.Services
             {
                 return null;
             }
-
+            tmpProject.ProjectId = model.ProjectId;
             tmpProject.Name = model.Name;
             tmpProject.Description = model.Description;
+            tmpProject.Cost = model.Cost;
             _projectRepository.Update(tmpProject);
             _projectRepository.Save();
             return tmpProject;
