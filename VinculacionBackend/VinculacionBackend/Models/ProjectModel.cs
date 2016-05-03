@@ -17,5 +17,8 @@ namespace VinculacionBackend.Models
         [Required(ErrorMessage = "*requerido")]
         [MajorListIsNotEmpty(ErrorMessage = "*lista no puede ir vacia")]
         public List<string> MajorIds { get; set; }
+        [Required(ErrorMessage ="*requerido")]
+        [SectionIdIsValid(ErrorMessage ="*Seccion no valida")]
+        public long SectionId { get; set; }
     }
 }
