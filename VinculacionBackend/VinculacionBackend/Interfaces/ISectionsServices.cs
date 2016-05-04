@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Services
 {
@@ -9,5 +10,6 @@ namespace VinculacionBackend.Services
         Section Delete(long sectionId);
         void Add(Section section);
         Section Find(long id);
+        bool AssignStudent(SectionStudentModel model);
     }
 }

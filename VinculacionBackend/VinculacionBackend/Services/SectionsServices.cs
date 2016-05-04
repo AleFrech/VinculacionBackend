@@ -1,16 +1,19 @@
 ﻿using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Services
 {
     public class SectionsServices : ISectionsServices
     {
         private readonly ISectionRepository _sectionsRepository;
+        private readonly IStudentRepository _studentRepository;
 
-        public SectionsServices(ISectionRepository sectionsRepository)
+        public SectionsServices(ISectionRepository sectionsRepository, IStudentRepository studentRepository)
         {
             _sectionsRepository = sectionsRepository;
+            _studentRepository = studentRepository;
         }
 
         public IQueryable<Section> All()
@@ -37,6 +40,17 @@ namespace VinculacionBackend.Services
         {
            return  _sectionsRepository.Get(id);
                  
+        }
+
+        public bool AssignStudent(SectionStudentModel model)
+        {
+            var section = _sectionsRepository.Get(model.SectionId);
+            var student = _studentRepository.GetByAccountNumber(model.StudentId);
+
+            if (section == null || student == null) return false;
+
+            _sectionsRepository.AssignStudent(section.Id, student.Id);
+            return true;
         }
     }
 }

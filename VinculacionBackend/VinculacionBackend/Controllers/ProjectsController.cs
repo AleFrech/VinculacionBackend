@@ -71,6 +71,21 @@ namespace VinculacionBackend.Controllers
             return Ok(tmpProject);
         }
 
+        [ResponseType(typeof(void))]
+        [Route("api/Projects/AssignSection")]
+        [ValidateModel]
+        public IHttpActionResult PostAssignSection(ProjectSectionModel model)
+        {
+            var assigned = _services.AssignSection(model);
+
+            if (!assigned)
+            {
+                return NotFound();
+            }
+
+            return Ok();
+        }
+
         // POST: api/Projects
         [Route("api/Projects")]
         [ResponseType(typeof(Project))]

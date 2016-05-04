@@ -7,6 +7,7 @@ using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Services;
+using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Controllers
 {
@@ -55,6 +56,21 @@ namespace VinculacionBackend.Controllers
             
             _sectionServices.Add(section);
             return Ok(section);
+        }
+
+        [Route("api/Sections/AssignStudent")]
+        [ResponseType(typeof(Section))]
+        [CustomAuthorize(Roles = "Admin,Professor")]
+        [ValidateModel]
+        public IHttpActionResult PostAssignStudent(SectionStudentModel model)
+        {
+
+            var assigned = _sectionServices.AssignStudent(model);
+            if(assigned)
+            {
+                return Ok();
+            }
+            return NotFound();
         }
 
         // DELETE: api/Sections/5

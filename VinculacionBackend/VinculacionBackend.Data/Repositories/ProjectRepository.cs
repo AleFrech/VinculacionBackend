@@ -78,15 +78,13 @@ namespace VinculacionBackend.Data.Repositories
             Insert(ent);
         }
 
-        public void AssignToSection(Project ent, long sectionId)
+        public void AssignToSection(long projectId, long sectionId)
         {
-            var project = Get(ent.Id);
+            var project = Get(projectId);
             var section = db.Sections.FirstOrDefault(x => x.Id == sectionId);
 
-            if(project != null && section != null)
-            {
-                db.SectionProjectsRels.Add(new SectionProject { Project = project, Section = section });
-            }
+            db.SectionProjectsRels.Add(new SectionProject { Project = project, Section = section });
+            
         }
     }
 }

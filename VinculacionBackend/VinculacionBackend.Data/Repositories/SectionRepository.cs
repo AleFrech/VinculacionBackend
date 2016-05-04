@@ -1,3 +1,4 @@
+using System;
 using System.Data.Entity;
 using System.Linq;
 using VinculacionBackend.Data.Database;
@@ -14,6 +15,15 @@ namespace VinculacionBackend.Data.Repositories
         {
             db = new VinculacionContext();
         }
+
+        public void AssignStudent(long sectionId, long studentId)
+        {
+            var section = Get(sectionId);
+            var student = db.Users.FirstOrDefault(x => x.Id == studentId);
+
+            db.SectionUserRels.Add(new SectionUser { Section = section, User = student });
+        }
+
         public Section Delete(long id)
         {
             var found = Get(id);

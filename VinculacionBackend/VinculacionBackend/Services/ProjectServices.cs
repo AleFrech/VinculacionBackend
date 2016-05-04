@@ -9,10 +9,12 @@ namespace VinculacionBackend.Services
     public class ProjectServices : IProjectServices
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly ISectionRepository _sectionRepository;
 
-        public ProjectServices(IProjectRepository projectRepository)
+        public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository)
         {
             _projectRepository = projectRepository;
+            _sectionRepository = sectionRepository;
         }
 
         public Project Find(long id)
@@ -70,6 +72,17 @@ namespace VinculacionBackend.Services
             _projectRepository.Update(tmpProject);
             _projectRepository.Save();
             return tmpProject;
+        }
+
+        public bool AssignSection(ProjectSectionModel model)
+        {
+            var project = _projectRepository.Get(model.ProjectId);
+            var section = _sectionRepository.Get(model.SectionId);
+
+            if (project == null || section == null) return false;
+
+            _projectRepository.AssignToSection(model.ProjectId, model.SectionId);
+            return true;
         }
     }
 

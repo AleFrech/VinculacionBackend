@@ -12,5 +12,6 @@ namespace VinculacionBackend.Interfaces
         Project Delete(long projectId);
         IQueryable<User> GetProjectStudents(long projectId);
         Project UpdateProject(long projectId, ProjectModel model);
+        bool AssignSection(ProjectSectionModel model);
     }
 }

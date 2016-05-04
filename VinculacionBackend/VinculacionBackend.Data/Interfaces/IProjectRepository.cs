@@ -8,6 +8,6 @@ namespace VinculacionBackend.Data.Interfaces
     {
         IQueryable<User> GetProjectStudents(long projectId);
         void Insert(Project ent, List<string> majorIds);
-        void AssignToSection(Project ent, long sectionId);
+        void AssignToSection(long projectId, long sectionId);
     }
 }
