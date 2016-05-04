@@ -1,6 +1,7 @@
 using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Services
@@ -38,7 +39,7 @@ namespace VinculacionBackend.Services
         public Project Add(ProjectModel model)
         {
             var project = Map(model);
-            _projectRepository.Insert(project);
+            _projectRepository.Insert(project, model.MajorIds, model.SectionId);
             _projectRepository.Save();
             return project;
         }

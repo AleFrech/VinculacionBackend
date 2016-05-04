@@ -66,13 +66,16 @@ namespace VinculacionBackend.Data.Repositories
             return users;
         }
 
-        public void Insert(Project ent, List<string> majorIds)
+        public void Insert(Project ent, List<string> majorIds, long sectionId)
         {
             var majors = db.Majors.Where(x => majorIds.Any(y => y == x.MajorId));
             foreach (var major in majors)
             {
                 db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
             }
+
+            var section = db.Sections.FirstOrDefault(x => x.Id == sectionId);
+            db.SectionProjectsRels.Add(new SectionProject { Project = ent, Section = section });
             Insert(ent);
         }
     }

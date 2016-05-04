@@ -166,4 +166,3 @@ namespace VinculacionBackend.Data.Migrations
         }
     }
 }
-

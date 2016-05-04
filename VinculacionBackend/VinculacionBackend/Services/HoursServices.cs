@@ -1,5 +1,6 @@
 ﻿using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Services

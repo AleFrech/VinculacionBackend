@@ -1,7 +1,7 @@
 using System.Linq;
 using VinculacionBackend.Data.Entities;
 
-namespace VinculacionBackend.Services
+namespace VinculacionBackend.Interfaces
 {
     public interface IMajorsServices
     {
