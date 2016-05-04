@@ -1,5 +1,6 @@
 ﻿using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Services
@@ -13,10 +14,9 @@ namespace VinculacionBackend.Services
             this._hourRepository = hourRepository;
         }
 
-
         public Hour Add(HourEntryModel hourModel)
         {
-            _hourRepository.InsertHourFromModel(hourModel.AccountId,hourModel.SectionId,hourModel.ProjectId,hourModel.Hour);
+            _hourRepository.InsertHourFromModel(hourModel.AccountId, hourModel.SectionId, hourModel.ProjectId, hourModel.Hour);
             _hourRepository.Save();
             return null;
         }

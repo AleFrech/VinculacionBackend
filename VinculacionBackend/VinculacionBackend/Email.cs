@@ -5,7 +5,7 @@ using VinculacionBackend.Interfaces;
 
 namespace VinculacionBackend
 {
-    public class SendEmail:ISendEmail
+    public class Email:IEmail
     {    
         public  IRestResponse Send(string emailAdress, string message, string subject)
         {

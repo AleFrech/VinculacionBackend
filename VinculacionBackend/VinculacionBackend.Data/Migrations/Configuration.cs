@@ -1,8 +1,8 @@
-using System;
-using System.Data.Entity.Migrations;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
+using System;
+using System.Data.Entity.Migrations;
 
 namespace VinculacionBackend.Data.Migrations
 {
@@ -18,9 +18,33 @@ namespace VinculacionBackend.Data.Migrations
         {
             var period = new Period { Number = 1, Year = 2016 };
             var clas = new Class { Name = "ANAL. Y DIS. DE SISTEMAS I" };
-            var user = new User { AccountId = "21111111", Email = "carlos.castroy@unitec.edu", Name = "Carlos Castro", Status = Status.Verified, Major = null, Campus = "San Pedro Sula", CreationDate = DateTime.Now, ModificationDate = DateTime.Now, Password = "1234" };
+            var user = new User
+            {
+                AccountId = "21111111",
+                Email = "carlos.castroy@unitec.edu",
+                Name = "Carlos Castro",
+                Status = Status.Verified,
+                Major = null,
+                Campus = "San Pedro Sula",
+                CreationDate = DateTime.Now,
+                ModificationDate = DateTime.Now,
+                Password = "1234"
+            };
+            var admin = new User
+            {
+                AccountId = "21212121",
+                Email = "admin@unitec.edu",
+                Name = "admin",
+                Status = Status.Verified,
+                Major = null,
+                Campus = "San Pedro Sula",
+                CreationDate = DateTime.Now,
+                ModificationDate = DateTime.Now,
+                Password = "admin"
+            };
             var professorRole = new Role { Name = "Professor" };
-            var studentRole = new Role {Name = "Student"};
+            var studentRole = new Role { Name = "Student" };
+            var adminRole = new Role { Name = "Admin" };
             var major1 = new Major { MajorId = "I - 01", Name = "INGENIERÍA EN SISTEMAS COMPUTACIONALES" };
             var user2 = new User
             {
@@ -37,9 +61,13 @@ namespace VinculacionBackend.Data.Migrations
             var section = new Section { Code = "INF405", Period = period, Class = clas, User = user };
             var project = new Project
             {
+                ProjectId = "CSPS-I-2013-test",
                 Name = "Proyecto de Vinculacion Unitec",
-                Description = "Programa para el registro de horas de vinculacion a estudiantes de Unitec sps"
+                Description = "Programa para el registro de horas de vinculacion a estudiantes de Unitec sps",
+                Cost = 10000000000
             };
+
+            var projectMajor = new ProjectMajor { Major = major1, Project = project };
 
             var sectionProject = new SectionProject { Section = section, Project = project };
             context.Users.AddOrUpdate(
@@ -86,12 +114,14 @@ namespace VinculacionBackend.Data.Migrations
                 x => x.Id,
                 studentRole,
                 professorRole,
-                new Role { Name = "Admin" }
+                adminRole
                 );
             context.UserRoleRels.AddOrUpdate(
                 x => x.Id,
                 new UserRole { User = user, Role = professorRole },
-                new UserRole { User = user2, Role=studentRole}
+                new UserRole { User = user2, Role = studentRole },
+                new UserRole { User = admin, Role = adminRole }
+
                 );
 
 
@@ -101,13 +131,18 @@ namespace VinculacionBackend.Data.Migrations
                 );
 
             context.Periods.AddOrUpdate(
-              x => x.Id,
-              period
+                x => x.Id,
+                period
                 );
 
             context.Projects.AddOrUpdate(
-             x => x.Id,
-             project
+                x => x.Id,
+                project
+                );
+
+            context.ProjectMajorRels.AddOrUpdate(
+                x => x.Id,
+                projectMajor
                 );
 
             context.Sections.AddOrUpdate(

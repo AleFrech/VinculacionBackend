@@ -2,7 +2,7 @@ using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Models;
 
-namespace VinculacionBackend.Services
+namespace VinculacionBackend.Interfaces
 {
     public interface IProjectServices
     {

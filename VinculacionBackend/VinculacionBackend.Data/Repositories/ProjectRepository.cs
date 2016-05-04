@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using VinculacionBackend.Data.Database;
@@ -17,7 +18,18 @@ namespace VinculacionBackend.Data.Repositories
         public Project Delete(long id)
         {
             var found = Get(id);
+            var majorRels = db.ProjectMajorRels.Where(x => x.Project.Id == found.Id);
+            foreach (var rel in majorRels)
+            {
+                db.ProjectMajorRels.Remove(rel);
+            }
+            var sectionRels = db.SectionProjectsRels.Where(x => x.Project.Id == found.Id);
+            foreach (var r in sectionRels)
+            {
+                db.SectionProjectsRels.Remove(r);
+            }
             db.Projects.Remove(found);
+
             return found;
         }
 
@@ -52,6 +64,19 @@ namespace VinculacionBackend.Data.Repositories
             var horas = db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d => d.Id == c.SectionProject.Id));
             var users = db.Users.Include(a => a.Major).Where(b => horas.Any(c => c.User.Id == b.Id));
             return users;
+        }
+
+        public void Insert(Project ent, List<string> majorIds, long sectionId)
+        {
+            var majors = db.Majors.Where(x => majorIds.Any(y => y == x.MajorId));
+            foreach (var major in majors)
+            {
+                db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
+            }
+
+            var section = db.Sections.FirstOrDefault(x => x.Id == sectionId);
+            db.SectionProjectsRels.Add(new SectionProject { Project = ent, Section = section });
+            Insert(ent);
         }
     }
 }
