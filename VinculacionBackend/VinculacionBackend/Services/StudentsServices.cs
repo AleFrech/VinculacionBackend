@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Linq;
+using System.Web;
 using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
@@ -46,12 +47,12 @@ namespace VinculacionBackend.Services
             
         }
 
-        [HandleApiError]
+      
         public User Find(string accountId) 
         {
             var student = _studentRepository.GetByAccountNumber(accountId);
-            if(student==null)
-                throw new NotFoundException("No se encontro al estudiante");
+           if(student==null)
+               throw new NotFoundException("No se encontro el alumno");
             return student;
         }
 
@@ -63,35 +64,27 @@ namespace VinculacionBackend.Services
         public User RejectUser(string accountId)
         {
 
-            var student = Find(accountId);
-            if (student != null)
-            {
-                student.Status = Status.Rejected;
-                _studentRepository.Save();
-           }
+            var student = Find(accountId);    
+            student.Status = Status.Rejected;
+           _studentRepository.Save();
+      
             return student;
         }
 
         public User ActivateUser(string accountId)
         {
             var student = Find(accountId);
-            if (student != null)
-            {
-                student.Status = Status.Active;
-                _studentRepository.Save();
-                
-            }
+           student.Status = Status.Active;
+          _studentRepository.Save();
+      
             return student;
         }
 
         public User VerifyUser(string accountId)
         {
             var student = Find(accountId);
-            if (student != null)
-            {
-                student.Status = Status.Verified;
-                _studentRepository.Save();
-            }
+            student.Status = Status.Verified;
+            _studentRepository.Save();
             return student;
         }
 
@@ -111,7 +104,10 @@ namespace VinculacionBackend.Services
 
         public int GetStudentHours(string accountId)
         {
-           return _studentRepository.GetStudentHours(accountId);
+           var total = _studentRepository.GetStudentHours(accountId);
+            if (total == 0)
+                throw new NotFoundException("No se encontro registro de horas para dicho estudiante");
+            return total;
         }
     }
 }

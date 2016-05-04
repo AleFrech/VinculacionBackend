@@ -1,4 +1,6 @@
 ﻿using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
+using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Security.BasicAuthentication;
 
 namespace VinculacionBackend
@@ -10,7 +12,7 @@ namespace VinculacionBackend
         {
 
             config.EnableCors();
-
+           // config.Services.Replace(typeof(IExceptionHandler), new MyExceptionHandler());
             config.Filters.Add(new CustomAuthorizeAttribute());
             // Web API configuration and services
 
@@ -21,7 +23,7 @@ namespace VinculacionBackend
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            );
+    );
         }
     }
 }

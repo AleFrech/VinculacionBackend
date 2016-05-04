@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -16,7 +17,9 @@ using VinculacionBackend.Security.Interfaces;
 
 namespace VinculacionBackend.Controllers
 {
+
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [NotFoundExceptionFilter]
     public class StudentsController : ApiController
     {            
         private readonly IStudentsServices _studentsServices;
@@ -41,13 +44,13 @@ namespace VinculacionBackend.Controllers
         }
 
         // GET: api/Students/5
-        [HandleApiError]
+
         [ResponseType(typeof(User))]
         [System.Web.Http.Route("api/Students/{accountId}")]
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudent(string accountId)
         {
-            var student = _studentsServices.Find(accountId);  
+            var student = _studentsServices.Find(accountId);
             return Ok(student);
         }
 
@@ -57,12 +60,6 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudentHour(string accountId)
         {
-            var student = _studentsServices.Find(accountId);
-            if (student == null)
-            {
-                return NotFound();
-            }
-
             var total = _studentsServices.GetStudentHours(accountId);
             return Ok(total);
         }
@@ -83,13 +80,8 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PutAcceptVerified(VerifiedModel model) 
         {
             var student = _studentsServices.VerifyUser(model.AccountId);
-            if (student != null)
-            {
-                _email.Send(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", "Vinculación");
-                return Ok(student);
-            }
-
-            return NotFound();
+            _email.Send(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", "Vinculación");
+            return Ok(student);
         }
 
         //Get: api/Students/Avtive
@@ -97,17 +89,9 @@ namespace VinculacionBackend.Controllers
         [System.Web.Http.Route("api/Students/{guid}/Active")]
         public IHttpActionResult GetActiveStudent(string guid)
         {
-
             var accountId = _encryption.Decrypt(HttpContext.Current.Server.UrlDecode(guid));
             var student = _studentsServices.ActivateUser(accountId);
-            if (student != null)
-            {
-
-                return Ok(student);
-            }
-
-            return NotFound();
-
+            return Ok(student);
         }
 
         //Post: api/Students/Rejected
@@ -118,13 +102,8 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PostRejectStudent(RejectedModel model)
         {
             var student = _studentsServices.RejectUser(model.AccountId);
-            if (student != null)
-            {
-                _email.Send(student.Email, model.Message, "Vinculación");
-                return Ok(student);
-            }
-
-            return NotFound();
+            _email.Send(student.Email, model.Message, "Vinculación");
+             return Ok(student);
         }
         // POST: api/Students
         [ResponseType(typeof(User))]
@@ -145,13 +124,8 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult DeleteStudent(string accountId)
         {
-
             User user = _studentsServices.DeleteUser(accountId);
-            if (user != null)
-            {
-                return Ok(user);
-            }
-            return NotFound();
+            return Ok(user);
         }
     }
 }
