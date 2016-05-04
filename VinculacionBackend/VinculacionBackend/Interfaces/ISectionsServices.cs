@@ -2,7 +2,7 @@
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Models;
 
-namespace VinculacionBackend.Services
+namespace VinculacionBackend.Interfaces
 {
     public interface ISectionsServices
     {
@@ -11,5 +11,6 @@ namespace VinculacionBackend.Services
         void Add(Section section);
         Section Find(long id);
         bool AssignStudent(SectionStudentModel model);
+        Section Map(SectionEntryModel sectionModel);
     }
 }
