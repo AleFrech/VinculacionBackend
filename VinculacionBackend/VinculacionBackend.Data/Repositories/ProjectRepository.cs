@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -66,7 +67,7 @@ namespace VinculacionBackend.Data.Repositories
             return users;
         }
 
-        public void Insert(Project ent, List<string> majorIds, long sectionId)
+        public void Insert(Project ent, List<string> majorIds)
         {
             var majors = db.Majors.Where(x => majorIds.Any(y => y == x.MajorId));
             foreach (var major in majors)
@@ -74,9 +75,17 @@ namespace VinculacionBackend.Data.Repositories
                 db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
             }
 
-            var section = db.Sections.FirstOrDefault(x => x.Id == sectionId);
-            db.SectionProjectsRels.Add(new SectionProject { Project = ent, Section = section });
             Insert(ent);
+        }
+
+        public void AssignToSection(long projectId, long sectionId)
+        {
+            var project = Get(projectId);
+            var section = db.Sections.FirstOrDefault(x => x.Id == sectionId);
+
+            db.SectionProjectsRels.Add(new SectionProject { Project = project, Section = section });
+
+            
         }
     }
 }

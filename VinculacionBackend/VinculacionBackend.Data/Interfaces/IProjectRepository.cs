@@ -7,6 +7,7 @@ namespace VinculacionBackend.Data.Interfaces
     public interface IProjectRepository : IRepository<Project>
     {
         IQueryable<User> GetProjectStudents(long projectId);
-        void Insert(Project ent, List<string> majorIds, long sectionId);
+        void Insert(Project ent, List<string> majorIds);
+        void AssignToSection(long projectId, long sectionId);
     }
 }
