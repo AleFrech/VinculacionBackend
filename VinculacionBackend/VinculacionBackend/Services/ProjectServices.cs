@@ -39,7 +39,7 @@ namespace VinculacionBackend.Services
         public Project Add(ProjectModel model)
         {
             var project = Map(model);
-            _projectRepository.Insert(project, model.MajorIds, model.SectionId);
+            _projectRepository.Insert(project, model.MajorIds);
             _projectRepository.Save();
             return project;
         }

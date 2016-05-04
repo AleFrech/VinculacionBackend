@@ -4,6 +4,5 @@ namespace VinculacionBackend.Data.Interfaces
 {
     public interface ISectionRepository : IRepository<Section>
     {
-        
     }
 }
