@@ -82,6 +82,7 @@ namespace VinculacionBackend.Services
             if (project == null || section == null) return false;
 
             _projectRepository.AssignToSection(model.ProjectId, model.SectionId);
+            _projectRepository.Save();
             return true;
         }
     }

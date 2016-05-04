@@ -69,6 +69,7 @@ namespace VinculacionBackend.Services
             if (section == null || student == null) return false;
 
             _sectionsRepository.AssignStudent(section.Id, student.Id);
+            _sectionsRepository.Save();
             return true;
         }
     }

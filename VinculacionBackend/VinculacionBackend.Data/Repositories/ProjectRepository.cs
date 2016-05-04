@@ -84,6 +84,7 @@ namespace VinculacionBackend.Data.Repositories
             var section = db.Sections.FirstOrDefault(x => x.Id == sectionId);
 
             db.SectionProjectsRels.Add(new SectionProject { Project = project, Section = section });
+
             
         }
     }
