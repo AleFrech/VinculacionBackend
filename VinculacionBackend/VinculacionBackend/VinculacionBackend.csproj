@@ -236,6 +236,7 @@
     <Compile Include="Models\ProfessorEntryModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Models\RejectedModel.cs" />
+    <Compile Include="Models\SectionEntryModel.cs" />
     <Compile Include="Models\UserEntryModel.cs" />
     <Compile Include="Models\VerifiedModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

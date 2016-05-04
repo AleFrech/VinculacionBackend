@@ -5,8 +5,9 @@ using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Interfaces;
+using VinculacionBackend.Models;
 using VinculacionBackend.Security.BasicAuthentication;
-using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
 {
@@ -50,9 +51,9 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(Section))]
         [CustomAuthorize(Roles = "Admin,Professor")]
         [ValidateModel]
-        public IHttpActionResult PostSection(Section section)
+        public IHttpActionResult PostSection(SectionEntryModel sectionModel)
         {
-            
+            var section=_sectionServices.Map(sectionModel);
             _sectionServices.Add(section);
             return Ok(section);
         }
