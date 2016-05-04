@@ -1,5 +1,7 @@
 ﻿using System;
+using System.CodeDom;
 using System.Linq;
+using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
@@ -44,9 +46,13 @@ namespace VinculacionBackend.Services
             
         }
 
-        public User Find(string accountId)
+        [HandleApiError]
+        public User Find(string accountId) 
         {
-        return _studentRepository.GetByAccountNumber(accountId);
+            var student = _studentRepository.GetByAccountNumber(accountId);
+            if(student==null)
+                throw new NotFoundException("No se encontro al estudiante");
+            return student;
         }
 
         public IQueryable<User> ListbyStatus(string status)

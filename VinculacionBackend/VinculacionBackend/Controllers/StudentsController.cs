@@ -5,6 +5,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
+using System.Web.Mvc;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
@@ -29,9 +30,10 @@ namespace VinculacionBackend.Controllers
         }
 
         // GET: api/Students
-        [Route("api/Students")]
+        [System.Web.Http.Route("api/Students")]
         [CustomAuthorize(Roles = "Admin,Professor")]
         [EnableQuery]
+       
         public IQueryable<User> GetStudents()
         {
             return _studentsServices.AllUsers();
@@ -39,7 +41,7 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Students/5
         [ResponseType(typeof(User))]
-        [Route("api/Students/{accountId}")]
+        [System.Web.Http.Route("api/Students/{accountId}")]
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudent(string accountId)
         {
@@ -53,7 +55,7 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Students/5
         [ResponseType(typeof(User))]
-        [Route("api/Students/{accountId}/Hour")]
+        [System.Web.Http.Route("api/Students/{accountId}/Hour")]
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult GetStudentHour(string accountId)
         {
@@ -67,7 +69,7 @@ namespace VinculacionBackend.Controllers
             return Ok(total);
         }
 
-        [Route("api/Students/Filter/{status}")]
+        [System.Web.Http.Route("api/Students/Filter/{status}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IQueryable<User> GetStudents(string status)
         {
@@ -77,7 +79,7 @@ namespace VinculacionBackend.Controllers
 
         //Put: api/Students/Verified
         [ResponseType(typeof(User))]
-        [Route("api/Students/Verified")]
+        [System.Web.Http.Route("api/Students/Verified")]
         [CustomAuthorize(Roles = "Admin")]
         [ValidateModel]
         public IHttpActionResult PutAcceptVerified(VerifiedModel model) 
@@ -94,7 +96,7 @@ namespace VinculacionBackend.Controllers
 
         //Get: api/Students/Avtive
         [ResponseType(typeof(User))] 
-        [Route("api/Students/{guid}/Active")]
+        [System.Web.Http.Route("api/Students/{guid}/Active")]
         public IHttpActionResult GetActiveStudent(string guid)
         {
 
@@ -112,7 +114,7 @@ namespace VinculacionBackend.Controllers
 
         //Post: api/Students/Rejected
         [ResponseType(typeof(User))]
-        [Route("api/Students/Rejected")]
+        [System.Web.Http.Route("api/Students/Rejected")]
         [CustomAuthorize(Roles = "Admin")]
         [ValidateModel]
         public IHttpActionResult PostRejectStudent(RejectedModel model)
@@ -128,7 +130,7 @@ namespace VinculacionBackend.Controllers
         }
         // POST: api/Students
         [ResponseType(typeof(User))]
-        [Route("api/Students")]
+        [System.Web.Http.Route("api/Students")]
         [CustomAuthorize(Roles = "Anonymous")]
         [ValidateModel]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
@@ -141,7 +143,7 @@ namespace VinculacionBackend.Controllers
         }
         // DELETE: api/Students/5
         [ResponseType(typeof(User))]
-        [Route("api/Students/{accountId}")]
+        [System.Web.Http.Route("api/Students/{accountId}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult DeleteStudent(string accountId)
         {
