@@ -4,6 +4,6 @@ namespace VinculacionBackend.Data.Interfaces
 {
     public interface IHourRepository : IRepository<Hour>
     {
-       Hour InsertHourFromModel(string accountId, long sectionId, long projectId, int Hour);
+       Hour InsertHourFromModel(string accountId, long sectionId, long projectId, int hour,string professorUser);
     }
 }
