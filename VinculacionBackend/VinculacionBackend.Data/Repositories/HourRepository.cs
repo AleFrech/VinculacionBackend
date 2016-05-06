@@ -34,7 +34,6 @@ namespace VinculacionBackend.Data.Repositories
         public void Insert(Hour ent)
         {
             db.Hours.Add(ent);
-            Save();
         }
 
         public Hour InsertHourFromModel(string accountId,long sectionId,long projectId, int hour,string professorUser )
