@@ -5,6 +5,6 @@ namespace VinculacionBackend.Interfaces
 {
     public interface IHoursServices
     {
-        Hour Add(HourEntryModel hourModel);
+        Hour Add(HourEntryModel hourModel, string professorUser);
     }
 }

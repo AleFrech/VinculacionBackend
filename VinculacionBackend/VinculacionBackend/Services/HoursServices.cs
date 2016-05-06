@@ -14,11 +14,11 @@ namespace VinculacionBackend.Services
             this._hourRepository = hourRepository;
         }
 
-        public Hour Add(HourEntryModel hourModel)
+        public Hour Add(HourEntryModel hourModel,string professorUser)
         {
-            _hourRepository.InsertHourFromModel(hourModel.AccountId, hourModel.SectionId, hourModel.ProjectId, hourModel.Hour);
+            var hour =_hourRepository.InsertHourFromModel(hourModel.AccountId, hourModel.SectionId, hourModel.ProjectId, hourModel.Hour,professorUser);
             _hourRepository.Save();
-            return null;
+            return hour;
         }
     }
 }
