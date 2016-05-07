@@ -29,6 +29,12 @@ namespace VinculacionBackend.Data.Repositories
         public IQueryable<Hour> GetAll()
         {
             return db.Hours;
+        }
+
+        public IQueryable<Hour> GetStudentHours(string accountId)
+        {
+            return db.Hours.Where(hour => hour.User.AccountId == accountId)
+                .Include("SectionProject.Project");
         }     
 
         public void Insert(Hour ent)
