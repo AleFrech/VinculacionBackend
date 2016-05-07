@@ -1,5 +1,6 @@
 using System.Data.Entity;
 using System.Linq;
+using System.Web;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
@@ -41,12 +42,15 @@ namespace VinculacionBackend.Data.Repositories
             db.Hours.Add(ent);
         }
 
-        public Hour InsertHourFromModel(string accountId,long sectionId,long projectId, int hour )
+        public Hour InsertHourFromModel(string accountId,long sectionId,long projectId, int hour,string professorUser )
         {
             var sectionProjectRel = Queryable.FirstOrDefault(db.SectionProjectsRels.Include(x => x.Project).Include(y => y.Section), z => z.Section.Id == sectionId && z.Project.Id == projectId);
             var user = Queryable.FirstOrDefault(db.Users, x => x.AccountId == accountId);
-            if (user != null && sectionProjectRel != null)
+            var section = Queryable.FirstOrDefault(db.Sections.Include(x=>x.User).Include(x=>x.Class).Include(x=>x.Period), x => x.Id == sectionId);
+            if (user != null && sectionProjectRel != null && section !=null)
             {
+                if(section.User.Email!=professorUser)
+                    throw new HttpException(401,"Unauthorized Access");
                 var Hour = new Hour();
                 Hour.Amount = hour;
                 Hour.SectionProject = sectionProjectRel;
