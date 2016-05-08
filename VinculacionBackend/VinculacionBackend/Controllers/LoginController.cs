@@ -37,7 +37,8 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = _usersServices.Find(loginUser.User, loginUser.Password);
+            var passw = _encryption.Encrypt(loginUser.Password);
+            var user = _usersServices.Find(loginUser.User, _encryption.Encrypt(loginUser.Password));
 
           
                 if (user != null)
