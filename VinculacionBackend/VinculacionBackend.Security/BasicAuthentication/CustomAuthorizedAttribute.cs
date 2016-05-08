@@ -34,7 +34,7 @@ namespace VinculacionBackend.Security.BasicAuthentication
                 if (authValue == null)
                 {
                     CurrentUser = new CustomPrincipal("", new string[] { "Anonymous" });
-                    if (!String.IsNullOrEmpty(Roles))
+                    if (!string.IsNullOrEmpty(Roles))
                     {
                         if (!CurrentUser.IsInRole(Roles))
                         {
@@ -46,52 +46,44 @@ namespace VinculacionBackend.Security.BasicAuthentication
                         }
                     }
                 }
-                if (authValue != null && !String.IsNullOrWhiteSpace(authValue.Parameter) &&
-                    authValue.Scheme == BasicAuthResponseHeaderValue)
+                if (string.IsNullOrWhiteSpace(authValue?.Parameter) || authValue.Scheme != BasicAuthResponseHeaderValue)
+                    return;
+                var parsedCredentials = ParseAuthorizationHeader(authValue.Parameter);
+                if (parsedCredentials == null) return;
+                var user =
+                    context.Users.FirstOrDefault(
+                        u => u.Email == parsedCredentials.Username && u.Password == parsedCredentials.Password);
+                if (user == null) return;
                 {
-                    Credentials parsedCredentials = ParseAuthorizationHeader(authValue.Parameter);
-                    if (parsedCredentials != null)
+                    var roles =
+                        Enumerable.ToArray<string>(context.UserRoleRels.Where(u => u.User.Id == user.Id).Select(m => m.Role.Name));
+                    var authorizedUsers = ConfigurationManager.AppSettings[UsersConfigKey];
+                    var authorizedRoles = ConfigurationManager.AppSettings[RolesConfigKey];
+                    Users = string.IsNullOrEmpty(Users) ? authorizedUsers : Users;
+                    Roles = string.IsNullOrEmpty(Roles) ? authorizedRoles : Roles;
+                    CurrentUser = new CustomPrincipal(parsedCredentials.Username, roles);
+                    if (HttpContext.Current != null)
                     {
-                        var user =
-                            context.Users.FirstOrDefault(
-                                u => u.Email == parsedCredentials.Username && u.Password == parsedCredentials.Password);
-                        if (user != null)
+                        HttpContext.Current.User = CurrentUser;
+                    }
+                    if (!string.IsNullOrEmpty(Roles))
+                    {
+                        if (!CurrentUser.IsInRole(Roles))
                         {
-                            var roles =
-                                Enumerable.ToArray<string>(context.UserRoleRels.Where(u => u.User.Id == user.Id).Select(m => m.Role.Name));
-                            var authorizedUsers = ConfigurationManager.AppSettings[UsersConfigKey];
-                            var authorizedRoles = ConfigurationManager.AppSettings[RolesConfigKey];
-                            Users = String.IsNullOrEmpty(Users) ? authorizedUsers : Users;
-                            Roles = String.IsNullOrEmpty(Roles) ? authorizedRoles : Roles;
-                            CurrentUser = new CustomPrincipal(parsedCredentials.Username, roles);
-                            if (HttpContext.Current != null)
-                            {
-                                HttpContext.Current.User = CurrentUser;
-                            }
-                            if (!String.IsNullOrEmpty(Roles))
-                            {
-                                if (!CurrentUser.IsInRole(Roles))
-                                {
-                                    actionContext.Response =
-                                        actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
-                                    actionContext.Response.Headers.Add(BasicAuthResponseHeader,
-                                        BasicAuthResponseHeaderValue);
-                                    return;
-                                }
-                            }
-                            if (!String.IsNullOrEmpty(Users))
-                            {
-                                if (!Users.Contains(CurrentUser.UserId.ToString()))
-                                {
-                                    actionContext.Response =
-                                        actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
-                                    actionContext.Response.Headers.Add(BasicAuthResponseHeader,
-                                        BasicAuthResponseHeaderValue);
-                                    return;
-                                }
-                            }
+                            actionContext.Response =
+                                actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
+                            actionContext.Response.Headers.Add(BasicAuthResponseHeader,
+                                BasicAuthResponseHeaderValue);
+                            return;
                         }
                     }
+                    if (string.IsNullOrEmpty(Users)) return;
+                    if (Users.Contains(CurrentUser.UserId.ToString())) return;
+                    actionContext.Response =
+                        actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
+                    actionContext.Response.Headers.Add(BasicAuthResponseHeader,
+                        BasicAuthResponseHeaderValue);
+                    return;
                 }
             }
             catch (Exception e)

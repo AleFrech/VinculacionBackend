@@ -61,14 +61,14 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PutProject(long projectId, ProjectModel model)
         {
-            var tmpProject = _services.UpdateProject(projectId, model);
+            var project = _services.UpdateProject(projectId, model);
 
-            if (tmpProject == null)
+            if (project == null)
             {
                 return NotFound();
             }
 
-            return Ok(tmpProject);
+            return Ok(project);
         }
 
         // POST: api/Projects
@@ -84,19 +84,6 @@ namespace VinculacionBackend.Controllers
 
         }
 
-        // DELETE: api/Projects/5
-        //[Route("api/Projects/{projectId}")]
-        //[CustomAuthorize(Roles = "Admin")]
-        //[ResponseType(typeof(Project))]
-        //public IHttpActionResult DeleteProject(long projectId)
-        //{
-        //    Project project = _services.Delete(projectId);
-        //    if (project == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(project);
-        //}
+        
     }
 }

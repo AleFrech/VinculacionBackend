@@ -9,6 +9,7 @@ using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 using System.Web.Http.Results;
 using System.Web.Mvc;
+using VinculacionBackend.Exceptions;
 
 namespace VinculacionBackend.ActionFilters
 {
