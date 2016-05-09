@@ -5,7 +5,7 @@ using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
-using VinculacionBackend.Security.Interfaces;
+using IEncryption = VinculacionBackend.Data.Interfaces.IEncryption;
 
 namespace VinculacionBackend.Services
 {

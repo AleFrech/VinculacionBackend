@@ -3,7 +3,7 @@ using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using System;
 using System.Data.Entity.Migrations;
-using VinculacionBackend.Security.Interfaces;
+using VinculacionBackend.Data.Interfaces;
 
 namespace VinculacionBackend.Data.Migrations
 {

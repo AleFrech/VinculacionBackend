@@ -1,4 +1,4 @@
-﻿namespace VinculacionBackend.Security.Interfaces
+﻿namespace VinculacionBackend.Data.Interfaces
 {
     public interface IEncryption
     {

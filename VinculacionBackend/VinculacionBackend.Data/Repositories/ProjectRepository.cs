@@ -19,29 +19,23 @@ namespace VinculacionBackend.Data.Repositories
         public Project Delete(long id)
         {
             var found = Get(id);
-            var majorRels = db.ProjectMajorRels.Where(x => x.Project.Id == found.Id);
-            foreach (var rel in majorRels)
-            {
-                db.ProjectMajorRels.Remove(rel);
-            }
-            var sectionRels = db.SectionProjectsRels.Where(x => x.Project.Id == found.Id);
-            foreach (var r in sectionRels)
-            {
-                db.SectionProjectsRels.Remove(r);
-            }
-            db.Projects.Remove(found);
 
+            if(found != null){
+                found.IsDeleted = true;
+                Save();
+            }
+            
             return found;
         }
 
         public Project Get(long id)
         {
-            return db.Projects.Find(id);
+            return db.Projects.FirstOrDefault(x=>x.Id == id && x.IsDeleted == false);
         }
 
         public IQueryable<Project> GetAll()
         {
-            return db.Projects;
+            return db.Projects.Where(x=>x.IsDeleted == false);
         }
 
         public void Insert(Project ent)

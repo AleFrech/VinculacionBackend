@@ -99,19 +99,19 @@ namespace VinculacionBackend.Controllers
 
         }
 
-        // DELETE: api/Projects/5
-        //[Route("api/Projects/{projectId}")]
-        //[CustomAuthorize(Roles = "Admin")]
-        //[ResponseType(typeof(Project))]
-        //public IHttpActionResult DeleteProject(long projectId)
-        //{
-        //    Project project = _services.Delete(projectId);
-        //    if (project == null)
-        //    {
-        //        return NotFound();
-        //    }
+        //DELETE: api/Projects/5
+        [Route("api/Projects/{projectId}")]
+        [CustomAuthorize(Roles = "Admin")]
+        [ResponseType(typeof(Project))]
+        public IHttpActionResult DeleteProject(long projectId)
+        {
+            Project project = _services.Delete(projectId);
+            if (project == null)
+            {
+                return NotFound();
+            }
 
-        //    return Ok(project);
-        //}
+            return Ok(project);
+        }
     }
 }
