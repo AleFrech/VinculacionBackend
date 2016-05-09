@@ -99,7 +99,7 @@ namespace VinculacionBackend.Controllers
 
         }
 
-        DELETE: api/Projects/5
+        //DELETE: api/Projects/5
         [Route("api/Projects/{projectId}")]
         [CustomAuthorize(Roles = "Admin")]
         [ResponseType(typeof(Project))]
