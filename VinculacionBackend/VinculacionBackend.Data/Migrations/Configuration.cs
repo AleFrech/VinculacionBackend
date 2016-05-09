@@ -3,13 +3,16 @@ using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using System;
 using System.Data.Entity.Migrations;
+using VinculacionBackend.Security.Interfaces;
 
 namespace VinculacionBackend.Data.Migrations
 {
     internal sealed class Configuration : DbMigrationsConfiguration<VinculacionContext>
     {
-        public Configuration()
+        private IEncryption _encryption;
+        public Configuration(IEncryption encryption)
         {
+            _encryption = encryption;
             AutomaticMigrationsEnabled = true;
             SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
         }
@@ -28,7 +31,7 @@ namespace VinculacionBackend.Data.Migrations
                 Campus = "San Pedro Sula",
                 CreationDate = DateTime.Now,
                 ModificationDate = DateTime.Now,
-                Password = "1234"
+                Password = _encryption.Encrypt("1234")
             };
             var admin = new User
             {
@@ -40,7 +43,7 @@ namespace VinculacionBackend.Data.Migrations
                 Campus = "San Pedro Sula",
                 CreationDate = DateTime.Now,
                 ModificationDate = DateTime.Now,
-                Password = "admin"
+                Password = _encryption.Encrypt("admin")
             };
             var professorRole = new Role { Name = "Professor" };
             var studentRole = new Role { Name = "Student" };
@@ -54,7 +57,7 @@ namespace VinculacionBackend.Data.Migrations
                 Email = "efherreram@unitec.edu",
                 Name = "Edwin Herrear",
                 ModificationDate = DateTime.Now,
-                Password = "holis",
+                Password = _encryption.Encrypt("holis"),
                 Status = Status.Inactive,
                 Major = major1
             };
