@@ -48,9 +48,11 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\VinculacionContext.cs" />
+    <Compile Include="Encryption.cs" />
     <Compile Include="Entities\Class.cs" />
     <Compile Include="Entities\Hour.cs" />
     <Compile Include="Entities\Major.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserRole.cs" />
     <Compile Include="Enums\Status.cs" />
+    <Compile Include="Interfaces\IEncryption.cs" />
     <Compile Include="Interfaces\IHourRepository.cs" />
     <Compile Include="Interfaces\IMajorRepository.cs" />
     <Compile Include="Interfaces\IProfessorRepository.cs" />

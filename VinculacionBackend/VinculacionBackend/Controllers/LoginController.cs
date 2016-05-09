@@ -7,6 +7,8 @@ using System.Web.UI;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
+using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Security;
 using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Services;
 
@@ -17,10 +19,12 @@ namespace VinculacionBackend.Controllers
     public class LoginController : ApiController
     {
         private readonly IUsersServices _usersServices;
+        private readonly IEncryption _encryption;
 
-        public LoginController(IUsersServices usersServices)
+        public LoginController(IUsersServices usersServices, IEncryption encryption)
         {
             _usersServices = usersServices;
+            _encryption = encryption;
         }
 
         [Route("api/Login")]
@@ -33,13 +37,14 @@ namespace VinculacionBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = _usersServices.Find(loginUser.User, loginUser.Password);
+            var passw = _encryption.Encrypt(loginUser.Password);
+            var user = _usersServices.Find(loginUser.User, _encryption.Encrypt(loginUser.Password));
 
           
                 if (user != null)
                 {
                    
-                    if (!user.Email.Equals(loginUser.User) || !user.Password.Equals(loginUser.Password) || user.Status!= Status.Verified)
+                    if (!user.Email.Equals(loginUser.User) || !user.Password.Equals(_encryption.Encrypt(loginUser.Password)) || user.Status!= Status.Verified)
                     {
                     return Unauthorized();
                     }

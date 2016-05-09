@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using VinculacionBackend.Security.Interfaces;
+using VinculacionBackend.Data.Interfaces;
 
-namespace VinculacionBackend.Security
+namespace VinculacionBackend.Data
 {
     public  class Encryption:IEncryption
     {

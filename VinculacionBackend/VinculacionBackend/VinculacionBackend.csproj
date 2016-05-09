@@ -232,6 +232,7 @@
     <Compile Include="Interfaces\ISectionsServices.cs" />
     <Compile Include="Interfaces\IUsersServices.cs" />
     <Compile Include="Models\HourEntryModel.cs" />
+    <Compile Include="Models\HourReportUnitModel.cs" />
     <Compile Include="Models\LoginUserModel.cs" />
     <Compile Include="Models\ProfessorEntryModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
@@ -243,6 +244,7 @@
     <Compile Include="Models\VerifiedModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Email.cs" />
+    <Compile Include="Models\HourReportModel.cs" />
     <Compile Include="Services\HoursServices.cs" />
     <Compile Include="Interfaces\IStudentsServices.cs" />
     <Compile Include="Interfaces\IHoursServices.cs" />

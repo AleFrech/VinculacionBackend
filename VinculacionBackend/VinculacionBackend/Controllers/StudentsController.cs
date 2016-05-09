@@ -9,9 +9,9 @@ using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
 using VinculacionBackend.CustomDataNotations;
+using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security.BasicAuthentication;
-using VinculacionBackend.Security.Interfaces;
 
 namespace VinculacionBackend.Controllers
 {
@@ -19,14 +19,16 @@ namespace VinculacionBackend.Controllers
     public class StudentsController : ApiController
     {            
         private readonly IStudentsServices _studentsServices;
+        private readonly IHoursServices _hoursServices;
         private readonly IEmail _email;
         private readonly IEncryption _encryption;
 
-        public StudentsController(IStudentsServices studentServices,IEmail email,IEncryption encryption)
+        public StudentsController(IStudentsServices studentServices, IEmail email, IEncryption encryption, IHoursServices hoursServices)
         {
             _studentsServices = studentServices;
             _email = email;
             _encryption = encryption;
+            _hoursServices = hoursServices;
         }
 
         // GET: api/Students
@@ -150,6 +152,13 @@ namespace VinculacionBackend.Controllers
                 return Ok(user);
             }
             return NotFound();
+        }
+
+        [Route("api/StudentHourReport/{accountId}")]
+        [CustomAuthorize(Roles = "Anonymous")]
+        public HourReportModel GetStudentsHourReport(string accountId)
+        {
+            return _hoursServices.HourReport(accountId);
         }
     }
 }
