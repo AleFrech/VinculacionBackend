@@ -33,6 +33,7 @@ namespace VinculacionBackend
             builder.RegisterType<HourRepository>().As<IHourRepository>().InstancePerRequest();
             builder.RegisterType<ProjectRepository>().As<IProjectRepository>().InstancePerRequest();
             builder.RegisterType<ProfessorRepository>().As<IProfessorRepository>().InstancePerRequest();
+            builder.RegisterType<ClassRepository>().As<IClassRepository>().InstancePerRequest();
             builder.RegisterType<SectionRepository>().As<ISectionRepository>().InstancePerRequest();
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerRequest();
             builder.RegisterType<Email>().As<IEmail>().InstancePerRequest();
@@ -46,6 +47,7 @@ namespace VinculacionBackend
             builder.RegisterType<MajorsServices>().As<IMajorsServices>().InstancePerRequest();
             builder.RegisterType<HoursServices>().As<IHoursServices>().InstancePerRequest();
             builder.RegisterType<UsersServices>().As<IUsersServices>().InstancePerRequest();
+            builder.RegisterType<ClassesServices>().As<IClassesServices>().InstancePerRequest();
             builder.RegisterType<ProjectServices>().As<IProjectServices>().InstancePerRequest();
             builder.RegisterType<SectionsServices>().As<ISectionsServices>().InstancePerRequest();
         }
