@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
@@ -69,6 +69,18 @@ namespace VinculacionBackend.Services
             if (section == null || student == null) return false;
 
             _sectionsRepository.AssignStudent(section.Id, student.Id);
+            _sectionsRepository.Save();
+            return true;
+        }
+        
+        public bool RemoveStudent(SectionStudentModel model)
+        {
+            var section = _sectionsRepository.Get(model.SectionId);
+            var student = _studentRepository.GetByAccountNumber(model.StudentId);
+
+            if (section == null || student == null) return false;
+
+            _sectionsRepository.RemoveStudent(section.Id, student.Id);
             _sectionsRepository.Save();
             return true;
         }

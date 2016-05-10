@@ -67,9 +67,11 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserRole.cs" />
     <Compile Include="Enums\Status.cs" />
+    <Compile Include="Interfaces\IClassRepository.cs" />
     <Compile Include="Interfaces\IEncryption.cs" />
     <Compile Include="Interfaces\IHourRepository.cs" />
     <Compile Include="Interfaces\IMajorRepository.cs" />
+    <Compile Include="Interfaces\IPeriodRepository.cs" />
     <Compile Include="Interfaces\IProfessorRepository.cs" />
     <Compile Include="Interfaces\IProjectRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
@@ -82,8 +84,10 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ClassRepository.cs" />
     <Compile Include="Repositories\HourRepository.cs" />
     <Compile Include="Repositories\MajorRepository.cs" />
+    <Compile Include="Repositories\PeriodRepository.cs" />
     <Compile Include="Repositories\ProfessorRepository.cs" />
     <Compile Include="Repositories\ProjectRepository.cs" />
     <Compile Include="Repositories\SectionRepository.cs" />

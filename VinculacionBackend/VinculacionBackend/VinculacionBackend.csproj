@@ -211,6 +211,10 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\ClassesController.cs" />
+    <Compile Include="Interfaces\IPeriodsServices.cs" />
+    <Compile Include="Models\PeriodEntryModel.cs" />
+    <Compile Include="Controllers\PeriodsController.cs" />
     <Compile Include="Controllers\ProfessorsController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="CustomDataNotations\AccountNumberExistAttribute.cs" />
@@ -228,6 +232,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ClassEntryModel.cs" />
+    <Compile Include="Interfaces\IClassesServices.cs" />
     <Compile Include="Interfaces\IEmail.cs" />
     <Compile Include="Interfaces\ISectionsServices.cs" />
     <Compile Include="Interfaces\IUsersServices.cs" />
@@ -245,6 +251,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="Models\HourReportModel.cs" />
+    <Compile Include="Services\ClassesServices.cs" />
     <Compile Include="Services\HoursServices.cs" />
     <Compile Include="Interfaces\IStudentsServices.cs" />
     <Compile Include="Interfaces\IHoursServices.cs" />
@@ -252,6 +259,7 @@
     <Compile Include="Interfaces\IProfessorsServices.cs" />
     <Compile Include="Interfaces\IProjectServices.cs" />
     <Compile Include="Services\MajorsServices.cs" />
+    <Compile Include="Services\PeriodsServices.cs" />
     <Compile Include="Services\ProfessorsServices.cs" />
     <Compile Include="Services\ProjectServices.cs" />
     <Compile Include="Services\SectionsServices.cs" />
