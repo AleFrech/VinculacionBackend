@@ -1,12 +1,8 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Net;
+﻿using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.OData;
 using VinculacionBackend.ActionFilters;
-using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;

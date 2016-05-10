@@ -212,6 +212,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
+    <Compile Include="Interfaces\IPeriodsServices.cs" />
+    <Compile Include="Models\PeriodEntryModel.cs" />
+    <Compile Include="Controllers\PeriodsController.cs" />
     <Compile Include="Controllers\ProfessorsController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="CustomDataNotations\AccountNumberExistAttribute.cs" />
@@ -256,6 +259,7 @@
     <Compile Include="Interfaces\IProfessorsServices.cs" />
     <Compile Include="Interfaces\IProjectServices.cs" />
     <Compile Include="Services\MajorsServices.cs" />
+    <Compile Include="Services\PeriodsServices.cs" />
     <Compile Include="Services\ProfessorsServices.cs" />
     <Compile Include="Services\ProjectServices.cs" />
     <Compile Include="Services\SectionsServices.cs" />
