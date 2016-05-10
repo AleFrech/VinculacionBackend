@@ -23,6 +23,12 @@ namespace VinculacionBackend.Data.Repositories
 
             db.SectionUserRels.Add(new SectionUser { Section = section, User = student });
         }
+        
+        public void AssignStudent(long sectionId, long studentId)
+        {
+            var found = db.SectionUserRels.FirstOrDefault(x=>x.sectionId == sectionId && x.studentId == studentId);
+            db.SectionUserRels.Remove(found);
+        }
 
         public Section Delete(long id)
         {
