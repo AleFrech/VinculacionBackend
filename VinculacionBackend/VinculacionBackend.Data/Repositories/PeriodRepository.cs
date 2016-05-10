@@ -1,4 +1,3 @@
-﻿using System;
 using System.Linq;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
@@ -6,29 +5,29 @@ using VinculacionBackend.Data.Interfaces;
 
 namespace VinculacionBackend.Data.Repositories
 {
-    public class ClassRepository:IClassRepository
+    public class PeriodRepository : IPeriodRepository
     {
         private VinculacionContext _db;
 
-        public ClassRepository()
+        public PeriodRepository()
         {
             _db = new VinculacionContext();
         }
-        public IQueryable<Class> GetAll()
+        public IQueryable<Period> GetAll()
         {
-            return _db.Classes;
+            return _db.Periods;
         }
 
-        public Class Get(long id)
+        public Period Get(long id)
         {
-            return _db.Classes.Find(id);
+            return _db.Periods.Find(id);
         }
 
-        public Class Delete(long id)
+        public Period Delete(long id)
         {
             var found = Get(id);
             if (found != null)
-                _db.Classes.Remove(found);
+                _db.Periods.Remove(found);
             return found;
         }
 
@@ -37,14 +36,14 @@ namespace VinculacionBackend.Data.Repositories
             _db.SaveChanges();
         }
 
-        public void Update(Class ent)
+        public void Update(Period ent)
         {
             _db.Entry(ent).State = System.Data.Entity.EntityState.Modified;
         }
 
-        public void Insert(Class ent)
+        public void Insert(Period ent)
         {
-            _db.Classes.Add(ent);
+            _db.Periods.Add(ent);
         }
     }
 }
