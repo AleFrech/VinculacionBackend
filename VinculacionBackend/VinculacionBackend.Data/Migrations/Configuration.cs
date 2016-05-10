@@ -3,7 +3,6 @@ using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using System;
 using System.Data.Entity.Migrations;
-using VinculacionBackend.Data.Interfaces;
 
 namespace VinculacionBackend.Data.Migrations
 {
@@ -69,7 +68,9 @@ namespace VinculacionBackend.Data.Migrations
                 Name = "Proyecto de Vinculacion Unitec",
                 Description = "Programa para el registro de horas de vinculacion a estudiantes de Unitec sps",
                 Cost = 10000000000,
-                IsDeleted = false
+                IsDeleted = false,
+                BeneficiariesAlias = "Alumnos Maestros y Administradora de Vinculacion",
+                BeneficiariesQuantity = 54645
             };
 
             var projectMajor = new ProjectMajor { Major = major1, Project = project };

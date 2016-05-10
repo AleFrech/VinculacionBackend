@@ -9,44 +9,44 @@ namespace VinculacionBackend.Data.Repositories
 {
     public class HourRepository : IHourRepository
     {
-        private VinculacionContext db;
+        private readonly VinculacionContext _db;
         public HourRepository()
         {
-            db = new VinculacionContext();
+            _db = new VinculacionContext();
         }
         public Hour Delete(long id)
         {
             var found = Get(id);
-            db.Hours.Remove(found);
+            _db.Hours.Remove(found);
             return found;
         }
 
         public Hour Get(long id)
         {
-            return db.Hours.Find(id);
+            return _db.Hours.Find(id);
         }
 
         public IQueryable<Hour> GetAll()
         {
-            return db.Hours;
+            return _db.Hours;
         }
 
         public IQueryable<Hour> GetStudentHours(string accountId)
         {
-            return db.Hours.Where(hour => hour.User.AccountId == accountId)
+            return _db.Hours.Where(hour => hour.User.AccountId == accountId)
                 .Include("SectionProject.Project");
         }     
 
         public void Insert(Hour ent)
         {
-            db.Hours.Add(ent);
+            _db.Hours.Add(ent);
         }
 
         public Hour InsertHourFromModel(string accountId,long sectionId,long projectId, int hour,string professorUser )
         {
-            var sectionProjectRel = Queryable.FirstOrDefault(db.SectionProjectsRels.Include(x => x.Project).Include(y => y.Section), z => z.Section.Id == sectionId && z.Project.Id == projectId);
-            var user = Queryable.FirstOrDefault(db.Users, x => x.AccountId == accountId);
-            var section = Queryable.FirstOrDefault(db.Sections.Include(x=>x.User).Include(x=>x.Class).Include(x=>x.Period), x => x.Id == sectionId);
+            var sectionProjectRel = Queryable.FirstOrDefault(_db.SectionProjectsRels.Include(x => x.Project).Include(y => y.Section), z => z.Section.Id == sectionId && z.Project.Id == projectId);
+            var user = Queryable.FirstOrDefault(_db.Users, x => x.AccountId == accountId);
+            var section = Queryable.FirstOrDefault(_db.Sections.Include(x=>x.User).Include(x=>x.Class).Include(x=>x.Period), x => x.Id == sectionId);
             if (user != null && sectionProjectRel != null && section !=null)
             {
                 if(section.User.Email!=professorUser)
@@ -63,12 +63,12 @@ namespace VinculacionBackend.Data.Repositories
 
         public void Save()
         {
-            db.SaveChanges();
+            _db.SaveChanges();
         }
 
         public void Update(Hour ent)
         {
-            db.Entry(ent).State = EntityState.Modified;
+            _db.Entry(ent).State = EntityState.Modified;
         }
     }
 }

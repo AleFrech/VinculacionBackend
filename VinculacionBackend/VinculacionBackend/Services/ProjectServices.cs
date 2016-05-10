@@ -35,6 +35,8 @@ namespace VinculacionBackend.Services
             newProject.Name = model.Name;
             newProject.Description = model.Description;
             newProject.Cost = model.Cost;
+            newProject.BeneficiariesAlias = model.BenificiariesAlias;
+            newProject.BeneficiariesQuantity = model.BenificiariesQuantity;
             return newProject;
         }
 
@@ -69,6 +71,8 @@ namespace VinculacionBackend.Services
             tmpProject.Name = model.Name;
             tmpProject.Description = model.Description;
             tmpProject.Cost = model.Cost;
+            tmpProject.BeneficiariesAlias = model.BenificiariesAlias;
+            tmpProject.BeneficiariesQuantity = model.BenificiariesQuantity;
             _projectRepository.Update(tmpProject);
             _projectRepository.Save();
             return tmpProject;
