@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Models;
 
@@ -12,5 +12,6 @@ namespace VinculacionBackend.Interfaces
         Section Find(long id);
         bool AssignStudent(SectionStudentModel model);
         Section Map(SectionEntryModel sectionModel);
+        bool RemoveStudent(SectionStudentModel model);
     }
 }
