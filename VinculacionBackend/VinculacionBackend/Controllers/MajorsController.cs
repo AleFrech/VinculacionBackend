@@ -31,7 +31,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Majors/5
         [ResponseType(typeof(Major))]
         [Route("api/Majors/{majorId}")]
-        [CustomAuthorize(Roles = "Anonymous")]
+     
         public IHttpActionResult GetMajor(string majorId)
         {
             Major major = _majorsServices.Find(majorId);
