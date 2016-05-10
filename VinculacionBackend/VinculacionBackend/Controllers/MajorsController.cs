@@ -21,7 +21,7 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Majors
         [Route("api/Majors")]
-        [CustomAuthorize(Roles = "Anonymous")]
+      
         [EnableQuery]
         public IQueryable<Major> GetMajors()
         {
