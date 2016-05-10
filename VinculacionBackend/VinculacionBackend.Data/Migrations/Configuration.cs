@@ -8,10 +8,10 @@ namespace VinculacionBackend.Data.Migrations
 {
     internal sealed class Configuration : DbMigrationsConfiguration<VinculacionContext>
     {
-      
+
         public Configuration()
         {
-           
+
             AutomaticMigrationsEnabled = true;
             SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
         }
