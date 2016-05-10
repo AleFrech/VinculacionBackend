@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using VinculacionBackend.CustomDataNotations;
 
@@ -20,5 +20,9 @@ namespace VinculacionBackend.Models
         [Required(ErrorMessage ="*requerido")]
         [SectionIdIsValid(ErrorMessage ="*Seccion no valida")]
         public long SectionId { get; set; }
+        [Required(ErrorMessage = "*requerido")]
+        public string BenificiariesAlias {get;set;}
+        [Required(ErrorMessage = "*requerido")]
+        public int BenificiariesQuantity {get;set;}
     }
 }
