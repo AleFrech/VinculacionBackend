@@ -2,6 +2,7 @@ using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 
 namespace VinculacionBackend.Data.Migrations
@@ -21,6 +22,8 @@ namespace VinculacionBackend.Data.Migrations
             var encryption = new Encryption();
             var period = new Period { Number = 1, Year = 2016 };
             var clas = new Class { Name = "ANAL. Y DIS. DE SISTEMAS I" };
+            var majorsId = new List<string>();
+            majorsId.Add("I - 01");
             var user = new User
             {
                 AccountId = "21111111",
@@ -68,6 +71,8 @@ namespace VinculacionBackend.Data.Migrations
                 Name = "Proyecto de Vinculacion Unitec",
                 Description = "Programa para el registro de horas de vinculacion a estudiantes de Unitec sps",
                 Cost = 10000000000,
+                SectionId = 1,
+                MajorIds = majorsId,
                 IsDeleted = false,
                 BeneficiariesAlias = "Alumnos Maestros y Administradora de Vinculacion",
                 BeneficiariesQuantity = 54645

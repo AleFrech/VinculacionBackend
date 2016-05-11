@@ -30,12 +30,35 @@ namespace VinculacionBackend.Data.Repositories
 
         public Project Get(long id)
         {
-            return _db.Projects.FirstOrDefault(x=>x.Id == id && x.IsDeleted == false);
+            var  project= _db.Projects.FirstOrDefault(x=>x.Id == id && x.IsDeleted == false);
+            if (project != null)
+            {
+                var projectmajors = _db.ProjectMajorRels.Include(a=>a.Project).Include(b=>b.Major).Where(x => x.Project.Id == id);
+                var majorsId = new List<string>();
+                foreach (var x in projectmajors)
+                {
+                    majorsId.Add(x.Major.MajorId);
+                }
+                project.MajorIds = majorsId;
+            }
+           
+            return project;
         }
 
         public IQueryable<Project> GetAll()
         {
-            return _db.Projects.Where(x=>x.IsDeleted == false);
+            var projects = _db.Projects.Where(x => x.IsDeleted == false).ToList();
+            foreach (var project in projects)
+            {
+                var projectmajors =_db.ProjectMajorRels.Include(a => a.Project).Include(b => b.Major).Where(x => x.Project.Id == project.Id);
+                var majorsId = new List<string>();
+                foreach (var x in projectmajors)
+                {
+                    majorsId.Add(x.Major.MajorId);
+                }
+                project.MajorIds = majorsId;
+            }
+            return  projects.AsQueryable();
         }
 
         public void Insert(Project ent)
@@ -61,13 +84,16 @@ namespace VinculacionBackend.Data.Repositories
             return users;
         }
 
-        public void Insert(Project ent, List<string> majorIds)
+        public void Insert(Project ent, List<string> majorIds, long sectionId)
         {
             var majors = _db.Majors.Where(x => majorIds.Any(y => y == x.MajorId));
             foreach (var major in majors)
             {
                 _db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
             }
+            var section = _db.Sections.FirstOrDefault(x => x.Id == sectionId);
+
+            _db.SectionProjectsRels.Add(new SectionProject { Project = ent, Section = section });
 
             Insert(ent);
         }
