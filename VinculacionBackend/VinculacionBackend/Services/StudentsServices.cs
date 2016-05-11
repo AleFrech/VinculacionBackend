@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
@@ -47,7 +49,7 @@ namespace VinculacionBackend.Services
         {
             var student = _studentRepository.GetByAccountNumber(accountId);
             if(student==null)
-                throw new System.InvalidOperationException("Logfile cannot be read-only");
+                throw new NotFoundException("No se encontro al estudiante");
             return student;
         }
 
@@ -60,34 +62,32 @@ namespace VinculacionBackend.Services
         {
 
             var student = Find(accountId);
-            if (student != null)
-            {
-                student.Status = Status.Rejected;
-                _studentRepository.Save();
-           }
+            if (student == null)
+                throw new NotFoundException("No se encontro al estudiante");
+            student.Status = Status.Rejected;
+            _studentRepository.Save();
+
             return student;
         }
 
         public User ActivateUser(string accountId)
         {
             var student = Find(accountId);
-            if (student != null)
-            {
-                student.Status = Status.Active;
-                _studentRepository.Save();
-                
-            }
+            if (student == null)
+                throw new NotFoundException("No se encontro al estudiante");
+            student.Status = Status.Active;
+           _studentRepository.Save();
             return student;
         }
 
         public User VerifyUser(string accountId)
         {
             var student = Find(accountId);
-            if (student != null)
-            {
-                student.Status = Status.Verified;
-                _studentRepository.Save();
-            }
+            if (student == null)
+                throw new NotFoundException("No se encontro al estudiante");
+            student.Status = Status.Verified;
+           _studentRepository.Save();
+            
             return student;
         }
 
@@ -96,6 +96,8 @@ namespace VinculacionBackend.Services
         public User DeleteUser(string accountId)
         {
             var user = _studentRepository.DeleteByAccountNumber(accountId);
+            if(user == null)
+                throw new NotFoundException("No se encontro al estudiante");
             _studentRepository.Save();
             return user;
         }

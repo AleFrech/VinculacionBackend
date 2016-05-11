@@ -212,6 +212,8 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
+    <Compile Include="ErrorHandler.cs" />
+    <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Interfaces\IPeriodsServices.cs" />
     <Compile Include="Models\PeriodEntryModel.cs" />
     <Compile Include="Controllers\PeriodsController.cs" />
