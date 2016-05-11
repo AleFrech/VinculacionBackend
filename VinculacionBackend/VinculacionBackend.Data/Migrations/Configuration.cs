@@ -8,14 +8,17 @@ namespace VinculacionBackend.Data.Migrations
 {
     internal sealed class Configuration : DbMigrationsConfiguration<VinculacionContext>
     {
+
         public Configuration()
         {
+
             AutomaticMigrationsEnabled = true;
             SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
         }
 
         protected override void Seed(VinculacionContext context)
         {
+            var encryption = new Encryption();
             var period = new Period { Number = 1, Year = 2016 };
             var clas = new Class { Name = "ANAL. Y DIS. DE SISTEMAS I" };
             var user = new User
@@ -28,7 +31,7 @@ namespace VinculacionBackend.Data.Migrations
                 Campus = "San Pedro Sula",
                 CreationDate = DateTime.Now,
                 ModificationDate = DateTime.Now,
-                Password = "1234"
+                Password = encryption.Encrypt("1234")
             };
             var admin = new User
             {
@@ -40,7 +43,7 @@ namespace VinculacionBackend.Data.Migrations
                 Campus = "San Pedro Sula",
                 CreationDate = DateTime.Now,
                 ModificationDate = DateTime.Now,
-                Password = "admin"
+                Password = encryption.Encrypt("admin")
             };
             var professorRole = new Role { Name = "Professor" };
             var studentRole = new Role { Name = "Student" };
@@ -54,7 +57,7 @@ namespace VinculacionBackend.Data.Migrations
                 Email = "efherreram@unitec.edu",
                 Name = "Edwin Herrear",
                 ModificationDate = DateTime.Now,
-                Password = "holis",
+                Password = encryption.Encrypt("holis"),
                 Status = Status.Inactive,
                 Major = major1
             };
@@ -64,7 +67,10 @@ namespace VinculacionBackend.Data.Migrations
                 ProjectId = "CSPS-I-2013-test",
                 Name = "Proyecto de Vinculacion Unitec",
                 Description = "Programa para el registro de horas de vinculacion a estudiantes de Unitec sps",
-                Cost = 10000000000
+                Cost = 10000000000,
+                IsDeleted = false,
+                BeneficiariesAlias = "Alumnos Maestros y Administradora de Vinculacion",
+                BeneficiariesQuantity = 54645
             };
 
             var projectMajor = new ProjectMajor { Major = major1, Project = project };

@@ -3,7 +3,7 @@ namespace VinculacionBackend.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class inital : DbMigration
+    public partial class Init : DbMigration
     {
         public override void Up()
         {
@@ -50,8 +50,13 @@ namespace VinculacionBackend.Data.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
+                        ProjectId = c.String(unicode: false),
                         Name = c.String(unicode: false),
                         Description = c.String(unicode: false),
+                        Cost = c.Double(nullable: false),
+                        IsDeleted = c.Boolean(nullable: false),
+                        BeneficiariesAlias = c.String(unicode: false),
+                        BeneficiariesQuantity = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             

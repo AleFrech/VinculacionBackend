@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
@@ -21,7 +21,7 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Majors
         [Route("api/Majors")]
-        [CustomAuthorize(Roles = "Admin")]
+      
         [EnableQuery]
         public IQueryable<Major> GetMajors()
         {
@@ -31,7 +31,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Majors/5
         [ResponseType(typeof(Major))]
         [Route("api/Majors/{majorId}")]
-        [CustomAuthorize(Roles = "Admin")]
+     
         public IHttpActionResult GetMajor(string majorId)
         {
             Major major = _majorsServices.Find(majorId);

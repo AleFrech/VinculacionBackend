@@ -2,9 +2,9 @@
 using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
+using VinculacionBackend.Data;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security;
-using VinculacionBackend.Security.Interfaces;
 using VinculacionBackend.Services;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Data.Interfaces;
@@ -33,6 +33,8 @@ namespace VinculacionBackend
             builder.RegisterType<HourRepository>().As<IHourRepository>().InstancePerRequest();
             builder.RegisterType<ProjectRepository>().As<IProjectRepository>().InstancePerRequest();
             builder.RegisterType<ProfessorRepository>().As<IProfessorRepository>().InstancePerRequest();
+            builder.RegisterType<ClassRepository>().As<IClassRepository>().InstancePerRequest();
+            builder.RegisterType<PeriodRepository>().As<IPeriodRepository>().InstancePerRequest();
             builder.RegisterType<SectionRepository>().As<ISectionRepository>().InstancePerRequest();
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerRequest();
             builder.RegisterType<Email>().As<IEmail>().InstancePerRequest();
@@ -43,9 +45,11 @@ namespace VinculacionBackend
         {
             builder.RegisterType<ProfessorsServices>().As<IProfessorsServices>().InstancePerRequest();
             builder.RegisterType<StudentsServices>().As<IStudentsServices>().InstancePerRequest();
+            builder.RegisterType<PeriodsServices>().As<IPeriodsServices>().InstancePerRequest();
             builder.RegisterType<MajorsServices>().As<IMajorsServices>().InstancePerRequest();
             builder.RegisterType<HoursServices>().As<IHoursServices>().InstancePerRequest();
             builder.RegisterType<UsersServices>().As<IUsersServices>().InstancePerRequest();
+            builder.RegisterType<ClassesServices>().As<IClassesServices>().InstancePerRequest();
             builder.RegisterType<ProjectServices>().As<IProjectServices>().InstancePerRequest();
             builder.RegisterType<SectionsServices>().As<ISectionsServices>().InstancePerRequest();
         }

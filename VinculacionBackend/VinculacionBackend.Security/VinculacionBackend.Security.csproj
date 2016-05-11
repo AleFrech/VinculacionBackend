@@ -64,12 +64,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IEncryption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BasicAuthentication\Credentials.cs" />
     <Compile Include="BasicAuthentication\CustomAuthorizedAttribute.cs" />
     <Compile Include="BasicAuthentication\CustomPrincipal.cs" />
-    <Compile Include="Encryption.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -81,6 +79,7 @@
       <Name>VinculacionBackend.Data</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

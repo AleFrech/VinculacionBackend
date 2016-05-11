@@ -49,6 +49,18 @@ namespace VinculacionBackend.Services
 
         }
 
+        public bool RemoveStudent(SectionStudentModel model)
+        {
+            var section = _sectionsRepository.Get(model.SectionId);
+            var student = _studentRepository.GetByAccountNumber(model.StudentId);
+
+            if (section == null || student == null) return false;
+
+            _sectionsRepository.RemoveStudent(section.Id, student.Id);
+            _sectionsRepository.Save();
+            return true;
+        }
+
         public void Add(Section section)
         {
             _sectionsRepository.Insert(section);

@@ -10,69 +10,63 @@ namespace VinculacionBackend.Data.Repositories
 {
     public class ProjectRepository : IProjectRepository
     {
-        private VinculacionContext db;
+        private readonly VinculacionContext _db;
         public ProjectRepository()
         {
-            db = new VinculacionContext();
+            _db = new VinculacionContext();
         }
 
         public Project Delete(long id)
         {
             var found = Get(id);
-            var majorRels = db.ProjectMajorRels.Where(x => x.Project.Id == found.Id);
-            foreach (var rel in majorRels)
-            {
-                db.ProjectMajorRels.Remove(rel);
-            }
-            var sectionRels = db.SectionProjectsRels.Where(x => x.Project.Id == found.Id);
-            foreach (var r in sectionRels)
-            {
-                db.SectionProjectsRels.Remove(r);
-            }
-            db.Projects.Remove(found);
 
+            if(found != null){
+                found.IsDeleted = true;
+                Save();
+            }
+            
             return found;
         }
 
         public Project Get(long id)
         {
-            return db.Projects.Find(id);
+            return _db.Projects.FirstOrDefault(x=>x.Id == id && x.IsDeleted == false);
         }
 
         public IQueryable<Project> GetAll()
         {
-            return db.Projects;
+            return _db.Projects.Where(x=>x.IsDeleted == false);
         }
 
         public void Insert(Project ent)
         {
-            db.Projects.Add(ent);
+            _db.Projects.Add(ent);
         }
 
         public void Save()
         {
-            db.SaveChanges();
+            _db.SaveChanges();
         }
 
         public void Update(Project ent)
         {
-            db.Entry(ent).State = EntityState.Modified;
+            _db.Entry(ent).State = EntityState.Modified;
         }
 
         public IQueryable<User> GetProjectStudents(long projectId)
         {
-            var secProjRel = db.SectionProjectsRels.Include(a => a.Project).Where(c => c.Project.Id == projectId);
-            var horas = db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d => d.Id == c.SectionProject.Id));
-            var users = db.Users.Include(a => a.Major).Where(b => horas.Any(c => c.User.Id == b.Id));
+            var secProjRel = _db.SectionProjectsRels.Include(a => a.Project).Where(c => c.Project.Id == projectId);
+            var horas = _db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d => d.Id == c.SectionProject.Id));
+            var users = _db.Users.Include(a => a.Major).Where(b => horas.Any(c => c.User.Id == b.Id));
             return users;
         }
 
         public void Insert(Project ent, List<string> majorIds)
         {
-            var majors = db.Majors.Where(x => majorIds.Any(y => y == x.MajorId));
+            var majors = _db.Majors.Where(x => majorIds.Any(y => y == x.MajorId));
             foreach (var major in majors)
             {
-                db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
+                _db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
             }
 
             Insert(ent);
@@ -81,9 +75,9 @@ namespace VinculacionBackend.Data.Repositories
         public void AssignToSection(long projectId, long sectionId)
         {
             var project = Get(projectId);
-            var section = db.Sections.FirstOrDefault(x => x.Id == sectionId);
+            var section = _db.Sections.FirstOrDefault(x => x.Id == sectionId);
 
-            db.SectionProjectsRels.Add(new SectionProject { Project = project, Section = section });
+            _db.SectionProjectsRels.Add(new SectionProject { Project = project, Section = section });
 
             
         }

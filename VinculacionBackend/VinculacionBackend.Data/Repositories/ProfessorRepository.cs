@@ -9,7 +9,7 @@ namespace VinculacionBackend.Data.Repositories
 {
 	public class ProfessorRepository : IProfessorRepository
 	{
-		private VinculacionContext _db;
+		private readonly VinculacionContext _db;
 		
 		public ProfessorRepository() 
 		{

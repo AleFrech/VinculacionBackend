@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
@@ -72,7 +72,22 @@ namespace VinculacionBackend.Controllers
             }
             return NotFound();
         }
+        
+        [Route("api/Sections/RemoveStudent")]
+        [ResponseType(typeof(Section))]
+        [CustomAuthorize(Roles = "Admin,Professor")]
+        [ValidateModel]
+        public IHttpActionResult PostRemoveStudent(SectionStudentModel model)
+        {
 
+            var removed = _sectionServices.RemoveStudent(model);
+            if(removed)
+            {
+                return Ok();
+            }
+            return NotFound();
+        }
+        
         // DELETE: api/Sections/5
         [ResponseType(typeof(Section))]
         [Route("api/Sections/{sectionId}")]

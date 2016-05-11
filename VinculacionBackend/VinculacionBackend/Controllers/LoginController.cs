@@ -7,9 +7,9 @@ using System.Web.UI;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
+using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Security;
 using VinculacionBackend.Security.BasicAuthentication;
-using VinculacionBackend.Security.Interfaces;
 using VinculacionBackend.Services;
 
 
