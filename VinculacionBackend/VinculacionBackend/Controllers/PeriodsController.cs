@@ -32,11 +32,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetPeriod(long id)
         {
             Period period = _periodsServices.Find(id);
-            if (period == null)
-            {
-                return NotFound();
-            }
-
             return Ok(period);
         }
 
@@ -57,10 +52,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult DeletePeriod(long id)
         {
             var period = _periodsServices.Delete(id);
-            if (period == null)
-            {
-                return NotFound();
-            }
             return Ok(period);
         }
     }

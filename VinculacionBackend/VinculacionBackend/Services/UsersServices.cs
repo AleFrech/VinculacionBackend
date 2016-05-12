@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
+
 namespace VinculacionBackend.Services
 {
     public class UsersServices : IUsersServices
@@ -15,9 +17,12 @@ namespace VinculacionBackend.Services
             _userRepository = userRepository;
         }
 
-        public User Find(string user, string password)
+        public User Find(string username, string password)
         {
-           return _userRepository.GetUserByEmailAndPassword(user, password);
+            var user = _userRepository.GetUserByEmailAndPassword(username, password);
+            if(user==null)
+                throw new NotFoundException("No se encontro el usuario");
+            return user;
         }
     }
 }

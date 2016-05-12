@@ -4,10 +4,12 @@ using System.Web.Http.Description;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using System.Web.UI;
+using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
 using VinculacionBackend.Security;
 using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Services;
@@ -30,13 +32,9 @@ namespace VinculacionBackend.Controllers
         [Route("api/Login")]
         [ResponseType(typeof (User))]
         [CustomAuthorize(Roles = "Anonymous")]
+        [ValidateModel]
         public IHttpActionResult PostUserLogin(LoginUserModel loginUser)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var passw = _encryption.Encrypt(loginUser.Password);
             var user = _usersServices.Find(loginUser.User, _encryption.Encrypt(loginUser.Password));
 
@@ -46,7 +44,7 @@ namespace VinculacionBackend.Controllers
                    
                     if (!user.Email.Equals(loginUser.User) || !user.Password.Equals(_encryption.Encrypt(loginUser.Password)) || user.Status!= Status.Verified)
                     {
-                    return Unauthorized();
+                     throw new UnauthorizedException("Usuario o contraseña incorrecto");
                     }
 
                     string userInfo = user.Email + ":" + user.Password;
@@ -55,11 +53,8 @@ namespace VinculacionBackend.Controllers
 
                     return Ok("Basic " + token);
                 }
-                else
-                {
-                    return Unauthorized();
-                }
-            
+            throw new UnauthorizedException("Usuario o contraseña incorrecto");
+
         }
     }
 }

@@ -26,9 +26,19 @@ namespace VinculacionBackend
 
                 context.Result = new NotFoundResult(context.Request, result);
             }
+            else if (context.Exception is UnauthorizedException)
+            {
+                var result = new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                {
+                    Content = new StringContent(context.Exception.Message),
+                    ReasonPhrase = "Unauthorized"
+                };
+
+                context.Result = new UnauthorizedResult(context.Request, result);
+            }
             else
             {
-                // Handle other exceptions, do other things
+                
             }
         }
     }
@@ -39,6 +49,27 @@ namespace VinculacionBackend
 
 
         public NotFoundResult(HttpRequestMessage request, HttpResponseMessage httpResponseMessage)
+        {
+            _request = request;
+            _httpResponseMessage = httpResponseMessage;
+        }
+
+        public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_httpResponseMessage);
+        }
+    }
+
+
+
+
+    public class UnauthorizedResult : IHttpActionResult
+    {
+        private HttpRequestMessage _request;
+        private readonly HttpResponseMessage _httpResponseMessage;
+
+
+        public UnauthorizedResult(HttpRequestMessage request, HttpResponseMessage httpResponseMessage)
         {
             _request = request;
             _httpResponseMessage = httpResponseMessage;

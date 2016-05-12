@@ -221,7 +221,6 @@
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="CustomDataNotations\AccountNumberExistAttribute.cs" />
     <Compile Include="CustomDataNotations\EmailExistAttribute.cs" />
-    <Compile Include="CustomDataNotations\HandleApiError.cs" />
     <Compile Include="CustomDataNotations\MajorListIsNotEmptyAttribute.cs" />
     <Compile Include="CustomDataNotations\SectionIdIsValidAttribute.cs" />
     <Compile Include="CustomDataNotations\ValidDomainAttribute.cs" />

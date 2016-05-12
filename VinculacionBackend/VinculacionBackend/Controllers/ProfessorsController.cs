@@ -36,11 +36,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetUser(string accountId)
         {
             var professor = _professorsServices.Find(accountId);
-            if (professor == null)
-            {
-                return NotFound();
-            }
-
             return Ok(professor);
         }
 
@@ -64,11 +59,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult DeleteUser(string accountId)
         {
 
-            var professor=_professorsServices.DeleteProfessor(accountId);
-            if (professor == null)
-            {
-                return NotFound();
-            }
+            var professor = _professorsServices.DeleteProfessor(accountId);
             return Ok(professor);
         }
 

@@ -13,14 +13,14 @@ namespace VinculacionBackend.Services
     public class StudentsServices : IStudentsServices
     {
         private readonly IStudentRepository _studentRepository;
-        private readonly IMajorRepository _majorRepository;
+        private readonly IMajorsServices _majorServices;
         private readonly IEncryption _encryption;
 
-        public StudentsServices(IStudentRepository studentRepository, IMajorRepository majorRepository,IEncryption encryption)
+        public StudentsServices(IStudentRepository studentRepository, IMajorRepository majorRepository,IEncryption encryption, IMajorsServices majorServices)
         {
             _studentRepository = studentRepository;
-            _majorRepository = majorRepository;
             _encryption = encryption;
+            _majorServices = majorServices;
         }
 
         public  User Map(UserEntryModel userModel)
@@ -29,7 +29,7 @@ namespace VinculacionBackend.Services
             newUser.AccountId = userModel.AccountId;
             newUser.Name = userModel.Name;
             newUser.Password = _encryption.Encrypt(userModel.Password);
-            newUser.Major = _majorRepository.GetMajorByMajorId(userModel.MajorId);
+            newUser.Major = _majorServices.Find(userModel.MajorId);
             newUser.Campus = userModel.Campus;
             newUser.Email = userModel.Email;
             newUser.Status = Status.Inactive;
@@ -60,7 +60,6 @@ namespace VinculacionBackend.Services
 
         public User RejectUser(string accountId)
         {
-
             var student = Find(accountId);
             if (student == null)
                 throw new NotFoundException("No se encontro al estudiante");
