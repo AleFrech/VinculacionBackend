@@ -222,7 +222,7 @@
     <Compile Include="CustomDataNotations\AccountNumberExistAttribute.cs" />
     <Compile Include="CustomDataNotations\EmailExistAttribute.cs" />
     <Compile Include="CustomDataNotations\MajorListIsNotEmptyAttribute.cs" />
-    <Compile Include="CustomDataNotations\SectionIdIsValidAttribute.cs" />
+    <Compile Include="CustomDataNotations\SectionIdListIsValidAttribute.cs" />
     <Compile Include="CustomDataNotations\ValidDomainAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HoursController.cs" />

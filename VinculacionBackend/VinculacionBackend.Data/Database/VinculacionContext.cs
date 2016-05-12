@@ -29,8 +29,14 @@ namespace VinculacionBackend.Data.Database
     {
         public static string Get()
         {
-            var environment = ConfigurationManager.AppSettings["Environment"];
+#if DEBUG
+            var environment = ConfigurationManager.AppSettings["DevEnvironment"];
             return string.Format((string) "name={0}", (object) environment);
+#else
+            var environment = ConfigurationManager.AppSettings["ProductionEnvironment"];
+            return string.Format((string)"name={0}", (object)environment);
+#endif
+
         }
     }
 

@@ -18,11 +18,11 @@ namespace VinculacionBackend.Models
         [MajorListIsNotEmpty(ErrorMessage = "*lista no puede ir vacia")]
         public List<string> MajorIds { get; set; }
         [Required(ErrorMessage ="*requerido")]
-        [SectionIdIsValid(ErrorMessage ="*Seccion no valida")]
-        public long SectionId { get; set; }
+        [SectionIdListIsValid(ErrorMessage = "*lista no puede ir vacia")]
+        public List<long> SectionIds { get; set; }
         [Required(ErrorMessage = "*requerido")]
-        public string BenificiariesAlias {get;set;}
+        public string BeneficiariesAlias {get;set;}
         [Required(ErrorMessage = "*requerido")]
-        public int BenificiariesQuantity {get;set;}
+        public int BeneficiariesQuantity {get;set;}
     }
 }

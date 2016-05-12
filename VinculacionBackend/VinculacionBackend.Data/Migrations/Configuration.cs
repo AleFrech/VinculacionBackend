@@ -23,6 +23,8 @@ namespace VinculacionBackend.Data.Migrations
             var period = new Period { Number = 1, Year = 2016 };
             var clas = new Class { Name = "ANAL. Y DIS. DE SISTEMAS I" };
             var majorsId = new List<string>();
+            var sectionsId = new List<long>();
+            sectionsId.Add(1);
             majorsId.Add("I - 01");
             var user = new User
             {
@@ -71,7 +73,7 @@ namespace VinculacionBackend.Data.Migrations
                 Name = "Proyecto de Vinculacion Unitec",
                 Description = "Programa para el registro de horas de vinculacion a estudiantes de Unitec sps",
                 Cost = 10000000000,
-                SectionId = 1,
+                SectionIds = sectionsId,
                 MajorIds = majorsId,
                 IsDeleted = false,
                 BeneficiariesAlias = "Alumnos Maestros y Administradora de Vinculacion",

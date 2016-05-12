@@ -17,8 +17,7 @@ namespace VinculacionBackend.Services
         private readonly IClassesServices _classServices;
         private readonly IPeriodsServices _periodsServices;
 
-        public SectionsServices(ISectionRepository sectionsRepository, IStudentRepository studentRepository,
-            IProfessorRepository professorRepository, IStudentsServices studentServices, IProjectServices projectServices, IProfessorsServices professorsServices, IClassesServices classServices, IPeriodsServices periodsServices)
+        public SectionsServices(ISectionRepository sectionsRepository, IStudentsServices studentServices, IProfessorsServices professorsServices, IClassesServices classServices, IPeriodsServices periodsServices)
         {
             _sectionsRepository = sectionsRepository;
             _studentServices = studentServices;

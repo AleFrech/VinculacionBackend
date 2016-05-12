@@ -7,15 +7,16 @@ using VinculacionBackend.Data.Repositories;
 
 namespace VinculacionBackend.CustomDataNotations
 {
-    public class SectionIdIsValidAttribute : ValidationAttribute
+    public class SectionIdListIsValidAttribute : ValidationAttribute
     {
+      
         public override bool IsValid(object value)
         {
             if (value == null)
                 return false;
-            var id = (long)value;
-            var rep = new SectionRepository();
-            return rep.Get(id) != null;
+            var list = (List<long>)value;
+
+            return list.Count > 0;
         }
     }
 }
