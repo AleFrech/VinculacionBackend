@@ -21,8 +21,8 @@ namespace VinculacionBackend.Models
         [SectionIdIsValid(ErrorMessage ="*Seccion no valida")]
         public long SectionId { get; set; }
         [Required(ErrorMessage = "*requerido")]
-        public string BenificiariesAlias {get;set;}
+        public string BeneficiariesAlias {get;set;}
         [Required(ErrorMessage = "*requerido")]
-        public int BenificiariesQuantity {get;set;}
+        public int BeneficiariesQuantity {get;set;}
     }
 }
