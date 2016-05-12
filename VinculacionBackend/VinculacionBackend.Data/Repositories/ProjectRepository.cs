@@ -71,19 +71,6 @@ namespace VinculacionBackend.Data.Repositories
             _db.SaveChanges();
         }
 
-        public void Update(Project ent)
-        {
-            _db.Entry(ent).State = EntityState.Modified;
-        }
-
-        public IQueryable<User> GetProjectStudents(long projectId)
-        {
-            var secProjRel = _db.SectionProjectsRels.Include(a => a.Project).Where(c => c.Project.Id == projectId);
-            var horas = _db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d => d.Id == c.SectionProject.Id));
-            var users = _db.Users.Include(a => a.Major).Where(b => horas.Any(c => c.User.Id == b.Id));
-            return users;
-        }
-
         public void Insert(Project ent, List<string> majorIds, long sectionId)
         {
             var majors = _db.Majors.Where(x => majorIds.Any(y => y == x.MajorId));
@@ -96,6 +83,32 @@ namespace VinculacionBackend.Data.Repositories
             _db.SectionProjectsRels.Add(new SectionProject { Project = ent, Section = section });
 
             Insert(ent);
+        }
+
+        public void Update(Project ent)
+        {
+
+            var majors = _db.Majors.Where(x => ent.MajorIds.Any(y => y == x.MajorId)).ToList();
+            foreach (var major in majors)
+            {
+                var projectMajor = _db.ProjectMajorRels.FirstOrDefault(x => x.Project.Id == ent.Id && x.Major.MajorId == major.MajorId);
+                if (projectMajor==null)
+                    _db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
+            }
+            var section = _db.Sections.FirstOrDefault(x => x.Id == ent.SectionId);
+            var sectionproject =_db.SectionProjectsRels.FirstOrDefault(x => x.Project.Id == ent.Id && x.Section.Id == ent.SectionId);
+            if (sectionproject == null)
+                _db.SectionProjectsRels.Add(new SectionProject {Project = ent, Section = section});
+
+            _db.Entry(ent).State = EntityState.Modified;
+        }
+
+        public IQueryable<User> GetProjectStudents(long projectId)
+        {
+            var secProjRel = _db.SectionProjectsRels.Include(a => a.Project).Where(c => c.Project.Id == projectId);
+            var horas = _db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d => d.Id == c.SectionProject.Id));
+            var users = _db.Users.Include(a => a.Major).Where(b => horas.Any(c => c.User.Id == b.Id));
+            return users;
         }
 
         public void AssignToSection(long projectId, long sectionId)
