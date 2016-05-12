@@ -54,7 +54,6 @@ namespace VinculacionBackend.Data.Migrations
                         Name = c.String(unicode: false),
                         Description = c.String(unicode: false),
                         Cost = c.Double(nullable: false),
-                        SectionId = c.Long(nullable: false),
                         IsDeleted = c.Boolean(nullable: false),
                         BeneficiariesAlias = c.String(unicode: false),
                         BeneficiariesQuantity = c.Int(nullable: false),

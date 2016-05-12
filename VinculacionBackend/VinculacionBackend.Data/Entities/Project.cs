@@ -11,7 +11,7 @@ namespace VinculacionBackend.Data.Entities
         public string Description { get; set; }
         public double Cost { get; set; }
         public List<string> MajorIds { get; set; }
-        public long SectionId { get; set; }
+        public List<long> SectionIds { get; set; }
         public bool IsDeleted {get; set;}
         public string BeneficiariesAlias{get;set;}
         public int BeneficiariesQuantity{get;set;}

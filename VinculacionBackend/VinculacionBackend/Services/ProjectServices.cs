@@ -36,7 +36,7 @@ namespace VinculacionBackend.Services
             newProject.Description = model.Description;
             newProject.Cost = model.Cost;
             newProject.MajorIds = model.MajorIds;
-            newProject.SectionId = model.SectionId;
+            newProject.SectionIds = model.SectionIds;
             newProject.BeneficiariesAlias = model.BeneficiariesAlias;
             newProject.BeneficiariesQuantity = model.BeneficiariesQuantity;
             return newProject;
@@ -45,7 +45,7 @@ namespace VinculacionBackend.Services
         public Project Add(ProjectModel model)
         {
             var project = Map(model);
-            _projectRepository.Insert(project, model.MajorIds,model.SectionId);
+            _projectRepository.Insert(project, model.MajorIds,model.SectionIds);
             _projectRepository.Save();
             return project;
         }
@@ -74,7 +74,7 @@ namespace VinculacionBackend.Services
             tmpProject.Description = model.Description;
             tmpProject.Cost = model.Cost;
             tmpProject.MajorIds = model.MajorIds;
-            tmpProject.SectionId = model.SectionId;
+            tmpProject.SectionIds = model.SectionIds;
             tmpProject.BeneficiariesAlias = model.BeneficiariesAlias;
             tmpProject.BeneficiariesQuantity = model.BeneficiariesQuantity;
             _projectRepository.Update(tmpProject);

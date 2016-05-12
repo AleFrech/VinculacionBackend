@@ -13,7 +13,7 @@ namespace VinculacionBackend.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201605111927177_Init"; }
+            get { return "201605121614392_Init"; }
         }
         
         string IMigrationMetadata.Source

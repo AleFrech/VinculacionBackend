@@ -33,13 +33,25 @@ namespace VinculacionBackend.Data.Repositories
             var  project= _db.Projects.FirstOrDefault(x=>x.Id == id && x.IsDeleted == false);
             if (project != null)
             {
-                var projectmajors = _db.ProjectMajorRels.Include(a=>a.Project).Include(b=>b.Major).Where(x => x.Project.Id == id);
+                var projectmajors = _db.ProjectMajorRels.Include(a=>a.Project).Include(b=>b.Major).Where(x => x.Project.Id == id).ToList();
                 var majorsId = new List<string>();
                 foreach (var x in projectmajors)
                 {
                     majorsId.Add(x.Major.MajorId);
                 }
                 project.MajorIds = majorsId;
+
+                var projectSections =
+                    _db.SectionProjectsRels.Include(a => a.Project)
+                        .Include(b => b.Section)
+                        .Where(x => x.Project.Id == id).ToList();
+
+                var sectionsId = new List<long>();
+                foreach (var x in projectSections)
+                {
+                    sectionsId.Add(x.Section.Id);
+                }
+                project.SectionIds = sectionsId;
             }
            
             return project;
@@ -50,13 +62,20 @@ namespace VinculacionBackend.Data.Repositories
             var projects = _db.Projects.Where(x => x.IsDeleted == false).ToList();
             foreach (var project in projects)
             {
-                var projectmajors =_db.ProjectMajorRels.Include(a => a.Project).Include(b => b.Major).Where(x => x.Project.Id == project.Id);
+                var projectmajors =_db.ProjectMajorRels.Include(a => a.Project).Include(b => b.Major).Where(x => x.Project.Id == project.Id).ToList();
                 var majorsId = new List<string>();
                 foreach (var x in projectmajors)
                 {
                     majorsId.Add(x.Major.MajorId);
                 }
                 project.MajorIds = majorsId;
+                var projectSections =_db.SectionProjectsRels.Include(a => a.Project) .Include(b => b.Section) .Where(x => x.Project.Id ==project.Id).ToList();
+                var sectionsId = new List<long>();
+                foreach (var x in projectSections)
+                {
+                    sectionsId.Add(x.Section.Id);
+                }
+                project.SectionIds = sectionsId;
             }
             return  projects.AsQueryable();
         }
@@ -71,16 +90,18 @@ namespace VinculacionBackend.Data.Repositories
             _db.SaveChanges();
         }
 
-        public void Insert(Project ent, List<string> majorIds, long sectionId)
+        public void Insert(Project ent, List<string> majorIds, List<long> sectionIds)
         {
-            var majors = _db.Majors.Where(x => majorIds.Any(y => y == x.MajorId));
+            var majors = _db.Majors.Where(x => majorIds.Any(y => y == x.MajorId)).ToList();
             foreach (var major in majors)
             {
                 _db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
             }
-            var section = _db.Sections.FirstOrDefault(x => x.Id == sectionId);
-
-            _db.SectionProjectsRels.Add(new SectionProject { Project = ent, Section = section });
+            var sections = _db.Sections.Where(x=>sectionIds.Any(y=>y==x.Id)).ToList();
+            foreach (var section in sections)
+            {
+                _db.SectionProjectsRels.Add(new SectionProject { Project = ent, Section = section });
+            }           
 
             Insert(ent);
         }
@@ -88,18 +109,37 @@ namespace VinculacionBackend.Data.Repositories
         public void Update(Project ent)
         {
 
+            var projectMajors =
+                _db.ProjectMajorRels.Include(a => a.Project)
+                    .Include(b => b.Major)
+                    .Where(c => c.Project.Id == ent.Id)
+                    .ToList();
+
+            foreach (var pm in projectMajors)
+            {
+                _db.ProjectMajorRels.Remove(pm);
+            }
+              
             var majors = _db.Majors.Where(x => ent.MajorIds.Any(y => y == x.MajorId)).ToList();
             foreach (var major in majors)
             {
-                var projectMajor = _db.ProjectMajorRels.FirstOrDefault(x => x.Project.Id == ent.Id && x.Major.MajorId == major.MajorId);
-                if (projectMajor==null)
-                    _db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
+               _db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
             }
-            var section = _db.Sections.FirstOrDefault(x => x.Id == ent.SectionId);
-            var sectionproject =_db.SectionProjectsRels.FirstOrDefault(x => x.Project.Id == ent.Id && x.Section.Id == ent.SectionId);
-            if (sectionproject == null)
-                _db.SectionProjectsRels.Add(new SectionProject {Project = ent, Section = section});
 
+            var projecSections =
+               _db.SectionProjectsRels.Include(a => a.Project)
+                   .Include(b => b.Section)
+                   .Where(c => c.Project.Id == ent.Id)
+                   .ToList();
+            foreach (var ps in projecSections)
+            {
+                _db.SectionProjectsRels.Remove(ps);
+            }
+            var sections = _db.Sections.Where(x => ent.SectionIds.Any(y => y == x.Id)).ToList();
+            foreach (var s in sections)
+            {
+                _db.SectionProjectsRels.Add(new SectionProject { Project = ent, Section = s });
+            }
             _db.Entry(ent).State = EntityState.Modified;
         }
 
