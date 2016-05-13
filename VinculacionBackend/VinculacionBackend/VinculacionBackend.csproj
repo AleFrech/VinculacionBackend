@@ -213,7 +213,6 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
     <Compile Include="ErrorHandler.cs" />
-    <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Interfaces\IPeriodsServices.cs" />
     <Compile Include="Models\PeriodEntryModel.cs" />
     <Compile Include="Controllers\PeriodsController.cs" />
@@ -337,6 +336,9 @@
       <Project>{AE6E75C5-1047-44E7-9EE9-1033355129FB}</Project>
       <Name>VinculacionBackend.Security</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

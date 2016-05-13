@@ -10,6 +10,7 @@ using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
+using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security;
 using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Services;
@@ -35,25 +36,13 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostUserLogin(LoginUserModel loginUser)
         {
-            var passw = _encryption.Encrypt(loginUser.Password);
-            var user = _usersServices.Find(loginUser.User, _encryption.Encrypt(loginUser.Password));
+            var user = _usersServices.FindValidUser(loginUser.User, _encryption.Encrypt(loginUser.Password));
 
-          
-                if (user != null)
-                {
-                   
-                    if (!user.Email.Equals(loginUser.User) || !user.Password.Equals(_encryption.Encrypt(loginUser.Password)) || user.Status!= Status.Verified)
-                    {
-                     throw new UnauthorizedException("Usuario o contraseña incorrecto");
-                    }
+            string userInfo = user.Email + ":" + user.Password;
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(userInfo);
+            string token = System.Convert.ToBase64String(plainTextBytes);
 
-                    string userInfo = user.Email + ":" + user.Password;
-                    var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(userInfo);
-                    string token = System.Convert.ToBase64String(plainTextBytes);
-
-                    return Ok("Basic " + token);
-                }
-            throw new UnauthorizedException("Usuario o contraseña incorrecto");
+            return Ok("Basic " + token);
 
         }
     }
