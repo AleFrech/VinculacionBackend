@@ -6,6 +6,7 @@ using System.Web.Http.Description;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using System.Web.OData;
+using AutoMapper;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
 using VinculacionBackend.CustomDataNotations;
@@ -22,13 +23,15 @@ namespace VinculacionBackend.Controllers
         private readonly IHoursServices _hoursServices;
         private readonly IEmail _email;
         private readonly IEncryption _encryption;
+        private readonly IMapper _mapper;
 
-        public StudentsController(IStudentsServices studentServices, IEmail email, IEncryption encryption, IHoursServices hoursServices)
+        public StudentsController(IStudentsServices studentServices, IEmail email, IEncryption encryption, IHoursServices hoursServices, IMapper mapper)
         {
             _studentsServices = studentServices;
             _email = email;
             _encryption = encryption;
             _hoursServices = hoursServices;
+            _mapper = mapper;
         }
 
         // GET: api/Students
@@ -133,7 +136,8 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
-            var newUser = _studentsServices.Map(userModel);
+            userModel.Password = _encryption.Encrypt(userModel.Password);
+            var newUser = _mapper.Map<User>(userModel);
             _studentsServices.Add(newUser);
             var stringparameter = _encryption.Encrypt(newUser.AccountId);
             _email.Send(newUser.Email, "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");

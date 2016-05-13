@@ -1,16 +1,56 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
+using AutoMapper;
 using VinculacionBackend.Data;
+using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security;
 using VinculacionBackend.Services;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Models;
+using Module = Autofac.Module;
 
 namespace VinculacionBackend
 {
+    public class AutoMapperModule
+    {
+        public static void Load(ContainerBuilder builder)
+        {
+            builder.Register(context =>
+            {
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<UserEntryModel, User>()
+                        .ForMember(dest => dest.CreationDate,
+                            opts => opts.UseValue(DateTime.Now))
+                        .ForMember(dest => dest.ModificationDate,
+                            opts => opts.UseValue(DateTime.Now))
+                        .ForMember(dest => dest.Major,
+                            opts => opts.MapFrom(src => new Major { MajorId = src.MajorId }));
+                    cfg.CreateMap<SectionEntryModel, Section>();
+                });
+
+                return config;
+            }).SingleInstance()
+                .AutoActivate() 
+                .AsSelf();
+
+            builder.Register(tempContext =>
+            {
+                var ctx = tempContext.Resolve<IComponentContext>();
+                var config = ctx.Resolve<MapperConfiguration>();
+
+                return config.CreateMapper();
+            }).As<IMapper>();
+
+        }
+    }
+
     public static class AutofacConfig
     {
         public static void Register()
@@ -19,6 +59,7 @@ namespace VinculacionBackend
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             RegisterServices(builder);
             RegisterRepositories(builder);
+            AutoMapperModule.Load(builder);
 
             var container = builder.Build();
             GlobalConfiguration.Configuration.DependencyResolver =
