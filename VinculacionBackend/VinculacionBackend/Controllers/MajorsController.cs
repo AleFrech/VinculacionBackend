@@ -2,10 +2,11 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
+using System.Web.Mvc;
 using System.Web.OData;
+using System.Web.UI;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
-using VinculacionBackend.Security.BasicAuthentication;
 
 namespace VinculacionBackend.Controllers
 {
@@ -13,15 +14,13 @@ namespace VinculacionBackend.Controllers
     public class MajorsController : ApiController
     {
         private readonly IMajorsServices _majorsServices;
-
         public MajorsController(IMajorsServices majorsServices)
         {
             _majorsServices = majorsServices;
         }
 
         // GET: api/Majors
-        [Route("api/Majors")]
-      
+        [System.Web.Http.Route("api/Majors")]
         [EnableQuery]
         public IQueryable<Major> GetMajors()
         {
@@ -29,9 +28,9 @@ namespace VinculacionBackend.Controllers
         }
 
         // GET: api/Majors/5
+        [OutputCache(Duration = 7200, VaryByParam = "none" , Location = OutputCacheLocation.Client, NoStore = false)]
         [ResponseType(typeof(Major))]
-        [Route("api/Majors/{majorId}")]
-     
+        [System.Web.Http.Route("api/Majors/{majorId}")]
         public IHttpActionResult GetMajor(string majorId)
         {
             Major major = _majorsServices.Find(majorId);
@@ -39,10 +38,7 @@ namespace VinculacionBackend.Controllers
             {
                 return NotFound();
             }
-
             return Ok(major);
         }
-
-       
     }
 }
