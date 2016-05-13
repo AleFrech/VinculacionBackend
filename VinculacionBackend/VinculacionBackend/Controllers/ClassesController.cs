@@ -32,11 +32,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetClass(long id)
         {
             Class @class = _classesServices.Find(id);
-            if (@class == null)
-            {
-                return NotFound();
-            }
-
             return Ok(@class);
         }
 
@@ -57,10 +52,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult DeleteClass(long id)
         {
             var @class = _classesServices.Delete(id);
-            if (@class == null)
-            {
-                return NotFound();
-            }
             return Ok(@class);
         }
     }

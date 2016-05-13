@@ -38,11 +38,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetProject(long projectId)
         {
             Project project = _services.Find(projectId);
-            if (project == null)
-            {
-                return NotFound();
-            }
-
             return Ok(project);
         }
 

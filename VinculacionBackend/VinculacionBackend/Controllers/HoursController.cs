@@ -27,19 +27,10 @@ namespace VinculacionBackend.Controllers
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IHttpActionResult PostHour(HourEntryModel hourModel)
         {
-            try
-            {
+
                 var hour = _hoursServices.Add(hourModel, HttpContext.Current.User.Identity.Name);
-                if (hour != null)
-                {
-                    return Ok(hour);
-                }
-                return NotFound();
-            }
-            catch (HttpException e)
-            {
-                return Unauthorized();
-            }
+                return Ok(hour);
+               
            
         }
     }

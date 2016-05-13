@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
@@ -11,14 +13,14 @@ namespace VinculacionBackend.Services
     public class StudentsServices : IStudentsServices
     {
         private readonly IStudentRepository _studentRepository;
-        private readonly IMajorRepository _majorRepository;
+        private readonly IMajorsServices _majorServices;
         private readonly IEncryption _encryption;
 
-        public StudentsServices(IStudentRepository studentRepository, IMajorRepository majorRepository,IEncryption encryption)
+        public StudentsServices(IStudentRepository studentRepository, IMajorRepository majorRepository,IEncryption encryption, IMajorsServices majorServices)
         {
             _studentRepository = studentRepository;
-            _majorRepository = majorRepository;
             _encryption = encryption;
+            _majorServices = majorServices;
         }
 
         public  User Map(UserEntryModel userModel)
@@ -27,7 +29,7 @@ namespace VinculacionBackend.Services
             newUser.AccountId = userModel.AccountId;
             newUser.Name = userModel.Name;
             newUser.Password = _encryption.Encrypt(userModel.Password);
-            newUser.Major = _majorRepository.GetMajorByMajorId(userModel.MajorId);
+            newUser.Major = _majorServices.Find(userModel.MajorId);
             newUser.Campus = userModel.Campus;
             newUser.Email = userModel.Email;
             newUser.Status = Status.Inactive;
@@ -47,7 +49,7 @@ namespace VinculacionBackend.Services
         {
             var student = _studentRepository.GetByAccountNumber(accountId);
             if(student==null)
-                throw new System.InvalidOperationException("Logfile cannot be read-only");
+                throw new NotFoundException("No se encontro al estudiante");
             return student;
         }
 
@@ -58,36 +60,33 @@ namespace VinculacionBackend.Services
 
         public User RejectUser(string accountId)
         {
-
             var student = Find(accountId);
-            if (student != null)
-            {
-                student.Status = Status.Rejected;
-                _studentRepository.Save();
-           }
+            if (student == null)
+                throw new NotFoundException("No se encontro al estudiante");
+            student.Status = Status.Rejected;
+            _studentRepository.Save();
+
             return student;
         }
 
         public User ActivateUser(string accountId)
         {
             var student = Find(accountId);
-            if (student != null)
-            {
-                student.Status = Status.Active;
-                _studentRepository.Save();
-                
-            }
+            if (student == null)
+                throw new NotFoundException("No se encontro al estudiante");
+            student.Status = Status.Active;
+           _studentRepository.Save();
             return student;
         }
 
         public User VerifyUser(string accountId)
         {
             var student = Find(accountId);
-            if (student != null)
-            {
-                student.Status = Status.Verified;
-                _studentRepository.Save();
-            }
+            if (student == null)
+                throw new NotFoundException("No se encontro al estudiante");
+            student.Status = Status.Verified;
+           _studentRepository.Save();
+            
             return student;
         }
 
@@ -96,6 +95,8 @@ namespace VinculacionBackend.Services
         public User DeleteUser(string accountId)
         {
             var user = _studentRepository.DeleteByAccountNumber(accountId);
+            if(user == null)
+                throw new NotFoundException("No se encontro al estudiante");
             _studentRepository.Save();
             return user;
         }

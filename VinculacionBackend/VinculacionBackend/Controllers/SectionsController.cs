@@ -37,11 +37,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetSection(long sectionId)
         {
             var section = _sectionServices.Find(sectionId);
-            if (section == null)
-            {
-                return NotFound();
-            }
-
             return Ok(section);
         }
 
@@ -66,11 +61,7 @@ namespace VinculacionBackend.Controllers
         {
 
             var assigned = _sectionServices.AssignStudent(model);
-            if(assigned)
-            {
-                return Ok();
-            }
-            return NotFound();
+            return Ok();
         }
         
         [Route("api/Sections/RemoveStudent")]
@@ -81,11 +72,7 @@ namespace VinculacionBackend.Controllers
         {
 
             var removed = _sectionServices.RemoveStudent(model);
-            if(removed)
-            {
-                return Ok();
-            }
-            return NotFound();
+            return Ok();
         }
         
         // DELETE: api/Sections/5
@@ -95,12 +82,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult DeleteSection(long sectionId)
         {
             Section section = _sectionServices.Delete(sectionId);
-            if (section == null)
-            {
-                return NotFound();
-            }
-            
-
             return Ok(section);
         }
 

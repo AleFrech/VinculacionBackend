@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using System.Web;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
@@ -23,6 +25,8 @@ namespace VinculacionBackend.Services
         public Class Delete(long id)
         {
             var @class = _classesRepository.Delete(id);
+            if (@class == null)
+                throw new NotFoundException("No se encontro la clase");
             _classesRepository.Save();
             return @class;
         }
@@ -35,7 +39,10 @@ namespace VinculacionBackend.Services
 
         public Class Find(long id)
         {
-            return _classesRepository.Get(id);
+            var @class = _classesRepository.Get(id);
+            if (@class !=null)
+            return @class;
+            throw new NotFoundException("No se encontro la clase");
         }
 
         public Class Map(ClassEntryModel classModel)
