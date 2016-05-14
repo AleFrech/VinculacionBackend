@@ -128,7 +128,6 @@ namespace VinculacionBackend.Controllers
         }
 
         [Route("api/StudentHourReport/{accountId}")]
-        [CustomAuthorize(Roles = "Anonymous")]
         public HourReportModel GetStudentsHourReport(string accountId)
         {
             return _hoursServices.HourReport(accountId);
