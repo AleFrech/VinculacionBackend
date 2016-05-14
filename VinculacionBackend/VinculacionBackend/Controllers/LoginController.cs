@@ -4,10 +4,13 @@ using System.Web.Http.Description;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using System.Web.UI;
+using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
+using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security;
 using VinculacionBackend.Security.BasicAuthentication;
 using VinculacionBackend.Services;
@@ -30,36 +33,17 @@ namespace VinculacionBackend.Controllers
         [Route("api/Login")]
         [ResponseType(typeof (User))]
         [CustomAuthorize(Roles = "Anonymous")]
+        [ValidateModel]
         public IHttpActionResult PostUserLogin(LoginUserModel loginUser)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var user = _usersServices.FindValidUser(loginUser.User, _encryption.Encrypt(loginUser.Password));
 
-            var passw = _encryption.Encrypt(loginUser.Password);
-            var user = _usersServices.Find(loginUser.User, _encryption.Encrypt(loginUser.Password));
+            string userInfo = user.Email + ":" + user.Password;
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(userInfo);
+            string token = System.Convert.ToBase64String(plainTextBytes);
 
-          
-                if (user != null)
-                {
-                   
-                    if (!user.Email.Equals(loginUser.User) || !user.Password.Equals(_encryption.Encrypt(loginUser.Password)) || user.Status!= Status.Verified)
-                    {
-                    return Unauthorized();
-                    }
+            return Ok("Basic " + token);
 
-                    string userInfo = user.Email + ":" + user.Password;
-                    var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(userInfo);
-                    string token = System.Convert.ToBase64String(plainTextBytes);
-
-                    return Ok("Basic " + token);
-                }
-                else
-                {
-                    return Unauthorized();
-                }
-            
         }
     }
 }

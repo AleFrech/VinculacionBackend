@@ -1,6 +1,8 @@
+using System.CodeDom;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
@@ -9,17 +11,21 @@ namespace VinculacionBackend.Services
     public class ProjectServices : IProjectServices
     {
         private readonly IProjectRepository _projectRepository;
-        private readonly ISectionRepository _sectionRepository;
+        private readonly ISectionsServices _sectionServices;
 
-        public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository)
+        public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository, ISectionsServices sectionServices)
         {
             _projectRepository = projectRepository;
-            _sectionRepository = sectionRepository;
+            _sectionServices = sectionServices;
+          
         }
 
         public Project Find(long id)
         {
-            return _projectRepository.Get(id);
+            var project = _projectRepository.Get(id);
+            if (project==null)
+                throw new NotFoundException("No se encontro el proyecto");
+            return project;
         }
 
         public IQueryable<Project> All()
@@ -53,6 +59,8 @@ namespace VinculacionBackend.Services
         public Project Delete(long projectId)
         {
             var project = _projectRepository.Delete(projectId);
+            if (project == null)
+                throw new NotFoundException("No se encontro el proyecto");
             _projectRepository.Save();
             return project;
         }
@@ -66,9 +74,7 @@ namespace VinculacionBackend.Services
         {
             var tmpProject = _projectRepository.Get(projectId);
             if (tmpProject == null)
-            {
-                return null;
-            }
+                throw new NotFoundException("No se encontro el proyecto");
             tmpProject.ProjectId = model.ProjectId;
             tmpProject.Name = model.Name;
             tmpProject.Description = model.Description;
@@ -84,11 +90,8 @@ namespace VinculacionBackend.Services
 
         public bool AssignSection(ProjectSectionModel model)
         {
-            var project = _projectRepository.Get(model.ProjectId);
-            var section = _sectionRepository.Get(model.SectionId);
-
-            if (project == null || section == null) return false;
-
+            var project = Find(model.SectionId);
+            var section = _sectionServices.Find(model.SectionId);
             _projectRepository.AssignToSection(model.ProjectId, model.SectionId);
             _projectRepository.Save();
             return true;

@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
+using VinculacionBackend.Interfaces;
+
 namespace VinculacionBackend.Services
 {
     public class UsersServices : IUsersServices
@@ -15,9 +19,12 @@ namespace VinculacionBackend.Services
             _userRepository = userRepository;
         }
 
-        public User Find(string user, string password)
+        public User FindValidUser(string username, string password)
         {
-           return _userRepository.GetUserByEmailAndPassword(user, password);
+            var user = _userRepository.GetUserByEmailAndPassword(username, password);
+            if (user == null || user.Status != Status.Verified)
+                throw new NotFoundException("Usuario o contraseña incorrecto");
+            return user;
         }
     }
 }

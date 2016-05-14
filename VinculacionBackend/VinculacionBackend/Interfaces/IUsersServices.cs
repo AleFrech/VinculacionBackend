@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using VinculacionBackend.Data.Entities;
 
-namespace VinculacionBackend.Services
+namespace VinculacionBackend.Interfaces
 {
     public interface IUsersServices
     {
-        User Find(string user, string password);
+        User FindValidUser(string user, string password);
     }
 }
