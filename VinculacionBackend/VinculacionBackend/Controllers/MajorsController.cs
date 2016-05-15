@@ -5,6 +5,7 @@ using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
+using WebApi.OutputCache.V2;
 using WebApi.OutputCache.V2.TimeAttributes;
 
 namespace VinculacionBackend.Controllers
@@ -20,7 +21,7 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Majors
         [EnableQuery]
-        [CacheOutputUntilToday(23, 59)]
+        [CacheOutput(ClientTimeSpan = 86400, ServerTimeSpan = 86400)]      
         [System.Web.Http.Route("api/Majors")]
         public IQueryable<Major> GetMajors()
         {
@@ -30,7 +31,7 @@ namespace VinculacionBackend.Controllers
         // GET: api/Majors/5
         [ActionName("GetMajorId")]
         [ResponseType(typeof(Major))]
-        [CacheOutputUntilToday(23,59)]
+        [CacheOutput(ClientTimeSpan = 86400, ServerTimeSpan = 86400)]
         [System.Web.Http.Route("api/Majors/{majorId}")]
         public IHttpActionResult GetMajor(string majorId)
         {
