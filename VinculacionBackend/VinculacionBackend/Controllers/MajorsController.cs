@@ -5,7 +5,7 @@ using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
-using VinculacionBackend.Security.BasicAuthentication;
+using WebApi.OutputCache.V2;
 
 namespace VinculacionBackend.Controllers
 {
@@ -19,10 +19,10 @@ namespace VinculacionBackend.Controllers
             _majorsServices = majorsServices;
         }
 
-        // GET: api/Majors
+        // GET: api/Majors  
+        [EnableQuery]        
+        [CacheOutput(ClientTimeSpan = 86400, ServerTimeSpan = 86400)]      
         [Route("api/Majors")]
-      
-        [EnableQuery]
         public IQueryable<Major> GetMajors()
         {
             return _majorsServices.All();
@@ -30,8 +30,8 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Majors/5
         [ResponseType(typeof(Major))]
+        [CacheOutput(ClientTimeSpan = 86400, ServerTimeSpan = 86400)]
         [Route("api/Majors/{majorId}")]
-     
         public IHttpActionResult GetMajor(string majorId)
         {
             Major major = _majorsServices.Find(majorId);
