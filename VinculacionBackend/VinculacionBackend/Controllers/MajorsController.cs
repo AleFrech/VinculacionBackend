@@ -19,8 +19,7 @@ namespace VinculacionBackend.Controllers
             _majorsServices = majorsServices;
         }
 
-        // GET: api/Majors
-        [Route("api/Majors")]      
+        // GET: api/Majors  
         [EnableQuery]        
         [CacheOutput(ClientTimeSpan = 86400, ServerTimeSpan = 86400)]      
         [Route("api/Majors")]
