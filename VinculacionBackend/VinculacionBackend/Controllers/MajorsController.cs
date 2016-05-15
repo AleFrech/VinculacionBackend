@@ -35,10 +35,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetMajor(string majorId)
         {
             Major major = _majorsServices.Find(majorId);
-            if (major == null)
-            {
-                return NotFound();
-            }
             return Ok(major);
         }
     }

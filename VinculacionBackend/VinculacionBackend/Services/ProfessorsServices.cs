@@ -3,6 +3,7 @@ using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
@@ -42,12 +43,17 @@ namespace VinculacionBackend.Services
 
         public User Find(string accountId)
         {
-            return _professorRepository.GetByAccountId(accountId);
+            var professor = _professorRepository.GetByAccountId(accountId);
+            if(professor==null)
+                throw new NotFoundException("No se encontro el profesor");
+            return professor;
         }
 
         public User DeleteProfessor(string accountId)
         {
             var professor = _professorRepository.DeleteByAccountNumber(accountId);
+            if(professor==null)
+                throw new NotFoundException("No se encontro el profesor");
             _professorRepository.Save();
             return professor;
         }
