@@ -84,7 +84,6 @@ namespace VinculacionBackend.Data.Repositories
         {
             _db.Projects.Add(ent);
         }
-
         public void Save()
         {
             _db.SaveChanges();

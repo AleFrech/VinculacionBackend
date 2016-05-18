@@ -49,6 +49,9 @@ namespace VinculacionBackend.Data.Repositories
 
         public void Insert(Section ent)
         {
+            _db.Classes.Attach(ent.Class);
+            _db.Periods.Attach(ent.Period);
+            _db.Users.Attach(ent.User);
             _db.Sections.Add(ent);
         }
 

@@ -37,7 +37,7 @@ namespace VinculacionBackend.Data.Repositories
 			_db.Users.Add(ent);
 		}
 
-		public void Save()
+	    public void Save()
 		{
 			_db.SaveChanges();
 		}

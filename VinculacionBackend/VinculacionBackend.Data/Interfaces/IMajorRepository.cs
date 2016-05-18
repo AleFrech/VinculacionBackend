@@ -4,6 +4,6 @@ namespace VinculacionBackend.Data.Interfaces
 {
     public interface IMajorRepository : IRepository<Major>
     {
-        Major GetMajorByMajorId(string majorId);
+        Major GetMajorByMajorId(string majorId);  
     }
 }

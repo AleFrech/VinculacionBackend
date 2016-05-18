@@ -1,9 +1,7 @@
 ﻿using System.Web.Http;
-using System.Web.Http.Description;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using VinculacionBackend.ActionFilters;
-using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security.BasicAuthentication;
@@ -24,6 +22,7 @@ namespace VinculacionBackend.Controllers
         }
 
         [Route("api/Login")]
+        [CustomAuthorize(Roles = "Anonymous")]
         [ValidateModel]
         public IHttpActionResult PostUserLogin(LoginUserModel loginUser)
         {
