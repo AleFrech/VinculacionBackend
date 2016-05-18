@@ -5,7 +5,6 @@ using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
-using WebApi.OutputCache.V2;
 
 namespace VinculacionBackend.Controllers
 {
@@ -21,7 +20,7 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Majors  
         [EnableQuery]        
-         
+
         [Route("api/Majors")]
         public IQueryable<Major> GetMajors()
         {
@@ -42,6 +41,12 @@ namespace VinculacionBackend.Controllers
             return Ok(major);
         }
 
-       
+        [Route("api/Majors/Test")]
+        public IHttpActionResult GetTest()
+        {          
+            return Ok("Hola");
+        }
+
+
     }
 }
