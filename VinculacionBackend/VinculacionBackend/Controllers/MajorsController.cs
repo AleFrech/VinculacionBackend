@@ -12,7 +12,7 @@ namespace VinculacionBackend.Controllers
     public class MajorsController : ApiController
     {
         private readonly IMajorsServices _majorsServices;
-        private IQueryable<Major> _majorsCache;
+        private static IQueryable<Major> _majorsCache;
         public MajorsController(IMajorsServices majorsServices)
         {
             _majorsServices = majorsServices;
@@ -40,13 +40,5 @@ namespace VinculacionBackend.Controllers
             Major major = _majorsServices.Find(majorId);
             return Ok(major);
         }
-
-        [Route("api/Majors/Test")]
-        public IHttpActionResult GetTest()
-        {          
-            return Ok("Hola");
-        }
-
-
     }
 }
