@@ -87,6 +87,13 @@ namespace VinculacionBackend.Data.Repositories
             return new List<User>();
         }
 
+        public User GetByEmail(string email)
+        {
+            var rels = GetUserRoleRelationships();
+            var student = _db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.Email == email);
+            return student;
+        }
+
         public IEnumerable<User> GetStudentsByStatus(Status status)
         {
             var rels = GetUserRoleRelationships();
