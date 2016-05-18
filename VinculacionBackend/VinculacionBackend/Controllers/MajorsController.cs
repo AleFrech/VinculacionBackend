@@ -13,18 +13,24 @@ namespace VinculacionBackend.Controllers
     public class MajorsController : ApiController
     {
         private readonly IMajorsServices _majorsServices;
-
+        private IQueryable<Major> _majorsCache;
         public MajorsController(IMajorsServices majorsServices)
         {
             _majorsServices = majorsServices;
         }
 
         // GET: api/Majors  
-        [EnableQuery]              
+        [EnableQuery]        
+         
         [Route("api/Majors")]
         public IQueryable<Major> GetMajors()
         {
-            return _majorsServices.All();
+            if (_majorsCache == null)
+            {
+                _majorsCache = _majorsServices.All();
+                
+            }
+            return _majorsCache;
         }
 
         // GET: api/Majors/5
