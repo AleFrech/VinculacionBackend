@@ -61,8 +61,6 @@ namespace VinculacionBackend.Services
         public User RejectUser(string accountId)
         {
             var student = Find(accountId);
-            if (student == null)
-                throw new NotFoundException("No se encontro al estudiante");
             student.Status = Status.Rejected;
             _studentRepository.Save();
 
@@ -72,8 +70,6 @@ namespace VinculacionBackend.Services
         public User ActivateUser(string accountId)
         {
             var student = Find(accountId);
-            if (student == null)
-                throw new NotFoundException("No se encontro al estudiante");
             student.Status = Status.Active;
            _studentRepository.Save();
             return student;
@@ -82,8 +78,6 @@ namespace VinculacionBackend.Services
         public User VerifyUser(string accountId)
         {
             var student = Find(accountId);
-            if (student == null)
-                throw new NotFoundException("No se encontro al estudiante");
             student.Status = Status.Verified;
            _studentRepository.Save();
             
@@ -95,7 +89,7 @@ namespace VinculacionBackend.Services
         public User DeleteUser(string accountId)
         {
             var user = _studentRepository.DeleteByAccountNumber(accountId);
-            if(user == null)
+            if (user == null)
                 throw new NotFoundException("No se encontro al estudiante");
             _studentRepository.Save();
             return user;
