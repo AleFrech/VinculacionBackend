@@ -54,7 +54,7 @@ namespace VinculacionBackend.Data.Repositories
 		
 		public Role GetUserRole(string email)
 		{
-            return _db.UserRoleRels.Include(x => x.User).Include(y => y.Role).FirstOrDefault(z => z.User.Email == email)?.Role;
+			return _db.UserRoleRels.Include(x=>x.User).Include(y=>y.Role).FirstOrDefault(z=>z.User.Email == email)?.Role;
 		}
 	}
 }
