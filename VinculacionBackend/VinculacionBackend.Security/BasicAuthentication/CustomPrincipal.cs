@@ -19,7 +19,7 @@ namespace VinculacionBackend.Security.BasicAuthentication
         {
             this.roles = roles;
         }
-        public int UserId { get; set; }
+        public long UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string[] roles { get; set; }
