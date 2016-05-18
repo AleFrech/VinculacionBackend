@@ -50,6 +50,16 @@ namespace VinculacionBackend.Controllers
             return Ok(student);
         }
 
+        [ResponseType(typeof(User))]
+        [Route("api/StudentByEmail/{email}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IHttpActionResult GetStudentByEmail(string email)
+        {
+            var student = _studentsServices.FindByEmail(email + "@unitec.edu");
+            return Ok(student);
+        }
+
+
 
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}/Hour")]

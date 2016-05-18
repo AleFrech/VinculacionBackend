@@ -16,5 +16,6 @@ namespace VinculacionBackend.Interfaces
         User DeleteUser(string accountId);
         IQueryable<User> AllUsers();
         int GetStudentHours(string accountId);
+        User FindByEmail(string email);
     }
 }
