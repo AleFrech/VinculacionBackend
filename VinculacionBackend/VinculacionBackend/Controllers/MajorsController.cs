@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -12,7 +13,7 @@ namespace VinculacionBackend.Controllers
     public class MajorsController : ApiController
     {
         private readonly IMajorsServices _majorsServices;
-        private static IQueryable<Major> _majorsCache;
+        private static List<Major> _majorsCache;
         public MajorsController(IMajorsServices majorsServices)
         {
             _majorsServices = majorsServices;
@@ -20,13 +21,12 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Majors  
         [EnableQuery]        
-
         [Route("api/Majors")]
-        public IQueryable<Major> GetMajors()
+        public List<Major> GetMajors()
         {
             if (_majorsCache == null)
             {
-                _majorsCache = _majorsServices.All();
+                _majorsCache = _majorsServices.All().ToList();
                 
             }
             return _majorsCache;
