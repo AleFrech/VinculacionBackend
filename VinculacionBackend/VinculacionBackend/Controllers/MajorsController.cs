@@ -25,7 +25,7 @@ namespace VinculacionBackend.Controllers
         [CacheClient(Duration = 86400)]
         public IQueryable<Major> GetMajors()
         {
-            return _majorsServices.All();
+           return _majorsServices.All();
         }
 
         // GET: api/Majors/5
