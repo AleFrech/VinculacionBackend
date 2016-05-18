@@ -36,7 +36,6 @@ namespace VinculacionBackend.Data.Database
             var environment = ConfigurationManager.AppSettings["ProductionEnvironment"];
             return string.Format((string)"name={0}", (object)environment);
 #endif
-
         }
     }
 
