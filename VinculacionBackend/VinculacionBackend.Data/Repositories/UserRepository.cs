@@ -37,7 +37,7 @@ namespace VinculacionBackend.Data.Repositories
 			_db.Users.Add(ent);
 		}
 
-		public void Save()
+	    public void Save()
 		{
 			_db.SaveChanges();
 		}
@@ -50,6 +50,11 @@ namespace VinculacionBackend.Data.Repositories
 		public User GetUserByEmailAndPassword(string email, string password)
 		{
 			return _db.Users.FirstOrDefault(d=>d.Email == email && d.Password == password);
+		}
+		
+		public Role GetUserRole(string email)
+		{
+			return _db.UserRoleRels.Include(x=>x.User).Include(y=>y.Role).FirstOrDefault(z=>z.User.Email == email)?.Role;
 		}
 	}
 }

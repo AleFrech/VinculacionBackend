@@ -1,9 +1,12 @@
 using System.Linq;
+using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
 using System.Web.OData;
+using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 
 namespace VinculacionBackend.Controllers
@@ -18,10 +21,10 @@ namespace VinculacionBackend.Controllers
             _majorsServices = majorsServices;
         }
 
-        // GET: api/Majors  
-        [EnableQuery]        
-         
-        [Route("api/Majors")]
+        // GET: api/Majors
+        [Route("api/Majors")]      
+        [EnableQuery]
+        [CacheClient(Duration = 86400)]
         public IQueryable<Major> GetMajors()
         {
            return _majorsServices.All();
@@ -36,6 +39,7 @@ namespace VinculacionBackend.Controllers
             return Ok(major);
         }
 
+     
        
     }
 }

@@ -14,6 +14,10 @@ namespace VinculacionBackend
 {
     public class ErrorHandler : ExceptionHandler
     {
+        public override bool ShouldHandle(ExceptionHandlerContext context)
+        {
+            return true;
+        }
         public override void Handle(ExceptionHandlerContext context)
         {
             if (context.Exception is NotFoundException)

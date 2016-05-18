@@ -13,5 +13,6 @@ namespace VinculacionBackend.Interfaces
         IQueryable<User> GetProjectStudents(long projectId);
         Project UpdateProject(long projectId, ProjectModel model);
         bool AssignSection(ProjectSectionModel model);
+        IQueryable<Project> GetUserProjects(long userId, string[] roles);
     }
 }

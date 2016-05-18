@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
@@ -28,7 +30,8 @@ namespace VinculacionBackend.Controllers
         [EnableQuery]
         public IQueryable<Project> GetProjects()
         {
-            return _services.All();
+            var currentUser = (CustomPrincipal)HttpContext.Current.User;
+            return _services.GetUserProjects(currentUser.UserId, currentUser.roles);
         }
 
         // GET: api/Projects/5

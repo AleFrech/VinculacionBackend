@@ -11,7 +11,6 @@ namespace VinculacionBackend.Data.Repositories
     public class StudentRepository : IStudentRepository
     {
         private readonly VinculacionContext _db;
-
         public StudentRepository()
         {
             _db = new VinculacionContext();
@@ -95,7 +94,9 @@ namespace VinculacionBackend.Data.Repositories
         }
 
         public void Insert(User ent)
-        {
+        { 
+
+            _db.Majors.Attach(ent.Major);
             _db.Users.Add(ent);
             _db.UserRoleRels.Add(new UserRole { User=ent,Role=_db.Roles.FirstOrDefault(x=>x.Name=="Student")});
         }
