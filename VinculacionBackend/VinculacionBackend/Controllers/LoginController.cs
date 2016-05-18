@@ -35,5 +35,13 @@ namespace VinculacionBackend.Controllers
             return Ok("Basic " + token);
 
         }
+
+        [Route("api/Login/GetUserRole")]
+        [CustomAuthorize(Roles = "Anonymous")]
+        [ValidateModel]
+        public string PostUserRole(RoleEmailModel model)
+        {
+            return _usersServices.GetUserRole(model.Email);
+        }
     }
 }

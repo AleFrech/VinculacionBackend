@@ -246,6 +246,7 @@
     <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Models\ProjectSectionModel.cs" />
     <Compile Include="Models\RejectedModel.cs" />
+    <Compile Include="Models\RoleEmailModel.cs" />
     <Compile Include="Models\SectionEntryModel.cs" />
     <Compile Include="Models\SectionStudentModel.cs" />
     <Compile Include="Models\UserEntryModel.cs" />
