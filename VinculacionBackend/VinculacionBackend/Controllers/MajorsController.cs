@@ -20,8 +20,7 @@ namespace VinculacionBackend.Controllers
         }
 
         // GET: api/Majors  
-        [EnableQuery]        
-        [CacheOutput(ClientTimeSpan = 86400, ServerTimeSpan = 86400)]      
+        [EnableQuery]              
         [Route("api/Majors")]
         public IQueryable<Major> GetMajors()
         {
@@ -30,7 +29,6 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Majors/5
         [ResponseType(typeof(Major))]
-        [CacheOutput(ClientTimeSpan = 86400, ServerTimeSpan = 86400)]
         [Route("api/Majors/{majorId}")]
         public IHttpActionResult GetMajor(string majorId)
         {
