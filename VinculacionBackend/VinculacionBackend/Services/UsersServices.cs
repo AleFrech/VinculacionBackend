@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -27,6 +27,14 @@ namespace VinculacionBackend.Services
             if(user.Status != Status.Verified)
                 throw new NotFoundException("El usuario no ha sido verificado aun");
             return user;
+        }
+        
+        public string GetUserRole(string email)
+        {
+            var role = _userRepository.GetUserRole(email);
+            if(role == null)
+                throw new NotFoundException("Usuario no Encontrado");
+            return role.Name;
         }
     }
 }
