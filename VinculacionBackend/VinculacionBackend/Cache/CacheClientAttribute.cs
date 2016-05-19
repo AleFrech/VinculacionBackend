@@ -2,7 +2,7 @@
 using System.Net.Http.Headers;
 using System.Web.Http.Filters;
 
-namespace VinculacionBackend.ActionFilters
+namespace VinculacionBackend.Cache
 {
     public class CacheClientAttribute : ActionFilterAttribute
     {
