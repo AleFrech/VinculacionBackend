@@ -51,11 +51,11 @@ namespace VinculacionBackend.Controllers
         }
 
         [ResponseType(typeof(User))]
-        [Route("api/StudentByEmail/{email}")]
+        [Route("api/StudentByEmail")]
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
-        public IHttpActionResult GetStudentByEmail(string email)
+        public IHttpActionResult PostStudentByEmail(EmailModel model)
         {
-            var student = _studentsServices.FindByEmail(email + "@unitec.edu");
+            var student = _studentsServices.FindByEmail(model.Email);
             return Ok(student);
         }
 

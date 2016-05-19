@@ -36,7 +36,7 @@ namespace VinculacionBackend.Controllers
 
         [Route("api/Login/GetUserRole")]
         [ValidateModel]
-        public string PostUserRole(RoleEmailModel model)
+        public string PostUserRole(EmailModel model)
         {
             return _usersServices.GetUserRole(model.Email);
         }
