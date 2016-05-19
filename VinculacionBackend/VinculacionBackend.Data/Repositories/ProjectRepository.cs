@@ -160,5 +160,17 @@ namespace VinculacionBackend.Data.Repositories
 
             
         }
+        
+        public SectionProject RemoveFromSection(long projectId, long sectionId)
+        {
+            var found = _db.SectionProjectsRels.Include(x=>x.Project).Include(y=>y.Section).FirstOrDefault(z=>z.Project.Id == projectId && z.Section.Id == sectionId);
+            if (found)
+            {
+                found.IsDeleted = true;
+                Save();
+            }
+            
+            return found;
+        }
     }
 }
