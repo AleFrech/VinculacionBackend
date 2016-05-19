@@ -8,7 +8,6 @@ using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
-using VinculacionBackend.CustomDataNotations;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security.BasicAuthentication;
