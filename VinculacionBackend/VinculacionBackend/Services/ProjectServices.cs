@@ -96,6 +96,18 @@ namespace VinculacionBackend.Services
             _projectRepository.Save();
             return true;
         }
+        
+        public bool RemoveFromSection(long projectId, long sectionId)
+        {
+            var rel = _projectRepository.RemoveFromSection(projectId, sectionId);
+            
+            if(rel == null)
+            {
+                throw new NotFoundException("Seccion o Proyecto invalido");
+            }
+            
+            return true;
+        }
     }
 
 }
