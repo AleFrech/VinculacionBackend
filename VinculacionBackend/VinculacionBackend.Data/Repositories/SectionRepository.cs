@@ -42,6 +42,14 @@ namespace VinculacionBackend.Data.Repositories
             return _db.Sections.Include(a => a.Class).Include(b => b.User).Include(c => c.Period).FirstOrDefault(d=>d.Id==id);
         }
 
+        public IQueryable<User> GetSectionStudents(long sectionId)
+        {
+            var secProjRel = _db.SectionProjectsRels.Include(a => a.Section).Where(c => c.Section.Id == sectionId);
+            var horas = _db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d => d.Id == c.SectionProject.Id));
+            var users = _db.Users.Include(a => a.Major).Where(b => horas.Any(c => c.User.Id == b.Id));
+            return users;
+        }
+
         public IQueryable<Section> GetAll()
         {
             return _db.Sections.Include(a => a.Class).Include(b => b.User).Include(c => c.Period);
