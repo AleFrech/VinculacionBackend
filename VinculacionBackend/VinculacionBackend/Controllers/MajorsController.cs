@@ -63,7 +63,7 @@ namespace VinculacionBackend.Controllers
                 new Major {MajorId = "T - 03", Name = "TÉCNICO UNIVERSITARIO EN MERCADOTECNIA Y VENTAS(CEUTEC)"},
                 new Major {MajorId = "T - 05", Name = "TÉCNICO UNIVERSITARIO EN ADMINISTRACIÓN(CEUTEC)"},
                 new Major {MajorId = "T - 07", Name = "TÉCNICO EN DESARROLLO DE SISTEMAS DE INFORMACIÓN(CEUTEC)"},
-                new Major {MajorId = "T - 08", Name = "TÉCNICO UNIVERSITARIO EN DISEÑO GRÁFICO(CEUTEC)"}
+                new Major {MajorId = "T - 08", Name = "MALWARE"}
             };
 
             return majors;
