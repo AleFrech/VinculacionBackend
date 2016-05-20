@@ -2,6 +2,7 @@
 using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
+using VinculacionBackend.Cache;
 using VinculacionBackend.Data;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security;
@@ -37,8 +38,7 @@ namespace VinculacionBackend
             builder.RegisterType<PeriodRepository>().As<IPeriodRepository>().InstancePerRequest();
             builder.RegisterType<SectionRepository>().As<ISectionRepository>().InstancePerRequest();
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerRequest();
-            builder.RegisterType<Email>().As<IEmail>().InstancePerRequest();
-            builder.RegisterType<Encryption>().As<IEncryption>().InstancePerRequest();
+
         }
 
         private static void RegisterServices(ContainerBuilder builder)
@@ -51,6 +51,9 @@ namespace VinculacionBackend
             builder.RegisterType<UsersServices>().As<IUsersServices>().InstancePerRequest();
             builder.RegisterType<ClassesServices>().As<IClassesServices>().InstancePerRequest();
             builder.RegisterType<ProjectServices>().As<IProjectServices>().InstancePerRequest();
+            builder.RegisterType<Email>().As<IEmail>().InstancePerRequest();
+            builder.RegisterType<MemoryCacher>().As<IMemoryCacher>().InstancePerRequest();
+            builder.RegisterType<Encryption>().As<IEncryption>().InstancePerRequest();
             builder.RegisterType<SectionsServices>().As<ISectionsServices>().InstancePerRequest();
         }
     }
