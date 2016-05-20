@@ -1,3 +1,4 @@
+using System.Linq;
 using VinculacionBackend.Data.Entities;
 
 namespace VinculacionBackend.Data.Interfaces
@@ -6,5 +7,6 @@ namespace VinculacionBackend.Data.Interfaces
     {
         void AssignStudent(long sectionId, long studentId);
         void RemoveStudent(long sectionId, long studentId);
+        IQueryable<User> GetSectionStudents(long sectionId);
     }
 }

@@ -62,6 +62,11 @@ namespace VinculacionBackend.Services
             return true;
         }
 
+        public IQueryable<User> GetSectionStudents(long sectionId)
+        {
+            return _sectionsRepository.GetSectionStudents(sectionId);
+        }
+
         public void Add(Section section)
         {
             _sectionsRepository.Insert(section);
