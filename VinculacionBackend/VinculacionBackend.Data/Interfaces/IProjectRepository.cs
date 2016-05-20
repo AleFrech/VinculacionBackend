@@ -10,5 +10,7 @@ namespace VinculacionBackend.Data.Interfaces
         void Insert(Project ent, List<string> majorIds, List<long> sectionIds);
         void AssignToSection(long projectId, long sectionId);
         SectionProject RemoveFromSection(long projectId, long sectionId);
+        IQueryable<Project> GetAllStudent(long userId);
+        IQueryable<Project> GetAllProfessor(long userId);
     }
 }

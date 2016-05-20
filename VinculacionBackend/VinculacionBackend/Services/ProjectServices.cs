@@ -1,3 +1,4 @@
+using System;
 using System.CodeDom;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
@@ -94,17 +95,36 @@ namespace VinculacionBackend.Services
             _projectRepository.Save();
             return true;
         }
-        
+
+
         public bool RemoveFromSection(long projectId, long sectionId)
         {
             var rel = _projectRepository.RemoveFromSection(projectId, sectionId);
-            
-            if(rel == null)
+
+            if (rel == null)
             {
                 throw new NotFoundException("Seccion o Proyecto invalido");
             }
-            
+
             return true;
+        }
+
+        public IQueryable<Project> GetUserProjects(long userId, string[] roles)
+        {
+            if (roles.Contains("Admin"))
+            {
+                return _projectRepository.GetAll();
+            }
+            else if (roles.Contains("Professor"))
+            {
+                return _projectRepository.GetAllProfessor(userId);
+            }
+            else if (roles.Contains("Student"))
+            {
+                return _projectRepository.GetAllStudent(userId);
+            }
+            throw new Exception("No tiene permiso");
+            
         }
     }
 

@@ -104,5 +104,13 @@ namespace VinculacionBackend.Services
         {
            return _studentRepository.GetStudentHours(accountId);
         }
+
+        public User FindByEmail(string email)
+        {
+            var student = _studentRepository.GetByEmail(email);
+            if (student == null)
+                throw new NotFoundException("No se encontro al estudiante");
+            return student;
+        }
     }
 }
