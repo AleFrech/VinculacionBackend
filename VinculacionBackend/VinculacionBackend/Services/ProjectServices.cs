@@ -90,8 +90,6 @@ namespace VinculacionBackend.Services
 
         public bool AssignSection(ProjectSectionModel model)
         {
-            var project = Find(model.SectionId);
-            var section = _sectionServices.Find(model.SectionId);
             _projectRepository.AssignToSection(model.ProjectId, model.SectionId);
             _projectRepository.Save();
             return true;
