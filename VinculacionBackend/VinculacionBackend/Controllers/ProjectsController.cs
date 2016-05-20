@@ -74,13 +74,17 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostAssignSection(ProjectSectionModel model)
         {
-            var assigned = _services.AssignSection(model);
+            _services.AssignSection(model);
+            return Ok();
+        }
 
-            if (!assigned)
-            {
-                return NotFound();
-            }
 
+        [ResponseType(typeof(void))]
+        [Route("api/Projects/RemoveSection")]
+        [ValidateModel]
+        public IHttpActionResult PostRemoveSection(ProjectSectionModel model)
+        {
+             _services.RemoveFromSection(model.ProjectId,model.SectionId);
             return Ok();
         }
 

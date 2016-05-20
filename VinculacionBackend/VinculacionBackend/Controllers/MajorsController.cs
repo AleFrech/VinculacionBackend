@@ -1,12 +1,12 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
 using System.Web.OData;
-using VinculacionBackend.ActionFilters;
+using VinculacionBackend.Cache;
 using VinculacionBackend.Data.Entities;
-using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 
 namespace VinculacionBackend.Controllers
@@ -15,20 +15,28 @@ namespace VinculacionBackend.Controllers
     public class MajorsController : ApiController
     {
         private readonly IMajorsServices _majorsServices;
-
+        private readonly MemoryCacher _memCacher;
         public MajorsController(IMajorsServices majorsServices)
         {
             _majorsServices = majorsServices;
+            _memCacher = new MemoryCacher();
         }
 
         // GET: api/Majors
-        [Route("api/Majors")]      
+        [Route("api/Majors")]
         [EnableQuery]
-        [CacheClient(Duration = 86400)]
-        public IQueryable<Major> GetMajors()
+        public IEnumerable<Major> GetMajors()
         {
-           return _majorsServices.All();
+            var result = _memCacher.GetValue("majors");
+            if (result == null)
+            {
+                _memCacher.Add("majors", _majorsServices.All().ToList(), DateTimeOffset.UtcNow.AddHours(24));
+                result = _memCacher.GetValue("majors");
+            }
+            return result as IEnumerable<Major>;        
         }
+      
+    
 
         // GET: api/Majors/5
         [ResponseType(typeof(Major))]
@@ -37,9 +45,6 @@ namespace VinculacionBackend.Controllers
         {
             Major major = _majorsServices.Find(majorId);
             return Ok(major);
-        }
-
-     
-       
+        }   
     }
 }
