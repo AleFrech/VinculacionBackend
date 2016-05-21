@@ -51,11 +51,18 @@ namespace VinculacionBackend.Services
 
         }
 
+
+        public bool AssignStudent(SectionStudentModel model)
+        {
+            _sectionsRepository.AssignStudent(model.SectionId,model.StudenstIds);
+            _sectionsRepository.Save();
+            return true;
+        }
+
+
         public bool RemoveStudent(SectionStudentModel model)
         {
-            var section = Find(model.SectionId);
-            var student = _studentServices.Find(model.StudentId);
-            _sectionsRepository.RemoveStudent(section.Id, student.Id);
+            _sectionsRepository.RemoveStudent(model.SectionId,model.StudenstIds);
             _sectionsRepository.Save();
             return true;
         }
@@ -84,17 +91,6 @@ namespace VinculacionBackend.Services
 
             return section;
 
-        }
-
-        public bool AssignStudent(SectionStudentModel model)
-        {
-            var section = Find(model.SectionId);
-            var student = _studentServices.Find(model.StudentId);
-            _sectionsRepository.AssignStudent(section.Id, student.Id);
-            _sectionsRepository.Save();
-            return true;
-        }
-        
-       
+        }       
     }
 }
