@@ -78,7 +78,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PostAssignStudent(SectionStudentModel model)
         {
 
-            var assigned = _sectionServices.AssignStudent(model);
+            _sectionServices.AssignStudent(model);
             return Ok();
         }
         
@@ -89,7 +89,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PostRemoveStudent(SectionStudentModel model)
         {
 
-            var removed = _sectionServices.RemoveStudent(model);
+            _sectionServices.RemoveStudent(model);
             return Ok();
         }
         

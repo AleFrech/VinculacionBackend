@@ -11,6 +11,6 @@ namespace VinculacionBackend.Models
         [Required(ErrorMessage = "*requerido")]
         public long SectionId { get; set; }
         [Required(ErrorMessage ="*requerido")]
-        public string StudentId { get; set; }
+        public List<string> StudenstIds { get; set; }
     }
 }

@@ -17,18 +17,29 @@ namespace VinculacionBackend.Data.Repositories
             _db = new VinculacionContext();
         }
 
-        public void AssignStudent(long sectionId, long studentId)
+        public void AssignStudent(long sectionId, List<string >studentsIds)
         {
             var section = Get(sectionId);
-            var student = _db.Users.FirstOrDefault(x => x.Id == studentId);
 
-            _db.SectionUserRels.Add(new SectionUser { Section = section, User = student });
+            foreach (var studentId in studentsIds)
+            {
+                var student = _db.Users.FirstOrDefault(x => x.AccountId == studentId);
+                if(student!=null)
+                    _db.SectionUserRels.Add(new SectionUser { Section = section, User = student });
+            }          
         }
         
-        public void RemoveStudent(long sectionId, long studentId)
+        public void RemoveStudent(long sectionId, List<string> studentsIds)
         {
-            var found = _db.SectionUserRels.FirstOrDefault(x=>x.Section.Id == sectionId && x.User.Id == studentId);
-            _db.SectionUserRels.Remove(found);
+            foreach (var studentId in studentsIds)
+            {
+                var student = _db.Users.FirstOrDefault(x => x.AccountId == studentId);
+                if (student != null)
+                {
+                    var found = _db.SectionUserRels.FirstOrDefault(x => x.Section.Id == sectionId && x.User.AccountId == studentId);
+                    _db.SectionUserRels.Remove(found);
+                }
+            }   
         }
 
         public Section Delete(long id)
