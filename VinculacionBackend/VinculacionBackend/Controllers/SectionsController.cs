@@ -49,6 +49,15 @@ namespace VinculacionBackend.Controllers
             return _sectionServices.GetSectionStudents(sectionId);
         }
 
+        // GET: api/Sections/5
+        [ResponseType(typeof(Project))]
+        [Route("api/Sections/Projects/{sectionId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IQueryable<Project> GetSectionProjects(long sectionId)
+        {
+            return _sectionServices.GetSectionsProjects(sectionId);
+        }
+
 
         // POST: api/Sections
         [Route("api/Sections")]

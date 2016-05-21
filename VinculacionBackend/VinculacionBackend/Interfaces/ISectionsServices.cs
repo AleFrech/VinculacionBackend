@@ -14,5 +14,6 @@ namespace VinculacionBackend.Interfaces
         Section Map(SectionEntryModel sectionModel);
         bool RemoveStudent(SectionStudentModel model);
         IQueryable<User> GetSectionStudents(long sectionId);
+        IQueryable<Project> GetSectionsProjects(long sectionId);
     }
 }

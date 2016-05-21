@@ -44,10 +44,19 @@ namespace VinculacionBackend.Data.Repositories
 
         public IQueryable<User> GetSectionStudents(long sectionId)
         {
-            var secProjRel = _db.SectionProjectsRels.Include(a => a.Section).Where(c => c.Section.Id == sectionId);
-            var horas = _db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d => d.Id == c.SectionProject.Id));
-            var users = _db.Users.Include(a => a.Major).Where(b => horas.Any(c => c.User.Id == b.Id));
-            return users;
+            var secUserRel = _db.SectionUserRels.Include(a => a.Section).Where(c => c.Section.Id == sectionId);
+            var users = _db.Users.Include(a => a.Major).Where(b => secUserRel.Any(c => c.User.Id == b.Id));
+            var userRolsRel =_db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
+            var students = users.Where(x => userRolsRel.Any(y => y.User.Id == x.Id));
+            return students;
+        }
+
+
+        public IQueryable<Project> GetSectionProjects(long sectionId)
+        {
+            var secProjRel = _db.SectionProjectsRels.Include(a => a.Project).Include(b => b.Section).Where(c=>c.Section.Id==sectionId);
+            var projects = _db.Projects.Where(x => secProjRel.Any(a => a.Section.Id == x.Id));
+            return projects;
         }
 
         public IQueryable<Section> GetAll()

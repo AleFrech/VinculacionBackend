@@ -1,6 +1,4 @@
-﻿using System.CodeDom;
-using System.Linq;
-using VinculacionBackend.Data.Database;
+﻿using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
@@ -65,6 +63,11 @@ namespace VinculacionBackend.Services
         public IQueryable<User> GetSectionStudents(long sectionId)
         {
             return _sectionsRepository.GetSectionStudents(sectionId);
+        }
+
+        public IQueryable<Project> GetSectionsProjects(long sectionId)
+        {
+            return _sectionsRepository.GetSectionProjects(sectionId);
         }
 
         public void Add(Section section)
