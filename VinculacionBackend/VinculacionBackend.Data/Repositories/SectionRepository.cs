@@ -17,7 +17,7 @@ namespace VinculacionBackend.Data.Repositories
             _db = new VinculacionContext();
         }
 
-        public void AssignStudent(long sectionId, List<string >studentsIds)
+        public void AssignStudents(long sectionId, List<string >studentsIds)
         {
             var section = Get(sectionId);
 
@@ -29,7 +29,7 @@ namespace VinculacionBackend.Data.Repositories
             }          
         }
         
-        public void RemoveStudent(long sectionId, List<string> studentsIds)
+        public void RemoveStudents(long sectionId, List<string> studentsIds)
         {
             foreach (var studentId in studentsIds)
             {

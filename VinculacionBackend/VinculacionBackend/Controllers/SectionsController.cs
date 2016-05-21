@@ -71,25 +71,25 @@ namespace VinculacionBackend.Controllers
             return Ok(section);
         }
 
-        [Route("api/Sections/AssignStudent")]
+        [Route("api/Sections/AssignStudents")]
         [ResponseType(typeof(Section))]
         [CustomAuthorize(Roles = "Admin,Professor")]
         [ValidateModel]
-        public IHttpActionResult PostAssignStudent(SectionStudentModel model)
+        public IHttpActionResult PostAssignStudents(SectionStudentModel model)
         {
 
-            _sectionServices.AssignStudent(model);
+            _sectionServices.AssignStudents(model);
             return Ok();
         }
         
-        [Route("api/Sections/RemoveStudent")]
+        [Route("api/Sections/RemoveStudents")]
         [ResponseType(typeof(Section))]
         [CustomAuthorize(Roles = "Admin,Professor")]
         [ValidateModel]
-        public IHttpActionResult PostRemoveStudent(SectionStudentModel model)
+        public IHttpActionResult PostRemoveStudents(SectionStudentModel model)
         {
 
-            _sectionServices.RemoveStudent(model);
+            _sectionServices.RemoveStudents(model);
             return Ok();
         }
         

@@ -52,17 +52,17 @@ namespace VinculacionBackend.Services
         }
 
 
-        public bool AssignStudent(SectionStudentModel model)
+        public bool AssignStudents(SectionStudentModel model)
         {
-            _sectionsRepository.AssignStudent(model.SectionId,model.StudenstIds);
+            _sectionsRepository.AssignStudents(model.SectionId,model.StudenstIds);
             _sectionsRepository.Save();
             return true;
         }
 
 
-        public bool RemoveStudent(SectionStudentModel model)
+        public bool RemoveStudents(SectionStudentModel model)
         {
-            _sectionsRepository.RemoveStudent(model.SectionId,model.StudenstIds);
+            _sectionsRepository.RemoveStudents(model.SectionId,model.StudenstIds);
             _sectionsRepository.Save();
             return true;
         }

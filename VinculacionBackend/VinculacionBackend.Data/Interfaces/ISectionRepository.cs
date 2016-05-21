@@ -6,8 +6,8 @@ namespace VinculacionBackend.Data.Interfaces
 {
     public interface ISectionRepository : IRepository<Section>
     {
-        void AssignStudent(long sectionId, List<string> studenstIds);
-        void RemoveStudent(long sectionId, List<string> studentsIds);
+        void AssignStudents(long sectionId, List<string> studenstIds);
+        void RemoveStudents(long sectionId, List<string> studentsIds);
         IQueryable<User> GetSectionStudents(long sectionId);
         IQueryable<Project> GetSectionProjects(long sectionId);
     }
