@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using VinculacionBackend.Data.Database;
@@ -55,8 +56,26 @@ namespace VinculacionBackend.Data.Repositories
         public IQueryable<Project> GetSectionProjects(long sectionId)
         {
             var secProjRel = _db.SectionProjectsRels.Include(a => a.Project).Include(b => b.Section).Where(c=>c.Section.Id==sectionId);
-            var projects = _db.Projects.Where(x => secProjRel.Any(a => a.Section.Id == x.Id));
-            return projects;
+            var projects =_db.Projects.Where(x => secProjRel.Any(a => a.Section.Id == x.Id) && x.IsDeleted == false).ToList();
+
+            foreach (var project in projects)
+            {
+                var projectmajors = _db.ProjectMajorRels.Include(a => a.Project).Include(b => b.Major).Where(x => x.Project.Id == project.Id).ToList();
+                var majorsId = new List<string>();
+                foreach (var x in projectmajors)
+                {
+                    majorsId.Add(x.Major.MajorId);
+                }
+                project.MajorIds = majorsId;
+                var projectSections = _db.SectionProjectsRels.Include(a => a.Project).Include(b => b.Section).Where(x => x.Project.Id == project.Id).ToList();
+                var sectionsId = new List<long>();
+                foreach (var x in projectSections)
+                {
+                    sectionsId.Add(x.Section.Id);
+                }
+                project.SectionIds = sectionsId;
+            }
+            return projects.AsQueryable();
         }
 
         public IQueryable<Section> GetAll()
