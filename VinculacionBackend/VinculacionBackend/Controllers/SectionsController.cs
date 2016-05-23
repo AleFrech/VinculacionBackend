@@ -92,7 +92,18 @@ namespace VinculacionBackend.Controllers
             _sectionServices.RemoveStudents(model);
             return Ok();
         }
-        
+
+        // PUT: api/Sections/5
+        [ResponseType(typeof(Section))]
+        [Route("api/Sections/{sectionId}")]
+        [ValidateModel]
+        public IHttpActionResult PutSection(long sectionId,SectionEntryModel model)
+        {
+
+            var tmpSection = _sectionServices.UpdateSection(sectionId, model);
+            return Ok(tmpSection);
+        }
+
         // DELETE: api/Sections/5
         [ResponseType(typeof(Section))]
         [Route("api/Sections/{sectionId}")]
