@@ -216,6 +216,7 @@
     <Compile Include="Cache\MemoryCacher.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
     <Compile Include="ErrorHandler.cs" />
+    <Compile Include="Interfaces\IMemoryCacher.cs" />
     <Compile Include="Interfaces\IPeriodsServices.cs" />
     <Compile Include="Models\PeriodEntryModel.cs" />
     <Compile Include="Controllers\PeriodsController.cs" />
