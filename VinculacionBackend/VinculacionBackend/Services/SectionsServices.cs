@@ -62,6 +62,7 @@ namespace VinculacionBackend.Services
             if (tmpSection == null)
                 throw new NotFoundException("No se encontro la seccion");
             tmpSection = Map(model);
+            tmpSection.Id = sectionId;
             _sectionsRepository.Update(tmpSection);
             _sectionsRepository.Save();
             return tmpSection;
