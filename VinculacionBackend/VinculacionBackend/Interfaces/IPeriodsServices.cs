@@ -11,5 +11,6 @@ namespace VinculacionBackend.Interfaces
         void Add(Period period);
         Period Find(long id);
         Period Map(PeriodEntryModel periodModel);
+        Period SetCurrentPeriod(long periodId);
     }
 }

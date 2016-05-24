@@ -1,14 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using VinculacionBackend.CustomDataNotations;
 
 namespace VinculacionBackend.Models
 {
-    [StudentIsNotInSectionAttribute]
-    [StudentIsNotInClassAttribute]
     public class SectionStudentModel
     {
         [Required(ErrorMessage = "*requerido")]
