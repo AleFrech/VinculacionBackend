@@ -37,6 +37,17 @@ namespace VinculacionBackend.Controllers
             return Ok(period);
         }
 
+
+
+        // PUT: api/Periods/SetCurrentPeriod/5
+        [ResponseType(typeof(Period))]
+        [Route("api/Periods/SetCurrentPeriod/{periodId}")]
+        public IHttpActionResult PutSetCurrentPeriod(long periodId)
+        {
+            var period=_periodsServices.SetCurrentPeriod(periodId);
+            return Ok(period);
+        }
+
         // POST: api/Periods
         [ResponseType(typeof(Period))]
         [Route("api/Periods")]
