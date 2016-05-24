@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Runtime.InteropServices;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
@@ -49,7 +50,23 @@ namespace VinculacionBackend.Services
             var newPeriod = new Period();
             newPeriod.Number = periodModel.Number;
             newPeriod.Year = periodModel.Year;
+            newPeriod.IsCurrent = false;
             return newPeriod;
+        }
+
+        public Period SetCurrentPeriod(long periodId)
+        {
+            var period = _periodsRepository.Get(periodId);
+            if (period == null)
+                throw new NotFoundException("No se encontro el periodo");
+            var periods = _periodsRepository.GetAll();
+            foreach (var p in periods)
+            {
+                p.IsCurrent = p.Id == period.Id;
+                _periodsRepository.Update(p);
+            }
+            _periodsRepository.Save();
+            return period;
         }
     }
 }
