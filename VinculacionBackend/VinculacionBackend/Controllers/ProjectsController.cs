@@ -60,12 +60,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PutProject(long projectId, ProjectModel model)
         {
             var tmpProject = _services.UpdateProject(projectId, model);
-
-            if (tmpProject == null)
-            {
-                return NotFound();
-            }
-
             return Ok(tmpProject);
         }
 
@@ -108,11 +102,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult DeleteProject(long projectId)
         {
             Project project = _services.Delete(projectId);
-            if (project == null)
-            {
-                return NotFound();
-            }
-
             return Ok(project);
         }
     }
