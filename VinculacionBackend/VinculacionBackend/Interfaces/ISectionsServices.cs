@@ -13,6 +13,7 @@ namespace VinculacionBackend.Interfaces
         bool AssignStudents(SectionStudentModel model);
         Section Map(SectionEntryModel sectionModel);
         bool RemoveStudents(SectionStudentModel model);
+        Section UpdateSection(long sectionId,SectionEntryModel model);
         IQueryable<User> GetSectionStudents(long sectionId);
         IQueryable<Project> GetSectionsProjects(long sectionId);
     }

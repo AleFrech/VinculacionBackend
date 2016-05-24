@@ -76,14 +76,7 @@ namespace VinculacionBackend.Services
             var tmpProject = _projectRepository.Get(projectId);
             if (tmpProject == null)
                 throw new NotFoundException("No se encontro el proyecto");
-            tmpProject.ProjectId = model.ProjectId;
-            tmpProject.Name = model.Name;
-            tmpProject.Description = model.Description;
-            tmpProject.Cost = model.Cost;
-            tmpProject.MajorIds = model.MajorIds;
-            tmpProject.SectionIds = model.SectionIds;
-            tmpProject.BeneficiariesAlias = model.BeneficiariesAlias;
-            tmpProject.BeneficiariesQuantity = model.BeneficiariesQuantity;
+             tmpProject=Map(model);
             _projectRepository.Update(tmpProject);
             _projectRepository.Save();
             return tmpProject;

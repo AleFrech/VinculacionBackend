@@ -10,15 +10,13 @@ namespace VinculacionBackend.Services
     public class SectionsServices : ISectionsServices
     {
         private readonly ISectionRepository _sectionsRepository;
-        private readonly IStudentsServices _studentServices;
         private readonly IProfessorsServices _professorsServices;
         private readonly IClassesServices _classServices;
         private readonly IPeriodsServices _periodsServices;
 
-        public SectionsServices(ISectionRepository sectionsRepository, IStudentsServices studentServices, IProfessorsServices professorsServices, IClassesServices classServices, IPeriodsServices periodsServices)
+        public SectionsServices(ISectionRepository sectionsRepository, IProfessorsServices professorsServices, IClassesServices classServices, IPeriodsServices periodsServices)
         {
             _sectionsRepository = sectionsRepository;
-            _studentServices = studentServices;
             _professorsServices = professorsServices;
             _classServices = classServices;
             _periodsServices = periodsServices;
@@ -51,6 +49,24 @@ namespace VinculacionBackend.Services
 
         }
 
+        public void Add(Section section)
+        {
+            _sectionsRepository.Insert(section);
+            _sectionsRepository.Save();
+        }
+
+
+        public Section UpdateSection(long sectionId,SectionEntryModel model)
+        {
+            var tmpSection = _sectionsRepository.Get(sectionId);
+            if (tmpSection == null)
+                throw new NotFoundException("No se encontro la seccion");
+            tmpSection = Map(model);
+            _sectionsRepository.Update(tmpSection);
+            _sectionsRepository.Save();
+            return tmpSection;
+        }
+
 
         public bool AssignStudents(SectionStudentModel model)
         {
@@ -75,12 +91,6 @@ namespace VinculacionBackend.Services
         public IQueryable<Project> GetSectionsProjects(long sectionId)
         {
             return _sectionsRepository.GetSectionProjects(sectionId);
-        }
-
-        public void Add(Section section)
-        {
-            _sectionsRepository.Insert(section);
-            _sectionsRepository.Save();
         }
 
         public Section Find(long id)
