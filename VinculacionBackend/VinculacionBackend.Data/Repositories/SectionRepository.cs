@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
 
 namespace VinculacionBackend.Data.Repositories
@@ -38,7 +39,8 @@ namespace VinculacionBackend.Data.Repositories
             {
                 if (!StudentIsNotInOrClass(sectionId, studentId))
                 {
-                    throw new Exception("El Alumno " + studentId + " ya esta registrado en esta clase en este periodo");
+                    throw new StudentAlreadyRegisteredInClassException("El Alumno " + studentId 
+                        + " ya esta registrado en esta clase en este periodo");
                 }
             }
         }
