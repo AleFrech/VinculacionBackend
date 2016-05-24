@@ -53,7 +53,6 @@ namespace VinculacionBackend.Data.Repositories
             {
                 return false;
             }
-            //
             return true;
         }
 
