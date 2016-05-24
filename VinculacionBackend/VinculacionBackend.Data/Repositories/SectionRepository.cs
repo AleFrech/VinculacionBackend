@@ -19,22 +19,30 @@ namespace VinculacionBackend.Data.Repositories
 
         public void AssignStudents(long sectionId, List<string >studentsIds)
         {
+            StudentsAreNotInSectionOrClass(sectionId, studentsIds);
             var section = Get(sectionId);
 
             foreach (var studentId in studentsIds)
             {
                 var student = _db.Users.FirstOrDefault(x => x.AccountId == studentId);
                 if (student != null)
-                {
-                    if(!StudentIsNotInSectionOrClass(sectionId, studentId))
-                    {
-                        throw new Exception("El Alumno " + student.Name + " ya esta registrado en esta clase");
-                    }
+                {    
                     _db.SectionUserRels.Add(new SectionUser { Section = section, User = student });
                 }
             }          
         }
         
+        private void StudentsAreNotInSectionOrClass(long sectionId, List<string> studentsIds)
+        {
+            foreach (var studentId in studentsIds)
+            {
+                if (!StudentIsNotInSectionOrClass(sectionId, studentId))
+                {
+                    throw new Exception("El Alumno " + studentId + " ya esta registrado en esta clase");
+                }
+            }
+        }
+
         private bool StudentIsNotInSectionOrClass(long sectionId, string studentId)
         {
             var section = _db.Sections.Include(x => x.Class).FirstOrDefault(y => y.Id == sectionId);
