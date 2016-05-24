@@ -24,11 +24,29 @@ namespace VinculacionBackend.Data.Repositories
             foreach (var studentId in studentsIds)
             {
                 var student = _db.Users.FirstOrDefault(x => x.AccountId == studentId);
-                if(student!=null)
+                if (student != null)
+                {
+                    if(!StudentIsNotInSectionOrClass(sectionId, studentId))
+                    {
+                        throw new Exception("El Alumno " + student.Name + " ya esta registrado en esta clase");
+                    }
                     _db.SectionUserRels.Add(new SectionUser { Section = section, User = student });
+                }
             }          
         }
         
+        private bool StudentIsNotInSectionOrClass(long sectionId, string studentId)
+        {
+            var section = _db.Sections.Include(x => x.Class).FirstOrDefault(y => y.Id == sectionId);
+            var sectionStudent = _db.SectionUserRels.Include(x=>x.Section).Include(y=>y.User).Include(z=>z.Section.Class).FirstOrDefault(a=>a.User.AccountId == studentId && (a.Section.Id == sectionId || a.Section.Class.Id == section.Class.Id));
+            if(sectionStudent != null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public void RemoveStudents(long sectionId, List<string> studentsIds)
         {
             foreach (var studentId in studentsIds)
