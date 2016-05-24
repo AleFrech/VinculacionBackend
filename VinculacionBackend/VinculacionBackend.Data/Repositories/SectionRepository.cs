@@ -36,17 +36,19 @@ namespace VinculacionBackend.Data.Repositories
         {
             foreach (var studentId in studentsIds)
             {
-                if (!StudentIsNotInSectionOrClass(sectionId, studentId))
+                if (!StudentIsNotInOrClass(sectionId, studentId))
                 {
-                    throw new Exception("El Alumno " + studentId + " ya esta registrado en esta clase");
+                    throw new Exception("El Alumno " + studentId + " ya esta registrado en esta clase en este periodo");
                 }
             }
         }
 
-        private bool StudentIsNotInSectionOrClass(long sectionId, string studentId)
+        private bool StudentIsNotInOrClass(long sectionId, string studentId)
         {
             var section = _db.Sections.Include(x => x.Class).FirstOrDefault(y => y.Id == sectionId);
-            var sectionStudent = _db.SectionUserRels.Include(x=>x.Section).Include(y=>y.User).Include(z=>z.Section.Class).FirstOrDefault(a=>a.User.AccountId == studentId && (a.Section.Id == sectionId || a.Section.Class.Id == section.Class.Id));
+            var sectionStudent = _db.SectionUserRels.Include(x=>x.Section).Include(y=>y.User)
+                .Include(z=>z.Section.Class).Include(s=>s.Section.Period)
+                .FirstOrDefault(a=>a.User.AccountId == studentId && a.Section.Class.Id == section.Class.Id && section.Period.IsCurrent);
             if(sectionStudent != null)
             {
                 return false;
