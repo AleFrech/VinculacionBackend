@@ -20,7 +20,7 @@ namespace VinculacionBackend.Data.Migrations
         protected override void Seed(VinculacionContext context)
         {
             var encryption = new Encryption();
-            var period = new Period { Number = 1, Year = 2016 };
+            var period = new Period { Number = 1, Year = 2016, IsCurrent = false };
             var clas = new Class { Name = "ANAL. Y DIS. DE SISTEMAS I" };
             var majorsId = new List<string>();
             var sectionsId = new List<long>();

@@ -5,6 +5,5 @@
         public long Id { get; set; }
         public Section Section { get; set; }
         public Project Project { get; set; }
-
     }
 }

@@ -85,6 +85,7 @@ namespace VinculacionBackend.Data.Migrations
                         Id = c.Long(nullable: false, identity: true),
                         Number = c.Int(nullable: false),
                         Year = c.Int(nullable: false),
+                        IsCurrent = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
