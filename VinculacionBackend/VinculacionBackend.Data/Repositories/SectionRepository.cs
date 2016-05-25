@@ -47,8 +47,8 @@ namespace VinculacionBackend.Data.Repositories
         private bool StudentIsNotInOrClass(long sectionId, string studentId)
         {
             var section = _db.Sections.Include(x => x.Class).FirstOrDefault(y => y.Id == sectionId);
-            var sectionStudent = _db.SectionUserRels.Include(x=>x.Section).Include(y=>y.User)
-                .Include(z=>z.Section.Select(v=>v.Class)).Include(s=>s.Section.Select(u=>u.Period))
+            var sectionStudent = _db.SectionUserRels.Include("Section.Period").Include("Section.Class")
+                .Include(y=>y.User)
                 .FirstOrDefault(a=>a.User.AccountId == studentId && a.Section.Class.Id == section.Class.Id && section.Period.IsCurrent);
             if(sectionStudent != null)
             {
