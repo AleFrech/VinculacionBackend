@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
@@ -11,7 +12,6 @@ namespace VinculacionBackend.Data.Repositories
     public class StudentRepository : IStudentRepository
     {
         private readonly VinculacionContext _db;
-
         public StudentRepository()
         {
             _db = new VinculacionContext();
@@ -88,6 +88,13 @@ namespace VinculacionBackend.Data.Repositories
             return new List<User>();
         }
 
+        public User GetByEmail(string email)
+        {
+            var rels = GetUserRoleRelationships();
+            var student = _db.Users.Include(m => m.Major).Where(x => rels.Any(y => y.User.Id == x.Id)).FirstOrDefault(z => z.Email == email);
+            return student;
+        }
+
         public IEnumerable<User> GetStudentsByStatus(Status status)
         {
             var rels = GetUserRoleRelationships();
@@ -95,7 +102,9 @@ namespace VinculacionBackend.Data.Repositories
         }
 
         public void Insert(User ent)
-        {
+        { 
+
+            _db.Majors.Attach(ent.Major);
             _db.Users.Add(ent);
             _db.UserRoleRels.Add(new UserRole { User=ent,Role=_db.Roles.FirstOrDefault(x=>x.Name=="Student")});
         }
@@ -107,7 +116,7 @@ namespace VinculacionBackend.Data.Repositories
 
         public void Update(User ent)
         {
-            _db.Entry(ent).State = EntityState.Modified;
+            _db.Users.AddOrUpdate(ent);
         }
 
         private IEnumerable<UserRole> GetUserRoleRelationships()

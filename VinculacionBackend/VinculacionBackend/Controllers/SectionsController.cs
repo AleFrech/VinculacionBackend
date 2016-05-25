@@ -40,7 +40,25 @@ namespace VinculacionBackend.Controllers
             return Ok(section);
         }
 
-        
+        // GET: api/Sections/5
+        [ResponseType(typeof(Project))]
+        [Route("api/Sections/Students/{sectionId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IQueryable<User> GetSectionStudents(long sectionId)
+        {
+            return _sectionServices.GetSectionStudents(sectionId);
+        }
+
+        // GET: api/Sections/5
+        [ResponseType(typeof(Project))]
+        [Route("api/Sections/Projects/{sectionId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IQueryable<Project> GetSectionProjects(long sectionId)
+        {
+            return _sectionServices.GetSectionsProjects(sectionId);
+        }
+
+
         // POST: api/Sections
         [Route("api/Sections")]
         [ResponseType(typeof(Section))]
@@ -53,28 +71,39 @@ namespace VinculacionBackend.Controllers
             return Ok(section);
         }
 
-        [Route("api/Sections/AssignStudent")]
+        [Route("api/Sections/AssignStudents")]
         [ResponseType(typeof(Section))]
         [CustomAuthorize(Roles = "Admin,Professor")]
         [ValidateModel]
-        public IHttpActionResult PostAssignStudent(SectionStudentModel model)
+        public IHttpActionResult PostAssignStudents(SectionStudentModel model)
         {
 
-            var assigned = _sectionServices.AssignStudent(model);
+            _sectionServices.AssignStudents(model);
             return Ok();
         }
         
-        [Route("api/Sections/RemoveStudent")]
+        [Route("api/Sections/RemoveStudents")]
         [ResponseType(typeof(Section))]
         [CustomAuthorize(Roles = "Admin,Professor")]
         [ValidateModel]
-        public IHttpActionResult PostRemoveStudent(SectionStudentModel model)
+        public IHttpActionResult PostRemoveStudents(SectionStudentModel model)
         {
 
-            var removed = _sectionServices.RemoveStudent(model);
+            _sectionServices.RemoveStudents(model);
             return Ok();
         }
-        
+
+        // PUT: api/Sections/5
+        [ResponseType(typeof(Section))]
+        [Route("api/Sections/{sectionId}")]
+        [ValidateModel]
+        public IHttpActionResult PutSection(long sectionId,SectionEntryModel model)
+        {
+
+            var tmpSection = _sectionServices.UpdateSection(sectionId, model);
+            return Ok(tmpSection);
+        }
+
         // DELETE: api/Sections/5
         [ResponseType(typeof(Section))]
         [Route("api/Sections/{sectionId}")]

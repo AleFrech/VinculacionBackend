@@ -71,8 +71,8 @@ namespace VinculacionBackend.Data.Repositories
 			_db.Users.Add(ent);
 			_db.UserRoleRels.Add(new UserRole { User=ent,Role=_db.Roles.FirstOrDefault(x=>x.Name=="Professor")});
 		}
-		
-		private IEnumerable<UserRole> GetUserRoleRelationships()
+
+	    private IEnumerable<UserRole> GetUserRoleRelationships()
 		{
 		    return _db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Professor");
 		}

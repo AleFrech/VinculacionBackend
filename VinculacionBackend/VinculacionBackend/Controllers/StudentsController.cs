@@ -50,6 +50,16 @@ namespace VinculacionBackend.Controllers
             return Ok(student);
         }
 
+        [ResponseType(typeof(User))]
+        [Route("api/StudentByEmail")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IHttpActionResult PostStudentByEmail(EmailModel model)
+        {
+            var student = _studentsServices.FindByEmail(model.Email);
+            return Ok(student);
+        }
+
+
 
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}/Hour")]

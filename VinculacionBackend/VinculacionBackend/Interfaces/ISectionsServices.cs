@@ -10,8 +10,11 @@ namespace VinculacionBackend.Interfaces
         Section Delete(long sectionId);
         void Add(Section section);
         Section Find(long id);
-        bool AssignStudent(SectionStudentModel model);
+        bool AssignStudents(SectionStudentModel model);
         Section Map(SectionEntryModel sectionModel);
-        bool RemoveStudent(SectionStudentModel model);
+        bool RemoveStudents(SectionStudentModel model);
+        Section UpdateSection(long sectionId,SectionEntryModel model);
+        IQueryable<User> GetSectionStudents(long sectionId);
+        IQueryable<Project> GetSectionsProjects(long sectionId);
     }
 }

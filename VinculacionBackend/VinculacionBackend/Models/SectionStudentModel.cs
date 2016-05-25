@@ -1,8 +1,5 @@
-﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace VinculacionBackend.Models
 {
@@ -11,6 +8,6 @@ namespace VinculacionBackend.Models
         [Required(ErrorMessage = "*requerido")]
         public long SectionId { get; set; }
         [Required(ErrorMessage ="*requerido")]
-        public string StudentId { get; set; }
+        public List<string> StudenstIds { get; set; }
     }
 }
