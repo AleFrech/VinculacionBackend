@@ -139,7 +139,6 @@ namespace VinculacionBackend.Data.Repositories
         public void Update(Section ent)
         {
             _db.Sections.AddOrUpdate(ent);
-            //_db.Entry(ent).State = EntityState.Modified;
         }
     }
 }
