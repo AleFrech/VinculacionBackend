@@ -46,14 +46,21 @@ namespace VinculacionBackend.Data.Repositories
 
         private bool StudentIsNotInOrClass(long sectionId, string studentId)
         {
-            var section = _db.Sections.Include(x => x.Class).FirstOrDefault(y => y.Id == sectionId);
-            var sectionStudent = _db.SectionUserRels.Include("Section.Period").Include("Section.Class")
-                .Include(y=>y.User)
-                .FirstOrDefault(a=>a.User.AccountId == studentId && a.Section.Class.Id == section.Class.Id && section.Period.IsCurrent);
-            if(sectionStudent != null)
+            var selectedSection = _db.Sections.Include(x => x.Class).FirstOrDefault(y => y.Id == sectionId);
+            var sectionStudentRels = _db.SectionUserRels.Include(x => x.Section).Include(y => y.User).Where(z=>z.User.AccountId == studentId).ToList();
+
+            foreach (var sectionStudent in sectionStudentRels)
             {
-                return false;
+                var s =
+                    _db.Sections.Include(x => x.Period)
+                        .Include(y => y.Class)
+                        .FirstOrDefault(z => z.Period.IsCurrent && z.Class.Id == selectedSection.Id);
+                if (s != null)
+                {
+                    return false;
+                }
             }
+            
             return true;
         }
 
@@ -65,7 +72,10 @@ namespace VinculacionBackend.Data.Repositories
                 if (student != null)
                 {
                     var found = _db.SectionUserRels.FirstOrDefault(x => x.Section.Id == sectionId && x.User.AccountId == studentId);
-                    _db.SectionUserRels.Remove(found);
+                    if (found != null)
+                    {
+                        _db.SectionUserRels.Remove(found);
+                    }
                 }
             }   
         }

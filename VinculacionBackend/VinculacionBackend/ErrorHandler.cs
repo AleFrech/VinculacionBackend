@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Exceptions;
 
 namespace VinculacionBackend
@@ -40,9 +41,14 @@ namespace VinculacionBackend
 
                 context.Result = new UnauthorizedResult(context.Request, result);
             }
-            else
+            else if(context.Exception is StudentAlreadyRegisteredInClassException)
             {
-                
+                var result = new HttpResponseMessage(HttpStatusCode.Conflict)
+                {
+                    Content = new StringContent(context.Exception.Message),
+                    ReasonPhrase = "Conflict"
+                };
+                context.Result = new ConflictResult(context.Request, result);
             }
         }
     }
@@ -64,6 +70,23 @@ namespace VinculacionBackend
         }
     }
 
+    public class ConflictResult : IHttpActionResult
+    {
+        private HttpRequestMessage _request;
+        private readonly HttpResponseMessage _httpResponseMessage;
+
+
+        public ConflictResult(HttpRequestMessage request, HttpResponseMessage httpResponseMessage)
+        {
+            _request = request;
+            _httpResponseMessage = httpResponseMessage;
+        }
+
+        public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_httpResponseMessage);
+        }
+    }
 
 
 
