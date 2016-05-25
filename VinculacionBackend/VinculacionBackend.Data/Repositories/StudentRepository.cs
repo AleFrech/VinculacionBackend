@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
@@ -115,7 +116,9 @@ namespace VinculacionBackend.Data.Repositories
 
         public void Update(User ent)
         {
-            _db.Entry(ent).State = EntityState.Modified;
+            _db.Majors.Attach(ent.Major);
+            _db.Users.AddOrUpdate(ent);
+            
         }
 
         private IEnumerable<UserRole> GetUserRoleRelationships()

@@ -38,14 +38,15 @@ namespace VinculacionBackend.Services
             
         }
 
-        public Section Map(SectionEntryModel sectionModel)
+        public void Map(Section section,SectionEntryModel sectionModel)
         {
-            var newSection=new Section();
-            newSection.Code = sectionModel.Code;
-            newSection.User = _professorsServices.Find(sectionModel.ProffesorAccountId);
-            newSection.Class = _classServices.Find(sectionModel.ClassId);
-            newSection.Period = _periodsServices.Find(sectionModel.PeriodId);
-            return newSection;
+            section.Code = sectionModel.Code;
+            if (section.Class==null ||section.Class.Id!=sectionModel.ClassId)
+                section.Class = _classServices.Find(sectionModel.ClassId);
+            if (section.User==null || section.User.AccountId != sectionModel.ProffesorAccountId)
+                section.User =_professorsServices.Find(sectionModel.ProffesorAccountId);
+            if (section.Period==null ||section.Period.Id != sectionModel.PeriodId)
+                section.Period = _periodsServices.Find(sectionModel.PeriodId);
 
         }
 
@@ -61,7 +62,8 @@ namespace VinculacionBackend.Services
             var tmpSection = _sectionsRepository.Get(sectionId);
             if (tmpSection == null)
                 throw new NotFoundException("No se encontro la seccion");
-            tmpSection = Map(model);
+            Map(tmpSection,model);
+            tmpSection.Id = sectionId;
             _sectionsRepository.Update(tmpSection);
             _sectionsRepository.Save();
             return tmpSection;

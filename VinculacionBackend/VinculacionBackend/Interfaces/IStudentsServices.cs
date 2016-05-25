@@ -6,7 +6,7 @@ namespace VinculacionBackend.Interfaces
 {
     public interface IStudentsServices
     {
-        User Map(UserEntryModel userModel);
+        void Map(User student,UserEntryModel userModel);
         void Add(User user);
         User Find(string accountId);
         IQueryable<User> ListbyStatus(string status);

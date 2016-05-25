@@ -66,7 +66,8 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostSection(SectionEntryModel sectionModel)
         {
-            var section=_sectionServices.Map(sectionModel);
+            var section = new Section();
+            _sectionServices.Map(section,sectionModel);
             _sectionServices.Add(section);
             return Ok(section);
         }
