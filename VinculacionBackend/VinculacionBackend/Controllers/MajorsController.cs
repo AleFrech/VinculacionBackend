@@ -5,6 +5,7 @@ using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
+using StatsdClient;
 
 namespace VinculacionBackend.Controllers
 {
@@ -24,7 +25,10 @@ namespace VinculacionBackend.Controllers
         [EnableQuery]
         public IEnumerable<Major> GetMajors()
         {
-            return _memCacher.GetMajors(_majorsServices);
+            using (Metrics.StartTimer("majors.get.time"))
+            {
+                return _memCacher.GetMajors(_majorsServices);
+            }
         }
         
         // GET: api/Majors/5
