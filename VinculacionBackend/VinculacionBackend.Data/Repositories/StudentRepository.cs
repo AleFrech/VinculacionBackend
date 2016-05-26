@@ -116,7 +116,9 @@ namespace VinculacionBackend.Data.Repositories
 
         public void Update(User ent)
         {
+            _db.Majors.Attach(ent.Major);
             _db.Users.AddOrUpdate(ent);
+            
         }
 
         private IEnumerable<UserRole> GetUserRoleRelationships()

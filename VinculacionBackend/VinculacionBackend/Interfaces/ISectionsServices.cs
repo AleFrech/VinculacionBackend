@@ -11,7 +11,7 @@ namespace VinculacionBackend.Interfaces
         void Add(Section section);
         Section Find(long id);
         bool AssignStudents(SectionStudentModel model);
-        Section Map(SectionEntryModel sectionModel);
+        void Map(Section section, SectionEntryModel sectionModel);
         bool RemoveStudents(SectionStudentModel model);
         Section UpdateSection(long sectionId,SectionEntryModel model);
         IQueryable<User> GetSectionStudents(long sectionId);

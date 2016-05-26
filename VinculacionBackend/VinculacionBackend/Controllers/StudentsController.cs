@@ -119,11 +119,12 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
-            var newUser = _studentsServices.Map(userModel);
-            _studentsServices.Add(newUser);
-            var stringparameter = _encryption.Encrypt(newUser.AccountId);
-            _email.Send(newUser.Email, "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
-            return Ok(newUser);
+            var newStudent = new User();
+            _studentsServices.Map(newStudent,userModel);
+            _studentsServices.Add(newStudent);
+            var stringparameter = _encryption.Encrypt(newStudent.AccountId);
+            _email.Send(newStudent.Email, "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
+            return Ok(newStudent);
         }
         // DELETE: api/Students/5
         [ResponseType(typeof(User))]
