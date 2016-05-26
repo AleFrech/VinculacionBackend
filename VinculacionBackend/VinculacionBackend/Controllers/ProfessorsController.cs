@@ -49,9 +49,21 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostUser(ProfessorEntryModel professorModel)
         {
-            var newProfessor = _professorsServices.Map(professorModel);
-            _professorsServices.AddProfessor(newProfessor);
-            return Ok(newProfessor);
+            var professor= new User();
+            _professorsServices.Map(professor,professorModel);
+            _professorsServices.AddProfessor(professor);
+            return Ok(professor);
+        }
+
+        [ResponseType(typeof(User))]
+        [Route("api/Professors/{accountId}")]
+        [ValidateModel]
+        [CustomAuthorize(Roles = "Admin")]
+        public IHttpActionResult PutProfessor(string accountId, ProfessorEntryModel model)
+        {
+
+            var professor = _professorsServices.UpdateProfessor(accountId, model);
+            return Ok(professor);
         }
 
         // DELETE: api/Professors/5

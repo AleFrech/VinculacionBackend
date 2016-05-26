@@ -17,5 +17,6 @@ namespace VinculacionBackend.Interfaces
         IQueryable<User> AllUsers();
         int GetStudentHours(string accountId);
         User FindByEmail(string email);
+        User UpdateStudent(string accountId, UserEntryModel model);
     }
 }
