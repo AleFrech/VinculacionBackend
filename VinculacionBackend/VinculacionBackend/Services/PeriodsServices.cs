@@ -45,13 +45,23 @@ namespace VinculacionBackend.Services
             return period;
         }
 
-        public Period Map(PeriodEntryModel periodModel)
+        public void Map(Period period,PeriodEntryModel periodModel)
         {
-            var newPeriod = new Period();
-            newPeriod.Number = periodModel.Number;
-            newPeriod.Year = periodModel.Year;
-            newPeriod.IsCurrent = false;
-            return newPeriod;
+            period.Number = periodModel.Number;
+            period.Year = periodModel.Year;
+            period.IsCurrent = false;
+        }
+
+
+        public Period UpdatePeriod(long preriodId, PeriodEntryModel model)
+        {
+            var period = _periodsRepository.Get(preriodId);
+            if (period == null)
+                throw new NotFoundException("No se encontro el periodo");
+            Map(period, model);
+            _periodsRepository.Update(period);
+            _periodsRepository.Save();
+            return period;
         }
 
         public Period SetCurrentPeriod(long periodId)

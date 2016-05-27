@@ -20,20 +20,31 @@ namespace VinculacionBackend.Services
             _encryption = encryption;
         }
 
-        public User Map(ProfessorEntryModel professorModel)
+        public void Map( User professor,ProfessorEntryModel professorModel)
         {
-            var newProfessor = new User();
-            newProfessor.AccountId = professorModel.AccountId;
-            newProfessor.Name = professorModel.Name;
-            newProfessor.Password = _encryption.Encrypt(professorModel.Password);
-            newProfessor.Major = null;
-            newProfessor.Campus = professorModel.Campus;
-            newProfessor.Email = professorModel.Email;
-            newProfessor.Status = Status.Verified;
-            newProfessor.CreationDate = DateTime.Now;
-            newProfessor.ModificationDate = DateTime.Now;
-            return newProfessor;
+            professor.AccountId = professorModel.AccountId;
+            professor.Name = professorModel.Name;
+            professor.Password = _encryption.Encrypt(professorModel.Password);
+            professor.Major = null;
+            professor.Campus = professorModel.Campus;
+            professor.Email = professorModel.Email;
+            professor.Status = Status.Verified;
+            professor.CreationDate = DateTime.Now;
+            professor.ModificationDate = DateTime.Now;
         }
+
+
+        public void PutMap(User professor, ProfessorEntryModel professorModel)
+        {
+            professor.AccountId = professorModel.AccountId;
+            professor.Name = professorModel.Name;
+            professor.Password = _encryption.Encrypt(professorModel.Password);
+            professor.Major = null;
+            professor.Campus = professorModel.Campus;
+            professor.Email = professorModel.Email;
+            professor.ModificationDate = DateTime.Now;
+        }
+
 
         public void AddProfessor(User professor)
         {
@@ -61,6 +72,18 @@ namespace VinculacionBackend.Services
         public IQueryable<User> GetProfessors()
         {
             return _professorRepository.GetAll();
+        }
+
+
+        public User UpdateProfessor(string accountId,ProfessorEntryModel model)
+        {
+            var professor = _professorRepository.GetByAccountId(accountId);
+            if (professor == null)
+                throw new NotFoundException("No se encontro el professor");
+            PutMap(professor, model);
+            _professorRepository.Update(professor);
+            _professorRepository.Save();
+            return professor;
         }
     }
 }

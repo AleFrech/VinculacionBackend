@@ -1,5 +1,4 @@
 using System;
-using System.CodeDom;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
@@ -12,13 +11,10 @@ namespace VinculacionBackend.Services
     public class ProjectServices : IProjectServices
     {
         private readonly IProjectRepository _projectRepository;
-        private readonly ISectionsServices _sectionServices;
 
-        public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository, ISectionsServices sectionServices)
+        public ProjectServices(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
-            _sectionServices = sectionServices;
-          
         }
 
         public Project Find(long id)
@@ -35,23 +31,23 @@ namespace VinculacionBackend.Services
         }
 
 
-        private Project Map(ProjectModel model)
+        private void Map(Project project,ProjectModel model)
         {
-            var newProject = new Project();
-            newProject.ProjectId = model.ProjectId;
-            newProject.Name = model.Name;
-            newProject.Description = model.Description;
-            newProject.Cost = model.Cost;
-            newProject.MajorIds = model.MajorIds;
-            newProject.SectionIds = model.SectionIds;
-            newProject.BeneficiariesAlias = model.BeneficiariesAlias;
-            newProject.BeneficiariesQuantity = model.BeneficiariesQuantity;
-            return newProject;
+            project.ProjectId = model.ProjectId;
+            project.Name = model.Name;
+            project.Description = model.Description;
+            project.Cost = model.Cost;
+            project.MajorIds = model.MajorIds;
+            project.SectionIds = model.SectionIds;
+            project.BeneficiariesAlias = model.BeneficiariesAlias;
+            project.BeneficiariesQuantity = model.BeneficiariesQuantity;
         }
 
         public Project Add(ProjectModel model)
         {
-            var project = Map(model);
+           
+            var project = new Project();
+            Map(project,model);
             _projectRepository.Insert(project, model.MajorIds,model.SectionIds);
             _projectRepository.Save();
             return project;
@@ -76,7 +72,7 @@ namespace VinculacionBackend.Services
             var tmpProject = _projectRepository.Get(projectId);
             if (tmpProject == null)
                 throw new NotFoundException("No se encontro el proyecto");
-             tmpProject=Map(model);
+             Map(tmpProject,model);
             _projectRepository.Update(tmpProject);
             _projectRepository.Save();
             return tmpProject;

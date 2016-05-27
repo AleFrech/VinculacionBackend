@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Web;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
@@ -45,11 +44,20 @@ namespace VinculacionBackend.Services
             throw new NotFoundException("No se encontro la clase");
         }
 
-        public Class Map(ClassEntryModel classModel)
+        public void Map(Class @class,ClassEntryModel classModel)
         {
-            var newClass =  new Class();
-            newClass.Name = classModel.Name;
-            return newClass;
+            @class.Name = classModel.Name;
+        }
+
+        public Class UpdateClass(long classId, ClassEntryModel classModel)
+        {
+            var @class = _classesRepository.Get(classId);
+            if (@class == null)
+                throw new NotFoundException("No se encontro la clase");
+             Map(@class,classModel);
+            _classesRepository.Update(@class);
+            _classesRepository.Save();
+            return @class;
         }
     }
 }

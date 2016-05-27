@@ -8,7 +8,6 @@ using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
-using VinculacionBackend.CustomDataNotations;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security.BasicAuthentication;
@@ -126,6 +125,18 @@ namespace VinculacionBackend.Controllers
             _email.Send(newStudent.Email, "Hacer click en el siguiente link para Activar: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
             return Ok(newStudent);
         }
+
+        [ResponseType(typeof(User))]
+        [Route("api/Students/{accountId}")]
+        [ValidateModel]
+        [CustomAuthorize(Roles = "Admin")]
+        public IHttpActionResult PutStudent(string accountId, UserEntryModel model)
+        {
+
+            var student = _studentsServices.UpdateStudent(accountId, model);
+            return Ok(student);
+        }
+
         // DELETE: api/Students/5
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}")]
