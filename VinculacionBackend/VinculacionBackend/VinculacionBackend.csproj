@@ -215,6 +215,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Cache\MemoryCacher.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
+    <Compile Include="Models\VerifiedProfessorModel.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="Interfaces\IMemoryCacher.cs" />
     <Compile Include="Interfaces\IPeriodsServices.cs" />
