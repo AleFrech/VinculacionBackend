@@ -16,10 +16,12 @@ namespace VinculacionBackend.Controllers
     {
 
         private readonly IProfessorsServices _professorsServices;
+        private readonly IEmail _email;
 
-        public ProfessorsController(IProfessorsServices professorsServices)
+        public ProfessorsController(IProfessorsServices professorsServices, IEmail email)
         {
             _professorsServices = professorsServices;
+            _email = email;
         }
 
         [Route("api/Professors")]
@@ -42,6 +44,17 @@ namespace VinculacionBackend.Controllers
         }
 
 
+        //Put: api/Professors/Verified
+        [ResponseType(typeof(User))]
+        [Route("api/Professors/Verified")]
+        [ValidateModel]
+        public IHttpActionResult PostAcceptVerified(VerifiedProfessorModel model)
+        {
+            _professorsServices.VerifyProfessor(model);
+            return Ok();
+        }
+
+
         // POST: api/Professors
         [ResponseType(typeof(User))]
         [Route("api/Professors")]
@@ -52,6 +65,7 @@ namespace VinculacionBackend.Controllers
             var professor= new User();
             _professorsServices.Map(professor,professorModel);
             _professorsServices.AddProfessor(professor);
+            _email.Send(professor.Email, "Hacer click en el siguiente link para establecer su contraseña : ", "Vinculacion");
             return Ok(professor);
         }
 
