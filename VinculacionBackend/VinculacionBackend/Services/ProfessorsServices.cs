@@ -28,7 +28,7 @@ namespace VinculacionBackend.Services
             professor.Major = null;
             professor.Campus = professorModel.Campus;
             professor.Email = professorModel.Email;
-            professor.Status = Status.Verified;
+            professor.Status = Status.Inactive;
             professor.CreationDate = DateTime.Now;
             professor.ModificationDate = DateTime.Now;
         }
@@ -84,6 +84,17 @@ namespace VinculacionBackend.Services
             _professorRepository.Update(professor);
             _professorRepository.Save();
             return professor;
+        }
+
+        public void VerifyProfessor(VerifiedProfessorModel model)
+        {
+            var professor = _professorRepository.GetByAccountId(model.AccountId);
+            if (professor == null)
+                throw new NotFoundException("No se encontro el professor");
+            professor.Password = _encryption.Encrypt(model.Password);
+            professor.Status=Status.Verified;
+            _professorRepository.Update(professor);
+            _professorRepository.Save();
         }
     }
 }
