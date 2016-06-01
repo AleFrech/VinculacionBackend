@@ -8,5 +8,9 @@ namespace VinculacionBackend.Models
         public int Number { get; set; }
         [Required(ErrorMessage = "*requerido")]
         public int Year { get; set; }
+        [Required(ErrorMessage = "*requerido")]
+        public string FromDate { get; set; }
+        [Required(ErrorMessage = "*requerido")]
+        public string ToDate { get; set; }
     }
 }

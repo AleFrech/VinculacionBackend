@@ -1,5 +1,6 @@
 namespace VinculacionBackend.Data.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
     
     public partial class Init : DbMigration
@@ -93,6 +94,8 @@ namespace VinculacionBackend.Data.Migrations
                         Id = c.Long(nullable: false, identity: true),
                         Number = c.Int(nullable: false),
                         Year = c.Int(nullable: false),
+                        FromDate = c.String(unicode: false),
+                        ToDate = c.String(unicode: false),
                         IsCurrent = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
