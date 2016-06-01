@@ -88,7 +88,7 @@ namespace VinculacionBackend.Services
 
         public void VerifyProfessor(VerifiedProfessorModel model)
         {
-            var professor = _professorRepository.GetByAccountId(model.AccountId);
+            var professor = _professorRepository.GetByAccountId(_encryption.Decrypt(model.AccountId));
             if (professor == null)
                 throw new NotFoundException("No se encontro el professor");
             professor.Password = _encryption.Encrypt(model.Password);
