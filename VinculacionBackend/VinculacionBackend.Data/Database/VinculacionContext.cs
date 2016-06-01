@@ -23,6 +23,7 @@ namespace VinculacionBackend.Data.Database
         public DbSet<UserRole> UserRoleRels { get; set; }
         public DbSet<MajorUser> MajorUsersRels { get; set; }
         public DbSet<ProjectMajor> ProjectMajorRels { get; set; }
+        public DbSet<Faculty> Faculties { get; set; }
     }
 
     public static class ConnectionString
