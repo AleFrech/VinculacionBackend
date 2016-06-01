@@ -53,8 +53,10 @@
     <Compile Include="Database\VinculacionContext.cs" />
     <Compile Include="Encryption.cs" />
     <Compile Include="Entities\Class.cs" />
+    <Compile Include="Entities\Faculty.cs" />
     <Compile Include="Entities\Hour.cs" />
     <Compile Include="Entities\Major.cs" />
+    <Compile Include="Entities\MajorClass.cs" />
     <Compile Include="Entities\MajorUser.cs" />
     <Compile Include="Entities\Period.cs" />
     <Compile Include="Entities\Project.cs" />

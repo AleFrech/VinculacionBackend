@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace VinculacionBackend.Models
 {
@@ -6,5 +7,7 @@ namespace VinculacionBackend.Models
     {
         [Required(ErrorMessage = "*requerido")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "*requerido")]
+        public List<string> MajorIds { get; set; }
     }
 }

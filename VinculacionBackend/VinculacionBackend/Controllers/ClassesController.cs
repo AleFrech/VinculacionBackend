@@ -47,7 +47,7 @@ namespace VinculacionBackend.Controllers
         {
             var newClass = new Class();
             _classesServices.Map(newClass,classModel);
-            _classesServices.Add(newClass);
+            _classesServices.Add(newClass, classModel.MajorIds);
             return Ok(newClass);
         }
 

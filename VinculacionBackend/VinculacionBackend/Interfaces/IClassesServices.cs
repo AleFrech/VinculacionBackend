@@ -12,7 +12,7 @@ namespace VinculacionBackend.Interfaces
     {
         IQueryable<Class> All();
         Class Delete(long id);
-        void Add(Class @class);
+        void Add(Class @class, List<string> majorIds);
         Class Find(long id);
         void Map(Class @class, ClassEntryModel classModel);
         Class UpdateClass(long classId, ClassEntryModel classModel);

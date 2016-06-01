@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
@@ -11,10 +12,12 @@ namespace VinculacionBackend.Services
 
     {
         private readonly IClassRepository _classesRepository;
+        private readonly IMajorRepository _majorRepository;
 
-        public ClassesServices(IClassRepository classesRepository)
+        public ClassesServices(IClassRepository classesRepository, IMajorRepository majorRepository)
         {
             _classesRepository = classesRepository;
+            _majorRepository = majorRepository;
         }
         public IQueryable<Class> All()
         {
@@ -30,9 +33,9 @@ namespace VinculacionBackend.Services
             return @class;
         }
 
-        public void Add(Class @class)
+        public void Add(Class @class, List<string> majorIds)
         {
-           _classesRepository.Insert(@class);
+            _classesRepository.InsertClass(@class, majorIds);
             _classesRepository.Save();
         }
 

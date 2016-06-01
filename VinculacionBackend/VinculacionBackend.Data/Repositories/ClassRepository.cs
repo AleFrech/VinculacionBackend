@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
@@ -45,6 +46,16 @@ namespace VinculacionBackend.Data.Repositories
         public void Insert(Class ent)
         {
             _db.Classes.Add(ent);
+        }
+
+        public void InsertClass(Class @class, List<string> majorIds)
+        {
+            foreach(var majorId in majorIds)
+            {
+                var major = _db.Majors.FirstOrDefault(x => x.MajorId == majorId);
+                _db.MajorClassRels.Add(new MajorClass { Major = major, Class = @class });
+            }
+            Insert(@class);
         }
     }
 }
