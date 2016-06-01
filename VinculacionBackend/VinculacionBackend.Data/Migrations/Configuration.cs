@@ -176,6 +176,10 @@ namespace VinculacionBackend.Data.Migrations
                 x => x.Id,
                 new Hour { Amount = 5, SectionProject = sectionProject, User = user2 }
                 );
+            context.Faculties.AddOrUpdate(
+                new Faculty { Name = "Facultad de Ingenieria y Architectura" },
+                new Faculty { Name = "Facultad de Ciencias Aministrativas y Sociales" }
+                );
         }
     }
 }
