@@ -20,7 +20,7 @@ namespace VinculacionBackend.Data.Migrations
         protected override void Seed(VinculacionContext context)
         {
             var encryption = new Encryption();
-            var period = new Period { Number = 1, Year = 2016, IsCurrent = false };
+            var period = new Period { Number = 1, Year = 2016, ToDate = "18 de Feb", FromDate = "05 de Abr", IsCurrent = false };
             var clas = new Class { Name = "ANAL. Y DIS. DE SISTEMAS I" };
             var majorsId = new List<string>();
             var sectionsId = new List<long>();
@@ -145,7 +145,10 @@ namespace VinculacionBackend.Data.Migrations
 
             context.Periods.AddOrUpdate(
                 x => x.Id,
-                period
+                period,
+                new Period { Number = 2, Year = 2016, ToDate = "18 de Abr", FromDate = "28 de Jun", IsCurrent = true },
+                new Period { Number = 2, Year = 2016, ToDate = "18 de Jul", FromDate = "27 de Sep", IsCurrent = false },
+                new Period { Number = 2, Year = 2016, ToDate = "10 de Oct", FromDate = "20 de Dic", IsCurrent = false }
                 );
 
             context.Projects.AddOrUpdate(

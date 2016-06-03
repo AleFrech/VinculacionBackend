@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Runtime.InteropServices;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
@@ -49,6 +48,8 @@ namespace VinculacionBackend.Services
         {
             period.Number = periodModel.Number;
             period.Year = periodModel.Year;
+            period.FromDate = periodModel.FromDate;
+            period.ToDate = periodModel.ToDate;
             period.IsCurrent = false;
         }
 
