@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -60,12 +59,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PutProject(long projectId, ProjectModel model)
         {
             var tmpProject = _services.UpdateProject(projectId, model);
-
-            if (tmpProject == null)
-            {
-                return NotFound();
-            }
-
             return Ok(tmpProject);
         }
 
@@ -95,7 +88,6 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostProject(ProjectModel model)
         {
-
             var project = _services.Add(model);
             return Ok(project);
 
@@ -108,11 +100,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult DeleteProject(long projectId)
         {
             Project project = _services.Delete(projectId);
-            if (project == null)
-            {
-                return NotFound();
-            }
-
             return Ok(project);
         }
     }

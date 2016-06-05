@@ -6,7 +6,7 @@ namespace VinculacionBackend.Interfaces
 {
     public interface IStudentsServices
     {
-        User Map(UserEntryModel userModel);
+        void Map(User student,UserEntryModel userModel);
         void Add(User user);
         User Find(string accountId);
         IQueryable<User> ListbyStatus(string status);
@@ -17,5 +17,6 @@ namespace VinculacionBackend.Interfaces
         IQueryable<User> AllUsers();
         int GetStudentHours(string accountId);
         User FindByEmail(string email);
+        User UpdateStudent(string accountId, UserEntryModel model);
     }
 }

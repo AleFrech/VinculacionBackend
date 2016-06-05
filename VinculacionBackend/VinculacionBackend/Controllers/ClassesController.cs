@@ -7,6 +7,7 @@ using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
+using VinculacionBackend.Security.BasicAuthentication;
 
 namespace VinculacionBackend.Controllers
 {
@@ -40,12 +41,25 @@ namespace VinculacionBackend.Controllers
         // POST: api/Classes
         [ResponseType(typeof(Class))]
         [Route("api/Classes")]
+        [CustomAuthorize(Roles = "Admin")]
         [ValidateModel]
         public IHttpActionResult PostClass(ClassEntryModel classModel)
         {
-            var newClass = _classesServices.Map(classModel);
+            var newClass = new Class();
+            _classesServices.Map(newClass,classModel);
             _classesServices.Add(newClass);
             return Ok(newClass);
+        }
+
+
+        [ResponseType(typeof(Class))]
+        [Route("api/Classes/{classId}")]
+        [CustomAuthorize(Roles = "Admin")]
+        [ValidateModel]
+        public IHttpActionResult PutClass(long classId,ClassEntryModel classModel)
+        {
+            var Class = _classesServices.UpdateClass(classId, classModel);
+            return Ok(Class);
         }
 
         // DELETE: api/Classes/5

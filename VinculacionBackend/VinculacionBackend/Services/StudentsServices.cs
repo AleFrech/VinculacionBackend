@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Web;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
@@ -23,20 +22,32 @@ namespace VinculacionBackend.Services
             _majorServices = majorServices;
         }
 
-        public  User Map(UserEntryModel userModel)
-        {
-            var newUser = new User();
-            newUser.AccountId = userModel.AccountId;
-            newUser.Name = userModel.Name;
-            newUser.Password = _encryption.Encrypt(userModel.Password);
-            newUser.Major = _majorServices.Find(userModel.MajorId);
-            newUser.Campus = userModel.Campus;
-            newUser.Email = userModel.Email;
-            newUser.Status = Status.Inactive;
-            newUser.CreationDate = DateTime.Now;
-            newUser.ModificationDate = DateTime.Now;
-            return newUser;
+        public  void Map(User student,UserEntryModel userModel)
+        {         
+            student.AccountId = userModel.AccountId;
+            student.Name = userModel.Name;
+            student.Password = _encryption.Encrypt(userModel.Password);
+            student.Major = _majorServices.Find(userModel.MajorId);
+            student.Campus = userModel.Campus;
+            student.Email = userModel.Email;
+            student.Status = Status.Inactive;
+            student.CreationDate = DateTime.Now;
+            student.ModificationDate = DateTime.Now;
         }
+
+
+        public void PutMap(User student, UserEntryModel userModel)
+        {
+            student.AccountId = userModel.AccountId;
+            student.Name = userModel.Name;
+            student.Password = _encryption.Encrypt(userModel.Password);
+            if (student.Major.MajorId != userModel.MajorId)
+                student.Major = _majorServices.Find(userModel.MajorId);
+            student.Campus = userModel.Campus;
+            student.Email = userModel.Email;
+            student.ModificationDate = DateTime.Now;
+        }
+
 
         public void Add(User user)
         {
@@ -110,6 +121,18 @@ namespace VinculacionBackend.Services
             var student = _studentRepository.GetByEmail(email);
             if (student == null)
                 throw new NotFoundException("No se encontro al estudiante");
+            return student;
+        }
+
+        public User UpdateStudent(string accountId, UserEntryModel model)
+        {
+            var student = _studentRepository.GetByAccountNumber(accountId);
+            if (student == null)
+                throw new NotFoundException("No se encontro al estudiante");
+            PutMap(student, model);
+
+            _studentRepository.Update(student);
+            _studentRepository.Save();
             return student;
         }
     }

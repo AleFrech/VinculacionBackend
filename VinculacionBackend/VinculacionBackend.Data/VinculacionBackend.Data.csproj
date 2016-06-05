@@ -53,6 +53,7 @@
     <Compile Include="Database\VinculacionContext.cs" />
     <Compile Include="Encryption.cs" />
     <Compile Include="Entities\Class.cs" />
+    <Compile Include="Entities\Faculty.cs" />
     <Compile Include="Entities\Hour.cs" />
     <Compile Include="Entities\Major.cs" />
     <Compile Include="Entities\MajorUser.cs" />
@@ -80,9 +81,9 @@
     <Compile Include="Interfaces\ISectionRepository.cs" />
     <Compile Include="Interfaces\IStudentRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
-    <Compile Include="Migrations\201605242133327_Init.cs" />
-    <Compile Include="Migrations\201605242133327_Init.Designer.cs">
-      <DependentUpon>201605242133327_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201606012033104_Init.cs" />
+    <Compile Include="Migrations\201606012033104_Init.Designer.cs">
+      <DependentUpon>201606012033104_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,8 +102,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605242133327_Init.resx">
-      <DependentUpon>201605242133327_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606012033104_Init.resx">
+      <DependentUpon>201606012033104_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
