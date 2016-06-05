@@ -1,14 +1,10 @@
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
 using System.Web.OData;
-using Novacode;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Interfaces;
@@ -49,22 +45,12 @@ namespace VinculacionBackend.Controllers
         }
 
         // GET: api/Projects/FinalReport/
-        [Route("api/Projects/FinalReport")]
-        public HttpResponseMessage GetProjectFinalReport()
+        [Route("api/Projects/FinalReport/{projectId}")]
+        public HttpResponseMessage GetProjectFinalReport(long projectId)
         {
-
-            var fileName = @"test.docx";
-            var doc = DocX.Create(fileName);
-            doc.InsertParagraph("This is my first paragraph");
-            var ms = new MemoryStream();
-            doc.SaveAs(ms);
-            ms.Position = 0;
-            var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(ms) };
-            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-            {
-                FileName = fileName
-            };
-            return response;
+            var project = _services.Find(projectId);
+            var finalReport = new ProjectFinalReport(TODO);
+            return finalReport.GetReport(project);
         }
 
 
