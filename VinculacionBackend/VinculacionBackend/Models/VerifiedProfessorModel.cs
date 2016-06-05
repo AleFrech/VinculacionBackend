@@ -2,11 +2,12 @@
 
 namespace VinculacionBackend.Models
 {
-    public class ClassEntryModel
+    public class VerifiedProfessorModel
     {
         [Required(ErrorMessage = "*requerido")]
-        public string Name { get; set; }
+        public string AccountId { get; set; }
+
         [Required(ErrorMessage = "*requerido")]
-        public string Code { get; set; }
+        public string Password { get; set; }
     }
 }

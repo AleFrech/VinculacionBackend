@@ -12,6 +12,16 @@ namespace VinculacionBackend.Data.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
+                        Code = c.String(unicode: false),
+                        Name = c.String(unicode: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Faculties",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
                         Name = c.String(unicode: false),
                     })
                 .PrimaryKey(t => t.Id);
@@ -85,6 +95,8 @@ namespace VinculacionBackend.Data.Migrations
                         Id = c.Long(nullable: false, identity: true),
                         Number = c.Int(nullable: false),
                         Year = c.Int(nullable: false),
+                        FromDate = c.String(unicode: false),
+                        ToDate = c.String(unicode: false),
                         IsCurrent = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
@@ -115,8 +127,11 @@ namespace VinculacionBackend.Data.Migrations
                         Id = c.Long(nullable: false, identity: true),
                         MajorId = c.String(unicode: false),
                         Name = c.String(unicode: false),
+                        Faculty_Id = c.Long(),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Faculties", t => t.Faculty_Id)
+                .Index(t => t.Faculty_Id);
             
             CreateTable(
                 "dbo.MajorUsers",
@@ -200,6 +215,7 @@ namespace VinculacionBackend.Data.Migrations
             DropForeignKey("dbo.SectionProjects", "Section_Id", "dbo.Sections");
             DropForeignKey("dbo.Sections", "User_Id", "dbo.Users");
             DropForeignKey("dbo.Users", "Major_Id", "dbo.Majors");
+            DropForeignKey("dbo.Majors", "Faculty_Id", "dbo.Faculties");
             DropForeignKey("dbo.Sections", "Period_Id", "dbo.Periods");
             DropForeignKey("dbo.Sections", "Class_Id", "dbo.Classes");
             DropForeignKey("dbo.SectionProjects", "Project_Id", "dbo.Projects");
@@ -211,6 +227,7 @@ namespace VinculacionBackend.Data.Migrations
             DropIndex("dbo.ProjectMajors", new[] { "Major_Id" });
             DropIndex("dbo.MajorUsers", new[] { "User_Id" });
             DropIndex("dbo.MajorUsers", new[] { "Major_Id" });
+            DropIndex("dbo.Majors", new[] { "Faculty_Id" });
             DropIndex("dbo.Users", new[] { "Major_Id" });
             DropIndex("dbo.Sections", new[] { "User_Id" });
             DropIndex("dbo.Sections", new[] { "Period_Id" });
@@ -231,6 +248,7 @@ namespace VinculacionBackend.Data.Migrations
             DropTable("dbo.Projects");
             DropTable("dbo.SectionProjects");
             DropTable("dbo.Hours");
+            DropTable("dbo.Faculties");
             DropTable("dbo.Classes");
         }
     }

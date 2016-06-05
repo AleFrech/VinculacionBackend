@@ -23,19 +23,31 @@ namespace VinculacionBackend.Services
         }
 
         public  void Map(User student,UserEntryModel userModel)
-        {
-            
+        {         
             student.AccountId = userModel.AccountId;
             student.Name = userModel.Name;
             student.Password = _encryption.Encrypt(userModel.Password);
-            if (student.Major == null || student.Major.MajorId != userModel.MajorId)
-                student.Major = _majorServices.Find(userModel.MajorId);
+            student.Major = _majorServices.Find(userModel.MajorId);
             student.Campus = userModel.Campus;
             student.Email = userModel.Email;
             student.Status = Status.Inactive;
             student.CreationDate = DateTime.Now;
             student.ModificationDate = DateTime.Now;
         }
+
+
+        public void PutMap(User student, UserEntryModel userModel)
+        {
+            student.AccountId = userModel.AccountId;
+            student.Name = userModel.Name;
+            student.Password = _encryption.Encrypt(userModel.Password);
+            if (student.Major.MajorId != userModel.MajorId)
+                student.Major = _majorServices.Find(userModel.MajorId);
+            student.Campus = userModel.Campus;
+            student.Email = userModel.Email;
+            student.ModificationDate = DateTime.Now;
+        }
+
 
         public void Add(User user)
         {
@@ -109,6 +121,18 @@ namespace VinculacionBackend.Services
             var student = _studentRepository.GetByEmail(email);
             if (student == null)
                 throw new NotFoundException("No se encontro al estudiante");
+            return student;
+        }
+
+        public User UpdateStudent(string accountId, UserEntryModel model)
+        {
+            var student = _studentRepository.GetByAccountNumber(accountId);
+            if (student == null)
+                throw new NotFoundException("No se encontro al estudiante");
+            PutMap(student, model);
+
+            _studentRepository.Update(student);
+            _studentRepository.Save();
             return student;
         }
     }

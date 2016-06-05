@@ -13,7 +13,8 @@ namespace VinculacionBackend.Interfaces
         IQueryable<Class> All();
         Class Delete(long id);
         void Add(Class @class);
-        Class Find(long id);   
-        Class Map(ClassEntryModel classModel);
+        Class Find(long id);
+        void Map(Class @class, ClassEntryModel classModel);
+        Class UpdateClass(long classId, ClassEntryModel classModel);
     }
 }
