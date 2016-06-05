@@ -12,6 +12,7 @@ namespace VinculacionBackend.Data.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
+                        Code = c.String(unicode: false),
                         Name = c.String(unicode: false),
                     })
                 .PrimaryKey(t => t.Id);
