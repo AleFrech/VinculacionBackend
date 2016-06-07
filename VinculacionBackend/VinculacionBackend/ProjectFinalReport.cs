@@ -26,18 +26,6 @@ namespace VinculacionBackend
             _studentRepository = studentRepository;
         }
 
-        public HttpResponseMessage ToHttpResponseMessage(Document document)
-        {
-            var ms = new MemoryStream();
-            document.SaveToStream(ms,FileFormat.Docx);
-            ms.Position = 0;
-            var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(ms) };
-            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-            {
-                FileName = "FinalReport.docx"
-            };
-            return response;
-        }
 
         public HttpResponseMessage GetReport(long projectId, int fieldHours, int calification)
         {
@@ -128,6 +116,9 @@ namespace VinculacionBackend
             };
             AddTextToParagraph("*Se refiere a la evaluación que hace el catedrático sobre la calidad del proyecto",p4,p4Style,doc);
 
+            var p5 = CreateParagraph(page1);
+            AddTextToParagraph("\r\n\r\nEstudiantes Involucrados en el Proyecto de Vinculación",p5,tableHeadersStyle,doc);
+
 
             return ToHttpResponseMessage(doc);
            }
@@ -155,6 +146,19 @@ namespace VinculacionBackend
             table.TableFormat.Borders.BorderType = BorderStyle.Single;
             table.TableFormat.HorizontalAlignment = RowAlignment.Left;
             table.TableFormat.LeftIndent = 8f;
+        }
+
+        public HttpResponseMessage ToHttpResponseMessage(Document document)
+        {
+            var ms = new MemoryStream();
+            document.SaveToStream(ms, FileFormat.Docx);
+            ms.Position = 0;
+            var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(ms) };
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = "FinalReport.docx"
+            };
+            return response;
         }
 
         private Table CreateTable(Section page1)
