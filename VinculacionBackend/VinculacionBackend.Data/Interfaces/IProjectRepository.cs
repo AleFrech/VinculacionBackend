@@ -12,5 +12,6 @@ namespace VinculacionBackend.Data.Interfaces
         SectionProject RemoveFromSection(long projectId, long sectionId);
         IQueryable<Project> GetAllStudent(long userId);
         IQueryable<Project> GetAllProfessor(long userId);
+   
     }
 }

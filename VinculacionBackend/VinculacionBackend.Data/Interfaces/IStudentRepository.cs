@@ -12,5 +12,6 @@ namespace VinculacionBackend.Data.Interfaces
         IEnumerable<User> GetStudentsByStatus(Status status);
         IEnumerable<User> GetStudentsByStatus(string status);
         User GetByEmail(string email);
+        int GetStudentHoursByProject(string accountNumber, int projectId);
     }
 }
