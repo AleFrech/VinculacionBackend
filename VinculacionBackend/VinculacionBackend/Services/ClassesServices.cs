@@ -47,6 +47,7 @@ namespace VinculacionBackend.Services
         public void Map(Class @class,ClassEntryModel classModel)
         {
             @class.Name = classModel.Name;
+            @class.Code = classModel.Code;
         }
 
         public Class UpdateClass(long classId, ClassEntryModel classModel)

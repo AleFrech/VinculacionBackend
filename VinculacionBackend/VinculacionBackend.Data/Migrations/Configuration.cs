@@ -76,7 +76,8 @@ namespace VinculacionBackend.Data.Migrations
                 SectionIds = sectionsId,
                 MajorIds = majorsId,
                 IsDeleted = false,
-                BeneficiariesAlias = "Alumnos Maestros y Administradora de Vinculacion",
+                BeneficiarieOrganization = "UNITEC",
+                BeneficiarieGroups = "Alumnos Maestros y Administradora de Vinculacion",
                 BeneficiariesQuantity = 54645
             };
 
@@ -186,3 +187,4 @@ namespace VinculacionBackend.Data.Migrations
         }
     }
 }
+
