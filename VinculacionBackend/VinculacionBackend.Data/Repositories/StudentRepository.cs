@@ -153,5 +153,29 @@ namespace VinculacionBackend.Data.Repositories
         {
             return _db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
         }
+
+        public int GetStudentHoursByProject(string accountNumber, int projectId)
+        {
+            var student = GetByAccountNumber(accountNumber);
+            if(student == null)
+            {
+                throw new Exception("Student Not Found");
+            }
+            var studentHours = _db.Hours.Include(a => a.User).Include(b=>b.SectionProject).Where(x => x.User.Id == student.Id);
+
+            var total = 0;
+            foreach(var studentHour in studentHours)
+            {
+                var sectionProject = _db.SectionProjectsRels.Include(a => a.Project).FirstOrDefault(x => x.Id == studentHour.Id);
+                if(sectionProject.Project.Id == projectId)
+                {
+                    total += studentHour.Amount;
+                }
+                
+            }
+
+            return total;
+        }
+
     }
 }
