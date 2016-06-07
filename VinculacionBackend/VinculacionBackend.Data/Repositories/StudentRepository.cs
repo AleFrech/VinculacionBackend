@@ -149,5 +149,6 @@ namespace VinculacionBackend.Data.Repositories
 
             return total;
         }
+
     }
 }
