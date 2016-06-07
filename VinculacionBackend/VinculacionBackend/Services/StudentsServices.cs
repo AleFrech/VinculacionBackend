@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
@@ -139,15 +139,15 @@ namespace VinculacionBackend.Services
             return student;
         }
 
-        private Dictionary<string, int> GetStudentsHoursByProject(int projectId)
+        private Dictionary<Student, int> GetStudentsHoursByProject(int projectId)
         {
             var projectStudents = _projectServices.GetProjectStudents(projectId);
-            Dictionary<string, int> studentHours = new Dictionary<string, int>();
+            Dictionary<Student, int> studentHours = new Dictionary<Student, int>();
 
             foreach(var projectStudent in projectStudents)
             {
                 var hours = _studentRepository.GetStudentHoursByProject(projectStudent.AccountId, projectId);
-                studentHours[projectStudent.Name] = hours; 
+                studentHours[projectStudent] = hours; 
             }
 
             return studentHours;
