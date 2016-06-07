@@ -12,6 +12,7 @@ namespace VinculacionBackend.Data.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
+                        Code = c.String(unicode: false),
                         Name = c.String(unicode: false),
                     })
                 .PrimaryKey(t => t.Id);
@@ -64,7 +65,8 @@ namespace VinculacionBackend.Data.Migrations
                         Description = c.String(unicode: false),
                         Cost = c.Double(nullable: false),
                         IsDeleted = c.Boolean(nullable: false),
-                        BeneficiariesAlias = c.String(unicode: false),
+                        BeneficiarieOrganization = c.String(unicode: false),
+                        BeneficiarieGroups = c.String(unicode: false),
                         BeneficiariesQuantity = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
