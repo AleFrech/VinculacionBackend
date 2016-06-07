@@ -21,7 +21,9 @@ namespace VinculacionBackend.Models
         [SectionIdListIsValid(ErrorMessage = "*lista no puede ir vacia")]
         public List<long> SectionIds { get; set; }
         [Required(ErrorMessage = "*requerido")]
-        public string BeneficiariesAlias {get;set;}
+        public string BeneficiarieOrganization {get;set;}
+        [Required(ErrorMessage = "*requerido")]
+        public string BeneficiarieGroups { get; set; }
         [Required(ErrorMessage = "*requerido")]
         public int BeneficiariesQuantity {get;set;}
     }
