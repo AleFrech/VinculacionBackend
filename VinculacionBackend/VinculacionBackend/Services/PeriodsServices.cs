@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
@@ -23,6 +24,8 @@ namespace VinculacionBackend.Services
         public Period Delete(long id)
         {
             var period = _periodsRepository.Delete(id);
+            if(period == null)
+                throw new NotFoundException("No se encontro el periodo");
             _periodsRepository.Save();
             return period;
         }
@@ -35,15 +38,46 @@ namespace VinculacionBackend.Services
 
         public Period Find(long id)
         {
-            return _periodsRepository.Get(id);
+            var period = _periodsRepository.Get(id);
+            if(period==null)
+                throw new NotFoundException("No se encontro el periodo");
+            return period;
         }
 
-        public Period Map(PeriodEntryModel periodModel)
+        public void Map(Period period,PeriodEntryModel periodModel)
         {
-            var newPeriod = new Period();
-            newPeriod.Number = periodModel.Number;
-            newPeriod.Year = periodModel.Year;
-            return newPeriod;
+            period.Number = periodModel.Number;
+            period.Year = periodModel.Year;
+            period.FromDate = periodModel.FromDate;
+            period.ToDate = periodModel.ToDate;
+            period.IsCurrent = false;
+        }
+
+
+        public Period UpdatePeriod(long preriodId, PeriodEntryModel model)
+        {
+            var period = _periodsRepository.Get(preriodId);
+            if (period == null)
+                throw new NotFoundException("No se encontro el periodo");
+            Map(period, model);
+            _periodsRepository.Update(period);
+            _periodsRepository.Save();
+            return period;
+        }
+
+        public Period SetCurrentPeriod(long periodId)
+        {
+            var period = _periodsRepository.Get(periodId);
+            if (period == null)
+                throw new NotFoundException("No se encontro el periodo");
+            var periods = _periodsRepository.GetAll();
+            foreach (var p in periods)
+            {
+                p.IsCurrent = p.Id == period.Id;
+                _periodsRepository.Update(p);
+            }
+            _periodsRepository.Save();
+            return period;
         }
     }
 }

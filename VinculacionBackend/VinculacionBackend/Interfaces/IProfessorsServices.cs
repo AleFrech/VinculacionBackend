@@ -6,10 +6,12 @@ namespace VinculacionBackend.Interfaces
 {
     public interface IProfessorsServices
     {
-        User Map(ProfessorEntryModel professorModel);
+        void Map(User professor,ProfessorEntryModel professorModel);
         void AddProfessor(User user);
         User Find(string accountId);
         User DeleteProfessor(string accountId);
         IQueryable<User> GetProfessors();
+        User UpdateProfessor(string accountId, ProfessorEntryModel model);
+        void VerifyProfessor(VerifiedProfessorModel model);
     }
 }

@@ -1,11 +1,10 @@
-using System.Linq;
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
 using System.Web.OData;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
-using VinculacionBackend.Security.BasicAuthentication;
 
 namespace VinculacionBackend.Controllers
 {
@@ -13,36 +12,28 @@ namespace VinculacionBackend.Controllers
     public class MajorsController : ApiController
     {
         private readonly IMajorsServices _majorsServices;
-
-        public MajorsController(IMajorsServices majorsServices)
+        private readonly IMemoryCacher _memCacher;
+        public MajorsController(IMajorsServices majorsServices,IMemoryCacher memcCacher)
         {
             _majorsServices = majorsServices;
+            _memCacher = memcCacher;
         }
 
         // GET: api/Majors
         [Route("api/Majors")]
-      
         [EnableQuery]
-        public IQueryable<Major> GetMajors()
+        public IEnumerable<Major> GetMajors()
         {
-            return _majorsServices.All();
+            return _memCacher.GetMajors(_majorsServices);
         }
-
+        
         // GET: api/Majors/5
         [ResponseType(typeof(Major))]
         [Route("api/Majors/{majorId}")]
-     
         public IHttpActionResult GetMajor(string majorId)
         {
             Major major = _majorsServices.Find(majorId);
-            if (major == null)
-            {
-                return NotFound();
-            }
-
             return Ok(major);
-        }
-
-       
+        }   
     }
 }

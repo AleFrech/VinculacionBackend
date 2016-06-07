@@ -1,6 +1,8 @@
+using System;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
@@ -9,17 +11,18 @@ namespace VinculacionBackend.Services
     public class ProjectServices : IProjectServices
     {
         private readonly IProjectRepository _projectRepository;
-        private readonly ISectionRepository _sectionRepository;
 
-        public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository)
+        public ProjectServices(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
-            _sectionRepository = sectionRepository;
         }
 
         public Project Find(long id)
         {
-            return _projectRepository.Get(id);
+            var project = _projectRepository.Get(id);
+            if (project==null)
+                throw new NotFoundException("No se encontro el proyecto");
+            return project;
         }
 
         public IQueryable<Project> All()
@@ -28,23 +31,23 @@ namespace VinculacionBackend.Services
         }
 
 
-        private Project Map(ProjectModel model)
+        private void Map(Project project,ProjectModel model)
         {
-            var newProject = new Project();
-            newProject.ProjectId = model.ProjectId;
-            newProject.Name = model.Name;
-            newProject.Description = model.Description;
-            newProject.Cost = model.Cost;
-            newProject.MajorIds = model.MajorIds;
-            newProject.SectionIds = model.SectionIds;
-            newProject.BeneficiariesAlias = model.BeneficiariesAlias;
-            newProject.BeneficiariesQuantity = model.BeneficiariesQuantity;
-            return newProject;
+            project.ProjectId = model.ProjectId;
+            project.Name = model.Name;
+            project.Description = model.Description;
+            project.Cost = model.Cost;
+            project.MajorIds = model.MajorIds;
+            project.SectionIds = model.SectionIds;
+            project.BeneficiariesAlias = model.BeneficiariesAlias;
+            project.BeneficiariesQuantity = model.BeneficiariesQuantity;
         }
 
         public Project Add(ProjectModel model)
         {
-            var project = Map(model);
+           
+            var project = new Project();
+            Map(project,model);
             _projectRepository.Insert(project, model.MajorIds,model.SectionIds);
             _projectRepository.Save();
             return project;
@@ -53,6 +56,8 @@ namespace VinculacionBackend.Services
         public Project Delete(long projectId)
         {
             var project = _projectRepository.Delete(projectId);
+            if (project == null)
+                throw new NotFoundException("No se encontro el proyecto");
             _projectRepository.Save();
             return project;
         }
@@ -66,17 +71,8 @@ namespace VinculacionBackend.Services
         {
             var tmpProject = _projectRepository.Get(projectId);
             if (tmpProject == null)
-            {
-                return null;
-            }
-            tmpProject.ProjectId = model.ProjectId;
-            tmpProject.Name = model.Name;
-            tmpProject.Description = model.Description;
-            tmpProject.Cost = model.Cost;
-            tmpProject.MajorIds = model.MajorIds;
-            tmpProject.SectionIds = model.SectionIds;
-            tmpProject.BeneficiariesAlias = model.BeneficiariesAlias;
-            tmpProject.BeneficiariesQuantity = model.BeneficiariesQuantity;
+                throw new NotFoundException("No se encontro el proyecto");
+             Map(tmpProject,model);
             _projectRepository.Update(tmpProject);
             _projectRepository.Save();
             return tmpProject;
@@ -84,14 +80,40 @@ namespace VinculacionBackend.Services
 
         public bool AssignSection(ProjectSectionModel model)
         {
-            var project = _projectRepository.Get(model.ProjectId);
-            var section = _sectionRepository.Get(model.SectionId);
-
-            if (project == null || section == null) return false;
-
             _projectRepository.AssignToSection(model.ProjectId, model.SectionId);
             _projectRepository.Save();
             return true;
+        }
+
+
+        public bool RemoveFromSection(long projectId, long sectionId)
+        {
+            var rel = _projectRepository.RemoveFromSection(projectId, sectionId);
+
+            if (rel == null)
+            {
+                throw new NotFoundException("Seccion o Proyecto invalido");
+            }
+
+            return true;
+        }
+
+        public IQueryable<Project> GetUserProjects(long userId, string[] roles)
+        {
+            if (roles.Contains("Admin"))
+            {
+                return _projectRepository.GetAll();
+            }
+            else if (roles.Contains("Professor"))
+            {
+                return _projectRepository.GetAllProfessor(userId);
+            }
+            else if (roles.Contains("Student"))
+            {
+                return _projectRepository.GetAllStudent(userId);
+            }
+            throw new Exception("No tiene permiso");
+            
         }
     }
 

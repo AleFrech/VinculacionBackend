@@ -3,6 +3,7 @@ using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
@@ -11,30 +12,42 @@ namespace VinculacionBackend.Services
     public class StudentsServices : IStudentsServices
     {
         private readonly IStudentRepository _studentRepository;
-        private readonly IMajorRepository _majorRepository;
+        private readonly IMajorsServices _majorServices;
         private readonly IEncryption _encryption;
 
-        public StudentsServices(IStudentRepository studentRepository, IMajorRepository majorRepository,IEncryption encryption)
+        public StudentsServices(IStudentRepository studentRepository, IMajorRepository majorRepository,IEncryption encryption, IMajorsServices majorServices)
         {
             _studentRepository = studentRepository;
-            _majorRepository = majorRepository;
             _encryption = encryption;
+            _majorServices = majorServices;
         }
 
-        public  User Map(UserEntryModel userModel)
-        {
-            var newUser = new User();
-            newUser.AccountId = userModel.AccountId;
-            newUser.Name = userModel.Name;
-            newUser.Password = _encryption.Encrypt(userModel.Password);
-            newUser.Major = _majorRepository.GetMajorByMajorId(userModel.MajorId);
-            newUser.Campus = userModel.Campus;
-            newUser.Email = userModel.Email;
-            newUser.Status = Status.Inactive;
-            newUser.CreationDate = DateTime.Now;
-            newUser.ModificationDate = DateTime.Now;
-            return newUser;
+        public  void Map(User student,UserEntryModel userModel)
+        {         
+            student.AccountId = userModel.AccountId;
+            student.Name = userModel.Name;
+            student.Password = _encryption.Encrypt(userModel.Password);
+            student.Major = _majorServices.Find(userModel.MajorId);
+            student.Campus = userModel.Campus;
+            student.Email = userModel.Email;
+            student.Status = Status.Inactive;
+            student.CreationDate = DateTime.Now;
+            student.ModificationDate = DateTime.Now;
         }
+
+
+        public void PutMap(User student, UserEntryModel userModel)
+        {
+            student.AccountId = userModel.AccountId;
+            student.Name = userModel.Name;
+            student.Password = _encryption.Encrypt(userModel.Password);
+            if (student.Major.MajorId != userModel.MajorId)
+                student.Major = _majorServices.Find(userModel.MajorId);
+            student.Campus = userModel.Campus;
+            student.Email = userModel.Email;
+            student.ModificationDate = DateTime.Now;
+        }
+
 
         public void Add(User user)
         {
@@ -47,7 +60,7 @@ namespace VinculacionBackend.Services
         {
             var student = _studentRepository.GetByAccountNumber(accountId);
             if(student==null)
-                throw new System.InvalidOperationException("Logfile cannot be read-only");
+                throw new NotFoundException("No se encontro al estudiante");
             return student;
         }
 
@@ -58,36 +71,27 @@ namespace VinculacionBackend.Services
 
         public User RejectUser(string accountId)
         {
-
             var student = Find(accountId);
-            if (student != null)
-            {
-                student.Status = Status.Rejected;
-                _studentRepository.Save();
-           }
+            student.Status = Status.Rejected;
+            _studentRepository.Save();
+
             return student;
         }
 
         public User ActivateUser(string accountId)
         {
             var student = Find(accountId);
-            if (student != null)
-            {
-                student.Status = Status.Active;
-                _studentRepository.Save();
-                
-            }
+            student.Status = Status.Active;
+           _studentRepository.Save();
             return student;
         }
 
         public User VerifyUser(string accountId)
         {
             var student = Find(accountId);
-            if (student != null)
-            {
-                student.Status = Status.Verified;
-                _studentRepository.Save();
-            }
+            student.Status = Status.Verified;
+           _studentRepository.Save();
+            
             return student;
         }
 
@@ -96,6 +100,8 @@ namespace VinculacionBackend.Services
         public User DeleteUser(string accountId)
         {
             var user = _studentRepository.DeleteByAccountNumber(accountId);
+            if (user == null)
+                throw new NotFoundException("No se encontro al estudiante");
             _studentRepository.Save();
             return user;
         }
@@ -108,6 +114,26 @@ namespace VinculacionBackend.Services
         public int GetStudentHours(string accountId)
         {
            return _studentRepository.GetStudentHours(accountId);
+        }
+
+        public User FindByEmail(string email)
+        {
+            var student = _studentRepository.GetByEmail(email);
+            if (student == null)
+                throw new NotFoundException("No se encontro al estudiante");
+            return student;
+        }
+
+        public User UpdateStudent(string accountId, UserEntryModel model)
+        {
+            var student = _studentRepository.GetByAccountNumber(accountId);
+            if (student == null)
+                throw new NotFoundException("No se encontro al estudiante");
+            PutMap(student, model);
+
+            _studentRepository.Update(student);
+            _studentRepository.Save();
+            return student;
         }
     }
 }

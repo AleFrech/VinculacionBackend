@@ -1,16 +1,10 @@
-﻿using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Description;
+﻿using System.Web.Http;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
-using System.Web.UI;
-using VinculacionBackend.Data.Database;
-using VinculacionBackend.Data.Entities;
-using VinculacionBackend.Data.Enums;
+using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Security;
+using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security.BasicAuthentication;
-using VinculacionBackend.Services;
 
 
 namespace VinculacionBackend.Controllers
@@ -28,38 +22,23 @@ namespace VinculacionBackend.Controllers
         }
 
         [Route("api/Login")]
-        [ResponseType(typeof (User))]
         [CustomAuthorize(Roles = "Anonymous")]
+        [ValidateModel]
         public IHttpActionResult PostUserLogin(LoginUserModel loginUser)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var user = _usersServices.FindValidUser(loginUser.User, _encryption.Encrypt(loginUser.Password));
+            string userInfo = user.Email + ":" + user.Password;
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(userInfo);
+            string token = System.Convert.ToBase64String(plainTextBytes);
+            return Ok("Basic " + token);
 
-            var passw = _encryption.Encrypt(loginUser.Password);
-            var user = _usersServices.Find(loginUser.User, _encryption.Encrypt(loginUser.Password));
+        }
 
-          
-                if (user != null)
-                {
-                   
-                    if (!user.Email.Equals(loginUser.User) || !user.Password.Equals(_encryption.Encrypt(loginUser.Password)) || user.Status!= Status.Verified)
-                    {
-                    return Unauthorized();
-                    }
-
-                    string userInfo = user.Email + ":" + user.Password;
-                    var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(userInfo);
-                    string token = System.Convert.ToBase64String(plainTextBytes);
-
-                    return Ok("Basic " + token);
-                }
-                else
-                {
-                    return Unauthorized();
-                }
-            
+        [Route("api/Login/GetUserRole")]
+        [ValidateModel]
+        public string PostUserRole(EmailModel model)
+        {
+            return _usersServices.GetUserRole(model.Email);
         }
     }
 }

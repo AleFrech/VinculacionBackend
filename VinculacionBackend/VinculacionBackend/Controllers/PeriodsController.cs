@@ -1,14 +1,17 @@
 ﻿using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using System.Web.OData;
 using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
+using VinculacionBackend.Security.BasicAuthentication;
 
 namespace VinculacionBackend.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PeriodsController : ApiController
     {
         private readonly IPeriodsServices _periodsServices;
@@ -29,25 +32,44 @@ namespace VinculacionBackend.Controllers
         // GET: api/Periods/5
         [ResponseType(typeof(Period))]
         [Route("api/Periods/{id}")]
+
         public IHttpActionResult GetPeriod(long id)
         {
             Period period = _periodsServices.Find(id);
-            if (period == null)
-            {
-                return NotFound();
-            }
+            return Ok(period);
+        }
 
+        // PUT: api/Periods/SetCurrentPeriod/5
+        [ResponseType(typeof(Period))]
+        [Route("api/Periods/SetCurrentPeriod/{periodId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IHttpActionResult PutSetCurrentPeriod(long periodId)
+        {
+            var period=_periodsServices.SetCurrentPeriod(periodId);
             return Ok(period);
         }
 
         // POST: api/Periods
         [ResponseType(typeof(Period))]
         [Route("api/Periods")]
+        [CustomAuthorize(Roles = "Admin")]
         [ValidateModel]
         public IHttpActionResult PostPeriod(PeriodEntryModel periodModel)
         {
-            var newPeriod = _periodsServices.Map(periodModel);
+            var newPeriod =new Period();
+            _periodsServices.Map(newPeriod,periodModel);
             _periodsServices.Add(newPeriod);
+            return Ok(newPeriod);
+        }
+
+        [ResponseType(typeof(Period))]
+        [Route("api/Periods/{periodId}")]
+        [CustomAuthorize(Roles = "Admin")]
+        [ValidateModel]
+        public IHttpActionResult PustPeriod(long periodId,PeriodEntryModel periodModel)
+        {
+
+            var newPeriod = _periodsServices.UpdatePeriod(periodId,periodModel);
             return Ok(newPeriod);
         }
 
@@ -57,10 +79,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult DeletePeriod(long id)
         {
             var period = _periodsServices.Delete(id);
-            if (period == null)
-            {
-                return NotFound();
-            }
             return Ok(period);
         }
     }

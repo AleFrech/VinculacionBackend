@@ -1,9 +1,10 @@
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
+
 
 namespace VinculacionBackend.Data.Repositories
 {
@@ -47,18 +48,22 @@ namespace VinculacionBackend.Data.Repositories
             var sectionProjectRel = Queryable.FirstOrDefault(_db.SectionProjectsRels.Include(x => x.Project).Include(y => y.Section), z => z.Section.Id == sectionId && z.Project.Id == projectId);
             var user = Queryable.FirstOrDefault(_db.Users, x => x.AccountId == accountId);
             var section = Queryable.FirstOrDefault(_db.Sections.Include(x=>x.User).Include(x=>x.Class).Include(x=>x.Period), x => x.Id == sectionId);
-            if (user != null && sectionProjectRel != null && section !=null)
-            {
+            if(user==null)
+                throw new NotFoundException("No se encontro el estudiante");
+            if(section==null)
+                throw new NotFoundException("No se encontro la seccion");
+            if(sectionProjectRel==null)
+                throw new NotFoundException("No se encontro el proyecto");
+            
                 if(section.User.Email!=professorUser)
-                    throw new HttpException(401,"Unauthorized Access");
+                    throw new UnauthorizedException("No tiene permisos para agregar horas a este proyecto");
                 var Hour = new Hour();
                 Hour.Amount = hour;
                 Hour.SectionProject = sectionProjectRel;
                 Hour.User = user;
                 Insert(Hour);
                 return Hour;
-            }
-            return null;
+           
         }
 
         public void Save()

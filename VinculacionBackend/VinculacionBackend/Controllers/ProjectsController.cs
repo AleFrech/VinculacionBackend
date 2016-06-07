@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
@@ -28,7 +29,8 @@ namespace VinculacionBackend.Controllers
         [EnableQuery]
         public IQueryable<Project> GetProjects()
         {
-            return _services.All();
+            var currentUser = (CustomPrincipal)HttpContext.Current.User;
+            return _services.GetUserProjects(currentUser.UserId, currentUser.roles);
         }
 
         // GET: api/Projects/5
@@ -38,11 +40,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetProject(long projectId)
         {
             Project project = _services.Find(projectId);
-            if (project == null)
-            {
-                return NotFound();
-            }
-
             return Ok(project);
         }
 
@@ -62,12 +59,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PutProject(long projectId, ProjectModel model)
         {
             var tmpProject = _services.UpdateProject(projectId, model);
-
-            if (tmpProject == null)
-            {
-                return NotFound();
-            }
-
             return Ok(tmpProject);
         }
 
@@ -76,13 +67,17 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostAssignSection(ProjectSectionModel model)
         {
-            var assigned = _services.AssignSection(model);
+            _services.AssignSection(model);
+            return Ok();
+        }
 
-            if (!assigned)
-            {
-                return NotFound();
-            }
 
+        [ResponseType(typeof(void))]
+        [Route("api/Projects/RemoveSection")]
+        [ValidateModel]
+        public IHttpActionResult PostRemoveSection(ProjectSectionModel model)
+        {
+             _services.RemoveFromSection(model.ProjectId,model.SectionId);
             return Ok();
         }
 
@@ -93,7 +88,6 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostProject(ProjectModel model)
         {
-
             var project = _services.Add(model);
             return Ok(project);
 
@@ -106,11 +100,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult DeleteProject(long projectId)
         {
             Project project = _services.Delete(projectId);
-            if (project == null)
-            {
-                return NotFound();
-            }
-
             return Ok(project);
         }
     }

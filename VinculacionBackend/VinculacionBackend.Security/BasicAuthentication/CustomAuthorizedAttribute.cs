@@ -20,7 +20,7 @@ namespace VinculacionBackend.Security.BasicAuthentication
         private const string BasicAuthResponseHeaderValue = "Basic";
         public string UsersConfigKey { get; set; }
         public string RolesConfigKey { get; set; }
-        protected CustomPrincipal CurrentUser
+        public CustomPrincipal CurrentUser
         {
             get { return Thread.CurrentPrincipal as CustomPrincipal; }
             set { Thread.CurrentPrincipal = value as CustomPrincipal; }
@@ -66,6 +66,7 @@ namespace VinculacionBackend.Security.BasicAuthentication
                             CurrentUser = new CustomPrincipal(parsedCredentials.Username, roles);
                             if (HttpContext.Current != null)
                             {
+                                CurrentUser.UserId = user.Id;
                                 HttpContext.Current.User = CurrentUser;
                             }
                             if (!String.IsNullOrEmpty(Roles))

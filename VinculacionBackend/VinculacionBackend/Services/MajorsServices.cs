@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 
 namespace VinculacionBackend.Services
@@ -16,7 +17,10 @@ namespace VinculacionBackend.Services
 
         public Major Find(string majorId)
         {
-            return _majorRepository.GetMajorByMajorId(majorId);
+            var major = _majorRepository.GetMajorByMajorId(majorId);
+            if(major==null)
+                throw new NotFoundException("No se encontro la carrera");
+            return major;
         }
 
         public IQueryable<Major> All()

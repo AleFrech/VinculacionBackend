@@ -10,6 +10,8 @@ namespace VinculacionBackend.Interfaces
         Period Delete(long id);
         void Add(Period period);
         Period Find(long id);
-        Period Map(PeriodEntryModel periodModel);
+        void Map(Period period,PeriodEntryModel periodModel);
+        Period UpdatePeriod(long preriodId, PeriodEntryModel model);
+        Period SetCurrentPeriod(long periodId);
     }
 }

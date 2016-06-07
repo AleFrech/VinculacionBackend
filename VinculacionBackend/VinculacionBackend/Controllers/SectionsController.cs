@@ -37,15 +37,28 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetSection(long sectionId)
         {
             var section = _sectionServices.Find(sectionId);
-            if (section == null)
-            {
-                return NotFound();
-            }
-
             return Ok(section);
         }
 
-        
+        // GET: api/Sections/5
+        [ResponseType(typeof(Project))]
+        [Route("api/Sections/Students/{sectionId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IQueryable<User> GetSectionStudents(long sectionId)
+        {
+            return _sectionServices.GetSectionStudents(sectionId);
+        }
+
+        // GET: api/Sections/5
+        [ResponseType(typeof(Project))]
+        [Route("api/Sections/Projects/{sectionId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IQueryable<Project> GetSectionProjects(long sectionId)
+        {
+            return _sectionServices.GetSectionsProjects(sectionId);
+        }
+
+
         // POST: api/Sections
         [Route("api/Sections")]
         [ResponseType(typeof(Section))]
@@ -53,41 +66,45 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostSection(SectionEntryModel sectionModel)
         {
-            var section=_sectionServices.Map(sectionModel);
+            var section = new Section();
+            _sectionServices.Map(section,sectionModel);
             _sectionServices.Add(section);
             return Ok(section);
         }
 
-        [Route("api/Sections/AssignStudent")]
+        [Route("api/Sections/AssignStudents")]
         [ResponseType(typeof(Section))]
         [CustomAuthorize(Roles = "Admin,Professor")]
         [ValidateModel]
-        public IHttpActionResult PostAssignStudent(SectionStudentModel model)
+        public IHttpActionResult PostAssignStudents(SectionStudentModel model)
         {
 
-            var assigned = _sectionServices.AssignStudent(model);
-            if(assigned)
-            {
-                return Ok();
-            }
-            return NotFound();
+            _sectionServices.AssignStudents(model);
+            return Ok();
         }
         
-        [Route("api/Sections/RemoveStudent")]
+        [Route("api/Sections/RemoveStudents")]
         [ResponseType(typeof(Section))]
         [CustomAuthorize(Roles = "Admin,Professor")]
         [ValidateModel]
-        public IHttpActionResult PostRemoveStudent(SectionStudentModel model)
+        public IHttpActionResult PostRemoveStudents(SectionStudentModel model)
         {
 
-            var removed = _sectionServices.RemoveStudent(model);
-            if(removed)
-            {
-                return Ok();
-            }
-            return NotFound();
+            _sectionServices.RemoveStudents(model);
+            return Ok();
         }
-        
+
+        // PUT: api/Sections/5
+        [ResponseType(typeof(Section))]
+        [Route("api/Sections/{sectionId}")]
+        [ValidateModel]
+        public IHttpActionResult PutSection(long sectionId,SectionEntryModel model)
+        {
+
+            var tmpSection = _sectionServices.UpdateSection(sectionId, model);
+            return Ok(tmpSection);
+        }
+
         // DELETE: api/Sections/5
         [ResponseType(typeof(Section))]
         [Route("api/Sections/{sectionId}")]
@@ -95,12 +112,6 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult DeleteSection(long sectionId)
         {
             Section section = _sectionServices.Delete(sectionId);
-            if (section == null)
-            {
-                return NotFound();
-            }
-            
-
             return Ok(section);
         }
 

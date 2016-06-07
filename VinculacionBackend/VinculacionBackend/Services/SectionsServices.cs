@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
@@ -10,55 +10,44 @@ namespace VinculacionBackend.Services
     public class SectionsServices : ISectionsServices
     {
         private readonly ISectionRepository _sectionsRepository;
-        private readonly IStudentRepository _studentRepository;
-        private readonly IProfessorRepository _professorRepository;
-        private VinculacionContext _db = new VinculacionContext();
+        private readonly IProfessorsServices _professorsServices;
+        private readonly IClassesServices _classServices;
+        private readonly IPeriodsServices _periodsServices;
 
-        public SectionsServices(ISectionRepository sectionsRepository, IStudentRepository studentRepository,
-            IProfessorRepository professorRepository)
+        public SectionsServices(ISectionRepository sectionsRepository, IProfessorsServices professorsServices, IClassesServices classServices, IPeriodsServices periodsServices)
         {
             _sectionsRepository = sectionsRepository;
-            _studentRepository = studentRepository;
-            _professorRepository = professorRepository;
+            _professorsServices = professorsServices;
+            _classServices = classServices;
+            _periodsServices = periodsServices;
+            ;
         }
-
-        
 
         public IQueryable<Section> All()
         {
            return _sectionsRepository.GetAll();
         }
         
-
         public Section Delete(long sectionId)
         {
             var section = _sectionsRepository.Delete(sectionId);
+            if(section ==null)
+                throw new NotFoundException("No se encontro la seccion");
             _sectionsRepository.Save();
             return section;
             
         }
 
-        public Section Map(SectionEntryModel sectionModel)
+        public void Map(Section section,SectionEntryModel sectionModel)
         {
-            var newSection=new Section();
-            newSection.Code = sectionModel.Code;
-            newSection.User = _professorRepository.GetByAccountId(sectionModel.ProffesorAccountId);
-            newSection.Class = _db.Classes.FirstOrDefault(x => x.Id == sectionModel.ClassId);
-            newSection.Period = _db.Periods.FirstOrDefault(x => x.Id == sectionModel.PeriodId);
-            return newSection;
+            section.Code = sectionModel.Code;
+            if (section.Class==null ||section.Class.Id!=sectionModel.ClassId)
+                section.Class = _classServices.Find(sectionModel.ClassId);
+            if (section.User==null || section.User.AccountId != sectionModel.ProffesorAccountId)
+                section.User =_professorsServices.Find(sectionModel.ProffesorAccountId);
+            if (section.Period==null ||section.Period.Id != sectionModel.PeriodId)
+                section.Period = _periodsServices.Find(sectionModel.PeriodId);
 
-        }
-
-        public bool RemoveStudent(SectionStudentModel model)
-        {
-            var section = _sectionsRepository.Get(model.SectionId);
-            var student = _studentRepository.GetByAccountNumber(model.StudentId);
-
-            if (section == null || student == null) return false;
-
-            _sectionsRepository.RemoveStudent(section.Id, student.Id);
-            _sectionsRepository.Save();
-            return true;
         }
 
         public void Add(Section section)
@@ -67,24 +56,53 @@ namespace VinculacionBackend.Services
             _sectionsRepository.Save();
         }
 
-        public Section Find(long id)
+
+        public Section UpdateSection(long sectionId,SectionEntryModel model)
         {
-           return  _sectionsRepository.Get(id);
-                 
+            var tmpSection = _sectionsRepository.Get(sectionId);
+            if (tmpSection == null)
+                throw new NotFoundException("No se encontro la seccion");
+            Map(tmpSection,model);
+            tmpSection.Id = sectionId;
+            _sectionsRepository.Update(tmpSection);
+            _sectionsRepository.Save();
+            return tmpSection;
         }
 
-        public bool AssignStudent(SectionStudentModel model)
+
+        public bool AssignStudents(SectionStudentModel model)
         {
-            var section = _sectionsRepository.Get(model.SectionId);
-            var student = _studentRepository.GetByAccountNumber(model.StudentId);
-
-            if (section == null || student == null) return false;
-
-            _sectionsRepository.AssignStudent(section.Id, student.Id);
+            _sectionsRepository.AssignStudents(model.SectionId,model.StudenstIds);
             _sectionsRepository.Save();
             return true;
         }
-        
-       
+
+
+        public bool RemoveStudents(SectionStudentModel model)
+        {
+            _sectionsRepository.RemoveStudents(model.SectionId,model.StudenstIds);
+            _sectionsRepository.Save();
+            return true;
+        }
+
+        public IQueryable<User> GetSectionStudents(long sectionId)
+        {
+            return _sectionsRepository.GetSectionStudents(sectionId);
+        }
+
+        public IQueryable<Project> GetSectionsProjects(long sectionId)
+        {
+            return _sectionsRepository.GetSectionProjects(sectionId);
+        }
+
+        public Section Find(long id)
+        {
+            var section = _sectionsRepository.Get(id);
+            if (section == null)
+                throw new NotFoundException("No se encontro la seccion");
+
+            return section;
+
+        }       
     }
 }

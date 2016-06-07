@@ -80,11 +80,73 @@ namespace VinculacionBackend.Data.Repositories
             return  projects.AsQueryable();
         }
 
+        public IQueryable<Project> GetAllStudent(long studentId)
+        {
+            var allProjects = _db.Projects.Where(x => x.IsDeleted == false).ToList();
+            var projects = new List<Project>();
+            foreach (var project in allProjects)
+            {
+                var isValid = false;
+                var projectmajors = _db.ProjectMajorRels.Include(a => a.Project).Include(b => b.Major).Where(x => x.Project.Id == project.Id).ToList();
+                var majorsId = new List<string>();
+                foreach (var x in projectmajors)
+                {
+                    majorsId.Add(x.Major.MajorId);
+                }
+                project.MajorIds = majorsId;
+                var projectSections = _db.SectionProjectsRels.Include(a => a.Project).Include(b => b.Section).Where(x => x.Project.Id == project.Id).Include(s => s.Section.User).ToList();
+                var sectionsId = new List<long>();
+                foreach (var x in projectSections)
+                {
+                    sectionsId.Add(x.Section.Id);
+                    var section = x;
+                    var students = _db.SectionUserRels.Where(a => a.Section.Id == section.Section.Id)
+                                                      .Where(a => a.User.Id == studentId);
+                    isValid = students.Any();
+                }
+                project.SectionIds = sectionsId;
+                if (isValid)
+                {
+                    projects.Add(project);
+                }
+            }
+            return projects.AsQueryable();
+        }
+
+        public IQueryable<Project> GetAllProfessor(long professorId)
+        {
+            var allProjects = _db.Projects.Where(x => x.IsDeleted == false).ToList();
+            var projects = new List<Project>();
+            foreach (var project in allProjects)
+            {
+                var isValid = false;
+                var projectmajors = _db.ProjectMajorRels.Include(a => a.Project).Include(b => b.Major).Where(x => x.Project.Id == project.Id).ToList();
+                var majorsId = new List<string>();
+                foreach (var x in projectmajors)
+                {
+                    majorsId.Add(x.Major.MajorId);
+                }
+                project.MajorIds = majorsId;
+                var projectSections = _db.SectionProjectsRels.Include(a => a.Project).Include(b => b.Section).Where(x => x.Project.Id == project.Id).Include(s => s.Section.User).ToList();
+                var sectionsId = new List<long>();
+                foreach (var x in projectSections)
+                {
+                    sectionsId.Add(x.Section.Id);
+                    isValid = x.Section.User.Id == professorId || isValid;
+                }
+                project.SectionIds = sectionsId;
+                if (isValid)
+                {
+                    projects.Add(project);
+                }
+            }
+            return projects.AsQueryable();
+        }
+
         public void Insert(Project ent)
         {
             _db.Projects.Add(ent);
         }
-
         public void Save()
         {
             _db.SaveChanges();
@@ -159,6 +221,18 @@ namespace VinculacionBackend.Data.Repositories
             _db.SectionProjectsRels.Add(new SectionProject { Project = project, Section = section });
 
             
+        }
+        
+        public SectionProject RemoveFromSection(long projectId, long sectionId)
+        {
+            var found = _db.SectionProjectsRels.Include(x=>x.Project).Include(y=>y.Section).FirstOrDefault(z=>z.Project.Id == projectId && z.Section.Id == sectionId);
+            if (found!=null)
+            {
+                _db.SectionProjectsRels.Remove(found);
+                Save();
+            }
+            
+            return found;
         }
     }
 }
