@@ -44,15 +44,14 @@ namespace VinculacionBackend.Controllers
             return Ok(project);
         }
 
-        // GET: api/Projects/FinalReport/
+        // Get: api/Projects/FinalReport/
         [Route("api/Projects/FinalReport/{projectId}")]
-        public HttpResponseMessage GetProjectFinalReport(long projectId)
+        [ValidateModel]
+        public HttpResponseMessage GetProjectFinalReport(long projectId, int fieldHours,int calification)
         {
-            var project = _services.Find(projectId);
-            var finalReport = new ProjectFinalReport(TODO);
-            return finalReport.GetReport(project);
-        }
 
+            return _services.GetFinalReport(projectId,fieldHours,calification);
+        }
 
         // GET: api/Projects/5
         [ResponseType(typeof(Project))]

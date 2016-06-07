@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net.Http;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
@@ -11,6 +12,15 @@ namespace VinculacionBackend.Services
     public class ProjectServices : IProjectServices
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly ISectionRepository _sectionRepository;
+        private readonly IStudentRepository _studentRepository;
+
+        public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository, IStudentRepository studentRepository)
+        {
+            _projectRepository = projectRepository;
+            _sectionRepository = sectionRepository;
+            _studentRepository = studentRepository;
+        }
 
         public ProjectServices(IProjectRepository projectRepository)
         {
@@ -114,6 +124,13 @@ namespace VinculacionBackend.Services
             }
             throw new Exception("No tiene permiso");
             
+        }
+
+        public HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification)
+        {
+           
+            var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository,_studentRepository);
+            return finalReport.GetReport(projectId,fieldHours,calification);
         }
     }
 

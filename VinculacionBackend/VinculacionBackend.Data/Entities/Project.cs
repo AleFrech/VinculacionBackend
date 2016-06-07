@@ -14,6 +14,7 @@ namespace VinculacionBackend.Data.Entities
         public List<long> SectionIds { get; set; }
         public bool IsDeleted {get; set;}
         public string BeneficiariesAlias{get;set;}
+
         public int BeneficiariesQuantity{get;set;}
     }
 }

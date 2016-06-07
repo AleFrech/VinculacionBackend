@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -30,19 +31,14 @@ namespace VinculacionBackend.Data.Repositories
 
         public Section GetSection(Project project)
         {
-            var sectionsProjects =
-                _db.SectionProjectsRels.Include(a => a.Project).Include(b => b.Section).Where(x => x.Project.Id == project.Id);
-
-
-            foreach (var sp in sectionsProjects)
+            var rels = _db.SectionProjectsRels.Include(a => a.Section).Include(b => b.Project).FirstOrDefault(x=>x.Project.Id==project.Id);
+            if (rels != null)
             {
-                if (sp.Project.Id == project.Id)
-                {
-                    return sp.Section;
-                }
+                var section = _db.Sections.Include(a => a.Class).Include(b => b.Period).Include(c => c.User).FirstOrDefault(x => x.Id == rels.Section.Id);
+                return section;
             }
 
-            return null;
+            throw new Exception("not found");
 
         }
 

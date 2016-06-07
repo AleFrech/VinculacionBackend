@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -9,6 +10,7 @@ using Spire.Doc.Fields;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
+using VinculacionBackend.Models;
 using Section = Spire.Doc.Section;
 
 namespace VinculacionBackend
@@ -16,10 +18,14 @@ namespace VinculacionBackend
     public class ProjectFinalReport : IDownloadbleFile,ITextDoucment
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly ISectionRepository _sectionRepository;
+        private readonly IStudentRepository _studentRepository;
 
-        public ProjectFinalReport(IProjectRepository projectRepository)
+        public ProjectFinalReport(IProjectRepository projectRepository, ISectionRepository sectionRepository, IStudentRepository studentRepository)
         {
             _projectRepository = projectRepository;
+            _sectionRepository = sectionRepository;
+            _studentRepository = studentRepository;
         }
 
         public HttpResponseMessage ToHttpResponseMessage(Document document)
@@ -35,8 +41,9 @@ namespace VinculacionBackend
             return response;
         }
 
-        public HttpResponseMessage GetReport(Project project)
+        public HttpResponseMessage GetReport(long projectId, int fieldHours, int calification)
         {
+            var project = _projectRepository.Get(projectId);
             var doc = CreateDocument();
             var page1 = CreatePage(doc);
             var p0 = CreateParagraph(page1);
@@ -58,7 +65,7 @@ namespace VinculacionBackend
             AddTextToParagraph(titleHeader, p0, p0Style, doc);
             AddImageToParagraph(p0, Properties.Resources.UnitecLogo,59F,69F,TextWrappingStyle.Square);
             var p1 = CreateParagraph(page1);
-            ParagraphStyle p1Style = new ParagraphStyle(doc)
+            ParagraphStyle tableHeadersStyle = new ParagraphStyle(doc)
             {
                 Name = "GeneralInfo",
                 CharacterFormat =
@@ -69,20 +76,67 @@ namespace VinculacionBackend
                     UnderlineStyle = UnderlineStyle.Thick
                 }
             };
-            AddTextToParagraph("Información General", p1, p1Style, doc);
+            AddTextToParagraph("Información General", p1, tableHeadersStyle, doc);
             var table1 = CreateTable(page1);
             var section = _projectRepository.GetSection(project);
+            var studentsInSection = _sectionRepository.GetSectionStudents(section.Id).ToList();
+            var majorsOfStudents = _studentRepository.GetStudentMajors(studentsInSection);
+
+            var majors = "";
+            foreach (var ms in majorsOfStudents)
+            {
+                majors += ms;
+            }
             string[][] table1Data =
             {
                 new[] {"Nombre del producto entregado", project.Name},
                 new[] {"Nombre de la organización beneficiada", project.BeneficiariesAlias},
                 new[] {"Nombre de la asignatura",section.Class.Name},
-                new[] {"Nombre de la carrera", "ewfweofnweofnwe"},
-                new[] {"Nombre del catedrático", "ewfweofnweofnwe"},
-                new[] {"Periodo del Proyecto", "ewfweofnweofnwe"}
+                new[] {"Nombre de la carrera",majors},
+                new[] {"Nombre del catedrático", section.User.Name},
+                new[] {"Periodo del Proyecto", "Desde   "+section.Period.FromDate+"   Hasta   "+section.Period.ToDate}
 
             };
             AddDataToTable(table1, table1Data, 2, "Times New Roman", 12);
+
+            var p2 = CreateParagraph(page1);
+            AddTextToParagraph("\r\nCaracterísticas del Proyecto", p2, tableHeadersStyle, doc);
+
+            var table2 = CreateTable(page1);
+            string[][] table2Data =
+            {
+                new[] { "Grupo(s) meta beneficiado(s) con el producto entregado","WTF"},
+                new[] { "Número de personas beneficiadas", project.BeneficiariesQuantity.ToString()}
+            };
+            AddDataToTable(table2, table2Data, 2, "Times New Roman", 12);
+
+            
+            var p3 = CreateParagraph(page1);
+            AddTextToParagraph("\r\nTiempo y valor del producto ", p3, tableHeadersStyle, doc);
+
+            var table3 = CreateTable(page1);
+            string[][] table3Data =
+            {
+                new[] { "Horas de trabajo de campo alumnos ", fieldHours.ToString()},
+                new[] { "Horas de trabajo en clase alumnos ", "ewt3e53453"},
+                new[] { "Total Horas de Trabajo del Proyecto", "345345ee4g"},
+                new[] { "Nota asignada al proyecto (%)*",calification+"%"},
+                new[] { "Valor en el mercado del producto (Lps.)", project.Cost.ToString()},
+            };
+            AddDataToTable(table3, table3Data, 2, "Times New Roman", 12);
+            var p4 = CreateParagraph(page1);
+            ParagraphStyle p4Style = new ParagraphStyle(doc)
+            {
+                Name = "3tableStyle",
+                CharacterFormat =
+                {
+                    FontName = "Times New Roman",
+                    FontSize = 8,
+                }
+            };
+            AddTextToParagraph("*Se refiere a la evaluación que hace el catedrático sobre la calidad del proyecto",p4,p4Style,doc);
+
+
             return ToHttpResponseMessage(doc);
            }
 
@@ -96,7 +150,7 @@ namespace VinculacionBackend
                 dataRow.Height = 20;
                 for (int c = 0; c < data[r].Length; c++)
                 {
-                    dataRow.Cells[c].CellFormat.VerticalAlignment = VerticalAlignment.Top;
+                    dataRow.Cells[c].CellFormat.VerticalAlignment = VerticalAlignment.Middle;
                     Paragraph p2 = dataRow.Cells[c].AddParagraph();
                     TextRange tr2 = p2.AppendText(data[r][c]);
                     p2.Format.HorizontalAlignment = HorizontalAlignment.Left;
@@ -138,6 +192,7 @@ namespace VinculacionBackend
 
         public Section CreatePage(Document document)
         {
+
             return document.AddSection();
         }
 
@@ -150,5 +205,8 @@ namespace VinculacionBackend
         {
             return page.AddParagraph();
         }
+
+        
+
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
@@ -32,6 +33,31 @@ namespace VinculacionBackend.Data.Repositories
                 _db.Users.Remove(found);
             }
             return found;
+        }
+
+        public List<string> GetStudentMajors(List<User> students)
+        {
+            Dictionary<string, int> majorCounts = new Dictionary<string, int>();
+            foreach (var student in students)
+            {
+                if (majorCounts.ContainsKey(student.Major.Name))
+                {
+                    majorCounts[student.Major.Name] += 1;
+                }
+                else
+                {
+                    majorCounts[student.Major.Name] = 1;
+                }
+            }
+
+            List<string> texts = new List<string>();
+
+            foreach (var majorCount in majorCounts)
+            {
+                texts.Add(majorCount.Key + " - " + majorCount.Value);
+            }
+
+            return texts;
         }
 
         public User Get(long id)
