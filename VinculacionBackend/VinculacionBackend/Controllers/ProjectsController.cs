@@ -45,7 +45,7 @@ namespace VinculacionBackend.Controllers
         }
 
         // Get: api/Projects/FinalReport/
-        [Route("api/Projects/FinalReport/{projectId}")]
+        [Route("api/Projects/FinalReport/{projectId}/{fieldHours}/{calification}")]
         [ValidateModel]
         public HttpResponseMessage GetProjectFinalReport(long projectId, int fieldHours,int calification)
         {

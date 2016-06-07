@@ -49,7 +49,8 @@ namespace VinculacionBackend.Services
             project.Cost = model.Cost;
             project.MajorIds = model.MajorIds;
             project.SectionIds = model.SectionIds;
-            project.BeneficiariesAlias = model.BeneficiariesAlias;
+            project.BeneficiarieOrganization = model.BeneficiarieOrganization;
+            project.BeneficiarieGroups = model.BeneficiarieGroups;
             project.BeneficiariesQuantity = model.BeneficiariesQuantity;
         }
 

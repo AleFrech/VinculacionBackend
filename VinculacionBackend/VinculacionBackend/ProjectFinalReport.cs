@@ -7,10 +7,8 @@ using System.Net.Http.Headers;
 using Spire.Doc;
 using Spire.Doc.Documents;
 using Spire.Doc.Fields;
-using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
-using VinculacionBackend.Models;
 using Section = Spire.Doc.Section;
 
 namespace VinculacionBackend
@@ -81,18 +79,12 @@ namespace VinculacionBackend
             var section = _projectRepository.GetSection(project);
             var studentsInSection = _sectionRepository.GetSectionStudents(section.Id).ToList();
             var majorsOfStudents = _studentRepository.GetStudentMajors(studentsInSection);
-
-            var majors = "";
-            foreach (var ms in majorsOfStudents)
-            {
-                majors += ms;
-            }
             string[][] table1Data =
             {
                 new[] {"Nombre del producto entregado", project.Name},
-                new[] {"Nombre de la organización beneficiada", project.BeneficiariesAlias},
+                new[] {"Nombre de la organización beneficiada", project.BeneficiarieOrganization},
                 new[] {"Nombre de la asignatura",section.Class.Name},
-                new[] {"Nombre de la carrera",majors},
+                new[] {"Nombre de la carrera",majorsOfStudents},
                 new[] {"Nombre del catedrático", section.User.Name},
                 new[] {"Periodo del Proyecto", "Desde   "+section.Period.FromDate+"   Hasta   "+section.Period.ToDate}
 
@@ -105,7 +97,7 @@ namespace VinculacionBackend
             var table2 = CreateTable(page1);
             string[][] table2Data =
             {
-                new[] { "Grupo(s) meta beneficiado(s) con el producto entregado","WTF"},
+                new[] { "Grupo(s) meta beneficiado(s) con el producto entregado",project.BeneficiarieGroups},
                 new[] { "Número de personas beneficiadas", project.BeneficiariesQuantity.ToString()}
             };
             AddDataToTable(table2, table2Data, 2, "Times New Roman", 12);

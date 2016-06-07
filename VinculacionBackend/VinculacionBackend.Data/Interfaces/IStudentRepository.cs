@@ -10,7 +10,7 @@ namespace VinculacionBackend.Data.Interfaces
         User DeleteByAccountNumber(string accountNumber);
         int GetStudentHours(string accountNumber);
 
-        List<string> GetStudentMajors(List<User> students);
+        string GetStudentMajors(List<User> students);
         IEnumerable<User> GetStudentsByStatus(Status status);
         IEnumerable<User> GetStudentsByStatus(string status);
         User GetByEmail(string email);

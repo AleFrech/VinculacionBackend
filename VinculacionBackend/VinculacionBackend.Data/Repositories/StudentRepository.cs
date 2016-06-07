@@ -35,27 +35,29 @@ namespace VinculacionBackend.Data.Repositories
             return found;
         }
 
-        public List<string> GetStudentMajors(List<User> students)
+        public string GetStudentMajors(List<User> students)
         {
-            Dictionary<string, int> majorCounts = new Dictionary<string, int>();
+            List<string> majors = new List<string>();
+
             foreach (var student in students)
             {
-                if (majorCounts.ContainsKey(student.Major.Name))
+                if (!majors.Contains(student.Major.Name))
                 {
-                    majorCounts[student.Major.Name] += 1;
-                }
-                else
-                {
-                    majorCounts[student.Major.Name] = 1;
+                    majors.Add(student.Major.Name);
                 }
             }
 
-            List<string> texts = new List<string>();
+            string texts = "";
 
-            foreach (var majorCount in majorCounts)
+            for (int i = 0; i < majors.Count; i++)
             {
-                texts.Add(majorCount.Key + " - " + majorCount.Value);
-            }
+                if (i > 0)
+                {
+                    texts += " / ";
+                }
+                texts += majors[i];
+            } 
+        
 
             return texts;
         }

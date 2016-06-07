@@ -230,7 +230,6 @@
     <Compile Include="Controllers\ClassesController.cs" />
     <Compile Include="Interfaces\IDownloadbleFile.cs" />
     <Compile Include="Interfaces\ITextDoucment.cs" />
-    <Compile Include="Models\ProjectReportModel.cs" />
     <Compile Include="Models\VerifiedProfessorModel.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="Interfaces\IMemoryCacher.cs" />
