@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -38,31 +37,11 @@ namespace VinculacionBackend
                           "                                              UNITEC\r\n " +
                           "       Dirección de Investigación y Vinculación Universitaria\r\n" +
                           "                      Evaluación de Proyecto de Vinculación";
-            ParagraphStyle p0Style = new ParagraphStyle(doc)
-            {
-                Name = "HeaderStyle",
-                CharacterFormat =
-                {
-                    FontName = "Times New Roman",
-                    FontSize = 14,
-                    Bold = true,
-                }
-            };
-
+            ParagraphStyle p0Style = CreateParagraphStyle(doc, "HeaderStyle", "Times New Roman", 14f, true);
             AddTextToParagraph(titleHeader, p0, p0Style, doc);
             AddImageToParagraph(p0, Properties.Resources.UnitecLogo,59F,69F,TextWrappingStyle.Square);
             var p1 = CreateParagraph(page1);
-            ParagraphStyle tableHeadersStyle = new ParagraphStyle(doc)
-            {
-                Name = "GeneralInfo",
-                CharacterFormat =
-                {
-                    FontName = "Times New Roman",
-                    FontSize = 12,
-                    Bold = true,
-                    UnderlineStyle = UnderlineStyle.Thick
-                }
-            };
+            ParagraphStyle tableHeadersStyle =CreateParagraphStyle(doc, "GeneralInfo", "Times New Roman",12f,true);
             AddTextToParagraph("Información General", p1, tableHeadersStyle, doc);
             var table1 = CreateTable(page1);
             var section = _projectRepository.GetSection(project);
@@ -92,16 +71,19 @@ namespace VinculacionBackend
             };
             table2.ResetCells(table2Data.Length, 2);
             AddDataToTable(table2, table2Data, "Times New Roman", 12,0);
-
-            
+    
             var p3 = CreateParagraph(page1);
             AddTextToParagraph("\r\nTiempo y valor del producto ", p3, tableHeadersStyle, doc);
 
             var table3 = CreateTable(page1);
             var studentsHours = _studentRepository.GetStudentsHoursByProject(projectId);
             var totalHours = 0;
+            string[][] table4Data = new string[studentsHours.Count][];
+            var i = 0;
             foreach (var sh in studentsHours)
             {
+                table4Data[i] = new[] { (i + 1).ToString(), sh.Key.AccountId, sh.Key.Name, sh.Value.ToString(), "" };
+                i++;
                 totalHours += sh.Value;
             }
             string[][] table3Data =
@@ -115,15 +97,7 @@ namespace VinculacionBackend
             table3.ResetCells(table3Data.Length, 2);
             AddDataToTable(table3, table3Data, "Times New Roman", 12,0);
             var p4 = CreateParagraph(page1);
-            ParagraphStyle p4Style = new ParagraphStyle(doc)
-            {
-                Name = "3tableStyle",
-                CharacterFormat =
-                {
-                    FontName = "Times New Roman",
-                    FontSize = 8,
-                }
-            };
+            ParagraphStyle p4Style = CreateParagraphStyle(doc, "3tableStyle", "Times New Roman",8,false);
             AddTextToParagraph("*Se refiere a la evaluación que hace el catedrático sobre la calidad del proyecto",p4,p4Style,doc);
 
             var p5 = CreateParagraph(page1);
@@ -131,20 +105,12 @@ namespace VinculacionBackend
 
             var table4 = CreateTable(page1);
             string[] headerTable4 = { "No.", "Cuenta", "Nombre y Apellidos", "Horas por alumno", "Firma del estudiante" };
-            string[][] table4Data = new string[20][];
-            var i = 0;
-            foreach (var sh in studentsHours)
-            {
-                table4Data[i] = new[] {(i + 1).ToString(), sh.Key.AccountId, sh.Key.Name, sh.Value.ToString(), ""};
-                i++;
-            }
             AddDataToTableWithHeader(table4,headerTable4,table4Data,5, "Times New Roman", 12);
             var p6 = CreateParagraph(page1);
-            AddTextToParagraph("\r\n\r\n\r\n\r\nFirma del docente__________________________	Fecha de entrega___________________", p6,new ParagraphStyle(doc) {Name = "lastParagraphStyle",CharacterFormat = {FontName = "Times New Roman",
-                    FontSize = 12, }
-            }, doc);
+            ParagraphStyle p6Style = CreateParagraphStyle(doc, "lastParagraphStyle", "Times New Roman", 12f, false);
+            AddTextToParagraph("\r\n\r\n\r\n\r\nFirma del docente__________________________	Fecha de entrega___________________",p6,p6Style,doc);
             return ToHttpResponseMessage(doc);
-           }
+        }
 
         private void AddDataToTable(Table table ,string[][] data,string font, float fontsize,int offset)
         {
@@ -197,8 +163,6 @@ namespace VinculacionBackend
             AddDataToTable(table,data,font,fontsize,1);
         }
 
-
-
         public HttpResponseMessage ToHttpResponseMessage(Document document)
         {
             var ms = new MemoryStream();
@@ -217,7 +181,7 @@ namespace VinculacionBackend
             return page1.AddTable();
         }
 
-        private void AddImageToParagraph(Paragraph paragraph, Bitmap resourceImage, float height, float width,TextWrappingStyle textWrappingStyle)
+        public void AddImageToParagraph(Paragraph paragraph, Bitmap resourceImage, float height, float width,TextWrappingStyle textWrappingStyle)
         {
             var picture = AddImage(paragraph, resourceImage);
             picture.Height = height;
@@ -225,7 +189,7 @@ namespace VinculacionBackend
             picture.TextWrappingStyle = textWrappingStyle;
         }
         
-        private void AddTextToParagraph(string text,Paragraph paragraph,ParagraphStyle style,Document document)
+        public void AddTextToParagraph(string text,Paragraph paragraph,ParagraphStyle style,Document document)
         {
             paragraph.AppendText(text);
             document.Styles.Add(style);
@@ -235,6 +199,20 @@ namespace VinculacionBackend
         public Document CreateDocument()
         {
             return new Document();
+        }
+
+        public ParagraphStyle CreateParagraphStyle(Document doc,string styleName,string fontName,float fontSize,bool bold)
+        {
+            return new ParagraphStyle(doc)
+            {
+                Name = styleName,
+                CharacterFormat =
+                {
+                    FontName = fontName,
+                    FontSize =fontSize,
+                    Bold = bold,
+                }
+            };
         }
 
         public Section CreatePage(Document document)
@@ -252,8 +230,5 @@ namespace VinculacionBackend
         {
             return page.AddParagraph();
         }
-
-        
-
     }
 }
