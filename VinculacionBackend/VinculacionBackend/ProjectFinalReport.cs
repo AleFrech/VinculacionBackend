@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -77,7 +78,8 @@ namespace VinculacionBackend
                 new[] {"Periodo del Proyecto", "Desde   "+section.Period.FromDate+"   Hasta   "+section.Period.ToDate}
 
             };
-            AddDataToTable(table1, table1Data, 2, "Times New Roman", 12);
+            table1.ResetCells(table1Data.Length,2);
+            AddDataToTable(table1, table1Data, "Times New Roman", 12,0);
 
             var p2 = CreateParagraph(page1);
             AddTextToParagraph("\r\nCaracterísticas del Proyecto", p2, tableHeadersStyle, doc);
@@ -88,22 +90,30 @@ namespace VinculacionBackend
                 new[] { "Grupo(s) meta beneficiado(s) con el producto entregado",project.BeneficiarieGroups},
                 new[] { "Número de personas beneficiadas", project.BeneficiariesQuantity.ToString()}
             };
-            AddDataToTable(table2, table2Data, 2, "Times New Roman", 12);
+            table2.ResetCells(table2Data.Length, 2);
+            AddDataToTable(table2, table2Data, "Times New Roman", 12,0);
 
             
             var p3 = CreateParagraph(page1);
             AddTextToParagraph("\r\nTiempo y valor del producto ", p3, tableHeadersStyle, doc);
 
             var table3 = CreateTable(page1);
+            var studentsHours = _studentRepository.GetStudentsHoursByProject(projectId);
+            var totalHours = 0;
+            foreach (var sh in studentsHours)
+            {
+                totalHours += sh.Value;
+            }
             string[][] table3Data =
             {
                 new[] { "Horas de trabajo de campo alumnos ", fieldHours.ToString()},
-                new[] { "Horas de trabajo en clase alumnos ", "ewt3e53453"},
-                new[] { "Total Horas de Trabajo del Proyecto", "345345ee4g"},
+                new[] { "Horas de trabajo en clase alumnos ", (totalHours-fieldHours).ToString()},
+                new[] { "Total Horas de Trabajo del Proyecto", totalHours.ToString()},
                 new[] { "Nota asignada al proyecto (%)*",calification+"%"},
                 new[] { "Valor en el mercado del producto (Lps.)", project.Cost.ToString()},
             };
-            AddDataToTable(table3, table3Data, 2, "Times New Roman", 12);
+            table3.ResetCells(table3Data.Length, 2);
+            AddDataToTable(table3, table3Data, "Times New Roman", 12,0);
             var p4 = CreateParagraph(page1);
             ParagraphStyle p4Style = new ParagraphStyle(doc)
             {
@@ -119,17 +129,35 @@ namespace VinculacionBackend
             var p5 = CreateParagraph(page1);
             AddTextToParagraph("\r\n\r\nEstudiantes Involucrados en el Proyecto de Vinculación",p5,tableHeadersStyle,doc);
 
+            var table4 = CreateTable(page1);
+            string[] headerTable4 = { "No.", "Cuenta", "Nombre y Apellidos", "Horas por alumno", "Firma del estudiante" };
+            string[][] table4Data = new string[studentsHours.Count][];
+            var i = 0;
+            foreach (var sh in studentsHours)
+            {
+                table4Data[i] = new[] {(i + 1).ToString(), sh.Key.AccountId, sh.Key.Name, sh.Value.ToString(), ""};
+                i++;
+            }
 
+            //string[][] table4Data =
+            //{
+            //    new[] {"1","21111224","Wiliam Molina","22",""}
+            //};
+
+            AddDataToTableWithHeader(table4,headerTable4,table4Data,5, "Times New Roman", 12);
+            var p6 = CreateParagraph(page1);
+            AddTextToParagraph("\r\n\r\n\r\n\r\nFirma del docente__________________________	Fecha de entrega___________________", p6,new ParagraphStyle(doc) {Name = "lastParagraphStyle",CharacterFormat = {FontName = "Times New Roman",
+                    FontSize = 12, }
+            }, doc);
             return ToHttpResponseMessage(doc);
            }
 
-        private void AddDataToTable(Table table ,string[][] data,int columnCount,string font, float fontsize)
+        private void AddDataToTable(Table table ,string[][] data,string font, float fontsize,int offset)
         {
-            table.ResetCells(data.Length, columnCount);
 
             for (int r = 0; r < data.Length; r++)
             {
-                var dataRow = table.Rows[r];
+                TableRow dataRow = table.Rows[r+offset];
                 dataRow.Height = 20;
                 for (int c = 0; c < data[r].Length; c++)
                 {
@@ -147,6 +175,35 @@ namespace VinculacionBackend
             table.TableFormat.HorizontalAlignment = RowAlignment.Left;
             table.TableFormat.LeftIndent = 8f;
         }
+
+        private void AddDataToTableWithHeader(Table table,string[] header,string[][] data, int columnCount, string font, float fontsize)
+        {
+            table.ResetCells(data.Length+1, columnCount);
+
+            TableRow Frow = table.Rows[0];
+            Frow.IsHeader = true;
+            Frow.Height = 30;
+           
+            Frow.HeightType = TableRowHeightType.Exactly;
+            Frow.RowFormat.BackColor = Color.LightGray;
+            for (int i = 0; i < header.Length; i++)
+            {
+                Frow.Cells[i].CellFormat.VerticalAlignment = VerticalAlignment.Middle;
+                Paragraph p = Frow.Cells[i].AddParagraph();
+                p.Format.HorizontalAlignment = HorizontalAlignment.Center;
+                TextRange txtRange = p.AppendText(header[i]);
+                txtRange.CharacterFormat.FontName = font;
+                txtRange.CharacterFormat.FontSize = fontsize;
+                if (i == header.Length - 1)
+                {
+                    txtRange.CharacterFormat.Bold = true;
+                    txtRange.CharacterFormat.TextColor = Color.Red;
+                }
+            }
+            AddDataToTable(table,data,font,fontsize,1);
+        }
+
+
 
         public HttpResponseMessage ToHttpResponseMessage(Document document)
         {

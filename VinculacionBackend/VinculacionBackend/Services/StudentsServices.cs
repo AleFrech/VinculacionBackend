@@ -138,18 +138,5 @@ namespace VinculacionBackend.Services
             _studentRepository.Save();
             return student;
         }
-
-        private Dictionary<User, int> GetStudentsHoursByProject(int projectId)
-        {
-            var projectStudents = _projectServices.GetProjectStudents(projectId);
-            Dictionary<User, int> studentHours = new Dictionary<User, int>();
-            foreach(var projectStudent in projectStudents)
-            {
-                var hours = _studentRepository.GetStudentHoursByProject(projectStudent.AccountId, projectId);
-                studentHours[projectStudent] = hours; 
-            }
-            return studentHours;
-        }
-
     }
 }

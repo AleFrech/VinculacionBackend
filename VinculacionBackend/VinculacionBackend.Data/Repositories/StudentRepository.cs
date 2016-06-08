@@ -24,6 +24,20 @@ namespace VinculacionBackend.Data.Repositories
             return found;
         }
 
+        public  Dictionary<User, int> GetStudentsHoursByProject(long projectId)
+        {
+            var secProjRel = _db.SectionProjectsRels.Include(a => a.Project).Where(c => c.Project.Id == projectId);
+            var horas = _db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d => d.Id == c.SectionProject.Id));
+            var projectStudents = _db.Users.Include(a => a.Major).Where(b => horas.Any(c => c.User.Id == b.Id)).ToList();
+            Dictionary<User, int> studentHours = new Dictionary<User, int>();
+            foreach (var projectStudent in projectStudents)
+            {
+                var hours = GetStudentHoursByProject(projectStudent.AccountId, projectId);
+                studentHours[projectStudent] = hours;
+            }
+            return studentHours;
+        }
+
         public User DeleteByAccountNumber(string accountNumber)
         {
             var found = GetByAccountNumber(accountNumber);
@@ -154,14 +168,14 @@ namespace VinculacionBackend.Data.Repositories
             return _db.UserRoleRels.Include(x => x.Role).Include(y => y.User).Where(z => z.Role.Name == "Student");
         }
 
-        public int GetStudentHoursByProject(string accountNumber, int projectId)
+        public int GetStudentHoursByProject(string accountNumber, long projectId)
         {
             var student = GetByAccountNumber(accountNumber);
             if(student == null)
             {
                 throw new Exception("Student Not Found");
             }
-            var studentHours = _db.Hours.Include(a => a.User).Include(b=>b.SectionProject).Where(x => x.User.Id == student.Id);
+            var studentHours = _db.Hours.Include(a => a.User).Include(b=>b.SectionProject).Where(x => x.User.Id == student.Id).ToList();
 
             var total = 0;
             foreach(var studentHour in studentHours)

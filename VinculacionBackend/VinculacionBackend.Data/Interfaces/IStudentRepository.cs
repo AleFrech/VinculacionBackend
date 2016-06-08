@@ -9,11 +9,11 @@ namespace VinculacionBackend.Data.Interfaces
         User GetByAccountNumber(string accountNumber);
         User DeleteByAccountNumber(string accountNumber);
         int GetStudentHours(string accountNumber);
-
+        Dictionary<User, int> GetStudentsHoursByProject(long projectId);
         string GetStudentMajors(List<User> students);
         IEnumerable<User> GetStudentsByStatus(Status status);
         IEnumerable<User> GetStudentsByStatus(string status);
         User GetByEmail(string email);
-        int GetStudentHoursByProject(string accountNumber, int projectId);
+        int GetStudentHoursByProject(string accountNumber, long projectId);
     }
 }
