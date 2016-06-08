@@ -131,19 +131,13 @@ namespace VinculacionBackend
 
             var table4 = CreateTable(page1);
             string[] headerTable4 = { "No.", "Cuenta", "Nombre y Apellidos", "Horas por alumno", "Firma del estudiante" };
-            string[][] table4Data = new string[studentsHours.Count][];
+            string[][] table4Data = new string[20][];
             var i = 0;
             foreach (var sh in studentsHours)
             {
                 table4Data[i] = new[] {(i + 1).ToString(), sh.Key.AccountId, sh.Key.Name, sh.Value.ToString(), ""};
                 i++;
             }
-
-            //string[][] table4Data =
-            //{
-            //    new[] {"1","21111224","Wiliam Molina","22",""}
-            //};
-
             AddDataToTableWithHeader(table4,headerTable4,table4Data,5, "Times New Roman", 12);
             var p6 = CreateParagraph(page1);
             AddTextToParagraph("\r\n\r\n\r\n\r\nFirma del docente__________________________	Fecha de entrega___________________", p6,new ParagraphStyle(doc) {Name = "lastParagraphStyle",CharacterFormat = {FontName = "Times New Roman",
