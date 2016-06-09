@@ -20,11 +20,13 @@ namespace VinculacionBackend.Data.Migrations
         protected override void Seed(VinculacionContext context)
         {
             var encryption = new Encryption();
-            var period = new Period { Number = 1, Year = 2016, ToDate = "18 de Feb", FromDate = "05 de Abr", IsCurrent = false };
+            var period = new Period { Number = 1, Year = 2016, ToDate = "18 de Febrero", FromDate = "05 de Abril", IsCurrent = false };
             var clas = new Class { Name = "ANAL. Y DIS. DE SISTEMAS I" };
             var majorsId = new List<string>();
             var sectionsId = new List<long>();
             sectionsId.Add(1);
+            var fac1 = new Faculty { Name = "Facultad de Ingenieria y Architectura" };
+            var fac2 = new Faculty { Name = "Facultad de Ciencias Aministrativas y Sociales" };
             majorsId.Add("I - 01");
             var user = new User
             {
@@ -91,28 +93,28 @@ namespace VinculacionBackend.Data.Migrations
             context.Majors.AddOrUpdate(
                 x => x.Id,
                 major1,
-                new Major { MajorId = "I - 02", Name = "INGENIERÍA INDUSTRIAL Y DE SISTEMAS" },
-                new Major { MajorId = "I - 03", Name = "INGENIERÍA CIVIL" },
-                new Major { MajorId = "I - 04", Name = "INGENIERÍA EN TELECOMUNICACIONES" },
-                new Major { MajorId = "I - 05", Name = "INGENIERÍA EN MECATRÓNICANICA" },
-                new Major { MajorId = "I - 06", Name = "INGENIERÍA EN INFORMÁTICA" },
-                new Major { MajorId = "I - 07", Name = "INGENIERÍA EN SISTEMAS ELECTRÓNICOS" },
-                new Major { MajorId = "I - 09", Name = "INGENIERÍA EN GESTIÓN LOGÍSTICA" },
-                new Major { MajorId = "I - 10", Name = "INGENIERÍA EN BIOMÉDICA" },
-                new Major { MajorId = "I - 11", Name = "ARQUITECTURA" },
-                new Major { MajorId = "I - 12", Name = "INGENIERÍA EN ENERGÍA" },
-                new Major { MajorId = "L - 02", Name = "LICENCIATURA EN ADMINISTRACIÓN INDUSTRIAL Y DE NEGOCIOS" },
-                new Major { MajorId = "L - 04", Name = "LICENCIATURA EN FINANZAS" },
-                new Major { MajorId = "L - 06", Name = "LICENCIATURA EN MERCADOTECNIA(PROMOCIÓN Y PUBLICIDAD)" },
-                new Major { MajorId = "L - 07", Name = "LICENCIATURA EN COMUNICACIÓN Y PUBLICIDAD" },
-                new Major { MajorId = "L - 08", Name = "LICENCIATURA EN MERCADOTECNIA Y NEGOCIOS INTERNACIONALES" },
-                new Major { MajorId = "L - 09", Name = "LICENCIATURA EN ADMINISTRACIÓN DE EMPRESAS TURÍSTICAS" },
-                new Major { MajorId = "L - 10", Name = "LICENCIATURA EN DERECHO" },
-                new Major { MajorId = "L - 12", Name = "LICENCIATURA EN DISEÑO GRAFICO" },
-                new Major { MajorId = "L - 13", Name = "LICENCIATURA EN RELACIONES INTERNACIONALES" },
-                new Major { MajorId = "L - 14", Name = "LICENCIATURA EN PSICOLOGÍA CON ORIENTACIÓN EMPRESARIAL" },
-                new Major { MajorId = "L - 15", Name = "LICENCIATURA EN CONTADURÍA PÚBLICA" },
-                new Major { MajorId = "L - 16", Name = "LICENCIATURA EN ADMINISTRACIÓN DE EMPRESAS(CEUTEC)" },
+                new Major { MajorId = "I - 02", Name = "INGENIERÍA INDUSTRIAL Y DE SISTEMAS", Faculty = fac1 },
+                new Major { MajorId = "I - 03", Name = "INGENIERÍA CIVIL", Faculty = fac1 },
+                new Major { MajorId = "I - 04", Name = "INGENIERÍA EN TELECOMUNICACIONES", Faculty = fac1 },
+                new Major { MajorId = "I - 05", Name = "INGENIERÍA EN MECATRÓNICANICA", Faculty = fac1 },
+                new Major { MajorId = "I - 06", Name = "INGENIERÍA EN INFORMÁTICA", Faculty = fac1 },
+                new Major { MajorId = "I - 07", Name = "INGENIERÍA EN SISTEMAS ELECTRÓNICOS", Faculty = fac1 },
+                new Major { MajorId = "I - 09", Name = "INGENIERÍA EN GESTIÓN LOGÍSTICA", Faculty = fac1 },
+                new Major { MajorId = "I - 10", Name = "INGENIERÍA EN BIOMÉDICA", Faculty = fac1 },
+                new Major { MajorId = "I - 11", Name = "ARQUITECTURA", Faculty = fac1 },
+                new Major { MajorId = "I - 12", Name = "INGENIERÍA EN ENERGÍA", Faculty = fac1 },
+                new Major { MajorId = "L - 02", Name = "LICENCIATURA EN ADMINISTRACIÓN INDUSTRIAL Y DE NEGOCIOS", Faculty = fac2 },
+                new Major { MajorId = "L - 04", Name = "LICENCIATURA EN FINANZAS", Faculty = fac2 },
+                new Major { MajorId = "L - 06", Name = "LICENCIATURA EN MERCADOTECNIA(PROMOCIÓN Y PUBLICIDAD)", Faculty = fac2 },
+                new Major { MajorId = "L - 07", Name = "LICENCIATURA EN COMUNICACIÓN Y PUBLICIDAD", Faculty = fac2 },
+                new Major { MajorId = "L - 08", Name = "LICENCIATURA EN MERCADOTECNIA Y NEGOCIOS INTERNACIONALES", Faculty = fac2 },
+                new Major { MajorId = "L - 09", Name = "LICENCIATURA EN ADMINISTRACIÓN DE EMPRESAS TURÍSTICAS", Faculty = fac2 },
+                new Major { MajorId = "L - 10", Name = "LICENCIATURA EN DERECHO", Faculty = fac2 },
+                new Major { MajorId = "L - 12", Name = "LICENCIATURA EN DISEÑO GRAFICO", Faculty = fac2 },
+                new Major { MajorId = "L - 13", Name = "LICENCIATURA EN RELACIONES INTERNACIONALES", Faculty = fac2 },
+                new Major { MajorId = "L - 14", Name = "LICENCIATURA EN PSICOLOGÍA CON ORIENTACIÓN EMPRESARIAL", Faculty = fac2 },
+                new Major { MajorId = "L - 15", Name = "LICENCIATURA EN CONTADURÍA PÚBLICA", Faculty = fac2 },
+                new Major { MajorId = "L - 16", Name = "LICENCIATURA EN ADMINISTRACIÓN DE EMPRESAS(CEUTEC)", Faculty = fac2 },
                 new Major { MajorId = "T - 03", Name = "TÉCNICO UNIVERSITARIO EN MERCADOTECNIA Y VENTAS(CEUTEC)" },
                 new Major { MajorId = "T - 05", Name = "TÉCNICO UNIVERSITARIO EN ADMINISTRACIÓN(CEUTEC)" },
                 new Major { MajorId = "T - 07", Name = "TÉCNICO EN DESARROLLO DE SISTEMAS DE INFORMACIÓN(CEUTEC)" },
@@ -147,9 +149,9 @@ namespace VinculacionBackend.Data.Migrations
             context.Periods.AddOrUpdate(
                 x => x.Id,
                 period,
-                new Period { Number = 2, Year = 2016, ToDate = "18 de Abr", FromDate = "28 de Jun", IsCurrent = true },
-                new Period { Number = 2, Year = 2016, ToDate = "18 de Jul", FromDate = "27 de Sep", IsCurrent = false },
-                new Period { Number = 2, Year = 2016, ToDate = "10 de Oct", FromDate = "20 de Dic", IsCurrent = false }
+                new Period { Number = 2, Year = 2016, ToDate = "18 de Abril", FromDate = "28 de Junio", IsCurrent = true },
+                new Period { Number = 2, Year = 2016, ToDate = "18 de Julio", FromDate = "27 de Septiembre", IsCurrent = false },
+                new Period { Number = 2, Year = 2016, ToDate = "10 de Octubre", FromDate = "20 de Dicembre", IsCurrent = false }
                 );
 
             context.Projects.AddOrUpdate(
@@ -181,8 +183,7 @@ namespace VinculacionBackend.Data.Migrations
                 new Hour { Amount = 5, SectionProject = sectionProject, User = user2 }
                 );
             context.Faculties.AddOrUpdate(
-                new Faculty { Name = "Facultad de Ingenieria y Architectura" },
-                new Faculty { Name = "Facultad de Ciencias Aministrativas y Sociales" }
+                fac1, fac2
                 );
         }
     }

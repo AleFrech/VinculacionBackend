@@ -61,6 +61,14 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="StatsdClient, Version=1.3.44.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StatsdClient.1.3.44\lib\net35\StatsdClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StatsdClient.Configuration, Version=1.3.44.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StatsdClient.1.3.44\lib\net35\StatsdClient.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -110,9 +118,9 @@
     <Compile Include="Interfaces\ISectionRepository.cs" />
     <Compile Include="Interfaces\IStudentRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
-    <Compile Include="Migrations\201606070123136_Init.cs" />
-    <Compile Include="Migrations\201606070123136_Init.Designer.cs">
-      <DependentUpon>201606070123136_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201606070451424_Init.cs" />
+    <Compile Include="Migrations\201606070451424_Init.Designer.cs">
+      <DependentUpon>201606070451424_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -133,8 +141,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606070123136_Init.resx">
-      <DependentUpon>201606070123136_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606070451424_Init.resx">
+      <DependentUpon>201606070451424_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

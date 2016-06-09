@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
@@ -13,13 +14,15 @@ namespace VinculacionBackend.Services
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IMajorsServices _majorServices;
+        private readonly IProjectServices _projectServices;
         private readonly IEncryption _encryption;
 
-        public StudentsServices(IStudentRepository studentRepository, IMajorRepository majorRepository,IEncryption encryption, IMajorsServices majorServices)
+        public StudentsServices(IStudentRepository studentRepository, IMajorRepository majorRepository,IEncryption encryption, IMajorsServices majorServices, IProjectServices projectServices)
         {
             _studentRepository = studentRepository;
             _encryption = encryption;
             _majorServices = majorServices;
+            _projectServices = projectServices;
         }
 
         public  void Map(User student,UserEntryModel userModel)

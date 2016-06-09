@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -41,6 +42,15 @@ namespace VinculacionBackend.Controllers
         {
             Project project = _services.Find(projectId);
             return Ok(project);
+        }
+
+        // Get: api/Projects/FinalReport/
+        [Route("api/Projects/FinalReport/{projectId}/{fieldHours}/{calification}")]
+        [ValidateModel]
+        public HttpResponseMessage GetProjectFinalReport(long projectId, int fieldHours,int calification)
+        {
+
+            return _services.GetFinalReport(projectId,fieldHours,calification);
         }
 
         // GET: api/Projects/5
