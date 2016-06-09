@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Net.Http;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Models;
 
@@ -15,5 +16,6 @@ namespace VinculacionBackend.Interfaces
         bool AssignSection(ProjectSectionModel model);
         bool RemoveFromSection(long projectId, long sectionId);
         IQueryable<Project> GetUserProjects(long userId, string[] roles);
+        HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification);
     }
 }
