@@ -32,12 +32,14 @@ namespace VinculacionBackend
             var project = _projectRepository.Get(projectId);
             var doc = CreateDocument();
             var page1 = CreatePage(doc);
-            var p0 = CreateParagraph(page1);
+            var pblank = CreateParagraph(page1);
+            ParagraphStyle p0Style = CreateParagraphStyle(doc, "HeaderStyle", "Times New Roman", 14f, true);
+            AddTextToParagraph("\r\n\r\n",pblank,p0Style,doc);        
             var titleHeader = "   UNIVERSIDAD TECNOLOGICA CENTROAMERICANA\r\n " +
                           "                                              UNITEC\r\n " +
                           "       Dirección de Investigación y Vinculación Universitaria\r\n" +
                           "                      Evaluación de Proyecto de Vinculación";
-            ParagraphStyle p0Style = CreateParagraphStyle(doc, "HeaderStyle", "Times New Roman", 14f, true);
+            var p0 = CreateParagraph(page1);
             AddTextToParagraph(titleHeader, p0, p0Style, doc);
             AddImageToParagraph(p0, Properties.Resources.UnitecLogo,59F,69F,TextWrappingStyle.Square);
             var p1 = CreateParagraph(page1);
@@ -141,7 +143,6 @@ namespace VinculacionBackend
             table.ResetCells(data.Length+1, columnCount);
 
             TableRow Frow = table.Rows[0];
-            Frow.IsHeader = true;
             Frow.Height = 30;
            
             Frow.HeightType = TableRowHeightType.Exactly;
@@ -186,6 +187,7 @@ namespace VinculacionBackend
             var picture = AddImage(paragraph, resourceImage);
             picture.Height = height;
             picture.Width = width;
+            picture.VerticalPosition = picture.VerticalPosition + 45;
             picture.TextWrappingStyle = textWrappingStyle;
         }
         
