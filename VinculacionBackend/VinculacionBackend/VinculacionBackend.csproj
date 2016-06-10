@@ -285,13 +285,16 @@
     <Compile Include="Interfaces\IMajorsServices.cs" />
     <Compile Include="Interfaces\IProfessorsServices.cs" />
     <Compile Include="Interfaces\IProjectServices.cs" />
+    <Compile Include="Interfaces\ITextDocumentServices.cs" />
     <Compile Include="Services\MajorsServices.cs" />
     <Compile Include="Services\PeriodsServices.cs" />
     <Compile Include="Services\ProfessorsServices.cs" />
     <Compile Include="Services\ProjectServices.cs" />
     <Compile Include="Services\SectionsServices.cs" />
     <Compile Include="Services\StudentsServices.cs" />
+    <Compile Include="Services\TextDocumentServices.cs" />
     <Compile Include="Services\UsersServices.cs" />
+    <Compile Include="TextDocument.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

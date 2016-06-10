@@ -51,6 +51,8 @@ namespace VinculacionBackend
             builder.RegisterType<UsersServices>().As<IUsersServices>().InstancePerRequest();
             builder.RegisterType<ClassesServices>().As<IClassesServices>().InstancePerRequest();
             builder.RegisterType<ProjectServices>().As<IProjectServices>().InstancePerRequest();
+            builder.RegisterType<TextDocument>().As<ITextDoucment>().InstancePerRequest();
+            builder.RegisterType<TextDocumentServices>().As<ITextDocumentServices>().InstancePerRequest();
             builder.RegisterType<Email>().As<IEmail>().InstancePerRequest();
             builder.RegisterType<MemoryCacher>().As<IMemoryCacher>().InstancePerRequest();
             builder.RegisterType<Encryption>().As<IEncryption>().InstancePerRequest();

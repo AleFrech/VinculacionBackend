@@ -14,12 +14,14 @@ namespace VinculacionBackend.Services
         private readonly IProjectRepository _projectRepository;
         private readonly ISectionRepository _sectionRepository;
         private readonly IStudentRepository _studentRepository;
+        private readonly ITextDocumentServices _textDocumentServices ;
 
-        public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository, IStudentRepository studentRepository)
+        public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository, IStudentRepository studentRepository,ITextDocumentServices textDocumentServices)
         {
             _projectRepository = projectRepository;
             _sectionRepository = sectionRepository;
             _studentRepository = studentRepository;
+            _textDocumentServices = textDocumentServices;
         }
 
         public ProjectServices(IProjectRepository projectRepository)
@@ -128,9 +130,8 @@ namespace VinculacionBackend.Services
         }
 
         public HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification)
-        {
-           
-            var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository,_studentRepository);
+        {        
+            var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository,_studentRepository,_textDocumentServices);
             return finalReport.GetReport(projectId,fieldHours,calification);
         }
     }
