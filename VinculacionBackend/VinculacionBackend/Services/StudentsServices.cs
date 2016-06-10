@@ -63,8 +63,8 @@ namespace VinculacionBackend.Services
 
         public HttpResponseMessage GetFiniquitoReport(string accountId)
         {
-            var finiquitoReport= new FiniquitoReport(_textDocumentServices);
-            return finiquitoReport.GetReport();
+            var finiquitoReport= new FiniquitoReport(_textDocumentServices,_studentRepository);
+            return finiquitoReport.GenerateFiniquitoReport(accountId);
         }
 
         public User Find(string accountId)

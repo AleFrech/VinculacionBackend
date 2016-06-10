@@ -14,7 +14,9 @@ namespace VinculacionBackend.Interfaces
             string font, float fontsize);
         void AddImageToParagraph(Paragraph paragraph, Bitmap image, float height, float width,
             TextWrappingStyle textWrappingStyle);
-        void AddTextToParagraph(string text, Paragraph paragraph, ParagraphStyle style, Document document);
+
+        void AddTextToParagraph(string text, Paragraph paragraph, ParagraphStyle style, Document document,
+            HorizontalAlignment aligment = HorizontalAlignment.Left, float linespacing = 0);
         ParagraphStyle CreateParagraphStyle(Document doc, string styleName, string fontName, float fontSize, bool bold);
         DocPicture CreateImage(Paragraph p, Bitmap image);
         Paragraph CreateParagraph(Section page);

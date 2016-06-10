@@ -26,7 +26,7 @@ namespace VinculacionBackend
         }
 
 
-        public HttpResponseMessage GetReport(long projectId, int fieldHours, int calification)
+        public HttpResponseMessage GenerateFinalReport(long projectId, int fieldHours, int calification)
         {
             var project = _projectRepository.Get(projectId);
             var doc = _textDoucmentServices.CreaDocument();

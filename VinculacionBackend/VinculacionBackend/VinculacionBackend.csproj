@@ -304,7 +304,6 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <None Include="Laureate_International_Universities_Logo.png" />
     <None Include="Laureate_International_Universities_Logo.jpg" />
     <None Include="LaurateLogo.png" />
     <Content Include="Scripts\bootstrap.js" />

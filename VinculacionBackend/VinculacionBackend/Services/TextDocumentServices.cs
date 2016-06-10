@@ -103,11 +103,14 @@ namespace VinculacionBackend.Services
             return picture;
         }
 
-        public void AddTextToParagraph(string text, Paragraph paragraph, ParagraphStyle style, Document document)
+        public void AddTextToParagraph(string text, Paragraph paragraph, ParagraphStyle style, Document document,HorizontalAlignment aligment=HorizontalAlignment.Left,float linespacing=0)
         {
             paragraph.AppendText(text);
             document.Styles.Add(style);
             paragraph.ApplyStyle(style.Name);
+            if(linespacing!=0)
+                paragraph.Format.LineSpacing =linespacing;
+            paragraph.Format.HorizontalAlignment=aligment;
         }
 
 
