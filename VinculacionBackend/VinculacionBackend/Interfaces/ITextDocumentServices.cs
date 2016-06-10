@@ -7,6 +7,8 @@ namespace VinculacionBackend.Interfaces
 {
     public interface ITextDocumentServices
     {
+        DocPicture AppendPictureToHeader(Paragraph headParagraph, Bitmap image, float height, float width,
+            float horizontalPosition, float verticalPosition);
         void AddDataToTable(Table table, string[][] data, string font, float fontsize, int offset);
         void AddDataToTableWithHeader(Table table, string[] header, string[][] data, int columnCount,
             string font, float fontsize);
@@ -19,5 +21,7 @@ namespace VinculacionBackend.Interfaces
         Section CreatePage(Document doc);
         Document CreaDocument();
         Table CreateTable(Section page);
+        HeaderFooter CreateHeader(Document doc);
+        Paragraph CreateHeaderParagraph(HeaderFooter header);
     }
 }

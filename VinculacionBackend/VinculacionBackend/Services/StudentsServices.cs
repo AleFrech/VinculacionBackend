@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
@@ -14,15 +15,15 @@ namespace VinculacionBackend.Services
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IMajorsServices _majorServices;
-        private readonly IProjectServices _projectServices;
         private readonly IEncryption _encryption;
+        private readonly ITextDocumentServices _textDocumentServices;
 
-        public StudentsServices(IStudentRepository studentRepository, IMajorRepository majorRepository,IEncryption encryption, IMajorsServices majorServices, IProjectServices projectServices)
+        public StudentsServices(IStudentRepository studentRepository, IEncryption encryption, IMajorsServices majorServices, ITextDocumentServices textDocumentServices)
         {
             _studentRepository = studentRepository;
             _encryption = encryption;
             _majorServices = majorServices;
-            _projectServices = projectServices;
+            _textDocumentServices = textDocumentServices;
         }
 
         public  void Map(User student,UserEntryModel userModel)
@@ -57,6 +58,13 @@ namespace VinculacionBackend.Services
             _studentRepository.Insert(user);
             _studentRepository.Save();
             
+        }
+
+
+        public HttpResponseMessage GetFiniquitoReport(string accountId)
+        {
+            var finiquitoReport= new FiniquitoReport(_textDocumentServices);
+            return finiquitoReport.GetReport();
         }
 
         public User Find(string accountId)

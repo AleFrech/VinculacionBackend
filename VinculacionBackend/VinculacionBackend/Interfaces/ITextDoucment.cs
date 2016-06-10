@@ -13,5 +13,6 @@ namespace VinculacionBackend.Interfaces
         DocPicture AddImage(Paragraph paragraph, Bitmap resourceImage);
         Paragraph CreateParagraph(Section page);
         Table CreateTable(Section page1);
+        HeaderFooter CreateHeader(Document doc);
     }
 }

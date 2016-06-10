@@ -89,6 +89,20 @@ namespace VinculacionBackend.Services
             picture.TextWrappingStyle = textWrappingStyle;
         }
 
+        public DocPicture AppendPictureToHeader(Paragraph headParagraph,Bitmap image,float height,float width,float horizontalPosition,float verticalPosition)
+        {
+            var picture= CreateImage(headParagraph, image);
+            picture.TextWrappingStyle=TextWrappingStyle.Tight;
+            picture.TextWrappingType=TextWrappingType.Both;
+            picture.HorizontalOrigin = HorizontalOrigin.Page;
+            picture.HorizontalPosition = horizontalPosition;
+            picture.VerticalOrigin=VerticalOrigin.Paragraph;
+            picture.VerticalPosition = verticalPosition;
+            picture.Height = height;
+            picture.Width = width;
+            return picture;
+        }
+
         public void AddTextToParagraph(string text, Paragraph paragraph, ParagraphStyle style, Document document)
         {
             paragraph.AppendText(text);
@@ -97,6 +111,10 @@ namespace VinculacionBackend.Services
         }
 
 
+        public Paragraph CreateHeaderParagraph(HeaderFooter header)
+        {
+            return header.AddParagraph();
+        }
 
         public DocPicture CreateImage(Paragraph p,Bitmap image)
         {
@@ -122,6 +140,12 @@ namespace VinculacionBackend.Services
         public Table CreateTable(Section page)
         {
             return _textDoucment.CreateTable(page);
-        }  
+        }
+
+        public HeaderFooter CreateHeader(Document doc)
+        {
+            return _textDoucment.CreateHeader(doc);
+        }
+
     }
 }

@@ -124,7 +124,7 @@ namespace VinculacionBackend.Services
             else if (roles.Contains("Student"))
             {
                 return _projectRepository.GetAllStudent(userId);
-            }
+            } 
             throw new Exception("No tiene permiso");
             
         }

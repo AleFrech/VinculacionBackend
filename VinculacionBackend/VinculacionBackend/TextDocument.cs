@@ -12,6 +12,14 @@ namespace VinculacionBackend
         {
             return page1.AddTable();
         }
+
+        public HeaderFooter CreateHeader(Document doc)
+        {
+            return doc.Sections[0].HeadersFooters.Header;
+        }
+
+ 
+
         public Document CreateDocument()
         {
             return new Document();
