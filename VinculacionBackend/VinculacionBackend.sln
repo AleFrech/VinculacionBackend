@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VinculacionBackend.Data", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VinculacionBackend.Security", "VinculacionBackend.Security\VinculacionBackend.Security.csproj", "{AE6E75C5-1047-44E7-9EE9-1033355129FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VinculacionBackend.Tests", "VinculacionBackend.Tests\VinculacionBackend.Tests.csproj", "{0ED78597-F614-4721-8B56-EA6B64070A7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AE6E75C5-1047-44E7-9EE9-1033355129FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE6E75C5-1047-44E7-9EE9-1033355129FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE6E75C5-1047-44E7-9EE9-1033355129FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ED78597-F614-4721-8B56-EA6B64070A7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ED78597-F614-4721-8B56-EA6B64070A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ED78597-F614-4721-8B56-EA6B64070A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ED78597-F614-4721-8B56-EA6B64070A7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
