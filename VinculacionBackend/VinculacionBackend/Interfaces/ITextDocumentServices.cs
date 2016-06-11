@@ -20,6 +20,8 @@ namespace VinculacionBackend.Interfaces
 
         void AppendTextToFooter(Paragraph footerParagraph, string text, string fontName, float fontSize);
 
+        void SetPageMArgins(Section page, float top, float bottom, float left, float right);
+
         ParagraphStyle CreateParagraphStyle(Document doc, string styleName, string fontName, float fontSize, bool bold);
         DocPicture CreateImage(Paragraph p, Bitmap image);
         Paragraph CreateParagraph(Section page);

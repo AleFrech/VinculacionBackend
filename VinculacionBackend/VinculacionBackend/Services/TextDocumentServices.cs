@@ -111,6 +111,15 @@ namespace VinculacionBackend.Services
         }
 
 
+        public void SetPageMArgins(Section page,float top, float bottom, float left, float right)
+        {
+            page.PageSetup.Margins.Top = top;
+            page.PageSetup.Margins.Bottom = bottom;
+            page.PageSetup.Margins.Left = left;
+            page.PageSetup.Margins.Right = right;
+
+        }
+
 
         public void AddTextToParagraph(string text, Paragraph paragraph, ParagraphStyle style, Document document,HorizontalAlignment aligment=HorizontalAlignment.Left,float linespacing=0)
         {

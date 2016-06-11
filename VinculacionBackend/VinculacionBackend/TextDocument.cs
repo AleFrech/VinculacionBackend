@@ -46,7 +46,10 @@ namespace VinculacionBackend
         public Section CreatePage(Document document)
         {
 
-            return document.AddSection();
+            var page= document.AddSection();
+            page.PageSetup.PageSize = PageSize.Letter;
+            return page;
+
         }
 
         public DocPicture AddImage(Paragraph paragraph, Bitmap resourceImage)
