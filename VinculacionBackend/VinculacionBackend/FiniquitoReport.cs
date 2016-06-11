@@ -32,11 +32,14 @@ namespace VinculacionBackend
             var headerParagraph = _textDoucmentServices.CreateHeaderParagraph(header);
             _textDoucmentServices.AppendPictureToHeader(headerParagraph,Properties.Resources.LaurateLogo,39f,122f,15f,-2f);
             _textDoucmentServices.AppendPictureToHeader(headerParagraph,Properties.Resources.UnitecFullLogo, 51f, 151f, 430f, -12f);
+            var footer = _textDoucmentServices.CreaFooter(doc);
+            var footerParagraph = _textDoucmentServices.CreateFooterParagraph(footer);
+            _textDoucmentServices.AppendTextToFooter(footerParagraph, "      Elaborado y revisado por:\r\n      Andrea Cecilia Orellana Zelaya\r\n      Jefe de Vinculación y Emprendimiento\r\n\r\n", "Segoe UI", 10f);
             var p0 = _textDoucmentServices.CreateParagraph(page1);
             var p0Style = _textDoucmentServices.CreateParagraphStyle(doc, "FiniquitoTitle", "Segoe UI", 14f, true);
             _textDoucmentServices.AddTextToParagraph("\r\n\r\n\r\n                  CARTA DE FINIQUITO DEFINITIVO DE SERVICIO SOCIAL",p0,p0Style,doc,HorizontalAlignment.Left, 13.8f);
             var p1 = _textDoucmentServices.CreateParagraph(page1);
-            _textDoucmentServices.AddTextToParagraph("\r\n\r\n\r\n     FECHA: "+DateTime.Now.Day+" de "+ DateTimeFormatInfo.CurrentInfo.GetMonthName(DateTime.Now.Month)+" del "+DateTime.Now.Year,p1,p0Style,doc, HorizontalAlignment.Left, 13.8f);
+            _textDoucmentServices.AddTextToParagraph("\r\n\r\n\r\n     Fecha: "+DateTime.Now.Day+" de "+ DateTimeFormatInfo.CurrentInfo.GetMonthName(DateTime.Now.Month)+" del "+DateTime.Now.Year,p1,p0Style,doc, HorizontalAlignment.Left, 13.8f);
             var p2 = _textDoucmentServices.CreateParagraph(page1);
             var p2Style = _textDoucmentServices.CreateParagraphStyle(doc, "FiniquitoBody", "Segoe UI", 12f, false);
             var bodyline1 = "      Yo, Rafael Antonio Delgado Elvir, Director de Desarrollo Institucional de UNITEC";
@@ -60,9 +63,6 @@ namespace VinculacionBackend
             _textDoucmentServices.AddTextToParagraph("\r\n\r\n"+endingline1, p5, p2Style, doc, HorizontalAlignment.Justify, 13.8f);
             _textDoucmentServices.AddTextToParagraph(endingline2, p5, p2Style, doc, HorizontalAlignment.Justify, 13.8f);
             _textDoucmentServices.AddTextToParagraph(endingline3, p5, p2Style, doc, HorizontalAlignment.Justify, 13.8f);
-
-
-
             return ToHttpResponseMessage(doc);
         }
 

@@ -103,6 +103,15 @@ namespace VinculacionBackend.Services
             return picture;
         }
 
+        public void AppendTextToFooter(Paragraph footerParagraph, string text,string fontName,float fontSize)
+        {
+            var textRange=footerParagraph.AppendText(text);
+            textRange.CharacterFormat.FontName = fontName;
+            textRange.CharacterFormat.FontSize = fontSize;
+        }
+
+
+
         public void AddTextToParagraph(string text, Paragraph paragraph, ParagraphStyle style, Document document,HorizontalAlignment aligment=HorizontalAlignment.Left,float linespacing=0)
         {
             paragraph.AppendText(text);
@@ -117,6 +126,11 @@ namespace VinculacionBackend.Services
         public Paragraph CreateHeaderParagraph(HeaderFooter header)
         {
             return header.AddParagraph();
+        }
+
+        public Paragraph CreateFooterParagraph(HeaderFooter footer)
+        {
+            return footer.AddParagraph();
         }
 
         public DocPicture CreateImage(Paragraph p,Bitmap image)
@@ -148,6 +162,11 @@ namespace VinculacionBackend.Services
         public HeaderFooter CreateHeader(Document doc)
         {
             return _textDoucment.CreateHeader(doc);
+        }
+
+        public HeaderFooter CreaFooter(Document doc)
+        {
+            return _textDoucment.CreaFooter(doc);
         }
 
     }

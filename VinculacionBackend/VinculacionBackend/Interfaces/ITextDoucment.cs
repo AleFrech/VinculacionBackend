@@ -9,6 +9,7 @@ namespace VinculacionBackend.Interfaces
     public interface ITextDoucment
     {
         Document CreateDocument();
+        HeaderFooter CreaFooter(Document doc);
         Section CreatePage(Document document);
         DocPicture AddImage(Paragraph paragraph, Bitmap resourceImage);
         Paragraph CreateParagraph(Section page);

@@ -17,6 +17,9 @@ namespace VinculacionBackend.Interfaces
 
         void AddTextToParagraph(string text, Paragraph paragraph, ParagraphStyle style, Document document,
             HorizontalAlignment aligment = HorizontalAlignment.Left, float linespacing = 0);
+
+        void AppendTextToFooter(Paragraph footerParagraph, string text, string fontName, float fontSize);
+
         ParagraphStyle CreateParagraphStyle(Document doc, string styleName, string fontName, float fontSize, bool bold);
         DocPicture CreateImage(Paragraph p, Bitmap image);
         Paragraph CreateParagraph(Section page);
@@ -24,6 +27,8 @@ namespace VinculacionBackend.Interfaces
         Document CreaDocument();
         Table CreateTable(Section page);
         HeaderFooter CreateHeader(Document doc);
+        HeaderFooter CreaFooter(Document doc);
         Paragraph CreateHeaderParagraph(HeaderFooter header);
+        Paragraph CreateFooterParagraph(HeaderFooter footer);
     }
 }

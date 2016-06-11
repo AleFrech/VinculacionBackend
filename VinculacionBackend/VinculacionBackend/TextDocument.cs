@@ -18,6 +18,10 @@ namespace VinculacionBackend
             return doc.Sections[0].HeadersFooters.Header;
         }
 
+        public HeaderFooter CreaFooter(Document doc)
+        {
+            return doc.Sections[0].HeadersFooters.Footer;
+        }
  
 
         public Document CreateDocument()
