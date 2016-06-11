@@ -50,12 +50,18 @@ namespace VinculacionBackend
 
             var p2 = _textDoucmentServices.CreateParagraph(page1);
             var p2Style = _textDoucmentServices.CreateParagraphStyle(doc, "FiniquitoBody", "Segoe UI", 12f, false);
-            var body = "Yo, Rafael Antonio Delgado Elvir, Director de Desarrollo Institucional de UNITEC\r\n"+
-                            "Campus SPS, hago constar que en los registros figura que el estudiante\r\n"+
-                            student.Name + ", con número de cuenta: " + accountId + ", estudiante de la carrera de \r\n"+
-                            "\"" + student.Major.Name + "\", completó con todas las\r\n"+
-                            "horas referentes a su Programa de Servicio Social."; 
-            _textDoucmentServices.AddTextToParagraph("\r\n"+ body, p2,p2Style,doc,HorizontalAlignment.Justify, 13.8f);
+            var body1 = "Yo, Rafael Antonio Delgado Elvir, Director de Desarrollo Institucional de UNITEC\r\n" +
+                        "Campus SPS, hago constar que en los registros figura que el estudiante\r\n";
+            var studentName = student.Name.ToUpper();
+            var body2= ", con número de cuenta: " + accountId + ", estudiante de la carrera de \r\n" +
+                            "\"" + student.Major.Name + "\", completó con todas las\r\n" +
+                            "horas referentes a su Programa de Servicio Social.";
+
+            _textDoucmentServices.AddTextToParagraph("\r\n"+ body1, p2,p2Style,doc,HorizontalAlignment.Justify, 13.8f);
+            var text = _textDoucmentServices.AddTextToParagraph(studentName, p2, p2Style, doc,
+                HorizontalAlignment.Justify, 13.8f);
+            text.CharacterFormat.Bold = true;
+            _textDoucmentServices.AddTextToParagraph(body2, p2, p2Style, doc, HorizontalAlignment.Justify, 13.8f);
 
             var p3 = _textDoucmentServices.CreateParagraph(page1);
 
@@ -73,7 +79,6 @@ namespace VinculacionBackend
             _textDoucmentServices.AddTextToParagraph("\r\n\r\n\r\n"+ending, p5, p2Style, doc, HorizontalAlignment.Justify, 13.8f);
             return ToHttpResponseMessage(doc);
         }
-
 
         public HttpResponseMessage ToHttpResponseMessage(Document document)
         {

@@ -15,7 +15,7 @@ namespace VinculacionBackend.Interfaces
         void AddImageToParagraph(Paragraph paragraph, Bitmap image, float height, float width,
             TextWrappingStyle textWrappingStyle);
 
-        void AddTextToParagraph(string text, Paragraph paragraph, ParagraphStyle style, Document document,
+        TextRange AddTextToParagraph(string text, Paragraph paragraph, ParagraphStyle style, Document document,
             HorizontalAlignment aligment = HorizontalAlignment.Left, float linespacing = 0);
 
         void AppendTextToFooter(Paragraph footerParagraph, string text, string fontName, float fontSize);
