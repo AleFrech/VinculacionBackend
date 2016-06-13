@@ -228,7 +228,8 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Cache\MemoryCacher.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
-    <Compile Include="FiniquitoReport.cs" />
+    <Compile Include="DownloadbleFile.cs" />
+    <Compile Include="Reports\FiniquitoReport.cs" />
     <Compile Include="Interfaces\IDownloadbleFile.cs" />
     <Compile Include="Interfaces\ITextDoucment.cs" />
     <Compile Include="Models\VerifiedProfessorModel.cs" />
@@ -270,7 +271,7 @@
     <Compile Include="Models\SectionStudentModel.cs" />
     <Compile Include="Models\UserEntryModel.cs" />
     <Compile Include="Models\VerifiedModel.cs" />
-    <Compile Include="ProjectFinalReport.cs" />
+    <Compile Include="Reports\ProjectFinalReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="Models\HourReportModel.cs" />
@@ -304,7 +305,6 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <None Include="Laureate_International_Universities_Logo.jpg" />
     <None Include="LaurateLogo.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -336,7 +336,6 @@
     <Content Include="Scripts\respond.min.js" />
     <None Include="UnitecLogo.PNG" />
     <None Include="UnitecFullLogo.PNG" />
-    <None Include="UnitecFullLogo.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

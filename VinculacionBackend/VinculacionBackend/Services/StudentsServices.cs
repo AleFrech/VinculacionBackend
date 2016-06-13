@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
@@ -8,6 +7,7 @@ using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
+using VinculacionBackend.Reports;
 
 namespace VinculacionBackend.Services
 {
@@ -57,13 +57,12 @@ namespace VinculacionBackend.Services
         {
             _studentRepository.Insert(user);
             _studentRepository.Save();
-            
         }
 
 
         public HttpResponseMessage GetFiniquitoReport(string accountId)
         {
-            var finiquitoReport= new FiniquitoReport(_textDocumentServices,_studentRepository);
+            var finiquitoReport= new FiniquitoReport(_textDocumentServices,_studentRepository,new DownloadbleFile());
             return finiquitoReport.GenerateFiniquitoReport(accountId);
         }
 

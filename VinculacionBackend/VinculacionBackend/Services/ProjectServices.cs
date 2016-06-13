@@ -132,7 +132,7 @@ namespace VinculacionBackend.Services
 
         public HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification)
         {        
-            var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository,_studentRepository,_textDocumentServices);
+            var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository,_studentRepository,_textDocumentServices,new DownloadbleFile());
             return finalReport.GenerateFinalReport(projectId,fieldHours,calification);
         }
     }
