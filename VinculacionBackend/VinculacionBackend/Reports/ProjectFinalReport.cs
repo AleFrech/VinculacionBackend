@@ -8,7 +8,7 @@ using Spire.Doc.Documents;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
 
-namespace VinculacionBackend
+namespace VinculacionBackend.Reports
 {
     public class ProjectFinalReport : IDownloadbleFile
     {

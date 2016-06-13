@@ -9,7 +9,7 @@ using Spire.Doc.Documents;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
 
-namespace VinculacionBackend
+namespace VinculacionBackend.Reports
 {
     public class FiniquitoReport : IDownloadbleFile
     {
@@ -45,7 +45,8 @@ namespace VinculacionBackend
             _textDoucmentServices.AddTextToParagraph("\r\n\r\n\r\nCARTA DE FINIQUITO DEFINITIVO DE SERVICIO SOCIAL",p0,p0Style,doc,HorizontalAlignment.Center, 13.8f);
 
             var p1 = _textDoucmentServices.CreateParagraph(page1);
-            _textDoucmentServices.AddTextToParagraph("\r\n\r\n\r\nFecha: "+DateTime.Now.Day+" de "+ DateTimeFormatInfo.CurrentInfo.GetMonthName(DateTime.Now.Month)+" del " +
+            var month = DateTime.Now.ToString("MMMM", new CultureInfo("es-ES"));
+            _textDoucmentServices.AddTextToParagraph("\r\n\r\n\r\nFecha: "+DateTime.Now.Day+" de "+ char.ToUpper(month[0])+month.Substring(1) +" del " +
                                                      +DateTime.Now.Year,p1,p0Style,doc, HorizontalAlignment.Left, 13.8f);
 
             var p2 = _textDoucmentServices.CreateParagraph(page1);
