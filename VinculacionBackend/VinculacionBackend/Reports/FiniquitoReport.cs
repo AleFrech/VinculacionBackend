@@ -27,7 +27,6 @@ namespace VinculacionBackend.Reports
             var doc = _textDoucmentServices.CreaDocument();
             var page1 = _textDoucmentServices.CreatePage(doc);
             _textDoucmentServices.SetPageMArgins(page1,35f,71f,85f,85f);
-
             var header = _textDoucmentServices.CreateHeader(doc);
             var headerParagraph = _textDoucmentServices.CreateHeaderParagraph(header);
             _textDoucmentServices.AppendPictureToHeader(headerParagraph,Properties.Resources.LaurateLogo,39f,122f,15f,-2f);
@@ -66,8 +65,7 @@ namespace VinculacionBackend.Reports
 
             var p3 = _textDoucmentServices.CreateParagraph(page1);
 
-            _textDoucmentServices.AddTextToParagraph("\r\nEl número total de horas de trabajo fue de: "+
-                                                     _studentRepository.GetStudentHours(accountId)+" Horas.",p3,p2Style,doc,HorizontalAlignment.Justify, 13.8f);
+            _textDoucmentServices.AddTextToParagraph("\r\nEl número total de horas de trabajo fue de: 100 Horas.",p3,p2Style,doc,HorizontalAlignment.Justify, 13.8f);
 
             var p4 = _textDoucmentServices.CreateParagraph(page1);
             _textDoucmentServices.AddTextToParagraph("\r\nSe extiende la presente constancia para los fines que al interesado convengan.",p4,p2Style,doc,HorizontalAlignment.Justify, 13.8f);
