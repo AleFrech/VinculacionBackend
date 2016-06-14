@@ -228,6 +228,8 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Cache\MemoryCacher.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
+    <Compile Include="DownloadbleFile.cs" />
+    <Compile Include="Reports\FiniquitoReport.cs" />
     <Compile Include="Interfaces\IDownloadbleFile.cs" />
     <Compile Include="Interfaces\ITextDoucment.cs" />
     <Compile Include="Models\VerifiedProfessorModel.cs" />
@@ -269,7 +271,7 @@
     <Compile Include="Models\SectionStudentModel.cs" />
     <Compile Include="Models\UserEntryModel.cs" />
     <Compile Include="Models\VerifiedModel.cs" />
-    <Compile Include="ProjectFinalReport.cs" />
+    <Compile Include="Reports\ProjectFinalReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="Models\HourReportModel.cs" />
@@ -285,13 +287,16 @@
     <Compile Include="Interfaces\IMajorsServices.cs" />
     <Compile Include="Interfaces\IProfessorsServices.cs" />
     <Compile Include="Interfaces\IProjectServices.cs" />
+    <Compile Include="Interfaces\ITextDocumentServices.cs" />
     <Compile Include="Services\MajorsServices.cs" />
     <Compile Include="Services\PeriodsServices.cs" />
     <Compile Include="Services\ProfessorsServices.cs" />
     <Compile Include="Services\ProjectServices.cs" />
     <Compile Include="Services\SectionsServices.cs" />
     <Compile Include="Services\StudentsServices.cs" />
+    <Compile Include="Services\TextDocumentServices.cs" />
     <Compile Include="Services\UsersServices.cs" />
+    <Compile Include="TextDocument.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -300,6 +305,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <None Include="LaurateLogo.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -329,6 +335,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <None Include="UnitecLogo.PNG" />
+    <None Include="UnitecFullLogo.PNG" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
