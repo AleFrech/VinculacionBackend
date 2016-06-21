@@ -5,6 +5,6 @@ namespace VinculacionBackend.Interfaces
 {
     public interface IDownloadbleFile
     {
-        HttpResponseMessage ToHttpResponseMessage(Document document);
+        HttpResponseMessage ToHttpResponseMessage(Document document,string fileName);
     }
 }

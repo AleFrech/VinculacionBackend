@@ -63,6 +63,26 @@ namespace VinculacionBackend.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap LaurateLogo {
+            get {
+                object obj = ResourceManager.GetObject("LaurateLogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap UnitecFullLogo {
+            get {
+                object obj = ResourceManager.GetObject("UnitecFullLogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap UnitecLogo {
             get {
                 object obj = ResourceManager.GetObject("UnitecLogo", resourceCulture);
