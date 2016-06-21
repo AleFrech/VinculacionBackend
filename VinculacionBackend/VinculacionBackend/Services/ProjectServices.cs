@@ -53,8 +53,6 @@ namespace VinculacionBackend.Services
             project.MajorIds = model.MajorIds;
             project.SectionIds = model.SectionIds;
             project.BeneficiarieOrganization = model.BeneficiarieOrganization;
-            project.BeneficiarieGroups = model.BeneficiarieGroups;
-            project.BeneficiariesQuantity = model.BeneficiariesQuantity;
         }
 
         public Project Add(ProjectModel model)
@@ -130,10 +128,10 @@ namespace VinculacionBackend.Services
             
         }
 
-        public HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification)
+        public HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups)
         {        
             var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository,_studentRepository,_textDocumentServices,new DownloadbleFile());
-            return finalReport.GenerateFinalReport(projectId,fieldHours,calification);
+            return finalReport.GenerateFinalReport(projectId,fieldHours,calification,beneficiariesQuantities,beneficiariGroups);
         }
     }
 

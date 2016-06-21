@@ -24,7 +24,7 @@ namespace VinculacionBackend.Reports
         }
 
 
-        public HttpResponseMessage GenerateFinalReport(long projectId, int fieldHours, int calification)
+        public HttpResponseMessage GenerateFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantity, string beneficiarieGroups)
         {
             var project = _projectRepository.Get(projectId);
             var doc = _textDoucmentServices.CreaDocument();
@@ -69,8 +69,8 @@ namespace VinculacionBackend.Reports
             var table2 = _textDoucmentServices.CreateTable(page1);
             string[][] table2Data =
             {
-                new[] {"Grupo(s) meta beneficiado(s) con el producto entregado", project.BeneficiarieGroups},
-                new[] {"Número de personas beneficiadas", project.BeneficiariesQuantity.ToString()}
+                new[] {"Grupo(s) meta beneficiado(s) con el producto entregado",beneficiarieGroups},
+                new[] {"Número de personas beneficiadas", beneficiariesQuantity.ToString()}
             };
             table2.ResetCells(table2Data.Length, 2);
             _textDoucmentServices.AddDataToTable(table2, table2Data, "Times New Roman", 12, 0);
