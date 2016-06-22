@@ -33,7 +33,7 @@ namespace VinculacionBackend.Controllers
             var currentUser = (CustomPrincipal)HttpContext.Current.User;
             return _services.GetUserProjects(currentUser.UserId, currentUser.roles);
         }
-
+        
         // GET: api/Projects/5
         [ResponseType(typeof(Project))]
         [Route("api/Projects/{projectId}")]
