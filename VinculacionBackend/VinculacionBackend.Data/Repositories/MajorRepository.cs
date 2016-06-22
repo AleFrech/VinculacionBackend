@@ -1,4 +1,5 @@
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
@@ -28,23 +29,23 @@ namespace VinculacionBackend.Data.Repositories
 
         public Major Get(long id)
         {
-            _db.Majors.Include(x => x.Id
-            );
-            return _db.Majors.Find(id);
+            
+            return _db.Majors.Include(p => p.Faculty).FirstOrDefault(x=>x.Id == id);
         }
 
         public IQueryable<Major> GetAll()
-        {
-            return _db.Majors;
+        {   
+            return _db.Majors.Include(p=>p.Faculty);
         }
 
         public Major GetMajorByMajorId(string majorId)
         {
-            return _db.Majors.FirstOrDefault(x => x.MajorId == majorId);
+            return _db.Majors.Include(p => p.Faculty).FirstOrDefault(x => x.MajorId == majorId);
         }
 
         public void Insert(Major ent)
         {
+            _db.Faculties.Attach(ent.Faculty);
             _db.Majors.Add(ent);
         }
 
@@ -55,7 +56,8 @@ namespace VinculacionBackend.Data.Repositories
 
         public void Update(Major ent)
         {
-            _db.Entry(ent).State = System.Data.Entity.EntityState.Modified;
+            _db.Faculties.Attach(ent.Faculty);
+            _db.Majors.AddOrUpdate(ent);
         }
     }
 }

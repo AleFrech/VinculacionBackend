@@ -116,6 +116,11 @@ namespace VinculacionBackend.Services
             throw new Exception("No tiene permiso");
             
         }
+
+        public void CostsReport()
+        {
+            
+        }
     }
 
 }

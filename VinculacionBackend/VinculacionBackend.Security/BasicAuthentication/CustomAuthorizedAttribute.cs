@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Http.Controllers;
+using VinculacionBackend.Data;
 using VinculacionBackend.Data.Database;
+using VinculacionBackend.Data.Interfaces;
 using AuthorizeAttribute = System.Web.Http.AuthorizeAttribute;
 
 
@@ -19,6 +21,7 @@ namespace VinculacionBackend.Security.BasicAuthentication
         private const string BasicAuthResponseHeader = "WWW-Authenticate";
         private const string BasicAuthResponseHeaderValue = "Basic";
         public string UsersConfigKey { get; set; }
+        public IEncryption Encryption = new Encryption();
         public string RolesConfigKey { get; set; }
         public CustomPrincipal CurrentUser
         {
@@ -52,9 +55,9 @@ namespace VinculacionBackend.Security.BasicAuthentication
                     Credentials parsedCredentials = ParseAuthorizationHeader(authValue.Parameter);
                     if (parsedCredentials != null)
                     {
-                        var user =
-                            context.Users.FirstOrDefault(
-                                u => u.Email == parsedCredentials.Username && u.Password == parsedCredentials.Password);
+                        var encryptedPassword = Encryption.Encrypt(parsedCredentials.Password);
+                        var user = context.Users.FirstOrDefault(
+                                u => u.Email == parsedCredentials.Username && u.Password == encryptedPassword);
                         if (user != null)
                         {
                             var roles =
@@ -92,6 +95,8 @@ namespace VinculacionBackend.Security.BasicAuthentication
                                 }
                             }
                         }
+                        else { throw new UnauthorizedAccessException("Usuario no valido"); }
+                       
                     }
                 }
             }
