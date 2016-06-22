@@ -15,9 +15,10 @@ namespace VinculacionBackend.Services
         private readonly IProjectRepository _projectRepository;
         private readonly ISectionRepository _sectionRepository;
         private readonly IStudentRepository _studentRepository;
-        private readonly ITextDocumentServices _textDocumentServices ;
+        private readonly ITextDocumentServices _textDocumentServices;
 
-        public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository, IStudentRepository studentRepository,ITextDocumentServices textDocumentServices)
+        public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository,
+            IStudentRepository studentRepository, ITextDocumentServices textDocumentServices)
         {
             _projectRepository = projectRepository;
             _sectionRepository = sectionRepository;
@@ -33,7 +34,7 @@ namespace VinculacionBackend.Services
         public Project Find(long id)
         {
             var project = _projectRepository.Get(id);
-            if (project==null)
+            if (project == null)
                 throw new NotFoundException("No se encontro el proyecto");
             return project;
         }
@@ -44,7 +45,7 @@ namespace VinculacionBackend.Services
         }
 
 
-        private void Map(Project project,ProjectModel model)
+        private void Map(Project project, ProjectModel model)
         {
             project.ProjectId = model.ProjectId;
             project.Name = model.Name;
@@ -57,10 +58,10 @@ namespace VinculacionBackend.Services
 
         public Project Add(ProjectModel model)
         {
-           
+
             var project = new Project();
-            Map(project,model);
-            _projectRepository.Insert(project, model.MajorIds,model.SectionIds);
+            Map(project, model);
+            _projectRepository.Insert(project, model.MajorIds, model.SectionIds);
             _projectRepository.Save();
             return project;
         }
@@ -84,7 +85,7 @@ namespace VinculacionBackend.Services
             var tmpProject = _projectRepository.Get(projectId);
             if (tmpProject == null)
                 throw new NotFoundException("No se encontro el proyecto");
-             Map(tmpProject,model);
+            Map(tmpProject, model);
             _projectRepository.Update(tmpProject);
             _projectRepository.Save();
             return tmpProject;
@@ -123,15 +124,21 @@ namespace VinculacionBackend.Services
             else if (roles.Contains("Student"))
             {
                 return _projectRepository.GetAllStudent(userId);
-            } 
+            }
             throw new Exception("No tiene permiso");
-            
+
         }
 
-        public HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups)
-        {        
-            var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository,_studentRepository,_textDocumentServices,new DownloadbleFile());
-            return finalReport.GenerateFinalReport(projectId,fieldHours,calification,beneficiariesQuantities,beneficiariGroups);
+
+
+        public HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification,
+            int beneficiariesQuantities, string beneficiariGroups)
+        {
+            var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository, _studentRepository,
+                _textDocumentServices, new DownloadbleFile());
+            return finalReport.GenerateFinalReport(projectId, fieldHours, calification, beneficiariesQuantities,
+                beneficiariGroups);
+
         }
     }
 

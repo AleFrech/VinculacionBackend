@@ -249,5 +249,11 @@ namespace VinculacionBackend.Data.Repositories
             
             return found;
         }
+
+        public void GetCostsReport(int periodId)
+        {
+            
+        }
+
     }
 }

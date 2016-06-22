@@ -301,6 +301,7 @@
     <Compile Include="Services\PeriodsServices.cs" />
     <Compile Include="Services\ProfessorsServices.cs" />
     <Compile Include="Services\ProjectServices.cs" />
+    <Compile Include="Services\ReportsServices.cs" />
     <Compile Include="Services\SectionsServices.cs" />
     <Compile Include="Services\StudentsServices.cs" />
     <Compile Include="Services\TextDocumentServices.cs" />
