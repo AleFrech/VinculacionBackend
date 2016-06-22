@@ -33,14 +33,16 @@ namespace VinculacionBackend.Data.Repositories
             return _db.Majors.Include(p => p.Faculty).FirstOrDefault(x=>x.Id == id);
         }
 
+  
+
         public IQueryable<Major> GetAll()
-        {   
-            return _db.Majors.Include(p=>p.Faculty);
+        {
+            return _db.Majors.Include(a => a.Faculty);
         }
 
         public Major GetMajorByMajorId(string majorId)
         {
-            return _db.Majors.Include(p => p.Faculty).FirstOrDefault(x => x.MajorId == majorId);
+            return _db.Majors.Include(a => a.Faculty).FirstOrDefault(x => x.MajorId == majorId);
         }
 
         public void Insert(Major ent)
@@ -58,6 +60,7 @@ namespace VinculacionBackend.Data.Repositories
         {
             _db.Faculties.Attach(ent.Faculty);
             _db.Majors.AddOrUpdate(ent);
+            _db.Entry(ent).State = System.Data.Entity.EntityState.Modified;
         }
     }
 }
