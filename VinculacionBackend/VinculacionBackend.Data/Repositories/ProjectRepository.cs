@@ -28,6 +28,21 @@ namespace VinculacionBackend.Data.Repositories
             return found;
         }
 
+
+        public Section GetSection(Project project)
+        {
+            var rels = _db.SectionProjectsRels.Include(a => a.Section).Include(b => b.Project).FirstOrDefault(x=>x.Project.Id==project.Id);
+            if (rels != null)
+            {
+                var section = _db.Sections.Include(a => a.Class).Include(b => b.Period).Include(c => c.User).FirstOrDefault(x => x.Id == rels.Section.Id);
+                return section;
+            }
+
+            throw new Exception("not found");
+
+        }
+
+
         public Project Get(long id)
         {
             var  project= _db.Projects.FirstOrDefault(x=>x.Id == id && x.IsDeleted == false);

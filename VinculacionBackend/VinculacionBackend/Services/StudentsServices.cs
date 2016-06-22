@@ -1,11 +1,13 @@
-﻿using System;
+using System;
 using System.Linq;
+using System.Net.Http;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
+using VinculacionBackend.Reports;
 
 namespace VinculacionBackend.Services
 {
@@ -14,12 +16,14 @@ namespace VinculacionBackend.Services
         private readonly IStudentRepository _studentRepository;
         private readonly IMajorsServices _majorServices;
         private readonly IEncryption _encryption;
+        private readonly ITextDocumentServices _textDocumentServices;
 
-        public StudentsServices(IStudentRepository studentRepository, IMajorRepository majorRepository,IEncryption encryption, IMajorsServices majorServices)
+        public StudentsServices(IStudentRepository studentRepository, IEncryption encryption, IMajorsServices majorServices, ITextDocumentServices textDocumentServices)
         {
             _studentRepository = studentRepository;
             _encryption = encryption;
             _majorServices = majorServices;
+            _textDocumentServices = textDocumentServices;
         }
 
         public  void Map(User student,UserEntryModel userModel)
@@ -53,7 +57,13 @@ namespace VinculacionBackend.Services
         {
             _studentRepository.Insert(user);
             _studentRepository.Save();
-            
+        }
+
+
+        public HttpResponseMessage GetFiniquitoReport(string accountId)
+        {
+            var finiquitoReport= new FiniquitoReport(_textDocumentServices,_studentRepository,new DownloadbleFile());
+            return finiquitoReport.GenerateFiniquitoReport(accountId);
         }
 
         public User Find(string accountId)

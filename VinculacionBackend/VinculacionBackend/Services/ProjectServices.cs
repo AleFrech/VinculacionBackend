@@ -1,16 +1,29 @@
 using System;
 using System.Linq;
+using System.Net.Http;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
+using VinculacionBackend.Reports;
 
 namespace VinculacionBackend.Services
 {
     public class ProjectServices : IProjectServices
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly ISectionRepository _sectionRepository;
+        private readonly IStudentRepository _studentRepository;
+        private readonly ITextDocumentServices _textDocumentServices ;
+
+        public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository, IStudentRepository studentRepository,ITextDocumentServices textDocumentServices)
+        {
+            _projectRepository = projectRepository;
+            _sectionRepository = sectionRepository;
+            _studentRepository = studentRepository;
+            _textDocumentServices = textDocumentServices;
+        }
 
         public ProjectServices(IProjectRepository projectRepository)
         {
@@ -39,8 +52,7 @@ namespace VinculacionBackend.Services
             project.Cost = model.Cost;
             project.MajorIds = model.MajorIds;
             project.SectionIds = model.SectionIds;
-            project.BeneficiariesAlias = model.BeneficiariesAlias;
-            project.BeneficiariesQuantity = model.BeneficiariesQuantity;
+            project.BeneficiarieOrganization = model.BeneficiarieOrganization;
         }
 
         public Project Add(ProjectModel model)
@@ -111,9 +123,15 @@ namespace VinculacionBackend.Services
             else if (roles.Contains("Student"))
             {
                 return _projectRepository.GetAllStudent(userId);
-            }
+            } 
             throw new Exception("No tiene permiso");
             
+        }
+
+        public HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups)
+        {        
+            var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository,_studentRepository,_textDocumentServices,new DownloadbleFile());
+            return finalReport.GenerateFinalReport(projectId,fieldHours,calification,beneficiariesQuantities,beneficiariGroups);
         }
     }
 

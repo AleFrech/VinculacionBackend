@@ -61,6 +61,12 @@ namespace VinculacionBackend.Controllers
         }
 
 
+        [Route("api/Students/FiniquitoReport/{accountId}")]
+        public HttpResponseMessage GetProjectFinalReport(string accountId)
+        {
+
+            return _studentsServices.GetFiniquitoReport(accountId);
+        }
 
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}/Hour")]
