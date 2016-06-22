@@ -9,6 +9,7 @@ using VinculacionBackend.Security;
 using VinculacionBackend.Services;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Reports;
 
 namespace VinculacionBackend
 {
@@ -51,9 +52,12 @@ namespace VinculacionBackend
             builder.RegisterType<UsersServices>().As<IUsersServices>().InstancePerRequest();
             builder.RegisterType<ClassesServices>().As<IClassesServices>().InstancePerRequest();
             builder.RegisterType<ProjectServices>().As<IProjectServices>().InstancePerRequest();
+            builder.RegisterType<TextDocument>().As<ITextDoucment>().InstancePerRequest();
+            builder.RegisterType<TextDocumentServices>().As<ITextDocumentServices>().InstancePerRequest();
             builder.RegisterType<Email>().As<IEmail>().InstancePerRequest();
             builder.RegisterType<MemoryCacher>().As<IMemoryCacher>().InstancePerRequest();
             builder.RegisterType<Encryption>().As<IEncryption>().InstancePerRequest();
+            builder.RegisterType<DownloadbleFile>().As<IDownloadbleFile>().InstancePerRequest();
             builder.RegisterType<SectionsServices>().As<ISectionsServices>().InstancePerRequest();
         }
     }

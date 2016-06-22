@@ -1,16 +1,30 @@
 using System;
 using System.Linq;
+using System.Net.Http;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
+using VinculacionBackend.Reports;
 
 namespace VinculacionBackend.Services
 {
     public class ProjectServices : IProjectServices
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly ISectionRepository _sectionRepository;
+        private readonly IStudentRepository _studentRepository;
+        private readonly ITextDocumentServices _textDocumentServices;
+
+        public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository,
+            IStudentRepository studentRepository, ITextDocumentServices textDocumentServices)
+        {
+            _projectRepository = projectRepository;
+            _sectionRepository = sectionRepository;
+            _studentRepository = studentRepository;
+            _textDocumentServices = textDocumentServices;
+        }
 
         public ProjectServices(IProjectRepository projectRepository)
         {
@@ -20,7 +34,7 @@ namespace VinculacionBackend.Services
         public Project Find(long id)
         {
             var project = _projectRepository.Get(id);
-            if (project==null)
+            if (project == null)
                 throw new NotFoundException("No se encontro el proyecto");
             return project;
         }
@@ -31,7 +45,7 @@ namespace VinculacionBackend.Services
         }
 
 
-        private void Map(Project project,ProjectModel model)
+        private void Map(Project project, ProjectModel model)
         {
             project.ProjectId = model.ProjectId;
             project.Name = model.Name;
@@ -40,16 +54,14 @@ namespace VinculacionBackend.Services
             project.MajorIds = model.MajorIds;
             project.SectionIds = model.SectionIds;
             project.BeneficiarieOrganization = model.BeneficiarieOrganization;
-            project.BeneficiarieGroups = model.BeneficiarieGroups;
-            project.BeneficiariesQuantity = model.BeneficiariesQuantity;
         }
 
         public Project Add(ProjectModel model)
         {
-           
+
             var project = new Project();
-            Map(project,model);
-            _projectRepository.Insert(project, model.MajorIds,model.SectionIds);
+            Map(project, model);
+            _projectRepository.Insert(project, model.MajorIds, model.SectionIds);
             _projectRepository.Save();
             return project;
         }
@@ -73,7 +85,7 @@ namespace VinculacionBackend.Services
             var tmpProject = _projectRepository.Get(projectId);
             if (tmpProject == null)
                 throw new NotFoundException("No se encontro el proyecto");
-             Map(tmpProject,model);
+            Map(tmpProject, model);
             _projectRepository.Update(tmpProject);
             _projectRepository.Save();
             return tmpProject;
@@ -114,12 +126,19 @@ namespace VinculacionBackend.Services
                 return _projectRepository.GetAllStudent(userId);
             }
             throw new Exception("No tiene permiso");
-            
+
         }
 
-        public void CostsReport()
+
+
+        public HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification,
+            int beneficiariesQuantities, string beneficiariGroups)
         {
-            
+            var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository, _studentRepository,
+                _textDocumentServices, new DownloadbleFile());
+            return finalReport.GenerateFinalReport(projectId, fieldHours, calification, beneficiariesQuantities,
+                beneficiariGroups);
+
         }
     }
 
