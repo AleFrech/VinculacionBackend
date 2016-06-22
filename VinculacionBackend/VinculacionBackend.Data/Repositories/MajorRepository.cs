@@ -28,9 +28,8 @@ namespace VinculacionBackend.Data.Repositories
 
         public Major Get(long id)
         {
-            _db.Majors.Include(a=>a.Faculty).Include(x => x.Id
-            );
-            return _db.Majors.Find(id);
+
+            return _db.Majors.Include(a => a.Faculty).FirstOrDefault(x=>x.Id==id);
         }
 
         public IQueryable<Major> GetAll()
