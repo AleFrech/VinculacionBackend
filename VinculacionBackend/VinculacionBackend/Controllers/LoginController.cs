@@ -35,6 +35,7 @@ namespace VinculacionBackend.Controllers
         }
 
         [Route("api/Login/GetUserRole")]
+        [CustomAuthorize(Roles = "Anonymous")]
         [ValidateModel]
         public string PostUserRole(EmailModel model)
         {
