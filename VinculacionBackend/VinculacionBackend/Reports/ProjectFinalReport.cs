@@ -49,13 +49,14 @@ namespace VinculacionBackend.Reports
             var section = _projectRepository.GetSection(project);
             var studentsInSection = _sectionRepository.GetSectionStudents(section.Id).ToList();
             var majorsOfStudents = _studentRepository.GetStudentMajors(studentsInSection);
+            var professorName = section.User != null ? section.User.Name : "Maestro Pendiente";
             string[][] table1Data =
             {
                 new[] {"Nombre del producto entregado", project.Name},
                 new[] {"Nombre de la organización beneficiada", project.BeneficiarieOrganization},
                 new[] {"Nombre de la asignatura", section.Class.Name},
                 new[] {"Nombre de la carrera", majorsOfStudents},
-                new[] {"Nombre del catedrático", section.User.Name},
+                new[] {"Nombre del catedrático", professorName},
                 new[]
                 {"Periodo del Proyecto", "Desde   " + section.Period.FromDate + "   Hasta   " + section.Period.ToDate}
 

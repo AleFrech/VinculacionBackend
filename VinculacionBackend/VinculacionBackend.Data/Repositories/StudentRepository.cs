@@ -181,7 +181,7 @@ namespace VinculacionBackend.Data.Repositories
             foreach(var studentHour in studentHours)
             {
                 var sectionProject = _db.SectionProjectsRels.Include(a => a.Project).FirstOrDefault(x => x.Id == studentHour.Id);
-                if(sectionProject.Project.Id == projectId)
+                if(sectionProject != null && sectionProject.Project != null & sectionProject.Project.Id == projectId)
                 {
                     total += studentHour.Amount;
                 }
