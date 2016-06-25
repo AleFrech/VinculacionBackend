@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
@@ -56,7 +57,6 @@ namespace VinculacionBackend.Controllers
         [Route("api/Projects/FinalReport/{projectId}/{fieldHours}/{calification}/{beneficiariesQuantities}/{beneficiariGroups}")]
         public HttpResponseMessage GetProjectFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups)
         {
-
             return _services.GetFinalReport(projectId,fieldHours,calification,beneficiariesQuantities,beneficiariGroups);
         }
 
