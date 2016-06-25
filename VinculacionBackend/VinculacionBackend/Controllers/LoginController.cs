@@ -22,7 +22,6 @@ namespace VinculacionBackend.Controllers
         }
 
         [Route("api/Login")]
-        [CustomAuthorize(Roles = "Anonymous")]
         [ValidateModel]
         public IHttpActionResult PostUserLogin(LoginUserModel loginUser)
         {

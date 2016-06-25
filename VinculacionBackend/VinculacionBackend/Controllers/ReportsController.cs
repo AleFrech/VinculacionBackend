@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using ClosedXML.Excel;
-using RestSharp.Extensions;
 
 namespace VinculacionBackend.Controllers
 {
@@ -39,19 +32,19 @@ namespace VinculacionBackend.Controllers
         [Route("api/Reports/CostsReport")]
         public IHttpActionResult GetReport()
         {
-            var dt = BindDatatable();
-            var excel = new XLWorkbook();
-            excel.Worksheets.Add(dt,"F1");
-            var ms = new MemoryStream();
-            excel.SaveAs(ms);
-            HttpContext context = HttpContext.Current;
-            context.Response.Buffer = true;
-            context.Response.Charset = "";
-            context.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            context.Response.AddHeader("content-disposition", "attachment;filename=SqlExport.xlsx");
-            ms.WriteTo(context.Response.OutputStream);
-            context.Response.Flush();
-            context.Response.End();
+            //var dt = BindDatatable();
+            //var excel = new XLWorkbook();
+            //excel.Worksheets.Add(dt,"F1");
+            //var ms = new MemoryStream();
+            //excel.SaveAs(ms);
+            //HttpContext context = HttpContext.Current;
+            //context.Response.Buffer = true;
+            //context.Response.Charset = "";
+            //context.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            //context.Response.AddHeader("content-disposition", "attachment;filename=SqlExport.xlsx");
+            //ms.WriteTo(context.Response.OutputStream);
+            //context.Response.Flush();
+            //context.Response.End();
             return Ok();
         }
     

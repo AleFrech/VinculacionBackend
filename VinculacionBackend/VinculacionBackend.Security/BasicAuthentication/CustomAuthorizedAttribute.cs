@@ -55,9 +55,8 @@ namespace VinculacionBackend.Security.BasicAuthentication
                     Credentials parsedCredentials = ParseAuthorizationHeader(authValue.Parameter);
                     if (parsedCredentials != null)
                     {
-                        var encryptedPassword = Encryption.Encrypt(parsedCredentials.Password);
                         var user = context.Users.FirstOrDefault(
-                                u => u.Email == parsedCredentials.Username && u.Password == encryptedPassword);
+                                u => u.Email == parsedCredentials.Username && u.Password == parsedCredentials.Password);
                         if (user != null)
                         {
                             var roles =
