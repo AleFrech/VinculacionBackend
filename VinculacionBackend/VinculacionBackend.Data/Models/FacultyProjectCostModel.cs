@@ -1,4 +1,4 @@
-namespace VinculacionBackend.Data.Repositories
+namespace VinculacionBackend.Data.Models
 {
     public class FacultyProjectCostModel
     {

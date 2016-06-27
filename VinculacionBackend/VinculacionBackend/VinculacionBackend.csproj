@@ -292,6 +292,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\ClassesServices.cs" />
+    <Compile Include="Services\FacultiesServices.cs" />
     <Compile Include="Services\HoursServices.cs" />
     <Compile Include="Interfaces\IStudentsServices.cs" />
     <Compile Include="Interfaces\IHoursServices.cs" />
@@ -299,6 +300,7 @@
     <Compile Include="Interfaces\IProfessorsServices.cs" />
     <Compile Include="Interfaces\IProjectServices.cs" />
     <Compile Include="Interfaces\ITextDocumentServices.cs" />
+    <Compile Include="Interfaces\IFacultiesServices.cs" />
     <Compile Include="Services\MajorsServices.cs" />
     <Compile Include="Services\PeriodsServices.cs" />
     <Compile Include="Services\ProfessorsServices.cs" />
