@@ -16,6 +16,17 @@ namespace VinculacionBackend.Data.Repositories
             _db = new VinculacionContext();
         }
 
+        public IQueryable<Project> GetByMajor(string majorId)
+        {
+            var majorProjects = _db.ProjectMajorRels.Include(a => a.Project).Include(b => b.Major).Where(pm => pm.Major.MajorId == majorId);
+            List<Project> projects = new List<Project>();
+            foreach (var mp in majorProjects)
+            {
+                projects.Add(mp.Project);
+            }
+            return projects.AsQueryable();
+        }
+
         public Project Delete(long id)
         {
             var found = Get(id);

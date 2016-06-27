@@ -80,6 +80,7 @@
     <Compile Include="Exceptions\UnauthorizedException.cs" />
     <Compile Include="Interfaces\IClassRepository.cs" />
     <Compile Include="Interfaces\IEncryption.cs" />
+    <Compile Include="Interfaces\IFacultyRepository.cs" />
     <Compile Include="Interfaces\IHourRepository.cs" />
     <Compile Include="Interfaces\IMajorRepository.cs" />
     <Compile Include="Interfaces\IPeriodRepository.cs" />
@@ -100,6 +101,8 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClassRepository.cs" />
+    <Compile Include="Models\FacultyProjectCostModel.cs" />
+    <Compile Include="Repositories\FacultyRepository.cs" />
     <Compile Include="Repositories\HourRepository.cs" />
     <Compile Include="Repositories\MajorRepository.cs" />
     <Compile Include="Repositories\PeriodRepository.cs" />

@@ -14,6 +14,10 @@ namespace VinculacionBackend.Data.Repositories
         {
             _db = new VinculacionContext();
         }
+        public IQueryable<Major> GetMajorsByFaculty(long facultyId)
+        {
+            return _db.Majors.Include(major => major.Faculty).Where(major => major.Faculty.Id == facultyId);
+        }
         public Major Delete(long id)
         {
             var found = Get(id);

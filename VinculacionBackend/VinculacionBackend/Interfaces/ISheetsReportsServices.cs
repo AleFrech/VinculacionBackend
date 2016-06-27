@@ -4,11 +4,12 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace VinculacionBackend.Interfaces
 {
      public interface ISheetsReportsServices
      {
-         DataTable CreateTable();
+         HttpContext GenerateReport(DataTable dt, string workSheet);
      }
 }
