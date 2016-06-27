@@ -21,7 +21,7 @@ namespace VinculacionBackend.Data.Repositories
             _context = new VinculacionContext();
         }
 
-        public List<FacultyProjectCostModel> GetFacultyCosts(int id,int period,int year)
+        public List<FacultyProjectCostModel> GetFacultyCosts(long id,int period,int year)
         {
             List<FacultyProjectCostModel> facultyCostModelList = new List<FacultyProjectCostModel>();
             var projectsIds = _context.SectionProjectsRels.Where(x => x.Section.Period.Number == period && x.Section.Period.Year == year).Select(x => x.Project.Id).ToList();

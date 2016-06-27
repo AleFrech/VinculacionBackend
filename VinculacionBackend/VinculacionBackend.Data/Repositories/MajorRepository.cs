@@ -14,6 +14,10 @@ namespace VinculacionBackend.Data.Repositories
         {
             _db = new VinculacionContext();
         }
+        public IQueryable<Major> GetMajorsByFaculty(long facultyId)
+        {
+            return _db.Majors.Include(major => major.Faculty).Where(major => major.Faculty.Id == facultyId);
+        }
         public Major Delete(long id)
         {
             var found = Get(id);
@@ -43,11 +47,6 @@ namespace VinculacionBackend.Data.Repositories
         public Major GetMajorByMajorId(string majorId)
         {
             return _db.Majors.Include(a => a.Faculty).FirstOrDefault(x => x.MajorId == majorId);
-        }
-
-        public IQueryable<Major> GetMajorsByFaculty(long facultyId)
-        {
-            throw new System.NotImplementedException();
         }
 
         public void Insert(Major ent)

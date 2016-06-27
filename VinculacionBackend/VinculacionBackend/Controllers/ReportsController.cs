@@ -43,7 +43,17 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetProjectCountByMajorReport()
         {
             var context = _reportsServices.GenerateReport(_projectServices.CreateProjectsByMajor(2013),
-                            "Reporte de Proyectos por Carrera");
+                "Reporte de Proyectos por Carrera");
+            context.Response.Flush();
+            context.Response.End();
+            return Ok();
+        }
+
+        [Route("api/Reports/HoursReport")]
+        public IHttpActionResult GetHoursReport()
+        {
+            var context = _reportsServices.GenerateReport(_facultiesServices.CreateFacultiesHourReport(),
+                "Reporte de Horas por Facultad");
             context.Response.Flush();
             context.Response.End();
             return Ok();
