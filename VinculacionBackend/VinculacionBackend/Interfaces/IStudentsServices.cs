@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data;
+using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Models;
@@ -20,5 +21,6 @@ namespace VinculacionBackend.Interfaces
         HttpResponseMessage GetFiniquitoReport(string accountId);
         User FindByEmail(string email);
         User UpdateStudent(string accountId, UserEntryModel model);
+        DataTable[] CreateStudentReport(int year);
     }
 }

@@ -194,5 +194,32 @@ namespace VinculacionBackend.Data.Repositories
             return total;
         }
 
+        public int GetStudentCount(int periodo, string clase, int year)
+        {
+            return _db.SectionUserRels.Where( a => a.Section.Period.Number == periodo && a.Section.Period.Year == year).Where(b => b.Section.Class.Name.StartsWith(clase)).Count();
+        }
+
+        public int GetStudentByFacultyCount(int period, int faculty, int year)
+        {
+            var students = _db.SectionUserRels.Where(a => a.Section.Period.Number == period && a.Section.Period.Year == year);
+            return students.Where(a => a.User.Major.Faculty.Id == faculty).Count();
+        }
+
+        public int GetHoursCount(int period, string clase, int year)
+        {
+            var periodHours = _db.Hours.Where(a => a.SectionProject.Section.Period.Number == period && a.SectionProject.Section.Period.Year == year);
+            var classHours = periodHours.Where(b => b.SectionProject.Section.Class.Name.StartsWith(clase)).ToList();
+            var sum = (int?)classHours.Sum(c =>  ((int?)c.Amount) ?? 0);
+            return (sum) ?? 0;
+        }
+
+        public int GetHoursByFacultyCount(int period, int faculty, int year)
+        {
+            var periodHours = _db.Hours.Where(a => a.SectionProject.Section.Period.Number == period && a.SectionProject.Section.Period.Year == year);
+            var classHours = periodHours.Where(b => b.User.Major.Faculty.Id == faculty).ToList();
+            var sum = (int?)classHours.Sum(c => ((int?)c.Amount) ?? 0);
+            return (sum) ?? 0;
+        }
+
     }
 }

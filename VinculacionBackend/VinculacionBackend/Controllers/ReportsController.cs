@@ -18,12 +18,14 @@ namespace VinculacionBackend.Controllers
     {
         private readonly IFacultiesServices _facultiesServices;
         private readonly ISheetsReportsServices _reportsServices;
+        private readonly IStudentsServices _studentServices;
 
 
-        public ReportsController(IFacultiesServices facultiesServices, ISheetsReportsServices reportsServices)
+        public ReportsController(IFacultiesServices facultiesServices, ISheetsReportsServices reportsServices, IStudentsServices studentServices)
         {
             _facultiesServices = facultiesServices;
             _reportsServices = reportsServices;
+            _studentServices = studentServices;
         }
 
 
@@ -41,6 +43,16 @@ namespace VinculacionBackend.Controllers
         {
             var context = _reportsServices.GenerateReport(_facultiesServices.CreateFacultiesHourReport(),
                 "Reporte de Horas por Facultad");
+            context.Response.Flush();
+            context.Response.End();
+            return Ok();
+        }
+
+        [Route("api/Reports/StudentsReport/{year}")]
+        public IHttpActionResult GetStudentsReport(int year)
+        {
+            var context = _reportsServices.GenerateReport(_studentServices.CreateStudentReport(year),
+                "Reporte de Alumnos");
             context.Response.Flush();
             context.Response.End();
             return Ok();

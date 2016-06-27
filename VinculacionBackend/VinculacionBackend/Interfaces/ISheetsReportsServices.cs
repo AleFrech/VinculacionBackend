@@ -11,5 +11,6 @@ namespace VinculacionBackend.Interfaces
      public interface ISheetsReportsServices
      {
          HttpContext GenerateReport(DataTable dt, string workSheet);
-     }
+         HttpContext GenerateReport(DataTable[] dt, string workSheet);
+    }
 }
