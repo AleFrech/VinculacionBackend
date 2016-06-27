@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Models;
 
 namespace VinculacionBackend.Data.Interfaces
 {
@@ -14,6 +15,7 @@ namespace VinculacionBackend.Data.Interfaces
         IQueryable<Project> GetAllProfessor(long userId);
         Section GetSection(Project project);
         IQueryable<Project> GetByMajor(string majorId);
-       
+        List<MajorProjectTotalmodel> GetMajorProjectTotal(int period, int year, string marjorId);
+
     }
 }

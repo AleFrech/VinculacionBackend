@@ -18,11 +18,14 @@ namespace VinculacionBackend.Controllers
     {
         private readonly IFacultiesServices _facultiesServices;
         private readonly ISheetsReportsServices _reportsServices;
+        private readonly IProjectServices _projectServices;
 
-        public ReportsController(IFacultiesServices facultiesServices, ISheetsReportsServices reportsServices)
+
+        public ReportsController(IFacultiesServices facultiesServices, ISheetsReportsServices reportsServices, IProjectServices projectServices)
         {
             _facultiesServices = facultiesServices;
             _reportsServices = reportsServices;
+            _projectServices = projectServices;
         }
 
 
@@ -35,6 +38,16 @@ namespace VinculacionBackend.Controllers
             context.Response.End();
             return Ok();
         }
-    
+
+        [Route("api/Reports/ProjectsReport")]
+        public IHttpActionResult GetProjectCountByMajorReport()
+        {
+            var context = _reportsServices.GenerateReport(_projectServices.CreateProjectsByMajor(2013),
+                            "Reporte de Proyectos por Carrera");
+            context.Response.Flush();
+            context.Response.End();
+            return Ok();
+        }
+
     }
 }

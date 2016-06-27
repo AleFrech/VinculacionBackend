@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
@@ -8,7 +10,10 @@ namespace VinculacionBackend.Interfaces
     public interface IProjectServices
     {
         Project Find(long id);
-        IQueryable<Project> All();
+        IQueryable<Project> All();  
+
+        Dictionary<string, List<PeriodProjectsModel>> GetProjectsTotalByMajor(int year, Major major);
+        DataTable CreateProjectsByMajor(int year);
         Project Add(ProjectModel project);
         Project Delete(long projectId);
         IQueryable<User> GetProjectStudents(long projectId);

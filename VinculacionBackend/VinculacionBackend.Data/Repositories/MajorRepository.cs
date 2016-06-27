@@ -45,6 +45,11 @@ namespace VinculacionBackend.Data.Repositories
             return _db.Majors.Include(a => a.Faculty).FirstOrDefault(x => x.MajorId == majorId);
         }
 
+        public IQueryable<Major> GetMajorsByFaculty(long facultyId)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Insert(Major ent)
         {
             _db.Faculties.Attach(ent.Faculty);

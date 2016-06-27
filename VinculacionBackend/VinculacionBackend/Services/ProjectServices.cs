@@ -1,12 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Web.WebPages;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Data.Models;
 using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 using VinculacionBackend.Reports;
+using DataTable = System.Data.DataTable;
 
 namespace VinculacionBackend.Services
 {
@@ -16,19 +21,27 @@ namespace VinculacionBackend.Services
         private readonly ISectionRepository _sectionRepository;
         private readonly IStudentRepository _studentRepository;
         private readonly ITextDocumentServices _textDocumentServices;
+        private readonly IMajorRepository _majorRepository;
+        List<int> _periods = new List<int>();
 
         public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository,
-            IStudentRepository studentRepository, ITextDocumentServices textDocumentServices)
+            IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IMajorRepository majorRepository)
         {
             _projectRepository = projectRepository;
             _sectionRepository = sectionRepository;
             _studentRepository = studentRepository;
             _textDocumentServices = textDocumentServices;
+            _majorRepository = majorRepository;
+            _periods.Add(1);
+            _periods.Add(2);
+            _periods.Add(3);
+            _periods.Add(5);
         }
 
-        public ProjectServices(IProjectRepository projectRepository)
+        public ProjectServices(IProjectRepository projectRepository, IMajorRepository majorRepository)
         {
             _projectRepository = projectRepository;
+            _majorRepository = majorRepository;
         }
 
         public Project Find(long id)
@@ -42,6 +55,77 @@ namespace VinculacionBackend.Services
         public IQueryable<Project> All()
         {
             return _projectRepository.GetAll();
+        }
+
+        public DataTable CreateProjectsByMajor(int year)
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("Carrera", typeof(string));
+            dt.Columns.Add("Periodo 1", typeof(int));
+            dt.Columns.Add("Periodo 2", typeof(int));
+            dt.Columns.Add("Periodo 3", typeof(int));
+            dt.Columns.Add("Periodo 5", typeof(int));
+
+            var majors = _majorRepository.GetAll().ToList();
+
+            foreach (var m in majors)
+            {
+                var projectByMajor = GetProjectsTotalByMajor(year, m);
+                foreach (var key in projectByMajor.Keys)
+                {
+                    dt.Rows.Add(key, projectByMajor[key].ElementAt(0).TotalProjects, projectByMajor[key].ElementAt(1).TotalProjects
+                    , projectByMajor[key].ElementAt(2).TotalProjects, projectByMajor[key].ElementAt(3).TotalProjects);
+                }
+            }
+
+            return dt;
+        }
+
+        public Dictionary<string, List<PeriodProjectsModel>> GetProjectsTotalByMajor(int year, Major major)
+        {
+            Dictionary<string, List<PeriodProjectsModel>> reportDictionary =
+                new Dictionary<string, List<PeriodProjectsModel>>();
+            List<PeriodProjectsModel> periodProjects = new List<PeriodProjectsModel>();
+
+            periodProjects.Add(new PeriodProjectsModel
+            {
+                Period = 0,
+                TotalProjects = 0
+            });
+            periodProjects.Add(new PeriodProjectsModel
+            {
+                Period = 0,
+                TotalProjects = 0
+            });
+            periodProjects.Add(new PeriodProjectsModel
+            {
+                Period = 0,
+                TotalProjects = 0
+            });
+            periodProjects.Add(new PeriodProjectsModel
+            {
+                Period = 0,
+                TotalProjects = 0
+            });
+
+            var majorProjectTotalmodels = new List<MajorProjectTotalmodel>();
+
+            for (var i = 0; i < 4; i++)
+            {
+                 majorProjectTotalmodels  = _projectRepository.GetMajorProjectTotal(i, year, major.MajorId);
+                if (majorProjectTotalmodels.Count > 0)
+                {
+                    var total = majorProjectTotalmodels.Sum(x => x.Total);
+                    periodProjects.ElementAt(i).Period = _periods.ElementAt(i);
+                    periodProjects.ElementAt(i).TotalProjects = total;
+                }
+            }
+          //  if (majorProjectTotalmodels.Count > 0)
+           // {
+                reportDictionary.Add(major.Name, periodProjects);
+           // }
+
+            return reportDictionary;
         }
 
 
