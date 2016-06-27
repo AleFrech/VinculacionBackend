@@ -175,17 +175,18 @@ namespace VinculacionBackend.Data.Repositories
             {
                 throw new Exception("Student Not Found");
             }
-            var studentHours = _db.Hours.Include(a => a.User).Include(b=>b.SectionProject).Where(x => x.User.Id == student.Id).ToList();
+            var studentHours = _db.Hours.Include(a => a.User).Include(b => b.SectionProject).Include(c => c.SectionProject.Project).Where(x => x.User.Id == student.Id).ToList();
 
             var total = 0;
-            foreach(var studentHour in studentHours)
+            foreach (var studentHour in studentHours)
             {
-                var sectionProject = _db.SectionProjectsRels.Include(a => a.Project).FirstOrDefault(x => x.Id == studentHour.Id);
-                if(sectionProject.Project.Id == projectId)
+                var sectionProject = studentHour.SectionProject;
+                //var sectionProject = _db.SectionProjectsRels.Include(a => a.Project).FirstOrDefault(x => x.Id == studentHour.Id);
+                if (sectionProject != null && sectionProject.Project != null & sectionProject.Project.Id == projectId)
                 {
                     total += studentHour.Amount;
                 }
-                
+
             }
 
             return total;

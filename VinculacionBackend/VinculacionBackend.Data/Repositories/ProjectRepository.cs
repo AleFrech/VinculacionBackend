@@ -185,7 +185,7 @@ namespace VinculacionBackend.Data.Repositories
                 foreach (var x in projectSections)
                 {
                     sectionsId.Add(x.Section.Id);
-                    isValid = x.Section.User.Id == professorId || isValid;
+                    isValid = x.Section.User != null && (x.Section.User.Id == professorId || isValid);
                 }
                 project.SectionIds = sectionsId;
                 if (isValid)

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
@@ -33,7 +34,15 @@ namespace VinculacionBackend.Controllers
             var currentUser = (CustomPrincipal)HttpContext.Current.User;
             return _services.GetUserProjects(currentUser.UserId, currentUser.roles);
         }
-        
+
+        [Route("api/ProjectsCount")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public int GetProjectsCount()
+        {
+            var currentUser = (CustomPrincipal)HttpContext.Current.User;
+            return _services.GetUserProjects(currentUser.UserId, currentUser.roles).Count();
+        }
+
         // GET: api/Projects/5
         [ResponseType(typeof(Project))]
         [Route("api/Projects/{projectId}")]
@@ -48,7 +57,6 @@ namespace VinculacionBackend.Controllers
         [Route("api/Projects/FinalReport/{projectId}/{fieldHours}/{calification}/{beneficiariesQuantities}/{beneficiariGroups}")]
         public HttpResponseMessage GetProjectFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups)
         {
-
             return _services.GetFinalReport(projectId,fieldHours,calification,beneficiariesQuantities,beneficiariGroups);
         }
 
