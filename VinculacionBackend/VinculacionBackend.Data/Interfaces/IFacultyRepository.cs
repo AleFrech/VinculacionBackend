@@ -9,7 +9,7 @@ namespace VinculacionBackend.Data.Interfaces
 {
     public interface IFacultyRepository { 
 
-        List<FacultyProjectCostModel> GetFacultyCosts(int id,int period, int year);
+        List<FacultyProjectCostModel> GetFacultyCosts(long id,int period, int year);
         IQueryable<Faculty> GetAll();
     }
 }

@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.OData.Query;
 using Newtonsoft.Json;
 using Spire.Pdf.Exporting.XPS.Schema;
+using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Models;
 using VinculacionBackend.Data.Repositories;
@@ -40,7 +41,7 @@ namespace VinculacionBackend.Services
         }
 
        
-        public Dictionary<string, List<PeriodCostModel>> GetFacultiesCosts(int i,int year)
+        public Dictionary<string, List<PeriodCostModel>> GetFacultiesCosts(Faculty faculty,int year)
         {
             Dictionary<string, List<PeriodCostModel>> facultiesCosts = new Dictionary<string, List<PeriodCostModel>>();
             List<PeriodCostModel> periodCosts = new List<PeriodCostModel>();
@@ -54,7 +55,7 @@ namespace VinculacionBackend.Services
 
             for (var j = 0; j < 4; j++)
                 {
-                    facultyCosts = _facultyRepository.GetFacultyCosts(i, Periods.ElementAt(j), year);
+                    facultyCosts = _facultyRepository.GetFacultyCosts(faculty.Id, Periods.ElementAt(j), year);
                     if (facultyCosts.Count > 0)
                     {
                         totalCosts = facultyCosts.Sum(fc => (float) fc.ProjectCost);
@@ -62,8 +63,7 @@ namespace VinculacionBackend.Services
                         periodCosts.ElementAt(j).Cost = totalCosts;
                     }
                 }
-                if (facultyCosts.Count > 0)
-                    facultiesCosts.Add(facultyCosts.ElementAt(0).FacultyName, periodCosts);
+                    facultiesCosts.Add(faculty.Name, periodCosts);
  
 
             return facultiesCosts;
@@ -100,20 +100,20 @@ namespace VinculacionBackend.Services
             dt.Columns.Add("Periodo 2", typeof(float));
             dt.Columns.Add("Periodo 3", typeof(float));
             dt.Columns.Add("Periodo 5", typeof(float));
-
-            var FacultyCosts = GetFacultiesCosts(1,2013);
-            foreach (var key in FacultyCosts.Keys)
+            var faculties = _facultyRepository.GetAll().ToList();
+            foreach (var f in faculties)
             {
-                dt.Rows.Add(key, FacultyCosts[key].ElementAt(0).Cost, FacultyCosts[key].ElementAt(1).Cost
-                    , FacultyCosts[key].ElementAt(2).Cost, FacultyCosts[key].ElementAt(3).Cost);
+                var FacultyCosts = GetFacultiesCosts(f, 2013);
+                foreach (var key in FacultyCosts.Keys)
+                {
+                    dt.Rows.Add(key, FacultyCosts[key].ElementAt(0).Cost, FacultyCosts[key].ElementAt(1).Cost
+                        , FacultyCosts[key].ElementAt(2).Cost, FacultyCosts[key].ElementAt(3).Cost);
+                }
+
+
             }
 
-             FacultyCosts = GetFacultiesCosts(2, 2013);
-            foreach (var key in FacultyCosts.Keys)
-            {
-                dt.Rows.Add(key, FacultyCosts[key].ElementAt(0).Cost, FacultyCosts[key].ElementAt(1).Cost
-                    , FacultyCosts[key].ElementAt(2).Cost, FacultyCosts[key].ElementAt(3).Cost);
-            }
+      
             return dt;
         }
 

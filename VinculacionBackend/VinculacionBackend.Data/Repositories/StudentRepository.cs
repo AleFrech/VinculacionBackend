@@ -180,7 +180,9 @@ namespace VinculacionBackend.Data.Repositories
             var total = 0;
             foreach(var studentHour in studentHours)
             {
-                var sectionProject = _db.SectionProjectsRels.Include(a => a.Project).FirstOrDefault(x => x.Id == studentHour.Id);
+                var sectionProject = _db.SectionProjectsRels.Include(a => a.Project).FirstOrDefault(x => x.Id == studentHour.SectionProject.Id);
+                if (sectionProject == null)
+                    continue;
                 if(sectionProject.Project.Id == projectId)
                 {
                     total += studentHour.Amount;
