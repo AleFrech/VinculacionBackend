@@ -9,5 +9,6 @@ namespace VinculacionBackend.Interfaces
         Dictionary<string, List<PeriodCostModel>> GetFacultiesCosts(int i,int year);
         DataTable CreateFacultiesCostReport();
         Dictionary<string, int> GetFacultiesHours();
+        DataTable CreateFacultiesHourReport();
     }
 }

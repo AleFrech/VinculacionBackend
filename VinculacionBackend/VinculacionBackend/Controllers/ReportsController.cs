@@ -19,6 +19,7 @@ namespace VinculacionBackend.Controllers
         private readonly IFacultiesServices _facultiesServices;
         private readonly ISheetsReportsServices _reportsServices;
 
+
         public ReportsController(IFacultiesServices facultiesServices, ISheetsReportsServices reportsServices)
         {
             _facultiesServices = facultiesServices;
@@ -35,6 +36,15 @@ namespace VinculacionBackend.Controllers
             context.Response.End();
             return Ok();
         }
-    
+        [Route("api/Reports/HoursReport")]
+        public IHttpActionResult GetHoursReport()
+        {
+            var context = _reportsServices.GenerateReport(_facultiesServices.CreateFacultiesHourReport(),
+                "Reporte de Horas por Facultad");
+            context.Response.Flush();
+            context.Response.End();
+            return Ok();
+        }
+
     }
 }

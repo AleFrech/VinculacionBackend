@@ -76,7 +76,6 @@ namespace VinculacionBackend.Services
             foreach (var faculty in faculties.ToList())
             {
                 facultiesHours[faculty.Name] = 0;
-
                 var facultyMajors = _majorRepository.GetMajorsByFaculty(faculty.Id);
                 foreach (var major in facultyMajors)
                 {
@@ -84,11 +83,13 @@ namespace VinculacionBackend.Services
                     foreach (var project in facultyProjects)
                     {
                         var projectHours = _studentRepository.GetStudentsHoursByProject(project.Id);
-                    //    facultiesHours[faculty.Name] += projectHours;
+                        foreach (var projectStudent in projectHours)
+                        {
+                            facultiesHours[faculty.Name] += projectStudent.Value;
+                        }
                     }
                 }
             }
-
             return facultiesHours;
         }
         public DataTable CreateFacultiesCostReport()
@@ -113,6 +114,22 @@ namespace VinculacionBackend.Services
                 dt.Rows.Add(key, FacultyCosts[key].ElementAt(0).Cost, FacultyCosts[key].ElementAt(1).Cost
                     , FacultyCosts[key].ElementAt(2).Cost, FacultyCosts[key].ElementAt(3).Cost);
             }
+            return dt;
+        }
+
+        public DataTable CreateFacultiesHourReport()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("Facultad", typeof(string));
+            dt.Columns.Add("Horas", typeof(float));
+         
+            var FacultyHours = GetFacultiesHours();
+            foreach (var key in FacultyHours.Keys)
+            {
+                dt.Rows.Add(key, FacultyHours[key]);
+            }
+
+     
             return dt;
         }
     }
