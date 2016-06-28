@@ -43,5 +43,19 @@ namespace VinculacionBackend.Data.Repositories
             return _context.Faculties;
         }
 
+        public int GetFacultyHours(long id, int year)
+        {
+            var projectsIds = _context.SectionProjectsRels.Where(x => x.Section.Period.Year == year).Select(x => x.Id).ToList();
+            var majors = _context.Majors.Where(x => x.Faculty.Id == id).Select(x=>x.MajorId).ToList();
+            var users = _context.Users.Where(x => majors.Any(y => y == x.Major.MajorId)).Select(x => x.Id).ToList();
+            var hours = _context.Hours.Where(x => projectsIds.Contains(x.SectionProject.Id) && users.Contains(x.User.Id)).Select(x=>x.Amount);
+            var total = 0;
+            foreach (var hour in hours)
+            {
+                total += hour;
+            }
+            return total;
+        }
+
     }
 }

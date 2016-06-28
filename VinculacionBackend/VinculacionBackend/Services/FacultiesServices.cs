@@ -69,26 +69,13 @@ namespace VinculacionBackend.Services
             return facultiesCosts;
         }
 
-        public Dictionary<string, int> GetFacultiesHours()
+        public Dictionary<string, int> GetFacultiesHours(int year)
         {
             Dictionary<string, int> facultiesHours = new Dictionary<string, int>();
-            var faculties = _facultyRepository.GetAll();
-            foreach (var faculty in faculties.ToList())
+            var faculties = _facultyRepository.GetAll().ToList();
+            foreach (var faculty in faculties)
             {
-                facultiesHours[faculty.Name] = 0;
-                var facultyMajors = _majorRepository.GetMajorsByFaculty(faculty.Id);
-                foreach (var major in facultyMajors)
-                {
-                    var facultyProjects = _projectRepository.GetByMajor(major.MajorId);
-                    foreach (var project in facultyProjects)
-                    {
-                        var projectHours = _studentRepository.GetStudentsHoursByProject(project.Id);
-                        foreach (var projectStudent in projectHours)
-                        {
-                            facultiesHours[faculty.Name] += projectStudent.Value;
-                        }
-                    }
-                }
+                facultiesHours[faculty.Name] = _facultyRepository.GetFacultyHours(faculty.Id, year);
             }
             return facultiesHours;
         }
@@ -117,13 +104,13 @@ namespace VinculacionBackend.Services
             return dt;
         }
 
-        public DataTable CreateFacultiesHourReport()
+        public DataTable CreateFacultiesHourReport(int year)
         {
             var dt = new DataTable();
             dt.Columns.Add("Facultad", typeof(string));
             dt.Columns.Add("Horas", typeof(float));
          
-            var FacultyHours = GetFacultiesHours();
+            var FacultyHours = GetFacultiesHours(year);
             foreach (var key in FacultyHours.Keys)
             {
                 dt.Rows.Add(key, FacultyHours[key]);
