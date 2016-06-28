@@ -221,5 +221,10 @@ namespace VinculacionBackend.Data.Repositories
             return (sum) ?? 0;
         }
 
+        public IEnumerable<User> GetStudentByMajor(string majorId)
+        {
+            var students = GetAll();
+            return students.AsQueryable().Include(x => x.Major).Where(a => a.Major.MajorId == majorId).ToList();
+        }
     }
 }

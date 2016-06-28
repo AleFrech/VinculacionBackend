@@ -52,10 +52,10 @@ namespace VinculacionBackend.Controllers
             return Ok();
         }
 
-        [Route("api/Reports/HoursReport")]
-        public IHttpActionResult GetHoursReport()
+        [Route("api/Reports/HoursReport/{year}")]
+        public IHttpActionResult GetHoursReport(int year)
         {
-            var context = _reportsServices.GenerateReport(_facultiesServices.CreateFacultiesHourReport(),
+            var context = _reportsServices.GenerateReport(_facultiesServices.CreateFacultiesHourReport(year),
                 "Reporte de Horas por Facultad");
             context.Response.Flush();
             context.Response.End();
