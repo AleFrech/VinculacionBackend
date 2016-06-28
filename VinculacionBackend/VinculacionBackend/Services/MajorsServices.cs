@@ -27,5 +27,7 @@ namespace VinculacionBackend.Services
         {
             return _majorRepository.GetAll();
         }
+
+
     }
 }

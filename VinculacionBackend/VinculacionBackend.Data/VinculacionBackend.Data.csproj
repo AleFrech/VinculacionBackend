@@ -99,6 +99,7 @@
       <DependentUpon>201606210351590_DropBenficiariesGroupAndQuantity.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\MajorProjectTotalmodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClassRepository.cs" />
     <Compile Include="Models\FacultyProjectCostModel.cs" />

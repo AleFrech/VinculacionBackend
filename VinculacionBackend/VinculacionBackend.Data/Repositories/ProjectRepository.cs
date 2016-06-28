@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Castle.Components.DictionaryAdapter;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Data.Models;
 
 namespace VinculacionBackend.Data.Repositories
 {
@@ -25,6 +27,31 @@ namespace VinculacionBackend.Data.Repositories
                 projects.Add(mp.Project);
             }
             return projects.AsQueryable();
+        }
+
+        public List<MajorProjectTotalmodel> GetMajorProjectTotal(int period, int year, string majorId)
+        {
+            List<MajorProjectTotalmodel> projectTotal = new EditableList<MajorProjectTotalmodel>();
+            var projectsId =
+                _db.SectionProjectsRels.Where(x => x.Section.Period.Number == period && x.Section.Period.Year == year)
+                    .Select(x => x.Project.Id)
+                    .ToList();
+            foreach (var p in projectsId)
+            {
+                var result =
+                    _db.ProjectMajorRels.Where(x => x.Major.MajorId == majorId && x.Project.Id == p)
+                        .Where(x => x.Project != null)
+                        .Select(x => x.Major.Name).Distinct().ToList();
+                if (result.Count > 0)
+                {
+                    projectTotal.Add(new MajorProjectTotalmodel
+                    {
+                        Major = result.ElementAt(0),
+                        Total = result.Count
+                    }); 
+                }
+            }
+            return projectTotal;
         }
 
         public Project Delete(long id)
