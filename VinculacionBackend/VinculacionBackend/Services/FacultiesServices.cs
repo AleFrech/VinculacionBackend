@@ -92,7 +92,7 @@ namespace VinculacionBackend.Services
             }
             return facultiesHours;
         }
-        public DataTable CreateFacultiesCostReport()
+        public DataTable CreateFacultiesCostReport(int year)
         {
             var dt = new DataTable();
             dt.Columns.Add("Facultad", typeof(string));
@@ -103,7 +103,7 @@ namespace VinculacionBackend.Services
             var faculties = _facultyRepository.GetAll().ToList();
             foreach (var f in faculties)
             {
-                var FacultyCosts = GetFacultiesCosts(f, 2013);
+                var FacultyCosts = GetFacultiesCosts(f,year);
                 foreach (var key in FacultyCosts.Keys)
                 {
                     dt.Rows.Add(key, FacultyCosts[key].ElementAt(0).Cost, FacultyCosts[key].ElementAt(1).Cost
