@@ -71,7 +71,7 @@ namespace VinculacionBackend.Controllers
             _professorsServices.AddProfessor(professor);
             var accountIdParameter = _encryption.Encrypt(professor.AccountId);
             _email.Send(professor.Email
-            ,"Hacer click en el siguiente link para establecer su contraseña : http://fiasps.unitec.edu:8096/#/registro-maestro/" + HttpContext.Current.Server.UrlEncode(accountIdParameter)
+            ,"Hacer click en el siguiente link para establecer su contraseña : http://fiasps.unitec.edu:8096/registro-maestro/" + HttpContext.Current.Server.UrlEncode(accountIdParameter)
             ,"Vinculacion");
             return Ok(professor);
         }
