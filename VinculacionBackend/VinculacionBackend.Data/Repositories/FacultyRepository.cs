@@ -42,7 +42,7 @@ namespace VinculacionBackend.Data.Repositories
         {
             return _context.Faculties;
         }
-
+        //TODO: Pasar a un query
         public int GetFacultyHours(long id, int year)
         {
             var projectsIds = _context.SectionProjectsRels.Where(x => x.Section.Period.Year == year).Select(x => x.Id).ToList();
