@@ -54,6 +54,7 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostAcceptVerified(VerifiedProfessorModel model)
         {
+            model.AccountId = HttpContext.Current.Server.UrlDecode(model.AccountId);
             _professorsServices.VerifyProfessor(model);
             return Ok();
         }
