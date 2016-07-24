@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using TechTalk.SpecFlow;
@@ -7,6 +8,7 @@ using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Models;
 using VinculacionBackend.Interfaces;
+using VinculacionBackend.Models;
 using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Specs.Features.Reports
@@ -20,6 +22,7 @@ namespace VinculacionBackend.Specs.Features.Reports
         private readonly Mock<IProjectRepository> _projectRepositoryMock;
         private readonly Mock<IStudentRepository> _studentRepositoryMock;
         private int _year;
+        private  List<FacultyCostsReportEntry> _facultiesCostReport;
         public FacultiesCostReportSteps()
         {
             _facultyRepositoryMock = new Mock<IFacultyRepository>();
@@ -53,14 +56,14 @@ namespace VinculacionBackend.Specs.Features.Reports
         [When(@"I execute the faculties cost report")]
         public void WhenIExecuteTheFacultiesCostReport()
         {
-            var facultiesCostReport = _facultiesServices.CreateFacultiesCostReport(_year);
+           _facultiesCostReport = _facultiesServices.CreateFacultiesCostReport(_year);
 
         }
         
         [Then(@"the faculties cost report should be")]
         public void ThenTheFacultiesCostReportShouldBe(Table table)
         {
-            
+            table.CompareToSet(_facultiesCostReport.AsEnumerable());
         }
     }
 }

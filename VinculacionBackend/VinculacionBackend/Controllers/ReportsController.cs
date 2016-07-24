@@ -35,7 +35,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Reports/CostsReport/{year}")]
         public IHttpActionResult GetCostsReport(int year)
         {
-            var context = _reportsServices.GenerateReport(_facultiesServices.CreateFacultiesCostReport(year),
+            var context = _reportsServices.GenerateReport(_facultiesServices.CreateFacultiesCostReport(year).ToDataTable(),
                 "Reporte de Costos por Facultad");
             context.Response.Flush();
             context.Response.End();

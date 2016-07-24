@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.OData.Query;
 using Newtonsoft.Json;
@@ -11,6 +12,7 @@ using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Models;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Interfaces;
+using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Services
 {
@@ -79,29 +81,30 @@ namespace VinculacionBackend.Services
             }
             return facultiesHours;
         }
-        public DataTable CreateFacultiesCostReport(int year)
+
+      
+        public List<FacultyCostsReportEntry> CreateFacultiesCostReport(int year)
         {
-            var dt = new DataTable();
-            dt.Columns.Add("Facultad", typeof(string));
-            dt.Columns.Add("Periodo 1", typeof(float));    
-            dt.Columns.Add("Periodo 2", typeof(float));
-            dt.Columns.Add("Periodo 3", typeof(float));
-            dt.Columns.Add("Periodo 5", typeof(float));
+            var facultiesCostsReport = new List<FacultyCostsReportEntry>();
             var faculties = _facultyRepository.GetAll().ToList();
             foreach (var f in faculties)
             {
                 var FacultyCosts = GetFacultiesCosts(f,year);
                 foreach (var key in FacultyCosts.Keys)
                 {
-                    dt.Rows.Add(key, FacultyCosts[key].ElementAt(0).Cost, FacultyCosts[key].ElementAt(1).Cost
-                        , FacultyCosts[key].ElementAt(2).Cost, FacultyCosts[key].ElementAt(3).Cost);
+                    facultiesCostsReport.Add(new FacultyCostsReportEntry
+                    {
+                        Facultad = key,
+                        Periodo1 = FacultyCosts[key].ElementAt(0).Cost,
+                        Periodo2 = FacultyCosts[key].ElementAt(1).Cost,
+                        Periodo3 = FacultyCosts[key].ElementAt(2).Cost,
+                        Periodo5 = FacultyCosts[key].ElementAt(3).Cost
+                    });
+
                 }
-
-
             }
 
-      
-            return dt;
+            return facultiesCostsReport;
         }
 
         public DataTable CreateFacultiesHourReport(int year)
