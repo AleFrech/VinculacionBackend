@@ -241,6 +241,7 @@
     <Compile Include="Interfaces\ISheetsReportsServices.cs" />
     <Compile Include="DownloadbleFile.cs" />
     <Compile Include="Models\PeriodProjectsModel.cs" />
+    <Compile Include="Models\TokenModel.cs" />
     <Compile Include="Reports\FiniquitoReport.cs" />
     <Compile Include="Interfaces\IDownloadbleFile.cs" />
     <Compile Include="Interfaces\ITextDoucment.cs" />
