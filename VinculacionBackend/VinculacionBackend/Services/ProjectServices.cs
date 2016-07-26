@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net.Http;
 using System.Web.WebPages;
@@ -22,26 +23,29 @@ namespace VinculacionBackend.Services
         private readonly IStudentRepository _studentRepository;
         private readonly ITextDocumentServices _textDocumentServices;
         private readonly IMajorRepository _majorRepository;
+        private readonly IClassRepository _classRepository;
         List<int> _periods = new List<int>();
 
         public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository,
-            IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IMajorRepository majorRepository)
+            IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IMajorRepository majorRepository, IClassRepository classRepository)
         {
             _projectRepository = projectRepository;
             _sectionRepository = sectionRepository;
             _studentRepository = studentRepository;
             _textDocumentServices = textDocumentServices;
             _majorRepository = majorRepository;
+            _classRepository = classRepository;
             _periods.Add(1);
             _periods.Add(2);
             _periods.Add(3);
             _periods.Add(5);
         }
 
-        public ProjectServices(IProjectRepository projectRepository, IMajorRepository majorRepository)
+        public ProjectServices(IProjectRepository projectRepository, IMajorRepository majorRepository, IClassRepository classRepository)
         {
             _projectRepository = projectRepository;
             _majorRepository = majorRepository;
+            _classRepository = classRepository;
         }
 
         public Project Find(long id)
@@ -57,29 +61,6 @@ namespace VinculacionBackend.Services
             return _projectRepository.GetAll();
         }
 
-        public DataTable CreateProjectsByMajor(int year)
-        {
-            var dt = new DataTable();
-            dt.Columns.Add("Carrera", typeof(string));
-            dt.Columns.Add("Periodo 1", typeof(int));
-            dt.Columns.Add("Periodo 2", typeof(int));
-            dt.Columns.Add("Periodo 3", typeof(int));
-            dt.Columns.Add("Periodo 5", typeof(int));
-
-            var majors = _majorRepository.GetAll().ToList();
-
-            foreach (var m in majors)
-            {
-                var projectByMajor = GetProjectsTotalByMajor(year, m);
-                foreach (var key in projectByMajor.Keys)
-                {
-                    dt.Rows.Add(key, projectByMajor[key].ElementAt(0).TotalProjects, projectByMajor[key].ElementAt(1).TotalProjects
-                    , projectByMajor[key].ElementAt(2).TotalProjects, projectByMajor[key].ElementAt(3).TotalProjects);
-                }
-            }
-
-            return dt;
-        }
 
         public Dictionary<string, List<PeriodProjectsModel>> GetProjectsTotalByMajor(int year, Major major)
         {
@@ -223,6 +204,58 @@ namespace VinculacionBackend.Services
             return finalReport.GenerateFinalReport(projectId, fieldHours, calification, beneficiariesQuantities,
                 beneficiariGroups);
 
+        }
+
+        public DataTable CreateProjectsByMajor(int year)
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("Carrera", typeof(string));
+            dt.Columns.Add("Periodo 1", typeof(int));
+            dt.Columns.Add("Periodo 2", typeof(int));
+            dt.Columns.Add("Periodo 3", typeof(int));
+            dt.Columns.Add("Periodo 5", typeof(int));
+
+            var majors = _majorRepository.GetAll().ToList();
+
+            foreach (var m in majors)
+            {
+                var projectByMajor = GetProjectsTotalByMajor(year, m);
+                foreach (var key in projectByMajor.Keys)
+                {
+                    dt.Rows.Add(key, projectByMajor[key].ElementAt(0).TotalProjects, projectByMajor[key].ElementAt(1).TotalProjects
+                    , projectByMajor[key].ElementAt(2).TotalProjects, projectByMajor[key].ElementAt(3).TotalProjects);
+                }
+            }
+
+            return dt;
+        }
+
+
+        public DataTable ProjectsByClass(long classId)
+        {
+            var @class = _classRepository.Get(classId);
+            Object[] titleRow = {"Clase: "+@class.Name};
+            var dt = new DataTable();
+           // dt.Rows.Add(titleRow);
+            dt.Columns.Add("Id Proyecto", typeof(string));
+            dt.Columns.Add("Nombre", typeof(string));
+            dt.Columns.Add("Costo", typeof(double));
+            dt.Columns.Add("Beneficiario", typeof(string));
+            dt.Columns.Add("Maestros", typeof(string));
+            dt.Columns.Add("Periodo", typeof(int));
+            dt.Columns.Add("Anio", typeof(int));
+
+            var projects = _projectRepository.GetProjectsByClass(classId).ToList();
+            foreach (var project in projects)
+            {
+                var professorsList =_projectRepository.GetProfessorsByProject(project.Id).Select(x => x.Name).Distinct().ToList();
+                var professors = professorsList.Count>0 ? string.Join(",", _projectRepository.GetProfessorsByProject(project.Id).Select(x=>x.Name).Distinct().ToList()):"";
+                var period = _projectRepository.GetPeriodByProject(project.Id);
+                dt.Rows.Add(project.ProjectId, project.Name, project.Cost, project.BeneficiarieOrganization, professors,
+                    period.Number, period.Year);
+            }
+
+            return dt;
         }
     }
 

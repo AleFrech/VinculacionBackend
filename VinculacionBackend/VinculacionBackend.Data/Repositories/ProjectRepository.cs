@@ -54,6 +54,17 @@ namespace VinculacionBackend.Data.Repositories
             return projectTotal;
         }
 
+        public IQueryable<Project> GetProjectsByClass(long classId)
+        {
+            var projects =
+                _db.SectionProjectsRels.Include(a => a.Section)
+                    .Include(b => b.Project)
+                    .Include(c => c.Section.Class)
+                    .Where(x => x.Section.Class.Id == classId)
+                    .Select(x => x.Project);
+            return projects;
+        }
+
         public Project Delete(long id)
         {
             var found = Get(id);
@@ -288,10 +299,24 @@ namespace VinculacionBackend.Data.Repositories
             return found;
         }
 
-        public void GetCostsReport(int periodId)
+        public IQueryable<User> GetProfessorsByProject(long projectId)
         {
-            
+            return
+                _db.SectionProjectsRels.Include(a => a.Section)
+                    .Include(b => b.Project)
+                    .Include(x => x.Section.User)
+                    .Where(x => x.Project.Id == projectId)
+                    .Select(x => x.Section.User);
         }
 
+        public Period GetPeriodByProject(long projectId)
+        {
+            return
+                _db.SectionProjectsRels.Include(a => a.Section)
+                    .Include(b => b.Project)
+                    .Include(x => x.Section.Period)
+                    .Where(x => x.Project.Id == projectId)
+                    .Select(x => x.Section.Period).First();
+        }
     }
 }

@@ -22,5 +22,6 @@ namespace VinculacionBackend.Interfaces
         bool RemoveFromSection(long projectId, long sectionId);
         IQueryable<Project> GetUserProjects(long userId, string[] roles);
         HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups);
+        DataTable ProjectsByClass(long classId);
     }
 }
