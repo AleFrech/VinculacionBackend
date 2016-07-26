@@ -1,13 +1,6 @@
-﻿using System;
-using System.Data;
-using System.IO;
-using System.Web;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Cors;
-using VinculacionBackend.Data.Database;
-using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Interfaces;
-using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Controllers
 {
@@ -19,15 +12,16 @@ namespace VinculacionBackend.Controllers
         private readonly IFacultiesServices _facultiesServices;
         private readonly ISheetsReportsServices _reportsServices;
         private readonly IStudentsServices _studentServices;
-
+        private readonly IClassesServices _classesServices;
         private readonly IProjectServices _projectServices;
 
 
-        public ReportsController(IFacultiesServices facultiesServices, ISheetsReportsServices reportsServices, IStudentsServices studentsServices, IProjectServices projectServices)
+        public ReportsController(IFacultiesServices facultiesServices, ISheetsReportsServices reportsServices, IStudentsServices studentsServices, IProjectServices projectServices, IClassesServices classesServices)
         {
             _facultiesServices = facultiesServices;
             _reportsServices = reportsServices;
             _projectServices = projectServices;
+            _classesServices = classesServices;
             _studentServices = studentsServices;
         }
 
@@ -72,5 +66,13 @@ namespace VinculacionBackend.Controllers
             return Ok();
         }
 
+        [Route("api/Reports/ProjectsByClassReport/{classId}")]
+        public IHttpActionResult GetProjectsByClassReport(long classId)
+        {
+            var context = _reportsServices.GenerateReport(_projectServices.ProjectsByClass(classId), "Projectos Por "+_classesServices.Find(classId).Name);
+            context.Response.Flush();
+            context.Response.End();
+            return Ok();
+        }
     }
 }
