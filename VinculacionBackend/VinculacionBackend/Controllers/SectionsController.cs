@@ -104,17 +104,6 @@ namespace VinculacionBackend.Controllers
             var tmpSection = _sectionServices.UpdateSection(sectionId, model);
             return Ok(tmpSection);
         }
-
-        // DELETE: api/Sections/5
-        [ResponseType(typeof(Section))]
-        [Route("api/Sections/{sectionId}")]
-        [CustomAuthorize(Roles = "Admin,Professor")]
-        public IHttpActionResult DeleteSection(long sectionId)
-        {
-            Section section = _sectionServices.Delete(sectionId);
-            return Ok(section);
-        }
-
       
     }
 }

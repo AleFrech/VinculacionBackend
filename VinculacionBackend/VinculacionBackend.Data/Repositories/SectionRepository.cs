@@ -73,9 +73,7 @@ namespace VinculacionBackend.Data.Repositories
 
         public Section Delete(long id)
         {
-            var found = Get(id);
-            _db.Sections.Remove(found);
-            return found;
+            throw new Exception();
         }
 
         public Section Get(long id)
