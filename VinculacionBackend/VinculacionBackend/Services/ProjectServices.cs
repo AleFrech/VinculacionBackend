@@ -257,6 +257,38 @@ namespace VinculacionBackend.Services
 
             return dt;
         }
+
+        public DataTable CreatePeriodReport(int year, int period)
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("Institución", typeof(string));
+            dt.Columns.Add("Producto", typeof(string));
+            dt.Columns.Add("Asignatura", typeof(string));
+            dt.Columns.Add("Carrera", typeof(string));
+            dt.Columns.Add("Catedrático", typeof(string));
+            dt.Columns.Add("Horas", typeof(string));
+            dt.Columns.Add("Fecha de Entrega", typeof(string));
+            dt.Columns.Add("Costo", typeof(double));
+            dt.Columns.Add("# Proy", typeof(long));
+            dt.Columns.Add("Beneficiarios", typeof(string));
+            dt.Columns.Add("Comentarios", typeof(string));
+
+            var projects = _projectRepository.GetByYearAndPeriod(year, period);
+
+            foreach (var project in projects)
+            {
+                dt.Rows.Add(project.BeneficiarieOrganization, project.Description,
+                    project.SectionIds.Count > 0 ? _projectRepository.getClass(project.SectionIds[0]) : "", 
+                    _projectRepository.getMajors(project.MajorIds), 
+                    _projectRepository.getProfessor(project.Id),  
+                    _projectRepository.getTotalHours(project.Id),
+                    "",
+                    project.Cost,
+                    project.Id);
+            }
+
+            return dt;
+        }
     }
 
 }

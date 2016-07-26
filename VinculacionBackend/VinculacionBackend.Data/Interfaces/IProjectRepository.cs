@@ -19,6 +19,10 @@ namespace VinculacionBackend.Data.Interfaces
         IQueryable<Project> GetProjectsByClass(long classId);
         IQueryable<User> GetProfessorsByProject(long projectId);
         Period GetPeriodByProject(long projectId);
-
+        string getClass(long v);
+        string getMajors(List<string> majorIds);
+        string getProfessor(long id);
+        string getTotalHours(long id);
+        IQueryable<Project> GetByYearAndPeriod(int year, int period);
     }
 }

@@ -318,5 +318,64 @@ namespace VinculacionBackend.Data.Repositories
                     .Where(x => x.Project.Id == projectId)
                     .Select(x => x.Section.Period).First();
         }
+
+        public string getClass(long sectionId)
+        {
+            var selectedClass = _db.Sections.Where(a => a.Id == sectionId).Include(b => b.Class).Select(c => c.Class.Name).ToList();
+            if (selectedClass.Count < 0)
+            {
+                return "";
+            }
+            return selectedClass[0];
+        }
+
+        public string getMajors(List<string> majorIds)
+        {
+            if (majorIds.Count > 1)
+                return "Varias";
+            else if (majorIds.Count < 1)
+                return "";
+            string majorId = majorIds[0];
+            return _db.Majors.First(a => a.MajorId == majorId).Name;
+        }
+
+        public string getProfessor(long projectId)
+        {
+            var selectedClass = _db.SectionProjectsRels.Where(a => a.Project.Id == projectId).ToList();
+            if (selectedClass.Count < 0 || selectedClass[0].Section.User == null)
+            {
+                return "";
+            }
+            return selectedClass[0].Section.User.Name;
+        }
+
+        public string getTotalHours(long id)
+        {
+            return (_db.Hours.Where(hours => hours.SectionProject.Project.Id == id).Sum(a => (int?)a.Amount) ?? 0).ToString();
+        }
+
+        public IQueryable<Project> GetByYearAndPeriod(int year, int period)
+        {
+            var projects = _db.SectionProjectsRels.Where(a => a.Section.Period.Number == period && a.Section.Period.Year == year)
+                .Select(b => b.Project).Distinct().Where(x => x.IsDeleted == false).ToList();
+            foreach (var project in projects)
+            {
+                var projectmajors = _db.ProjectMajorRels.Include(a => a.Project).Include(b => b.Major).Where(x => x.Project.Id == project.Id).ToList();
+                var majorsId = new List<string>();
+                foreach (var x in projectmajors)
+                {
+                    majorsId.Add(x.Major.MajorId);
+                }
+                project.MajorIds = majorsId;
+                var projectSections = _db.SectionProjectsRels.Include(a => a.Project).Include(b => b.Section).Where(x => x.Project.Id == project.Id).ToList();
+                var sectionsId = new List<long>();
+                foreach (var x in projectSections)
+                {
+                    sectionsId.Add(x.Section.Id);
+                }
+                project.SectionIds = sectionsId;
+            }
+            return projects.AsQueryable();
+        }
     }
 }
