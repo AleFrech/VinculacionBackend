@@ -22,9 +22,5 @@ namespace VinculacionBackend.Models
         public List<long> SectionIds { get; set; }
         [Required(ErrorMessage = "*requerido")]
         public string BeneficiarieOrganization {get;set;}
-        [Required(ErrorMessage = "*requerido")]
-        public string BeneficiarieGroups { get; set; }
-        [Required(ErrorMessage = "*requerido")]
-        public int BeneficiariesQuantity {get;set;}
     }
 }
