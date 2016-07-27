@@ -271,10 +271,13 @@ namespace VinculacionBackend.Data.Repositories
 
         public IQueryable<User> GetProjectStudents(long projectId)
         {
-            var secProjRel = _db.SectionProjectsRels.Include(a => a.Project).Where(c => c.Project.Id == projectId);
-            var horas = _db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d => d.Id == c.SectionProject.Id));
-            var users = _db.Users.Include(a => a.Major).Where(b => horas.Any(c => c.User.Id == b.Id));
-            return users;
+            var sections = _db.SectionProjectsRels.Where(a => a.Project.Id == projectId).Select(b => b.Section).ToList();
+            var users = new List<User>();
+            foreach (var section in sections)
+            {
+                users.InsertRange(0, _db.SectionUserRels.Where(a => a.Section.Id == section.Id).Select(b => b.User));
+            }
+            return users.AsQueryable();
         }
 
         public void AssignToSection(long projectId, long sectionId)
