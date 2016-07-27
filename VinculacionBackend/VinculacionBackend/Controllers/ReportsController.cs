@@ -74,5 +74,15 @@ namespace VinculacionBackend.Controllers
             context.Response.End();
             return Ok();
         }
+
+        [Route("api/Reports/PeriodReport/{year}")]
+        public IHttpActionResult GetPeriodReport(int year)
+        {
+            var context = _reportsServices.GenerateReport(_projectServices.CreatePeriodReport(year, 1),
+                1 + " " + year);
+            context.Response.Flush();
+            context.Response.End();
+            return Ok();
+        }
     }
 }
