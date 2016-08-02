@@ -45,8 +45,7 @@ namespace VinculacionBackend.Services
                 section.Class = _classServices.Find(sectionModel.ClassId);
             if (section.User==null || section.User.AccountId != sectionModel.ProffesorAccountId)
                 section.User =_professorsServices.Find(sectionModel.ProffesorAccountId);
-            if (section.Period==null ||section.Period.Id != sectionModel.PeriodId)
-                section.Period = _periodsServices.Find(sectionModel.PeriodId);
+            section.Period = _periodsServices.GetCurrentPeriod();
 
         }
 

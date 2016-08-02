@@ -79,5 +79,10 @@ namespace VinculacionBackend.Services
             _periodsRepository.Save();
             return period;
         }
+
+        public Period GetCurrentPeriod()
+        {
+            return _periodsRepository.GetCurrent();
+        }
     }
 }
