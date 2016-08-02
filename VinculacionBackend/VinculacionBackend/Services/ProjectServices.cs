@@ -21,10 +21,11 @@ namespace VinculacionBackend.Services
         private readonly ITextDocumentServices _textDocumentServices;
         private readonly IMajorRepository _majorRepository;
         private readonly IClassRepository _classRepository;
+        private readonly IPeriodRepository _periodRepository;
         List<int> _periods = new List<int>();
 
         public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository,
-            IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IMajorRepository majorRepository, IClassRepository classRepository)
+            IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IMajorRepository majorRepository, IClassRepository classRepository, IPeriodRepository periodRepository)
         {
             _projectRepository = projectRepository;
             _sectionRepository = sectionRepository;
@@ -32,17 +33,19 @@ namespace VinculacionBackend.Services
             _textDocumentServices = textDocumentServices;
             _majorRepository = majorRepository;
             _classRepository = classRepository;
+            _periodRepository = periodRepository;
             _periods.Add(1);
             _periods.Add(2);
             _periods.Add(3);
             _periods.Add(5);
         }
 
-        public ProjectServices(IProjectRepository projectRepository, IMajorRepository majorRepository, IClassRepository classRepository)
+        public ProjectServices(IProjectRepository projectRepository, IMajorRepository majorRepository, IClassRepository classRepository, IPeriodRepository periodRepository)
         {
             _projectRepository = projectRepository;
             _majorRepository = majorRepository;
             _classRepository = classRepository;
+            _periodRepository = periodRepository;
         }
 
         public Project Find(long id)
@@ -59,51 +62,11 @@ namespace VinculacionBackend.Services
         }
 
 
-        public Dictionary<string, List<PeriodProjectsModel>> GetProjectsTotalByMajor(int year, Major major)
+        public int GetProjectsTotalByMajor(Major major)
         {
-            Dictionary<string, List<PeriodProjectsModel>> reportDictionary =
-                new Dictionary<string, List<PeriodProjectsModel>>();
-            List<PeriodProjectsModel> periodProjects = new List<PeriodProjectsModel>();
-
-            periodProjects.Add(new PeriodProjectsModel
-            {
-                Period = 0,
-                TotalProjects = 0
-            });
-            periodProjects.Add(new PeriodProjectsModel
-            {
-                Period = 0,
-                TotalProjects = 0
-            });
-            periodProjects.Add(new PeriodProjectsModel
-            {
-                Period = 0,
-                TotalProjects = 0
-            });
-            periodProjects.Add(new PeriodProjectsModel
-            {
-                Period = 0,
-                TotalProjects = 0
-            });
-
-            var majorProjectTotalmodels = new List<MajorProjectTotalmodel>();
-
-            for (var i = 0; i < 4; i++)
-            {
-                 majorProjectTotalmodels  = _projectRepository.GetMajorProjectTotal(i, year, major.MajorId);
-                if (majorProjectTotalmodels.Count > 0)
-                {
-                    var total = majorProjectTotalmodels.Sum(x => x.Total);
-                    periodProjects.ElementAt(i).Period = _periods.ElementAt(i);
-                    periodProjects.ElementAt(i).TotalProjects = total;
-                }
-            }
-          //  if (majorProjectTotalmodels.Count > 0)
-           // {
-                reportDictionary.Add(major.Name, periodProjects);
-           // }
-
-            return reportDictionary;
+            var currentPeriod = _periodRepository.GetCurrent();
+            var majorProjectTotalmodels = _projectRepository.GetMajorProjectTotal(currentPeriod, major.MajorId);
+            return majorProjectTotalmodels.Sum(x => x.Total);
         }
 
 
@@ -217,13 +180,9 @@ namespace VinculacionBackend.Services
         {
             var dt = new DataTable();
             dt.Columns.Add("Carrera", typeof(string));
-            dt.Columns.Add("Periodo 1", typeof(int));
-            dt.Columns.Add("Periodo 2", typeof(int));
-            dt.Columns.Add("Periodo 3", typeof(int));
-            dt.Columns.Add("Periodo 5", typeof(int));
+            dt.Columns.Add("Proyectos", typeof(int));
 
             var majors = _majorRepository.GetAll().ToList();
-
             foreach (var m in majors)
             {
                 var projectByMajor = GetProjectsTotalByMajor(year, m);
