@@ -88,15 +88,6 @@ namespace VinculacionBackend.Controllers
             return Ok();
         }
 
-        [ResponseType(typeof(void))]
-        [Route("api/Projects/AssignProjectsToSection")]
-        [ValidateModel]
-        public IHttpActionResult PostAssignProjectsToSection(ProjectsSectionModel model)
-        {
-            _services.AssignProjectsToSection(model);
-            return Ok();
-        }
-
 
         [ResponseType(typeof(void))]
         [Route("api/Projects/RemoveSection")]
