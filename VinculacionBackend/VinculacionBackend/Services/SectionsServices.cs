@@ -27,7 +27,15 @@ namespace VinculacionBackend.Services
         {
            return _sectionsRepository.GetAll();
         }
-        
+
+        public IQueryable<Section> GetCurrentPeriodSections()
+        {
+            var currentPeriod = _periodsServices.GetCurrentPeriod();
+            var sections= _sectionsRepository.GetAll().Where(x => x.Period.Id ==currentPeriod.Id);
+
+            return sections;
+        }
+
         public Section Delete(long sectionId)
         {
             var section = _sectionsRepository.Delete(sectionId);
