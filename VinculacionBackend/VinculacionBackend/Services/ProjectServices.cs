@@ -180,9 +180,7 @@ namespace VinculacionBackend.Services
             var dt = new DataTable();
             dt.Columns.Add("Carrera", typeof(string));
             dt.Columns.Add("Proyectos", typeof(int));
-
             var majors = _majorRepository.GetAll().ToList();
-
             foreach (var m in majors)
             {
                 var totalProjectsByMajor = GetProjectsTotalByMajor(m);
