@@ -61,10 +61,11 @@ namespace VinculacionBackend.Services
             return _projectRepository.GetAll();
         }
 
-        public int  GetProjectsTotalByMajor(Major major)
+
+        public int GetProjectsTotalByMajor(Major major)
         {
             var currentPeriod = _periodRepository.GetCurrent();
-            var majorProjectTotalmodels = _projectRepository.GetMajorProjectTotal(currentPeriod ,major.MajorId);
+            var majorProjectTotalmodels = _projectRepository.GetMajorProjectTotal(currentPeriod, major.MajorId);
             return majorProjectTotalmodels.Sum(x => x.Total);
         }
 
@@ -175,17 +176,23 @@ namespace VinculacionBackend.Services
 
         }
 
-        public DataTable ProjectsByMajorReport()
+        public DataTable CreateProjectsByMajor(int year)
         {
             var dt = new DataTable();
             dt.Columns.Add("Carrera", typeof(string));
             dt.Columns.Add("Proyectos", typeof(int));
+
             var majors = _majorRepository.GetAll().ToList();
             foreach (var m in majors)
             {
-                var totalProjectsByMajor = GetProjectsTotalByMajor(m);
-                dt.Rows.Add(m.Name, totalProjectsByMajor);
+                var projectByMajor = GetProjectsTotalByMajor(year, m);
+                foreach (var key in projectByMajor.Keys)
+                {
+                    dt.Rows.Add(key, projectByMajor[key].ElementAt(0).TotalProjects, projectByMajor[key].ElementAt(1).TotalProjects
+                    , projectByMajor[key].ElementAt(2).TotalProjects, projectByMajor[key].ElementAt(3).TotalProjects);
+                }
             }
+
             return dt;
         }
 
