@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Data.Models;
 using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
@@ -176,7 +175,7 @@ namespace VinculacionBackend.Services
 
         }
 
-        public DataTable CreateProjectsByMajor(int year)
+        public DataTable CreateProjectsByMajor()
         {
             var dt = new DataTable();
             dt.Columns.Add("Carrera", typeof(string));
@@ -185,12 +184,8 @@ namespace VinculacionBackend.Services
             var majors = _majorRepository.GetAll().ToList();
             foreach (var m in majors)
             {
-                var projectByMajor = GetProjectsTotalByMajor(year, m);
-                foreach (var key in projectByMajor.Keys)
-                {
-                    dt.Rows.Add(key, projectByMajor[key].ElementAt(0).TotalProjects, projectByMajor[key].ElementAt(1).TotalProjects
-                    , projectByMajor[key].ElementAt(2).TotalProjects, projectByMajor[key].ElementAt(3).TotalProjects);
-                }
+                var totalProjectsByMajor = GetProjectsTotalByMajor(m);
+                 dt.Rows.Add(m.Name,totalProjectsByMajor);                
             }
 
             return dt;

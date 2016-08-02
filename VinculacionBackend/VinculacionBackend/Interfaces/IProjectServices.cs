@@ -10,10 +10,9 @@ namespace VinculacionBackend.Interfaces
     public interface IProjectServices
     {
         Project Find(long id);
-        IQueryable<Project> All();  
-
-        Dictionary<string, List<PeriodProjectsModel>> GetProjectsTotalByMajor(int year, Major major);
-        DataTable CreateProjectsByMajor(int year);
+        IQueryable<Project> All();
+        int GetProjectsTotalByMajor(Major major);
+        DataTable CreateProjectsByMajor();
         Project Add(ProjectModel project);
         Project Delete(long projectId);
         IQueryable<User> GetProjectStudents(long projectId);

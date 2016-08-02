@@ -36,11 +36,11 @@ namespace VinculacionBackend.Controllers
             return Ok();
         }
 
-        [Route("api/Reports/ProjectsReport")]
+        [Route("api/Reports/ProjectsByMajorReport")]
         public IHttpActionResult GetProjectCountByMajorReport()
         {
-            var context = _reportsServices.GenerateReport(_projectServices.CreateProjectsByMajor(2013),
-                "Reporte de Proyectos por Carrera");
+            var context = _reportsServices.GenerateReport(_projectServices.CreateProjectsByMajor(),
+                "Proyectos por Carrera");
             context.Response.Flush();
             context.Response.End();
             return Ok();

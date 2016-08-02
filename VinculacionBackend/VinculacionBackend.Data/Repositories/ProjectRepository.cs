@@ -29,11 +29,11 @@ namespace VinculacionBackend.Data.Repositories
             return projects.AsQueryable();
         }
 
-        public List<MajorProjectTotalmodel> GetMajorProjectTotal(int period, int year, string majorId)
+        public List<MajorProjectTotalmodel> GetMajorProjectTotal(Period currentPeriod, string majorId)
         {
             List<MajorProjectTotalmodel> projectTotal = new EditableList<MajorProjectTotalmodel>();
             var projectsId =
-                _db.SectionProjectsRels.Where(x => x.Section.Period.Number == period && x.Section.Period.Year == year)
+                _db.SectionProjectsRels.Where(x => x.Section.Period.Number == currentPeriod.Number && x.Section.Period.Year == currentPeriod.Year)
                     .Select(x => x.Project.Id)
                     .ToList();
             foreach (var p in projectsId)
@@ -48,7 +48,7 @@ namespace VinculacionBackend.Data.Repositories
                     {
                         Major = result.ElementAt(0),
                         Total = result.Count
-                    }); 
+                    });
                 }
             }
             return projectTotal;
