@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Net.Http;
-using System.Web.WebPages;
-using DocumentFormat.OpenXml.Drawing.Charts;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Models;
@@ -164,6 +161,16 @@ namespace VinculacionBackend.Services
         }
 
 
+        public void AssignProjectsToSection(ProjectsSectionModel model)
+        {
+            foreach (var p in model.ProjectIds)
+            {
+                _projectRepository.AssignToSection(p,model.SectionId);
+            }
+            _projectRepository.Save();
+        }
+
+
         public bool RemoveFromSection(long projectId, long sectionId)
         {
             var rel = _projectRepository.RemoveFromSection(projectId, sectionId);
@@ -289,6 +296,8 @@ namespace VinculacionBackend.Services
 
             return dt;
         }
+
+
     }
 
 }

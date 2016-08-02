@@ -24,5 +24,6 @@ namespace VinculacionBackend.Interfaces
         HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups);
         DataTable ProjectsByClass(long classId);
         DataTable CreatePeriodReport(int year, int period);
+        void AssignProjectsToSection(ProjectsSectionModel model);
     }
 }
