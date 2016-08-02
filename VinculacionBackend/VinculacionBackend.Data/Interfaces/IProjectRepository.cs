@@ -15,7 +15,7 @@ namespace VinculacionBackend.Data.Interfaces
         IQueryable<Project> GetAllProfessor(long userId);
         Section GetSection(Project project);
         IQueryable<Project> GetByMajor(string majorId);
-        List<MajorProjectTotalmodel> GetMajorProjectTotal(int period, int year, string marjorId);
+        List<MajorProjectTotalmodel> GetMajorProjectTotal(Period currentPeriod,string marjorId);
         IQueryable<Project> GetProjectsByClass(long classId);
         IQueryable<User> GetProfessorsByProject(long projectId);
         Period GetPeriodByProject(long projectId);
