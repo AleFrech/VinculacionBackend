@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net.Http;
@@ -11,8 +10,6 @@ namespace VinculacionBackend.Interfaces
     {
         Project Find(long id);
         IQueryable<Project> All();  
-
-        Dictionary<string, List<PeriodProjectsModel>> GetProjectsTotalByMajor(int year, Major major);
         DataTable ProjectsByMajorReport();
         Project Add(ProjectModel project);
         Project Delete(long projectId);
@@ -24,5 +21,6 @@ namespace VinculacionBackend.Interfaces
         HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups);
         DataTable ProjectsByClass(long classId);
         DataTable CreatePeriodReport(int year, int period);
+        void AssignProjectsToSection(ProjectsSectionModel model);
     }
 }

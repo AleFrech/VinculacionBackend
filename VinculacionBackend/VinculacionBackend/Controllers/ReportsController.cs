@@ -40,7 +40,7 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult GetProjectCountByMajorReport()
         {
             var context = _reportsServices.GenerateReport(_projectServices.ProjectsByMajorReport(),
-                "Reporte de Proyectos por Car");
+                "Proyectos por Carrera");
             context.Response.Flush();
             context.Response.End();
             return Ok();

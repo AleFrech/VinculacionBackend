@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Net.Http;
-
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Models;
@@ -63,12 +61,6 @@ namespace VinculacionBackend.Services
             return _projectRepository.GetAll();
         }
 
-        public Dictionary<string, List<PeriodProjectsModel>> GetProjectsTotalByMajor(int year, Major major)
-        {
-            throw new NotImplementedException();
-        }
-
-
         public Dictionary<string, List<PeriodProjectsModel>> GetProjectsTotalByMajor(Major major)
         {
             Dictionary<string, List<PeriodProjectsModel>> reportDictionary =
@@ -83,20 +75,14 @@ namespace VinculacionBackend.Services
                 TotalProjects = 0
             });
 
-            var majorProjectTotalmodels = new List<MajorProjectTotalmodel>();
-
-            majorProjectTotalmodels  = _projectRepository.GetMajorProjectTotal(currentPeriod ,major.MajorId);
+            var majorProjectTotalmodels = _projectRepository.GetMajorProjectTotal(currentPeriod ,major.MajorId);
             if (majorProjectTotalmodels.Count > 0)
             {
                 var total = majorProjectTotalmodels.Sum(x => x.Total);
                 periodProjects.ElementAt(0).Period = currentPeriod.Number;
                 periodProjects.ElementAt(0).TotalProjects = total;
             }
-
-          //  if (majorProjectTotalmodels.Count > 0)
-           // {
-                reportDictionary.Add(major.Name, periodProjects);
-           // }
+            reportDictionary.Add(major.Name, periodProjects);
 
             return reportDictionary;
         }
@@ -156,6 +142,16 @@ namespace VinculacionBackend.Services
         }
 
 
+        public void AssignProjectsToSection(ProjectsSectionModel model)
+        {
+            foreach (var p in model.ProjectIds)
+            {
+                _projectRepository.AssignToSection(p,model.SectionId);
+            }
+            _projectRepository.Save();
+        }
+
+
         public bool RemoveFromSection(long projectId, long sectionId)
         {
             var rel = _projectRepository.RemoveFromSection(projectId, sectionId);
@@ -202,7 +198,7 @@ namespace VinculacionBackend.Services
         {
             var dt = new DataTable();
             dt.Columns.Add("Carrera", typeof(string));
-            dt.Columns.Add("Periodo", typeof(int));
+            dt.Columns.Add("Proyectos", typeof(int));
 
             var majors = _majorRepository.GetAll().ToList();
 
@@ -276,6 +272,8 @@ namespace VinculacionBackend.Services
 
             return dt;
         }
+
+
     }
 
 }
