@@ -96,7 +96,7 @@ namespace VinculacionBackend.Data.Repositories
         public IQueryable<Project> GetSectionProjects(long sectionId)
         {
             var secProjRel = _db.SectionProjectsRels.Include(a => a.Project).Include(b => b.Section).Where(c=>c.Section.Id==sectionId);
-            var projects =_db.Projects.Where(x => secProjRel.Any(a => a.Section.Id == x.Id) && x.IsDeleted == false).ToList();
+            var projects =_db.Projects.Where(x => secProjRel.Any(a => a.Project.Id == x.Id) && x.IsDeleted == false).ToList();
 
             foreach (var project in projects)
             {
