@@ -13,5 +13,6 @@ namespace VinculacionBackend.Interfaces
         void Map(Period period,PeriodEntryModel periodModel);
         Period UpdatePeriod(long preriodId, PeriodEntryModel model);
         Period SetCurrentPeriod(long periodId);
+        Period GetCurrentPeriod();
     }
 }
