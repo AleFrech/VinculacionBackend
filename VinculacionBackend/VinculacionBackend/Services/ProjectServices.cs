@@ -61,30 +61,11 @@ namespace VinculacionBackend.Services
             return _projectRepository.GetAll();
         }
 
-        public Dictionary<string, List<PeriodProjectsModel>> GetProjectsTotalByMajor(Major major)
+        public int  GetProjectsTotalByMajor(Major major)
         {
-            Dictionary<string, List<PeriodProjectsModel>> reportDictionary =
-                new Dictionary<string, List<PeriodProjectsModel>>();
-            List<PeriodProjectsModel> periodProjects = new List<PeriodProjectsModel>();
-
             var currentPeriod = _periodRepository.GetCurrent();
-
-            periodProjects.Add(new PeriodProjectsModel
-            {
-                Period = 0,
-                TotalProjects = 0
-            });
-
             var majorProjectTotalmodels = _projectRepository.GetMajorProjectTotal(currentPeriod ,major.MajorId);
-            if (majorProjectTotalmodels.Count > 0)
-            {
-                var total = majorProjectTotalmodels.Sum(x => x.Total);
-                periodProjects.ElementAt(0).Period = currentPeriod.Number;
-                periodProjects.ElementAt(0).TotalProjects = total;
-            }
-            reportDictionary.Add(major.Name, periodProjects);
-
-            return reportDictionary;
+            return majorProjectTotalmodels.Sum(x => x.Total);
         }
 
 
@@ -204,11 +185,8 @@ namespace VinculacionBackend.Services
 
             foreach (var m in majors)
             {
-                var projectByMajor = GetProjectsTotalByMajor(m);
-                foreach (var key in projectByMajor.Keys)
-                {
-                    dt.Rows.Add(key, projectByMajor[key].ElementAt(0).TotalProjects);
-                }
+                var totalProjectsByMajor = GetProjectsTotalByMajor(m);
+                dt.Rows.Add(m.Name, totalProjectsByMajor);
             }
             return dt;
         }
