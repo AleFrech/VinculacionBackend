@@ -30,6 +30,16 @@ namespace VinculacionBackend.Controllers
             return _sectionServices.All();
         }
 
+
+        // GET: api/Sections
+        [Route("api/Sections/CurrentPeriodSections")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
+        [EnableQuery]
+        public IQueryable<Section> GetCurrentPeriodSections()
+        {
+            return _sectionServices.GetCurrentPeriodSections();
+        }
+
         // GET: api/Sections/5
         [Route("api/Sections/{sectionId}")]
         [ResponseType(typeof(Section))]
