@@ -23,7 +23,9 @@ namespace VinculacionBackend.Reports
         public HttpResponseMessage GenerateFiniquitoReport(string accountId)
         {
             var student = _studentRepository.GetByAccountNumber(accountId);
-
+            student.Finiquiteado = true;
+            _studentRepository.Update(student);
+            _studentRepository.Save();
             var doc = _textDoucmentServices.CreaDocument();
             var page1 = _textDoucmentServices.CreatePage(doc);
             _textDoucmentServices.SetPageMArgins(page1,35f,71f,85f,85f);

@@ -60,6 +60,14 @@ namespace VinculacionBackend.Controllers
             return Ok(student);
         }
 
+        [Route("api/Students/PendingFiniquitoStudents")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
+        [EnableQuery]
+        public IQueryable<User> GetStudentsPendingFiniquito()
+        {
+
+            return _studentsServices.GetPendingStudentsFiniquito();
+        }
 
         [Route("api/Students/FiniquitoReport/{accountId}")]
         public HttpResponseMessage GetProjectFinalReport(string accountId)

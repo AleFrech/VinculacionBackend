@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net.Http;
@@ -19,13 +18,15 @@ namespace VinculacionBackend.Services
         private readonly IMajorsServices _majorServices;
         private readonly IEncryption _encryption;
         private readonly ITextDocumentServices _textDocumentServices;
+        private readonly IHourRepository _hourRepository;
 
-        public StudentsServices(IStudentRepository studentRepository, IEncryption encryption, IMajorsServices majorServices, ITextDocumentServices textDocumentServices)
+        public StudentsServices(IStudentRepository studentRepository, IEncryption encryption, IMajorsServices majorServices, ITextDocumentServices textDocumentServices, IHourRepository hourRepository)
         {
             _studentRepository = studentRepository;
             _encryption = encryption;
             _majorServices = majorServices;
             _textDocumentServices = textDocumentServices;
+            _hourRepository = hourRepository;
         }
 
         public  void Map(User student,UserEntryModel userModel)
@@ -39,6 +40,7 @@ namespace VinculacionBackend.Services
             student.Status = Status.Inactive;
             student.CreationDate = DateTime.Now;
             student.ModificationDate = DateTime.Now;
+            student.Finiquiteado = false;
         }
 
 
@@ -52,6 +54,7 @@ namespace VinculacionBackend.Services
             student.Campus = userModel.Campus;
             student.Email = userModel.Email;
             student.ModificationDate = DateTime.Now;
+            student.Finiquiteado = false;
         }
 
 
@@ -217,6 +220,17 @@ namespace VinculacionBackend.Services
 
             dataTables[1] = dt2;
             return dataTables;
+        }
+
+        public IQueryable<User> GetPendingStudentsFiniquito()
+        {
+            return _studentRepository.GetAll().Where(student =>
+            {
+                var hours =_hourRepository.GetStudentHours(student.AccountId);
+                return hours.Aggregate(0, (total, hour) => total + hour.Amount) >= 100
+                       && !student.Finiquiteado
+                       && hours.Any(hour => hour.SectionProject.Section.Period.Year >= 2016);
+            });
         }
     }
 }

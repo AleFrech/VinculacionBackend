@@ -31,8 +31,8 @@ namespace VinculacionBackend.Services
             professor.Status = Status.Inactive;
             professor.CreationDate = DateTime.Now;
             professor.ModificationDate = DateTime.Now;
+            professor.Finiquiteado = true;
         }
-
 
         public void PutMap(User professor, ProfessorEntryModel professorModel)
         {
@@ -43,6 +43,7 @@ namespace VinculacionBackend.Services
             professor.Campus = professorModel.Campus;
             professor.Email = professorModel.Email;
             professor.ModificationDate = DateTime.Now;
+            professor.Finiquiteado = true;
         }
 
 
