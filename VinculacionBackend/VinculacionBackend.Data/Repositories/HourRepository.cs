@@ -35,7 +35,7 @@ namespace VinculacionBackend.Data.Repositories
         public IQueryable<Hour> GetStudentHours(string accountId)
         {
             return _db.Hours.Where(hour => hour.User.AccountId == accountId)
-                .Include("SectionProject.Project").Include("SectionProject.Section");
+                .Include("SectionProject.Project").Include("SectionProject.Section").Include("SectionProject.Section.Period");
         }     
 
         public void Insert(Hour ent)
