@@ -17,5 +17,7 @@ namespace VinculacionBackend.Interfaces
         IQueryable<User> GetSectionStudents(long sectionId);
         IQueryable<Project> GetSectionsProjects(long sectionId);
         IQueryable<Section> GetCurrentPeriodSections();
+        IQueryable<Section> AllByUser(long userId, string[] roles);
+        IQueryable<Section> GetCurrentPeriodSectionsByUser(long userId, string role);
     }
 }

@@ -10,5 +10,6 @@ namespace VinculacionBackend.Data.Interfaces
         void RemoveStudents(long sectionId, List<string> studentsIds);
         IQueryable<User> GetSectionStudents(long sectionId);
         IQueryable<Project> GetSectionProjects(long sectionId);
+        IQueryable<Section> GetAllByStudent(long userId);
     }
 }

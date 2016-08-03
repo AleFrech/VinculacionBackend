@@ -9,6 +9,7 @@ namespace VinculacionBackend.Models
     {
         public string ProjectId { get; set; }
         public string ProjectName { get; set; }
+        public string SectionName { get; set; }
         public int HoursWorked { get; set; }
         public string ProjectDescription { get; set; }
     }

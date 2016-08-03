@@ -34,6 +34,7 @@ namespace VinculacionBackend.Services
                 {
                     ProjectId = hour.SectionProject.Project.ProjectId,
                     ProjectName = hour.SectionProject.Project.Name,
+                    SectionName = hour.SectionProject.Section != null ? hour.SectionProject.Section.Code : "",
                     HoursWorked = hour.Amount,
                     ProjectDescription = hour.SectionProject.Project.Description
                 };

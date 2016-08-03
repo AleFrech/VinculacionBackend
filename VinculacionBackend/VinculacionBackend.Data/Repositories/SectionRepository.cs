@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -140,6 +141,11 @@ namespace VinculacionBackend.Data.Repositories
             _db.Periods.Attach(ent.Period);
             _db.Users.Attach(ent.User);
             _db.Entry(ent).State = EntityState.Modified;
+        }
+
+        public IQueryable<Section> GetAllByStudent(long userId)
+        {
+            return _db.SectionUserRels.Select(a => a.Section).Where(b => b.User.Id == userId);
         }
     }
 }

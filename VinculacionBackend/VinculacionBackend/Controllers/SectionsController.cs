@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
@@ -27,7 +28,8 @@ namespace VinculacionBackend.Controllers
         [EnableQuery]
         public IQueryable<Section> GetSections()
         {
-            return _sectionServices.All();
+            var currentUser = (CustomPrincipal)HttpContext.Current.User;
+            return _sectionServices.AllByUser(currentUser.UserId, currentUser.roles);
         }
 
 
@@ -37,7 +39,8 @@ namespace VinculacionBackend.Controllers
         [EnableQuery]
         public IQueryable<Section> GetCurrentPeriodSections()
         {
-            return _sectionServices.GetCurrentPeriodSections();
+            var currentUser = (CustomPrincipal)HttpContext.Current.User;
+            return _sectionServices.GetCurrentPeriodSectionsByUser(currentUser.UserId, currentUser.roles.Single());
         }
 
         // GET: api/Sections/5

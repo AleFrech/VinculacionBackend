@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
@@ -13,6 +14,7 @@ namespace VinculacionBackend.Services
         private readonly IProfessorsServices _professorsServices;
         private readonly IClassesServices _classServices;
         private readonly IPeriodsServices _periodsServices;
+        private readonly IStudentsServices _studentServices;
 
         public SectionsServices(ISectionRepository sectionsRepository, IProfessorsServices professorsServices, IClassesServices classServices, IPeriodsServices periodsServices)
         {
@@ -26,6 +28,41 @@ namespace VinculacionBackend.Services
         public IQueryable<Section> All()
         {
            return _sectionsRepository.GetAll();
+        }
+
+        public IQueryable<Section> AllByUser(long userId, string[] roles)
+        {
+            if (roles.Contains("Admin"))
+            {
+                return _sectionsRepository.GetAll();
+            }
+            else if (roles.Contains("Professor"))
+            {
+                return _sectionsRepository.GetAll().Where(a => a.User.Id == userId);
+            }
+            else if (roles.Contains("Student"))
+            {
+                return _sectionsRepository.GetAllByStudent(userId);
+            }
+            throw new Exception("No tiene permiso");
+        }
+
+        public IQueryable<Section> GetCurrentPeriodSectionsByUser(long userId, string role)
+        {
+            var currentPeriod = _periodsServices.GetCurrentPeriod();
+            if (role.Equals("Admin"))
+            {
+                return _sectionsRepository.GetAll().Where(x => x.Period.Id == currentPeriod.Id);
+            }
+            else if (role.Equals("Professor"))
+            {
+                return _sectionsRepository.GetAll().Where(a => a.User.Id == userId && a.Period.Id == currentPeriod.Id);
+            }
+            else if (role.Equals("Student"))
+            {
+                return _sectionsRepository.GetAllByStudent(userId).Where(x => x.Period.Id == currentPeriod.Id);
+            }
+            throw new Exception("No tiene permiso");
         }
 
         public IQueryable<Section> GetCurrentPeriodSections()
