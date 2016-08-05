@@ -61,7 +61,6 @@ namespace VinculacionBackend.Controllers
         }
 
         [Route("api/Students/PendingFiniquitoStudents")]
-        [CustomAuthorize(Roles = "Admin,Professor")]
         [EnableQuery]
         public IQueryable<User> GetStudentsPendingFiniquito()
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net.Http;
@@ -224,13 +225,32 @@ namespace VinculacionBackend.Services
 
         public IQueryable<User> GetPendingStudentsFiniquito()
         {
-            return _studentRepository.GetAll().Where(student =>
+            var students = _studentRepository.GetAll().ToList();
+            var hours = _hourRepository.GetAll().ToList();
+
+            var toReturn = new List<User>();
+
+            foreach (var student in students)
             {
-                var hours =_hourRepository.GetStudentHours(student.AccountId);
-                return hours.Aggregate(0, (total, hour) => total + hour.Amount) >= 100
-                       && !student.Finiquiteado
-                       && hours.Any(hour => hour.SectionProject.Section.Period.Year >= 2016);
-            });
+                int hourTotal = 0;
+                bool validYear = false;
+                foreach(var hour in hours)
+                {
+                    if (hour.User.Id == student.Id)
+                    {
+                        hourTotal += hour.Amount;
+                        if (hour.SectionProject.Section.Period.Year >= 2016)
+                            validYear = true;
+                    }
+                }
+
+                if (hourTotal >= 100 && !student.Finiquiteado && validYear)
+                {
+                    toReturn.Add(student);
+                }
+            }
+
+            return toReturn.AsQueryable();
         }
     }
 }

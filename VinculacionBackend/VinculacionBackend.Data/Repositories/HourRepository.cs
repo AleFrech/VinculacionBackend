@@ -1,5 +1,6 @@
 using System.Data.Entity;
 using System.Linq;
+using Castle.Components.DictionaryAdapter.Xml;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
@@ -29,7 +30,7 @@ namespace VinculacionBackend.Data.Repositories
 
         public IQueryable<Hour> GetAll()
         {
-            return _db.Hours;
+            return _db.Hours.Include("User").Include("SectionProject").Include(x=>x.SectionProject.Section).Include(x => x.SectionProject.Section.Period);
         }
 
         public IQueryable<Hour> GetStudentHours(string accountId)

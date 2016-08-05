@@ -98,6 +98,10 @@
     <Compile Include="Migrations\201606210351590_DropBenficiariesGroupAndQuantity.Designer.cs">
       <DependentUpon>201606210351590_DropBenficiariesGroupAndQuantity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608052222482_Finiquito.cs" />
+    <Compile Include="Migrations\201608052222482_Finiquito.Designer.cs">
+      <DependentUpon>201608052222482_Finiquito.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\MajorProjectTotalmodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -123,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606210351590_DropBenficiariesGroupAndQuantity.resx">
       <DependentUpon>201606210351590_DropBenficiariesGroupAndQuantity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608052222482_Finiquito.resx">
+      <DependentUpon>201608052222482_Finiquito.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
