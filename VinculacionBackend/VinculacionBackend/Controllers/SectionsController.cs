@@ -24,7 +24,7 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Sections
         [Route("api/Sections")]
-        [CustomAuthorize(Roles = "Admin,Professor")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
         [EnableQuery]
         public IQueryable<Section> GetSections()
         {
@@ -35,7 +35,7 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Sections
         [Route("api/Sections/CurrentPeriodSections")]
-        [CustomAuthorize(Roles = "Admin,Professor")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
         [EnableQuery]
         public IQueryable<Section> GetCurrentPeriodSections()
         {
