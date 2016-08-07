@@ -23,5 +23,6 @@ namespace VinculacionBackend.Interfaces
         User UpdateStudent(string accountId, UserEntryModel model);
         DataTable[] CreateStudentReport(int year);
         IQueryable<User> GetPendingStudentsFiniquito();
+        User GetCurrentStudents(long userId);
     }
 }

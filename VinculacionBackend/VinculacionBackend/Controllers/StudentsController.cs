@@ -52,6 +52,19 @@ namespace VinculacionBackend.Controllers
         }
 
         [ResponseType(typeof(User))]
+        [Route("api/Students/Me")]
+        [CustomAuthorize(Roles = "Student")]
+        public IHttpActionResult GetCurrentStudent()
+        {
+            var currentUser = (CustomPrincipal)HttpContext.Current.User;
+
+            var student = _studentsServices.GetCurrentStudents(currentUser.UserId);
+            return Ok(student);
+        }
+
+
+
+        [ResponseType(typeof(User))]
         [Route("api/StudentByEmail")]
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult PostStudentByEmail(EmailModel model)

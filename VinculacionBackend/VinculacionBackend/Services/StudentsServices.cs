@@ -252,5 +252,10 @@ namespace VinculacionBackend.Services
 
             return toReturn.AsQueryable();
         }
+
+        public User GetCurrentStudents(long userId)
+        {
+            return _studentRepository.Get(userId);
+        }
     }
 }
