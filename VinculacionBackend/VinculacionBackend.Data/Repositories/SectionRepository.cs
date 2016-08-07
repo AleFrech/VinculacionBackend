@@ -145,7 +145,8 @@ namespace VinculacionBackend.Data.Repositories
 
         public IQueryable<Section> GetAllByStudent(long userId)
         {
-            return _db.SectionUserRels.Select(a => a.Section).Where(b => b.User.Id == userId);
+            return _db.SectionUserRels.Where(b => b.User.Id == userId).Select(a => a.Section)
+                    .Include(b => b.Class).Include(c => c.Period).Include(d => d.User);
         }
     }
 }
