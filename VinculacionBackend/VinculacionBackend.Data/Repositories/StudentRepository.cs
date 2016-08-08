@@ -226,5 +226,13 @@ namespace VinculacionBackend.Data.Repositories
             var students = GetAll();
             return students.AsQueryable().Include(x => x.Major).Where(a => a.Major.MajorId == majorId).ToList();
         }
+
+        public int GetStudentHoursBySection(string accountId, long sectionId)
+        {
+            var user = _db.Hours.Where(a => a.SectionProject.Section.Id == sectionId)
+                            .Where(b => accountId.Equals(b.User.AccountId))
+                            .FirstOrDefault();
+            return user != null ? user.Amount : 0;
+        }
     }
 }

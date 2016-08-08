@@ -98,6 +98,15 @@ namespace VinculacionBackend.Controllers
             return Ok(total);
         }
 
+        [ResponseType(typeof(User))]
+        [Route("api/Students/{accountId}/Section/{sectionid}/Hours")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IHttpActionResult GetStudentHourBySection(string accountId, long sectionId)
+        {
+            var total = _studentsServices.GetStudentHoursBySection(accountId, sectionId);
+            return Ok(total);
+        }
+
         [Route("api/Students/Filter/{status}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IQueryable<User> GetStudents(string status)

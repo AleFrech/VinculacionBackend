@@ -20,5 +20,6 @@ namespace VinculacionBackend.Data.Interfaces
         int GetHoursCount(int period, string clase, int year);
         int GetHoursByFacultyCount(int period, int faculty, int year);
         IEnumerable<User> GetStudentByMajor(string majorId);
+        int GetStudentHoursBySection(string accountId, long sectionId);
     }
 }

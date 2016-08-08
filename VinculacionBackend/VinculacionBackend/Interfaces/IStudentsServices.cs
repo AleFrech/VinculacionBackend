@@ -24,5 +24,6 @@ namespace VinculacionBackend.Interfaces
         DataTable[] CreateStudentReport(int year);
         IQueryable<User> GetPendingStudentsFiniquito();
         User GetCurrentStudents(long userId);
+        int GetStudentHoursBySection(string accountId, long sectionId);
     }
 }
