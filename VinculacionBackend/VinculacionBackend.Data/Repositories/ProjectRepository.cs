@@ -380,5 +380,30 @@ namespace VinculacionBackend.Data.Repositories
             }
             return projects.AsQueryable();
         }
+
+        public IQueryable<Project> GetProjectsBySection(long sectionId)
+        {
+            var projects= _db.SectionProjectsRels.Include(rel => rel.Section).Include(rel => rel.Project).
+                Where(rel => rel.Section.Id == sectionId).Select(rel => rel.Project).Where(x=>x.IsDeleted==false).ToList();
+            foreach (var project in projects)
+            {
+                var projectmajors = _db.ProjectMajorRels.Include(a => a.Project).Include(b => b.Major).Where(x => x.Project.Id == project.Id).ToList();
+                var majorsId = new List<string>();
+                foreach (var x in projectmajors)
+                {
+                    majorsId.Add(x.Major.MajorId);
+                }
+                project.MajorIds = majorsId;
+                var projectSections = _db.SectionProjectsRels.Include(a => a.Project).Include(b => b.Section).Where(x => x.Project.Id == project.Id).ToList();
+                var sectionsId = new List<long>();
+                foreach (var x in projectSections)
+                {
+                    sectionsId.Add(x.Section.Id);
+                }
+                project.SectionIds = sectionsId;
+            }
+            return projects.AsQueryable();
+
+        }
     }
 }

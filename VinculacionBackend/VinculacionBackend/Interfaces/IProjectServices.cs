@@ -24,5 +24,6 @@ namespace VinculacionBackend.Interfaces
         DataTable ProjectsByClass(long classId);
         DataTable CreatePeriodReport(int year, int period);
         void AssignProjectsToSection(ProjectsSectionModel model);
+        IQueryable<Project> GetProjectsBySection(long sectionId);
     }
 }
