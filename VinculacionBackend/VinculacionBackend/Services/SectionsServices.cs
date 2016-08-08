@@ -65,6 +65,11 @@ namespace VinculacionBackend.Services
             throw new Exception("No tiene permiso");
         }
 
+        public IQueryable<Section> GetSectionsByProject(long projectId)
+        {
+            return _sectionsRepository.GetSectionsByProject(projectId);
+        }
+
         public IQueryable<Section> GetCurrentPeriodSections()
         {
             var currentPeriod = _periodsServices.GetCurrentPeriod();
