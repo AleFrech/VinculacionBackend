@@ -38,7 +38,7 @@ namespace VinculacionBackend.Services
             }
             else if (roles.Contains("Professor"))
             {
-                return _sectionsRepository.GetAll().Where(a => a.User.Id == userId);
+                return _sectionsRepository.GetAllByProfessor(userId);
             }
             else if (roles.Contains("Student"))
             {
@@ -56,7 +56,7 @@ namespace VinculacionBackend.Services
             }
             else if (role.Equals("Professor"))
             {
-                return _sectionsRepository.GetAll().Where(a => a.User.Id == userId && a.Period.Id == currentPeriod.Id);
+                return _sectionsRepository.GetAllByProfessor(userId).Where(a=>a.Period.Id == currentPeriod.Id);
             }
             else if (role.Equals("Student"))
             {

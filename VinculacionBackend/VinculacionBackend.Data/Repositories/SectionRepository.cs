@@ -178,5 +178,12 @@ namespace VinculacionBackend.Data.Repositories
             return _db.SectionProjectsRels.Include(rel => rel.Section).Include(rel => rel.Project).
                 Where(rel => rel.Project.Id == projectId).Select(rel => rel.Section).Include(x=>x.Period).Include(a=>a.User).Include(c=>c.Class);
         }
+
+        public IQueryable<Section> GetAllByProfessor(long userId)
+        {
+            return _db.SectionUserRels.Where(b => b.Section.User.Id == userId).Select(a => a.Section)
+                .Include(b => b.Class).Include(c => c.Period).Include(d => d.User);
+        }
     }
 }
+
