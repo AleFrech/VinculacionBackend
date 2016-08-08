@@ -24,5 +24,6 @@ namespace VinculacionBackend.Data.Interfaces
         string getProfessor(long id);
         string getTotalHours(long id);
         IQueryable<Project> GetByYearAndPeriod(int year, int period);
+        IQueryable<Project> GetProjectsBySection(long sectionId);
     }
 }

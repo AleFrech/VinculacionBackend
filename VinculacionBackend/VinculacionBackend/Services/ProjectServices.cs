@@ -132,6 +132,10 @@ namespace VinculacionBackend.Services
             _projectRepository.Save();
         }
 
+        public IQueryable<Project> GetProjectsBySection(long sectionId)
+        {
+            return _projectRepository.GetProjectsBySection(sectionId);
+        }
 
         public bool RemoveFromSection(long projectId, long sectionId)
         {
