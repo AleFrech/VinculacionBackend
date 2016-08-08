@@ -50,7 +50,8 @@ namespace VinculacionBackend.Controllers
         [EnableQuery]
         public IQueryable<Section> GetSectionsByProject(long projectId)
         {
-            return _sectionServices.GetSectionsByProject(projectId);
+            var sections = _sectionServices.GetSectionsByProject(projectId);
+            return sections;
         }
 
         // GET: api/Sections/5

@@ -175,12 +175,8 @@ namespace VinculacionBackend.Data.Repositories
 
         public IQueryable<Section> GetSectionsByProject(long projectId)
         {
-            var secProjRel =
-                _db.SectionProjectsRels.Include(a => a.Project)
-                    .Include(b => b.Section)
-                    .Where(c => c.Project.Id == projectId)
-                    .ToList();
-            return _db.Sections.Where(x => secProjRel.Any(a => a.Section.Id == x.Id));
+            return _db.SectionProjectsRels.Include(rel => rel.Section).Include(rel => rel.Project).
+                Where(rel => rel.Project.Id == projectId).Select(rel => rel.Section).Include(x=>x.Period).Include(a=>a.User).Include(c=>c.Class);
         }
     }
 }
