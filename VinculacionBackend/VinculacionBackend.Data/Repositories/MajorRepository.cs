@@ -64,7 +64,6 @@ namespace VinculacionBackend.Data.Repositories
         {
             _db.Faculties.Attach(ent.Faculty);
             _db.Majors.AddOrUpdate(ent);
-            _db.Entry(ent).State = System.Data.Entity.EntityState.Modified;
         }
     }
 }

@@ -113,6 +113,15 @@ namespace VinculacionBackend.Services
 
         }
 
+        public void PutMap(Section section, SectionEntryModel sectionModel)
+        {
+            section.Code = sectionModel.Code;
+            if (section.Class == null || section.Class.Id != sectionModel.ClassId)
+                section.Class = _classServices.Find(sectionModel.ClassId);
+            if (section.User == null || section.User.AccountId != sectionModel.ProffesorAccountId)
+                section.User = _professorsServices.Find(sectionModel.ProffesorAccountId);
+        }
+
         public void Add(Section section)
         {
             _sectionsRepository.Insert(section);
@@ -125,7 +134,7 @@ namespace VinculacionBackend.Services
             var tmpSection = _sectionsRepository.Get(sectionId);
             if (tmpSection == null)
                 throw new NotFoundException("No se encontro la seccion");
-            Map(tmpSection,model);
+            PutMap(tmpSection,model);
             tmpSection.Id = sectionId;
             _sectionsRepository.Update(tmpSection);
             _sectionsRepository.Save();
