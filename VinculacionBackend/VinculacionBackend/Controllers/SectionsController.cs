@@ -50,7 +50,8 @@ namespace VinculacionBackend.Controllers
         [EnableQuery]
         public IQueryable<Section> GetSectionsByProject(long projectId)
         {
-            var sections = _sectionServices.GetSectionsByProject(projectId);
+            var currentUser = (CustomPrincipal)HttpContext.Current.User;
+            var sections = _sectionServices.GetSectionsByProject(projectId,currentUser.roles.Single(),currentUser.UserId);
             return sections;
         }
 

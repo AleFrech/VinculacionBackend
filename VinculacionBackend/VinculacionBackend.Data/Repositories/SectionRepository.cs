@@ -184,6 +184,11 @@ namespace VinculacionBackend.Data.Repositories
             return _db.SectionUserRels.Where(b => b.Section.User.Id == userId).Select(a => a.Section)
                 .Include(b => b.Class).Include(c => c.Period).Include(d => d.User);
         }
+
+        public IQueryable<SectionUser> GetSectionsUsersRels()
+        {
+            return _db.SectionUserRels.Include(x => x.Section).Include(x => x.User);
+        }
     }
 }
 
