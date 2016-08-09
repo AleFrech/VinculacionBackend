@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
@@ -137,9 +138,9 @@ namespace VinculacionBackend.Data.Repositories
         public void Update(Section ent)
         {
             _db.Classes.Attach(ent.Class);
-            _db.Periods.Attach(ent.Period);
+            //_db.Periods.Attach(ent.Period);
             _db.Users.Attach(ent.User);
-            _db.Entry(ent).State = EntityState.Modified;
+            _db.Sections.AddOrUpdate(ent);
         }
 
         public IQueryable<Section> GetAllByStudent(long userId)
@@ -156,7 +157,7 @@ namespace VinculacionBackend.Data.Repositories
 
         public IQueryable<Section> GetAllByProfessor(long userId)
         {
-            return _db.SectionUserRels.Where(b => b.Section.User.Id == userId).Select(a => a.Section)
+            return _db.Sections.Where(b => b.User.Id == userId)
                 .Include(b => b.Class).Include(c => c.Period).Include(d => d.User);
         }
 
