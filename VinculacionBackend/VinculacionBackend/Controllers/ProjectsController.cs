@@ -31,6 +31,17 @@ namespace VinculacionBackend.Controllers
         [EnableQuery]
         public IQueryable<Project> GetProjects()
         {
+            return _services.All();
+        }
+
+
+
+        // GET: api/Projects
+        [Route("api/Projects/ProjectsByUser")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        [EnableQuery]
+        public IQueryable<Project> GetProjectsByUser()
+        {
             var currentUser = (CustomPrincipal)HttpContext.Current.User;
             return _services.GetUserProjects(currentUser.UserId, currentUser.roles);
         }
