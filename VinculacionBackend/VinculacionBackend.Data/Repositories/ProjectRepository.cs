@@ -104,15 +104,14 @@ namespace VinculacionBackend.Data.Repositories
 
         public IQueryable<Project> GetAllStudent(long studentId)
         {
-            return _db.SectionUserRels.Where(b => b.User.Id == studentId).Select(a => a.Section)
-     .Include(b => b.Class).Include(c => c.Period).Include(d => d.User);
+            var sectionUserRels = _db.SectionUserRels.Include("Section").Include("User").ToList();
+            var projectSectionRels = _db.SectionProjectsRels.Include("Section").Include("Project").ToList();
+            return projectSectionRels.Where(rel => sectionUserRels.Any(su => su.Section.Id == rel.Section.Id && su.User.Id == studentId)).Select(rel => rel.Project).Distinct().AsQueryable();
         }
 
         public IQueryable<Project> GetAllProfessor(long professorId)
         {
-
-            return _db.SectionUserRels.Where(b => b.Section.User.Id == professorId).Select(a => a.Section)
-               .Include(b => b.Class).Include(c => c.Period).Include(d => d.User);
+            return _db.SectionProjectsRels.Include("Project").Include("Section.User").Where(rel => rel.Section.User.Id == professorId).Select(rel => rel.Project).Distinct();
         }
 
         public void Insert(Project ent)

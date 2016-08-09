@@ -138,7 +138,6 @@ namespace VinculacionBackend.Data.Repositories
         public void Update(Section ent)
         {
             _db.Classes.Attach(ent.Class);
-            //_db.Periods.Attach(ent.Period);
             _db.Users.Attach(ent.User);
             _db.Sections.AddOrUpdate(ent);
         }
