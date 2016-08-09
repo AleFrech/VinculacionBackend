@@ -14,5 +14,6 @@ namespace VinculacionBackend.Data.Interfaces
         IQueryable<Section> GetSectionsByProject(long projectId);
         IQueryable<Section> GetAllByProfessor(long userId);
         IQueryable<SectionUser> GetSectionsUsersRels();
+        IQueryable<object> GetSectionStudentsHours(long sectionId);
     }
 }

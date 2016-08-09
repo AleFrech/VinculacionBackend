@@ -166,6 +166,11 @@ namespace VinculacionBackend.Services
 
             return section;
 
-        }       
+        }
+
+        public IQueryable<object> GetSectionStudentsHour(long sectionId)
+        {
+            return _sectionsRepository.GetSectionStudentsHours(sectionId);
+        }
     }
 }

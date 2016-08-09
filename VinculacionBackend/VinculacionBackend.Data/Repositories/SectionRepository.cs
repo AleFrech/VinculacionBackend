@@ -103,6 +103,16 @@ namespace VinculacionBackend.Data.Repositories
             return students;
         }
 
+        public IQueryable<object> GetSectionStudentsHours(long sectionId)
+        {
+            return _db.SectionUserRels.Where(c => c.Section.Id == sectionId)
+                            .Select(a => new {
+                                User = a.User,
+                                Hours = (_db.Hours.Where(b => b.SectionProject.Section.Id == sectionId
+                                                    && b.User.Id == a.User.Id)).Select(d => d.Amount).FirstOrDefault()}
+                                            );
+        }
+
 
         public IQueryable<Project> GetSectionProjects(long sectionId)
         {
