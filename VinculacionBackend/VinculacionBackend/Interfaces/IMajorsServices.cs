@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using System.Web.Http;
 using VinculacionBackend.Data.Entities;
 
 namespace VinculacionBackend.Interfaces
@@ -7,5 +9,6 @@ namespace VinculacionBackend.Interfaces
     {
         Major Find(string majorId);
         IQueryable<Major> All();
+        IQueryable<Major> GetByProject(long projectId);
     }
 }
