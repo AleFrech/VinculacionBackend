@@ -25,5 +25,6 @@ namespace VinculacionBackend.Interfaces
         IQueryable<User> GetPendingStudentsFiniquito();
         User GetCurrentStudents(long userId);
         int GetStudentHoursBySection(string accountId, long sectionId);
+        IQueryable<object> GetStudentSections(string accountId);
     }
 }

@@ -262,5 +262,10 @@ namespace VinculacionBackend.Services
         {
             return _studentRepository.GetStudentHoursBySection(accountId, sectionId);
         }
+
+        public IQueryable<object> GetStudentSections(string accountId)
+        {
+            return _studentRepository.GetStudentSections(accountId);
+        }
     }
 }

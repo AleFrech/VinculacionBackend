@@ -107,6 +107,13 @@ namespace VinculacionBackend.Controllers
             return Ok(total);
         }
 
+        [Route("api/Students/{accountId}/SectionHours")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IQueryable<object> GetStudentSection(string accountId)
+        {
+            return _studentsServices.GetStudentSections(accountId);
+        }
+
         [Route("api/Students/Filter/{status}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IQueryable<User> GetStudents(string status)
