@@ -75,7 +75,7 @@ namespace VinculacionBackend.Controllers
 
         [Route("api/Students/PendingFiniquitoStudents")]
         [EnableQuery]
-        public IQueryable<User> GetStudentsPendingFiniquito()
+        public IQueryable<FiniquitoUserModel> GetStudentsPendingFiniquito()
         {
 
             return _studentsServices.GetPendingStudentsFiniquito();
@@ -105,6 +105,13 @@ namespace VinculacionBackend.Controllers
         {
             var total = _studentsServices.GetStudentHoursBySection(accountId, sectionId);
             return Ok(total);
+        }
+
+        [Route("api/Students/{accountId}/SectionHours")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IQueryable<object> GetStudentSection(string accountId)
+        {
+            return _studentsServices.GetStudentSections(accountId);
         }
 
         [Route("api/Students/Filter/{status}")]

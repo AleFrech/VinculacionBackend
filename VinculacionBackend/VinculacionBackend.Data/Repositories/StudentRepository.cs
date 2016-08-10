@@ -234,5 +234,23 @@ namespace VinculacionBackend.Data.Repositories
                             .FirstOrDefault();
             return user != null ? user.Amount : 0;
         }
+
+        public IQueryable<object> GetStudentSections(string accountId)
+        {
+            var hours = _db.Hours.Where(a => accountId.Equals(a.User.AccountId)).Include(c=> c.User).Include(b => b.SectionProject.Section).ToList();
+            var sections = _db.SectionUserRels.Where(a => a.User.AccountId == accountId)
+                                      .Select(b => b.Section).Include(c => c.Class)
+                                      .ToList();
+            var results = sections.Select(a => new
+            {
+                Id = a.Id,
+                Code = a.Code,
+                Class = a.Class,
+                HoursWorked = hours.Where(b => b.SectionProject.Section.Id == a.Id)
+                                   .DefaultIfEmpty(new Hour { Amount = 0 })
+                                   .First().Amount
+            });
+            return results.AsQueryable();
+        }
     }
 }

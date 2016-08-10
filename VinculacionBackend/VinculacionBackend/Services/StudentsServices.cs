@@ -223,12 +223,12 @@ namespace VinculacionBackend.Services
             return dataTables;
         }
 
-        public IQueryable<User> GetPendingStudentsFiniquito()
+        public IQueryable<FiniquitoUserModel> GetPendingStudentsFiniquito()
         {
             var students = _studentRepository.GetAll().ToList();
             var hours = _hourRepository.GetAll().ToList();
 
-            var toReturn = new List<User>();
+            var toReturn = new List<FiniquitoUserModel>();
 
             foreach (var student in students)
             {
@@ -246,7 +246,14 @@ namespace VinculacionBackend.Services
 
                 if (hourTotal >= 100 && !student.Finiquiteado && validYear)
                 {
-                    toReturn.Add(student);
+                    toReturn.Add(new FiniquitoUserModel
+                    {
+                        Id = student.Id, AccountId =  student.AccountId, Major =  student.Major,
+                        Name =  student.Name, Campus = student.Campus, CreationDate = student.CreationDate,
+                        Email = student.Email, Finiquiteado = student.Finiquiteado, ModificationDate = student.ModificationDate,
+                        Password = student.Password, Status =  student.Status, Hours = hourTotal
+                    
+                    });
                 }
             }
 
@@ -261,6 +268,11 @@ namespace VinculacionBackend.Services
         public int GetStudentHoursBySection(string accountId, long sectionId)
         {
             return _studentRepository.GetStudentHoursBySection(accountId, sectionId);
+        }
+
+        public IQueryable<object> GetStudentSections(string accountId)
+        {
+            return _studentRepository.GetStudentSections(accountId);
         }
     }
 }

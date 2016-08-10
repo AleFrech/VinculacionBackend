@@ -23,6 +23,44 @@ namespace VinculacionBackend.Services
             return hour;
         }
 
+        public Hour Update(long hourId,HourEntryModel hourModel)
+        {
+            var hour = _hourRepository.Get(hourId);
+            hour.Amount = hourModel.Hour;
+            _hourRepository.Update(hour);
+            _hourRepository.Save();
+            return hour;
+        }
+
+        public void AddMany(HourCollectionEntryModel hourModel, string name)
+        {
+            foreach (var studenthour in hourModel.StudentsHour)
+            {
+                if (studenthour.HourId == -1)
+                {
+                    Add(
+                        new HourEntryModel
+                        {
+                            AccountId = studenthour.AccountId,
+                            Hour = studenthour.Hour,
+                            ProjectId = hourModel.ProjectId,
+                            SectionId = hourModel.SectionId
+                        }
+                        , name);
+                }
+                else
+                {
+                    Update(studenthour.HourId, new HourEntryModel
+                    {
+                        AccountId = studenthour.AccountId,
+                        Hour = studenthour.Hour,
+                        ProjectId = hourModel.ProjectId,
+                        SectionId = hourModel.SectionId
+                    });
+                }
+            }
+        }
+
         public HourReportModel HourReport(string accountId)
         {
             var hours = _hourRepository.GetStudentHours(accountId);
