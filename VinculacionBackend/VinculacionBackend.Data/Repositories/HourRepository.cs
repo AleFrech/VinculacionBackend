@@ -25,7 +25,7 @@ namespace VinculacionBackend.Data.Repositories
 
         public Hour Get(long id)
         {
-            return _db.Hours.Find(id);
+            return _db.Hours.Include("User").Include("SectionProject").FirstOrDefault(x=>x.Id==id);
         }
 
         public IQueryable<Hour> GetAll()
@@ -37,8 +37,7 @@ namespace VinculacionBackend.Data.Repositories
         {
             return _db.Hours.Where(hour => hour.User.AccountId == accountId)
                 .Include("SectionProject.Project").Include("SectionProject.Section").Include("SectionProject.Section.Period");
-        }     
-
+        }
         public void Insert(Hour ent)
         {
             _db.Hours.Add(ent);

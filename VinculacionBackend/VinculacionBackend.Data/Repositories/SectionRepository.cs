@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
@@ -104,17 +103,20 @@ namespace VinculacionBackend.Data.Repositories
             return students;
         }
 
-        public IQueryable<object> GetSectionStudentsHours(long sectionId)
+        public IQueryable<object> GetSectionStudentsHours(long sectionId, long projectId)
         {
 
             return _db.SectionUserRels.Where(c => c.Section.Id == sectionId)
-                            .Select(a => new {
-                                User = a.User,
-                                Hours = (_db.Hours.Where(b => b.SectionProject.Section.Id == sectionId
-                                                    && b.User.Id == a.User.Id)).Sum(hour=>hour.Amount)}
-                                            );
+                .Select(a => new
+                {
+                    Students = a.User,
+                    Hours =
+                        (_db.Hours.Where(
+                            b => b.SectionProject.Section.Id == sectionId && b.SectionProject.Project.Id == projectId
+                                 && b.User.Id == a.User.Id))
+                }
+                );
         }
-
 
         public IQueryable<Project> GetSectionProjects(long sectionId)
         {
@@ -174,7 +176,6 @@ namespace VinculacionBackend.Data.Repositories
         public void Update(Section ent)
         {
             _db.Classes.Attach(ent.Class);
-            //_db.Periods.Attach(ent.Period);
             _db.Users.Attach(ent.User);
             _db.Sections.AddOrUpdate(ent);
         }
