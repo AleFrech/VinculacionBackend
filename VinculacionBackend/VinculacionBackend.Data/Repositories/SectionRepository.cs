@@ -106,11 +106,12 @@ namespace VinculacionBackend.Data.Repositories
 
         public IQueryable<object> GetSectionStudentsHours(long sectionId)
         {
+
             return _db.SectionUserRels.Where(c => c.Section.Id == sectionId)
                             .Select(a => new {
                                 User = a.User,
                                 Hours = (_db.Hours.Where(b => b.SectionProject.Section.Id == sectionId
-                                                    && b.User.Id == a.User.Id)).Aggregate(0, (total, hour) => total + hour.Amount)}
+                                                    && b.User.Id == a.User.Id)).Sum(hour=>hour.Amount)}
                                             );
         }
 
