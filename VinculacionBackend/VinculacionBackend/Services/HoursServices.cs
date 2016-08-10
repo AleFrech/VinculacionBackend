@@ -36,7 +36,7 @@ namespace VinculacionBackend.Services
         {
             foreach (var studenthour in hourModel.StudentsHour)
             {
-                if (studenthour.HourId != -1)
+                if (studenthour.HourId == -1)
                 {
                     Add(
                         new HourEntryModel
