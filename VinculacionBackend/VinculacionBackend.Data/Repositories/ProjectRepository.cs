@@ -104,6 +104,7 @@ namespace VinculacionBackend.Data.Repositories
 
         public IQueryable<Project> GetAllStudent(long studentId)
         {
+
             var sectionUserRels = _db.SectionUserRels.Include("Section").Include("User").ToList();
             var projectSectionRels = _db.SectionProjectsRels.Include("Section").Include("Project").ToList();
             return projectSectionRels.Where(rel => sectionUserRels.Any(su => su.Section.Id == rel.Section.Id && su.User.Id == studentId)).Select(rel => rel.Project).Distinct().AsQueryable();
