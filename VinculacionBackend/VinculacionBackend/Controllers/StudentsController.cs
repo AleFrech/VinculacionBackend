@@ -75,7 +75,7 @@ namespace VinculacionBackend.Controllers
 
         [Route("api/Students/PendingFiniquitoStudents")]
         [EnableQuery]
-        public IQueryable<User> GetStudentsPendingFiniquito()
+        public IQueryable<FiniquitoUserModel> GetStudentsPendingFiniquito()
         {
 
             return _studentsServices.GetPendingStudentsFiniquito();
