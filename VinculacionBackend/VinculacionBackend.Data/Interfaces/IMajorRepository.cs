@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using VinculacionBackend.Data.Entities;
 
 namespace VinculacionBackend.Data.Interfaces
@@ -7,5 +8,6 @@ namespace VinculacionBackend.Data.Interfaces
     {
         Major GetMajorByMajorId(string majorId);
         IQueryable<Major> GetMajorsByFaculty(long facultyId);
+        IQueryable<Major> GetMajorsByProject(long projectId);
     }
 }
