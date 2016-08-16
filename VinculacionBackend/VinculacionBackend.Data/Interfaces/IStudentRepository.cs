@@ -23,5 +23,6 @@ namespace VinculacionBackend.Data.Interfaces
         IEnumerable<User> GetStudentByMajor(string majorId);
         int GetStudentHoursBySection(string accountId, long sectionId);
         IQueryable<object> GetStudentSections(string accountId);
+        void InsertMany(IList<User> students);
     }
 }

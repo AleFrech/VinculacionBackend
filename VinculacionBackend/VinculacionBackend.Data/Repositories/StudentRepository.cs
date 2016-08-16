@@ -10,6 +10,7 @@ using VinculacionBackend.Data.Interfaces;
 
 namespace VinculacionBackend.Data.Repositories
 {
+
     public class StudentRepository : IStudentRepository
     {
         private readonly VinculacionContext _db;
@@ -251,6 +252,14 @@ namespace VinculacionBackend.Data.Repositories
                                    .First().Amount
             });
             return results.AsQueryable();
+        }
+
+        public void InsertMany(IList<User> students)
+        {
+            foreach (var student in students)
+            {
+                Insert(student);
+            }
         }
     }
 }
