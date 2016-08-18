@@ -9,5 +9,6 @@ namespace VinculacionBackend.Interfaces
         HourReportModel HourReport(string accountId);
         Hour Update(long hourId,HourEntryModel hourModel);
         void AddMany(HourCollectionEntryModel hourModel, string name);
+        void Approve(long sectionProjectId);
     }
 }
