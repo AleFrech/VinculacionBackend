@@ -20,7 +20,7 @@ namespace VinculacionBackend.Services
             var user = _userRepository.GetUserByEmailAndPassword(username, password);
             if (user == null  )
                 throw new NotFoundException("Usuario o contraseña incorrecto");
-            if(user.Status != Status.Verified)
+            if(user.Status != Status.Active)
                 throw new NotFoundException("El usuario no ha sido verificado aun");
             return user;
         }
