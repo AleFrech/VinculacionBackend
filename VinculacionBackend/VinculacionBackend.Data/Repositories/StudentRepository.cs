@@ -123,11 +123,6 @@ namespace VinculacionBackend.Data.Repositories
                 return _db.Users.Include(m => m.Major).Include(f => f.Major.Faculty).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Inactive);
             if (status == "Active")
                 return _db.Users.Include(m => m.Major).Include(f => f.Major.Faculty).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Active);
-            if (status == "Verified")
-                return _db.Users.Include(m => m.Major).Include(f => f.Major.Faculty).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Verified);
-            if (status == "Rejected")
-                return _db.Users.Include(m => m.Major).Include(f => f.Major.Faculty).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Rejected);
-
             return new List<User>();
         }
 
