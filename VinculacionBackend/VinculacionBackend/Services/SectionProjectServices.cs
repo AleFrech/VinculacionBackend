@@ -18,7 +18,7 @@ namespace VinculacionBackend.Services
         public SectionProjectInfoModel GetInfo(long id)
         {
             var sectionProject = _sectionProjectRepository.Get(id);
-            if(sectionProject == null)
+            if (sectionProject == null)
                 throw new NotFoundException(id + " not found");
             return new SectionProjectInfoModel
             {
@@ -38,7 +38,5 @@ namespace VinculacionBackend.Services
             _sectionProjectRepository.Update(rel);
             _sectionProjectRepository.Save();
         }
-
-
     }
 }
