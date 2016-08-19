@@ -167,12 +167,16 @@ namespace VinculacionBackend.Services
 
 
 
-        public HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification,
+        public HttpResponseMessage GetFinalReport(long projectId,long sectionId, int fieldHours, int calification,
             int beneficiariesQuantities, string beneficiariGroups)
         {
+            var sp = _projectRepository.GetSectionProject(projectId, sectionId);
+            if (sp.IsApproved)
+                throw new Exception("Las horas de este proyecto ya fueron approvadas");
+
             var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository, _studentRepository,
                 _textDocumentServices, new DownloadbleFile());
-            return finalReport.GenerateFinalReport(projectId, fieldHours, calification, beneficiariesQuantities,
+            return finalReport.GenerateFinalReport(projectId,sp.Id,fieldHours, calification, beneficiariesQuantities,
                 beneficiariGroups);
 
         }

@@ -7,5 +7,7 @@ namespace VinculacionBackend.Data.Interfaces
     {
        Hour InsertHourFromModel(string accountId, long sectionId, long projectId, int hour,string professorUser);
        IQueryable<Hour> GetStudentHours(string accountId);
+        SectionProject GetSectionProjectRel(long sectionProjectId);
+        void Update(SectionProject ent);
     }
 }

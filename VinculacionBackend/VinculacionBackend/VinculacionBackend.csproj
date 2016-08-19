@@ -238,12 +238,15 @@
     <Compile Include="Cache\MemoryCacher.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\SectionProjectsController.cs" />
+    <Compile Include="Interfaces\ISectionProjectServices.cs" />
     <Compile Include="Interfaces\ISheetsReportsServices.cs" />
     <Compile Include="DownloadbleFile.cs" />
     <Compile Include="Models\FacultyCostsReportEntry.cs" />
     <Compile Include="Models\HourCollectionEntryModel.cs" />
     <Compile Include="Models\FiniquitoUserModel.cs" />
     <Compile Include="Models\ProjectsSectionModel.cs" />
+    <Compile Include="Models\SectionProjectInfoModel.cs" />
     <Compile Include="Models\TokenModel.cs" />
     <Compile Include="ReportsExtensionMethods.cs" />
     <Compile Include="Reports\FiniquitoReport.cs" />
@@ -312,6 +315,7 @@
     <Compile Include="Services\ProfessorsServices.cs" />
     <Compile Include="Services\ProjectServices.cs" />
     <Compile Include="Services\ReportsServices.cs" />
+    <Compile Include="Services\SectionProjectServices.cs" />
     <Compile Include="Services\SectionsServices.cs" />
     <Compile Include="Services\StudentsServices.cs" />
     <Compile Include="Services\TextDocumentServices.cs" />

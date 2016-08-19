@@ -40,6 +40,7 @@ namespace VinculacionBackend
             builder.RegisterType<PeriodRepository>().As<IPeriodRepository>().InstancePerRequest();
             builder.RegisterType<SectionRepository>().As<ISectionRepository>().InstancePerRequest();
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerRequest();
+            builder.RegisterType<SectionProjectRepository>().As<ISectionProjectRepository>().InstancePerRequest();
 
 
         }
@@ -62,6 +63,7 @@ namespace VinculacionBackend
             builder.RegisterType<DownloadbleFile>().As<IDownloadbleFile>().InstancePerRequest();
             builder.RegisterType<SectionsServices>().As<ISectionsServices>().InstancePerRequest();
             builder.RegisterType<FacultiesServices>().As<IFacultiesServices>().InstancePerRequest();
+            builder.RegisterType<SectionProjectServices>().As<ISectionProjectServices>().InstancePerRequest();
             builder.RegisterType<ReportsServices>().As<ISheetsReportsServices>().InstancePerRequest();
 
 
