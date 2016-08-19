@@ -131,18 +131,6 @@ namespace VinculacionBackend.Controllers
 
         }
 
-        //Put: api/Students/Verified
-        [ResponseType(typeof(User))]
-        [Route("api/Students/Verified")]
-        [CustomAuthorize(Roles = "Admin")]
-        [ValidateModel]
-        public IHttpActionResult PutAcceptVerified(VerifiedModel model) 
-        {
-            var student = _studentsServices.VerifyUser(model.AccountId);    
-            _email.Send(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", "Vinculación");
-            return Ok(student);
-        }
-
 
         // POST: api/Students
         [ResponseType(typeof(User))]
@@ -160,6 +148,18 @@ namespace VinculacionBackend.Controllers
         }
 
 
+        [ResponseType(typeof(User))]
+        [Route("api/Students/ChangePassword")]
+        [ValidateModel]
+        public IHttpActionResult PostChangePassword(StudentChangePasswordModel model)
+        {
+            _studentsServices.ChangePassword(model);
+            var stringparameter = _encryption.Encrypt(model.AccountId);
+            _email.Send(model.Email, "Hacer click en el siguiente link para activar su cuenta: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
+            return Ok();
+        }
+
+
         //Get: api/Students/Avtive
         [Route("api/Students/{guid}/Active")]
         public HttpResponseMessage GetActiveStudent(string guid)
@@ -171,18 +171,6 @@ namespace VinculacionBackend.Controllers
             return response;
         }
 
-
-        //Post: api/Students/Rejected
-        [ResponseType(typeof(User))]
-        [Route("api/Students/Rejected")]
-        [CustomAuthorize(Roles = "Admin")]
-        [ValidateModel]
-        public IHttpActionResult PostRejectStudent(RejectedModel model)
-        {
-            var student = _studentsServices.RejectUser(model.AccountId);
-            _email.Send(student.Email, model.Message, "Vinculación");
-             return Ok(student);
-        }
 
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}")]
