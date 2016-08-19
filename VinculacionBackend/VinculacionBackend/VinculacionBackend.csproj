@@ -238,6 +238,7 @@
     <Compile Include="Cache\MemoryCacher.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\SectionProjectsController.cs" />
     <Compile Include="Interfaces\ISectionProjectServices.cs" />
     <Compile Include="Interfaces\ISheetsReportsServices.cs" />
     <Compile Include="DownloadbleFile.cs" />

@@ -244,5 +244,11 @@ namespace VinculacionBackend.Data.Repositories
                 Where(rel => rel.Section.Id == sectionId).Select(rel => rel.Project).Where(x=>x.IsDeleted==false);
 
         }
+
+
+        public SectionProject GetSectionProject(long projectId, long sectionId)
+        {
+            return _db.SectionProjectsRels.Include(rel => rel.Section).Include(rel => rel.Project).FirstOrDefault(rel => rel.Section.Id == sectionId && rel.Project.Id == projectId);
+        }
     }
 }

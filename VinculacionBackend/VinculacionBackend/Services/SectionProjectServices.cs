@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using VinculacionBackend.Data.Interfaces;
+﻿using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
@@ -28,8 +24,21 @@ namespace VinculacionBackend.Services
             {
                 ClassName = sectionProject.Section.Class.Name,
                 ProfessorName = sectionProject.Section.User.Name,
-                ProjectName = sectionProject.Project.Name
+                Project = sectionProject.Project
             };
         }
+
+        public void Approve(long sectionProjectId)
+        {
+            var rel = _sectionProjectRepository.Get(sectionProjectId);
+            if (rel == null)
+                throw new NotFoundException(sectionProjectId + " not found");
+
+            rel.IsApproved = true;
+            _sectionProjectRepository.Update(rel);
+            _sectionProjectRepository.Save();
+        }
+
+
     }
 }

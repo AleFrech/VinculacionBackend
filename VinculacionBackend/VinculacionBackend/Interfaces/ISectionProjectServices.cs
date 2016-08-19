@@ -10,5 +10,6 @@ namespace VinculacionBackend.Interfaces
     public interface ISectionProjectServices
     {
         SectionProjectInfoModel GetInfo(long id);
+        void Approve(long sectionProjectId);
     }
 }
