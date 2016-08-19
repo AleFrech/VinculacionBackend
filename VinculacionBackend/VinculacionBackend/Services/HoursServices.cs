@@ -62,17 +62,6 @@ namespace VinculacionBackend.Services
             }
         }
 
-        public void Approve(long sectionProjectId)
-        {
-           var rel =  _hourRepository.GetSectionProjectRel(sectionProjectId);
-            if (rel == null)
-                throw new NotFoundException(sectionProjectId+" not found");
-
-            rel.IsApproved = true;
-            _hourRepository.Update(rel);
-            _hourRepository.Save();
-        }
-
         public HourReportModel HourReport(string accountId)
         {
             var hours = _hourRepository.GetStudentHours(accountId);

@@ -31,5 +31,16 @@ namespace VinculacionBackend.Services
                 ProjectName = sectionProject.Project.Name
             };
         }
+
+        public void Approve(long sectionProjectId)
+        {
+            var rel = _sectionProjectRepository.Get(sectionProjectId);
+            if (rel == null)
+                throw new NotFoundException(sectionProjectId + " not found");
+
+            rel.IsApproved = true;
+            _sectionProjectRepository.Update(rel);
+            _sectionProjectRepository.Save();
+        }
     }
 }
