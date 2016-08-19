@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net.Http;
+using Microsoft.Ajax.Utilities;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
@@ -273,6 +274,11 @@ namespace VinculacionBackend.Services
         public IQueryable<object> GetStudentSections(string accountId)
         {
             return _studentRepository.GetStudentSections(accountId);
+        }
+
+        public void AddMany(IList<User> students)
+        {
+            students.ForEach(Add);
         }
     }
 }

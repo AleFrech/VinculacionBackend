@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
@@ -26,5 +27,6 @@ namespace VinculacionBackend.Interfaces
         User GetCurrentStudents(long userId);
         int GetStudentHoursBySection(string accountId, long sectionId);
         IQueryable<object> GetStudentSections(string accountId);
+        void AddMany(IList<User> students);
     }
 }
