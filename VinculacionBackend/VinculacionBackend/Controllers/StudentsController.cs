@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -63,6 +64,14 @@ namespace VinculacionBackend.Controllers
         }
 
 
+        [ResponseType(typeof(User))]
+        [Route("api/Students/AddMany")]
+        [CustomAuthorize(Roles = "Admin")]
+        public IHttpActionResult PostAddManyStudents([FromBody]List<User> students)
+        {
+            _studentsServices.AddMany(students);
+            return Ok();
+        }
 
         [ResponseType(typeof(User))]
         [Route("api/StudentByEmail")]
