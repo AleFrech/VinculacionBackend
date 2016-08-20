@@ -110,6 +110,7 @@
       <DependentUpon>201608190157159_ApproveInSecProject.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\FacultyHoursReportModel.cs" />
     <Compile Include="Models\MajorProjectTotalmodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClassRepository.cs" />

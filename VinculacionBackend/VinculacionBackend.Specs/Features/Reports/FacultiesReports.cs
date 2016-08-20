@@ -22,6 +22,7 @@ namespace VinculacionBackend.Specs.Features.Reports
         private readonly Mock<IProjectRepository> _projectRepositoryMock;
         private readonly Mock<IStudentRepository> _studentRepositoryMock;
         private int _year;
+        private List<FacultyHoursReportEntryModel> _hoursReport;
         private  List<FacultyCostsReportEntry> _facultiesCostReport;
         public FacultiesCostReportSteps()
         {
@@ -64,6 +65,26 @@ namespace VinculacionBackend.Specs.Features.Reports
         public void ThenTheFacultiesCostReportShouldBe(Table table)
         {
             table.CompareToSet(_facultiesCostReport.AsEnumerable());
+        }
+
+        [Given(@"the hours for faculty (.*) for the year (.*) is")]
+        public void GivenTheHoursForFacultyForTheYearIs(int p0, int p1, Table table)
+        {
+            var hours = table.CreateSet<FacultyHoursReportModel>().ToList();
+            var totalHours = hours.Sum(x => x.ProjectHours);
+            _facultyRepositoryMock.Setup(x => x.GetFacultyHours(p0, p1)).Returns(totalHours);
+        }
+
+        [When(@"I execute the faculties hours report")]
+        public void WhenIExecuteTheFacultiesHoursReport()
+        {
+            _hoursReport = _facultiesServices.CreateFacultiesHourReport(_year);
+        }
+
+        [Then(@"the faculties hour report should be")]
+        public void ThenTheFacultiesHourReportShouldBe(Table table)
+        {
+            table.CompareToSet(_hoursReport.AsEnumerable());
         }
     }
 }

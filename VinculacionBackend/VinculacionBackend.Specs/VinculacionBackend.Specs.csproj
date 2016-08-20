@@ -66,20 +66,19 @@
     </Otherwise>
   </Choose>-->
   <ItemGroup>
-    <Compile Include="FacultiesCostReport.feature.cs">
+    <Compile Include="FacultiesReports.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FacultiesCostReport.feature</DependentUpon>
+      <DependentUpon>FacultiesReports.feature</DependentUpon>
     </Compile>
-    <Compile Include="Features\Reports\FacultiesCostReportSteps.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="Features\Reports\FacultiesReports.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="FacultiesCostReport.feature">
+    <None Include="FacultiesReports.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FacultiesCostReport.feature.cs</LastGenOutput>
+      <LastGenOutput>FacultiesReports.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

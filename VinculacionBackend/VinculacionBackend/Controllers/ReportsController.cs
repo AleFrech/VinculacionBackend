@@ -49,7 +49,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Reports/HoursReport/{year}")]
         public IHttpActionResult GetHoursReport(int year)
         {
-            var context = _reportsServices.GenerateReport(_facultiesServices.CreateFacultiesHourReport(year),
+            var context = _reportsServices.GenerateReport(_facultiesServices.CreateFacultiesHourReport(year).ToDataTable(),
                 "Reporte de Horas por Facultad");
             context.Response.Flush();
             context.Response.End();

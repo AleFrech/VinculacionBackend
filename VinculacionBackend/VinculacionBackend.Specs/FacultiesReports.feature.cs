@@ -18,19 +18,19 @@ namespace VinculacionBackend.Specs
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class FacultiesCostReportFeature
+    public partial class FacultiesReportsFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "FacultiesCostReport.feature"
+#line 1 "FacultiesReports.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FacultiesCostReport", "\tIn order to know the value each faculty has given to the community\r\n\tAs manager\r" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FacultiesReports", "\tIn order to know the value each faculty has given to the community\r\n\tAs manager\r" +
                     "\n\tI want to be told the costs of each faculty", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -46,9 +46,9 @@ namespace VinculacionBackend.Specs
         public virtual void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "FacultiesCostReport")))
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "FacultiesReports")))
             {
-                VinculacionBackend.Specs.FacultiesCostReportFeature.FeatureSetup(null);
+                VinculacionBackend.Specs.FacultiesReportsFeature.FeatureSetup(null);
             }
         }
         
@@ -69,14 +69,12 @@ namespace VinculacionBackend.Specs
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Both Faculties have data in all periods")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FacultiesCostReport")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("reports")]
-        public virtual void BothFacultiesHaveDataInAllPeriods()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Costs report by faculties")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FacultiesReports")]
+        public virtual void CostsReportByFaculties()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Both Faculties have data in all periods", new string[] {
-                        "reports"});
-#line 7
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Costs report by faculties", ((string[])(null)));
+#line 6
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -88,9 +86,9 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "2",
                         "Licenciatura"});
-#line 8
+#line 7
  testRunner.Given("I have this faculties", ((string)(null)), table1, "Given ");
-#line 12
+#line 11
  testRunner.And("the year is 2015", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -102,7 +100,7 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "Ingenieria",
                         "10"});
-#line 13
+#line 12
  testRunner.And("the cost for faculty 1 for the period 1 and year 2015 is", ((string)(null)), table2, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -114,7 +112,7 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "Ingenieria",
                         "10"});
-#line 17
+#line 16
  testRunner.And("the cost for faculty 1 for the period 2 and year 2015 is", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -126,7 +124,7 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "Ingenieria",
                         "10"});
-#line 21
+#line 20
  testRunner.And("the cost for faculty 1 for the period 3 and year 2015 is", ((string)(null)), table4, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -138,7 +136,7 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "Ingenieria",
                         "10"});
-#line 25
+#line 24
  testRunner.And("the cost for faculty 1 for the period 5 and year 2015 is", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -147,7 +145,7 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "Licenciatura",
                         "100"});
-#line 29
+#line 28
  testRunner.And("the cost for faculty 2 for the period 1 and year 2015 is", ((string)(null)), table6, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -156,7 +154,7 @@ this.ScenarioSetup(scenarioInfo);
             table7.AddRow(new string[] {
                         "Licenciatura",
                         "100"});
-#line 32
+#line 31
  testRunner.And("the cost for faculty 2 for the period 2 and year 2015 is", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -165,7 +163,7 @@ this.ScenarioSetup(scenarioInfo);
             table8.AddRow(new string[] {
                         "Licenciatura",
                         "100"});
-#line 35
+#line 34
  testRunner.And("the cost for faculty 2 for the period 3 and year 2015 is", ((string)(null)), table8, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -174,9 +172,9 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "Licenciatura",
                         "100"});
-#line 38
+#line 37
  testRunner.And("the cost for faculty 2 for the period 5 and year 2015 is", ((string)(null)), table9, "And ");
-#line 41
+#line 40
  testRunner.When("I execute the faculties cost report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -197,8 +195,96 @@ this.ScenarioSetup(scenarioInfo);
                         "100",
                         "100",
                         "100"});
-#line 42
+#line 41
  testRunner.Then("the faculties cost report should be", ((string)(null)), table10, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Hours report by faculties")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FacultiesReports")]
+        public virtual void HoursReportByFaculties()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Hours report by faculties", ((string[])(null)));
+#line 46
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "Name"});
+            table11.AddRow(new string[] {
+                        "1",
+                        "Ingenieria"});
+            table11.AddRow(new string[] {
+                        "2",
+                        "Licenciatura"});
+#line 47
+testRunner.Given("I have this faculties", ((string)(null)), table11, "Given ");
+#line 51
+ testRunner.And("the year is 2015", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "FacultyName",
+                        "ProjectHours"});
+            table12.AddRow(new string[] {
+                        "Ingenieria",
+                        "70"});
+            table12.AddRow(new string[] {
+                        "Ingenieria",
+                        "80"});
+            table12.AddRow(new string[] {
+                        "Ingenieria",
+                        "50"});
+            table12.AddRow(new string[] {
+                        "Ingenieria",
+                        "60"});
+            table12.AddRow(new string[] {
+                        "Ingenieria",
+                        "95"});
+            table12.AddRow(new string[] {
+                        "Ingenieria",
+                        "74"});
+            table12.AddRow(new string[] {
+                        "Ingenieria",
+                        "76"});
+            table12.AddRow(new string[] {
+                        "Ingenieria",
+                        "65"});
+#line 52
+ testRunner.And("the hours for faculty 1 for the year 2015 is", ((string)(null)), table12, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "FacultyName",
+                        "ProjectHours"});
+            table13.AddRow(new string[] {
+                        "Licenciatura",
+                        "80"});
+            table13.AddRow(new string[] {
+                        "Licenciatura",
+                        "95"});
+            table13.AddRow(new string[] {
+                        "Licenciatura",
+                        "85"});
+            table13.AddRow(new string[] {
+                        "Licenciatura",
+                        "84"});
+#line 62
+ testRunner.And("the hours for faculty 2 for the year 2015 is", ((string)(null)), table13, "And ");
+#line 68
+ testRunner.When("I execute the faculties hours report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Facultad",
+                        "Horas"});
+            table14.AddRow(new string[] {
+                        "Ingenieria",
+                        "570"});
+            table14.AddRow(new string[] {
+                        "Licenciatura",
+                        "344"});
+#line 69
+ testRunner.Then("the faculties hour report should be", ((string)(null)), table14, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
