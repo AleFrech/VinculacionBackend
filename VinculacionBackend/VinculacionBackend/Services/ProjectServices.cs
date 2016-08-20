@@ -59,16 +59,14 @@ namespace VinculacionBackend.Services
         {
             return _projectRepository.GetAll();
         }
-
-
-        public int GetProjectsTotalByMajor(Major major)
+        
+        public int  GetProjectsTotalByMajor(Major major)
         {
             var currentPeriod = _periodRepository.GetCurrent();
             var majorProjectTotalmodels = _projectRepository.GetMajorProjectTotal(currentPeriod, major.MajorId);
             return majorProjectTotalmodels.Sum(x => x.Total);
         }
-
-
+        
         private void Map(Project project, ProjectModel model)
         {
             project.ProjectId = model.ProjectId;
@@ -181,20 +179,22 @@ namespace VinculacionBackend.Services
 
         }
 
-        public DataTable CreateProjectsByMajor()
+        public List<ProjectByMajorEntryModel> CreateProjectsByMajor()
         {
-            var dt = new DataTable();
-            dt.Columns.Add("Carrera", typeof(string));
-            dt.Columns.Add("Proyectos", typeof(int));
-
+            var list = new List<ProjectByMajorEntryModel>();
+            
             var majors = _majorRepository.GetAll().ToList();
             foreach (var m in majors)
             {
                 var totalProjectsByMajor = GetProjectsTotalByMajor(m);
-                 dt.Rows.Add(m.Name,totalProjectsByMajor);                
+                 list.Add(new ProjectByMajorEntryModel
+                 {
+                     Carrera = m.Name,
+                     Proyectos = totalProjectsByMajor
+                 });                
             }
 
-            return dt;
+            return list;
         }
 
 

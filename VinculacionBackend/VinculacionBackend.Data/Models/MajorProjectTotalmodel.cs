@@ -10,5 +10,6 @@ namespace VinculacionBackend.Data.Models
     {
         public string Major { get; set; }
         public int Total { get; set; }
+        public string MajorId { get; set; }
     }
 }

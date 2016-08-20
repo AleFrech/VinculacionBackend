@@ -12,7 +12,7 @@ namespace VinculacionBackend.Interfaces
         Project Find(long id);
         IQueryable<Project> All();
         int GetProjectsTotalByMajor(Major major);
-        DataTable CreateProjectsByMajor();
+        List<ProjectByMajorEntryModel> CreateProjectsByMajor();
         Project Add(ProjectModel project);
         Project Delete(long projectId);
         IQueryable<User> GetProjectStudents(long projectId);

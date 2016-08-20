@@ -16,12 +16,16 @@ namespace VinculacionBackend.Specs.Features.Reports
     [Binding]
     public class FacultiesCostReportSteps
     {
-        private FacultiesServices _facultiesServices;
+        private readonly FacultiesServices _facultiesServices;
+        private readonly ProjectServices _projectServices;
+        private readonly Mock<IClassRepository> _classRepositoryMock;
         private readonly Mock<IFacultyRepository> _facultyRepositoryMock;
         private readonly Mock<IMajorRepository> _majorRepositoryMock;
         private readonly Mock<IProjectRepository> _projectRepositoryMock;
         private readonly Mock<IStudentRepository> _studentRepositoryMock;
+        private readonly Mock<IPeriodRepository> _periodRepositoryMock;
         private int _year;
+        private List<ProjectByMajorEntryModel> _projectsByMajorReport;
         private List<FacultyHoursReportEntryModel> _hoursReport;
         private  List<FacultyCostsReportEntry> _facultiesCostReport;
         public FacultiesCostReportSteps()
@@ -30,6 +34,9 @@ namespace VinculacionBackend.Specs.Features.Reports
             _majorRepositoryMock = new Mock<IMajorRepository>();
             _projectRepositoryMock = new Mock<IProjectRepository>();
             _studentRepositoryMock = new Mock<IStudentRepository>();
+            _classRepositoryMock = new Mock<IClassRepository>();
+            _periodRepositoryMock = new Mock<IPeriodRepository>();
+            _projectServices = new ProjectServices(_projectRepositoryMock.Object, _majorRepositoryMock.Object, _classRepositoryMock.Object, _periodRepositoryMock.Object);
             _facultiesServices = new FacultiesServices(_facultyRepositoryMock.Object,_majorRepositoryMock.Object,
                                                         _projectRepositoryMock.Object,_studentRepositoryMock.Object);
         }
@@ -86,5 +93,46 @@ namespace VinculacionBackend.Specs.Features.Reports
         {
             table.CompareToSet(_hoursReport.AsEnumerable());
         }
+
+        [Given(@"I have this majors")]
+        public void GivenIHaveThisMajors(Table table)
+        {
+            var majors = table.CreateSet<Major>().AsQueryable();
+            _majorRepositoryMock.Setup(x => x.GetAll()).Returns(majors);
+        }
+
+        [Given(@"This is the current period")]
+        public void GivenThisIsTheCurrentPeriod(Table table)
+        {
+            var period = table.CreateSet<Period>().ToList();
+            _periodRepositoryMock.Setup(x => x.GetCurrent()).Returns(period[0]);
+        }
+
+        [Given(@"I have the majors and it has many projects")]
+        public void GivenIHaveTheMajorsAndItHasManyProjects(Table table)
+        {
+            var majorProjectList = table.CreateSet<MajorProjectTotalmodel>().AsQueryable();
+            _projectRepositoryMock.Setup(x => x.GetMajorProjectTotal(It.IsAny<Period>(), It.IsAny<string>()))
+                .Returns((Period period, string majorId) => majorProjectList.Where(x => x.MajorId == majorId).Select(x => new MajorProjectTotalmodel
+                {
+                    MajorId = x.MajorId,
+                    Major = x.Major,
+                    Total = x.Total
+                }).ToList());
+        }
+
+
+        [When(@"I execute the projects by major report")]
+        public void WhenIExecuteTheProjectsByMajorReport()
+        {
+            _projectsByMajorReport = _projectServices.CreateProjectsByMajor();
+        }
+
+        [Then(@"I have the projects")]
+        public void ThenIHaveTheProjects(Table table)
+        {
+            table.CompareToSet(_projectsByMajorReport.AsEnumerable());
+        }
+        
     }
 }

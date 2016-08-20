@@ -71,3 +71,30 @@ Given I have this faculties
 		| Ingenieria   | 570       |
 		| Licenciatura | 344       |
 
+Scenario:  projects number by a major per current period
+	Given I have this majors
+		| Id | MajorId | Name          | Faculty |
+		| 1  | 1       | Ing. Sistemas | 1       |
+		| 2  | 2       | Mecatronica   | 1       |
+		| 3  | 3       | Ing. Civil    | 1       |
+		| 4  | 4       | Lic. Admon    | 2       |
+	And This is the current period
+		| Id | Number | Year | FromDate | ToDate   | IsCurrent |
+		| 1  | 1      | 2016 | 08/08/16 | 10/10/16 | True      |  
+	And I have the majors and it has many projects
+		| MajorId | Major         | Total |
+		|   1     | Ing. Sistemas | 3     |
+		|   1     | Ing. Sistemas | 5     |
+		|	2     | Mecatronica   | 4     |
+		|	3     | Ing. Civil    | 3     |
+		|	3     | Ing. Civil    | 2     |
+		|	4     | Lic. Admon    | 3     |
+	When I execute the projects by major report
+	Then I have the projects
+		| Carrera       | Proyectos|
+		| Ing. Sistemas | 8        |
+		| Mecatronica   | 4        |
+		| Ing. Civil    | 5        |
+		| Lic. Admon    | 3        |
+			
+	

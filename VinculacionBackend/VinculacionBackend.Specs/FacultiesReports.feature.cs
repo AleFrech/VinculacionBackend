@@ -288,6 +288,114 @@ testRunner.Given("I have this faculties", ((string)(null)), table11, "Given ");
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("projects number by a major per current period")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FacultiesReports")]
+        public virtual void ProjectsNumberByAMajorPerCurrentPeriod()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("projects number by a major per current period", ((string[])(null)));
+#line 74
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "MajorId",
+                        "Name",
+                        "Faculty"});
+            table15.AddRow(new string[] {
+                        "1",
+                        "1",
+                        "Ing. Sistemas",
+                        "1"});
+            table15.AddRow(new string[] {
+                        "2",
+                        "2",
+                        "Mecatronica",
+                        "1"});
+            table15.AddRow(new string[] {
+                        "3",
+                        "3",
+                        "Ing. Civil",
+                        "1"});
+            table15.AddRow(new string[] {
+                        "4",
+                        "4",
+                        "Lic. Admon",
+                        "2"});
+#line 75
+ testRunner.Given("I have this majors", ((string)(null)), table15, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "Number",
+                        "Year",
+                        "FromDate",
+                        "ToDate",
+                        "IsCurrent"});
+            table16.AddRow(new string[] {
+                        "1",
+                        "1",
+                        "2016",
+                        "08/08/16",
+                        "10/10/16",
+                        "True"});
+#line 81
+ testRunner.And("This is the current period", ((string)(null)), table16, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "MajorId",
+                        "Major",
+                        "Total"});
+            table17.AddRow(new string[] {
+                        "1",
+                        "Ing. Sistemas",
+                        "3"});
+            table17.AddRow(new string[] {
+                        "1",
+                        "Ing. Sistemas",
+                        "5"});
+            table17.AddRow(new string[] {
+                        "2",
+                        "Mecatronica",
+                        "4"});
+            table17.AddRow(new string[] {
+                        "3",
+                        "Ing. Civil",
+                        "3"});
+            table17.AddRow(new string[] {
+                        "3",
+                        "Ing. Civil",
+                        "2"});
+            table17.AddRow(new string[] {
+                        "4",
+                        "Lic. Admon",
+                        "3"});
+#line 84
+ testRunner.And("I have the majors and it has many projects", ((string)(null)), table17, "And ");
+#line 92
+ testRunner.When("I execute the projects by major report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Carrera",
+                        "Proyectos"});
+            table18.AddRow(new string[] {
+                        "Ing. Sistemas",
+                        "8"});
+            table18.AddRow(new string[] {
+                        "Mecatronica",
+                        "4"});
+            table18.AddRow(new string[] {
+                        "Ing. Civil",
+                        "5"});
+            table18.AddRow(new string[] {
+                        "Lic. Admon",
+                        "3"});
+#line 93
+ testRunner.Then("I have the projects", ((string)(null)), table18, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
