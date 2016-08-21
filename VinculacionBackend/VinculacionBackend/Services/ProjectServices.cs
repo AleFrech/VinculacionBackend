@@ -75,8 +75,6 @@ namespace VinculacionBackend.Services
             project.Name = model.Name;
             project.Description = model.Description;
             project.Cost = model.Cost;
-            project.MajorIds = model.MajorIds;
-            project.SectionIds = model.SectionIds;
             project.BeneficiarieOrganization = model.BeneficiarieOrganization;
         }
 
@@ -169,12 +167,16 @@ namespace VinculacionBackend.Services
 
 
 
-        public HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification,
+        public HttpResponseMessage GetFinalReport(long projectId,long sectionId, int fieldHours, int calification,
             int beneficiariesQuantities, string beneficiariGroups)
         {
+            var sp = _projectRepository.GetSectionProject(projectId, sectionId);
+            if (sp.IsApproved)
+                throw new Exception("Las horas de este proyecto ya fueron approvadas");
+
             var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository, _studentRepository,
                 _textDocumentServices, new DownloadbleFile());
-            return finalReport.GenerateFinalReport(projectId, fieldHours, calification, beneficiariesQuantities,
+            return finalReport.GenerateFinalReport(projectId,sp.Id,fieldHours, calification, beneficiariesQuantities,
                 beneficiariGroups);
 
         }
@@ -242,11 +244,14 @@ namespace VinculacionBackend.Services
 
             foreach (var project in projects)
             {
+                var sections = _sectionRepository.GetSectionsByProject(project.Id).ToList();
+                var majors = _majorRepository.GetMajorsByProject(project.Id).ToList();
                 dt.Rows.Add(project.BeneficiarieOrganization, project.Description,
-                    project.SectionIds.Count > 0 ? _projectRepository.getClass(project.SectionIds[0]) : "", 
-                    _projectRepository.getMajors(project.MajorIds), 
-                    _projectRepository.getProfessor(project.Id),  
-                    _projectRepository.getTotalHours(project.Id),
+                    sections.Count > 0 ? _projectRepository.GetClass(sections[0].Id) : "", 
+
+                    _projectRepository.GetMajors(majors), 
+                    _projectRepository.GetProfessor(project.Id),  
+                    _projectRepository.GetTotalHours(project.Id),
                     "",
                     project.Cost,
                     project.Id);
@@ -254,8 +259,6 @@ namespace VinculacionBackend.Services
 
             return dt;
         }
-
-
     }
 
 }

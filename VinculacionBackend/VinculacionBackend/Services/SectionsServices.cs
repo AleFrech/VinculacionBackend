@@ -53,15 +53,15 @@ namespace VinculacionBackend.Services
             var currentPeriod = _periodsServices.GetCurrentPeriod();
             if (role.Equals("Admin"))
             {
-                return _sectionsRepository.GetAll().Where(x => x.Period.Id == currentPeriod.Id);
+                return _sectionsRepository.GetAll().Where(x => x.Period.Id == currentPeriod.Id).Distinct();
             }
             else if (role.Equals("Professor"))
             {
-                return _sectionsRepository.GetAllByProfessor(userId).Where(a=>a.Period.Id == currentPeriod.Id);
+                return _sectionsRepository.GetAllByProfessor(userId).Where(a=>a.Period.Id == currentPeriod.Id).Distinct();
             }
             else if (role.Equals("Student"))
             {
-                return _sectionsRepository.GetAllByStudent(userId).Where(x => x.Period.Id == currentPeriod.Id);
+                return _sectionsRepository.GetAllByStudent(userId).Where(x => x.Period.Id == currentPeriod.Id).Distinct();
             }
             throw new Exception("No tiene permiso");
         }
@@ -177,9 +177,9 @@ namespace VinculacionBackend.Services
 
         }
 
-        public IQueryable<object> GetSectionStudentsHour(long sectionId)
+        public IQueryable<object> GetSectionStudentsHour(long sectionId,long projectId )
         {
-            return _sectionsRepository.GetSectionStudentsHours(sectionId);
+            return _sectionsRepository.GetSectionStudentsHours(sectionId,projectId);
         }
     }
 }

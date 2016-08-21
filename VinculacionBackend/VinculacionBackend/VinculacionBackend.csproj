@@ -69,6 +69,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -238,13 +242,22 @@
     <Compile Include="Cache\MemoryCacher.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\SectionProjectsController.cs" />
+    <Compile Include="CustomDataNotations\AccountNumberDosentExistAttribute.cs" />
+    <Compile Include="CustomDataNotations\EmailDosentExistAttribute.cs" />
+    <Compile Include="CustomDataNotations\StudentIsInactiveAttribute.cs" />
+    <Compile Include="Extensions\ExcelPackageExtensions.cs" />
+    <Compile Include="Interfaces\ISectionProjectServices.cs" />
     <Compile Include="Interfaces\ISheetsReportsServices.cs" />
     <Compile Include="DownloadbleFile.cs" />
     <Compile Include="Models\FacultyCostsReportEntry.cs" />
+    <Compile Include="Models\HourCollectionEntryModel.cs" />
     <Compile Include="Models\FiniquitoUserModel.cs" />
     <Compile Include="Models\ProjectsSectionModel.cs" />
+    <Compile Include="Models\SectionProjectInfoModel.cs" />
+    <Compile Include="Models\StudentChangePasswordModel.cs" />
     <Compile Include="Models\TokenModel.cs" />
-    <Compile Include="ReportsExtensionMethods.cs" />
+    <Compile Include="Extensions\ReportsExtensionMethods.cs" />
     <Compile Include="Reports\FiniquitoReport.cs" />
     <Compile Include="Interfaces\IDownloadbleFile.cs" />
     <Compile Include="Interfaces\ITextDoucment.cs" />
@@ -311,6 +324,7 @@
     <Compile Include="Services\ProfessorsServices.cs" />
     <Compile Include="Services\ProjectServices.cs" />
     <Compile Include="Services\ReportsServices.cs" />
+    <Compile Include="Services\SectionProjectServices.cs" />
     <Compile Include="Services\SectionsServices.cs" />
     <Compile Include="Services\StudentsServices.cs" />
     <Compile Include="Services\TextDocumentServices.cs" />

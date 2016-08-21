@@ -93,7 +93,7 @@ namespace VinculacionBackend.Services
             if (professor == null)
                 throw new NotFoundException("No se encontro el professor");
             professor.Password = _encryption.Encrypt(model.Password);
-            professor.Status=Status.Verified;
+            professor.Status=Status.Active;
             _professorRepository.Update(professor);
             _professorRepository.Save();
         }

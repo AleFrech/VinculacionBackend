@@ -1,12 +1,39 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using OfficeOpenXml;
+using VinculacionBackend.Extensions;
 using VinculacionBackend.Interfaces;
 
 namespace VinculacionBackend.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    public class MyStreamProvider : MultipartFormDataStreamProvider
+    {
+        public MyStreamProvider(string uploadPath)
+            : base(uploadPath)
+        {
 
+        }
+
+        public override string GetLocalFileName(HttpContentHeaders headers)
+        {
+            string fileName = headers.ContentDisposition.FileName;
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                fileName = Guid.NewGuid().ToString() + ".data";
+            }
+            return fileName.Replace("\"", string.Empty);
+        }
+    }
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
 
     public class ReportsController : ApiController
     {
@@ -86,42 +113,34 @@ namespace VinculacionBackend.Controllers
             return Ok();
         }
 
-        [HttpPost()]
-        public string UploadFiles()
+        public async Task<List<string>> UploadStudents()
         {
-            int iUploadedCnt = 0;
-
-            // DEFINE THE PATH WHERE WE WANT TO SAVE THE FILES.
-            string sPath = "";
-            sPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Files/");
-
-            System.Web.HttpFileCollection hfc = System.Web.HttpContext.Current.Request.Files;
-
-            // CHECK THE FILE COUNT.
-            for (int iCnt = 0; iCnt <= hfc.Count - 1; iCnt++)
+            if (Request.Content.IsMimeMultipartContent())
             {
-                System.Web.HttpPostedFile hpf = hfc[iCnt];
+                string uploadPath = HttpContext.Current.Server.MapPath("~/Files");
 
-                if (hpf.ContentLength > 0)
+                MyStreamProvider streamProvider = new MyStreamProvider(uploadPath);
+
+                await Request.Content.ReadAsMultipartAsync(streamProvider);
+
+                foreach (var file in streamProvider.FileData)
                 {
-                    // CHECK IF THE SELECTED FILE(S) ALREADY EXISTS IN FOLDER. (AVOID DUPLICATE)
-                    if (!File.Exists(sPath + Path.GetFileName(hpf.FileName)))
+                    FileInfo fi = new FileInfo(file.LocalFileName);
+                    if (Path.GetExtension(fi.Name) == ".xlsx")
                     {
-                        // SAVE THE FILES IN THE FOLDER.
-                        hpf.SaveAs(sPath + Path.GetFileName(hpf.FileName));
-                        iUploadedCnt = iUploadedCnt + 1;
+                        ExcelPackage package = new ExcelPackage(fi);
+                        var enumerable = package.ToDataTable();
                     }
                 }
-            }
 
-            // RETURN A MESSAGE (OPTIONAL).
-            if (iUploadedCnt > 0)
-            {
-                return iUploadedCnt + " Files Uploaded Successfully";
+                return new List<string>();
             }
-            else {
-                return "Upload Failed";
+            else
+            {
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Request!");
+                throw new HttpResponseException(response);
             }
         }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
@@ -12,9 +13,7 @@ namespace VinculacionBackend.Interfaces
         void Add(User user);
         User Find(string accountId);
         IQueryable<User> ListbyStatus(string status);
-        User RejectUser(string accountId);
         User ActivateUser(string accountId);
-        User VerifyUser(string accountId);
         User DeleteUser(string accountId);
         IQueryable<User> AllUsers();
         int GetStudentHours(string accountId);
@@ -25,6 +24,8 @@ namespace VinculacionBackend.Interfaces
         IQueryable<FiniquitoUserModel> GetPendingStudentsFiniquito();
         User GetCurrentStudents(long userId);
         int GetStudentHoursBySection(string accountId, long sectionId);
-
+        IQueryable<object> GetStudentSections(string accountId);
+        void AddMany(IList<User> students);
+        void ChangePassword(StudentChangePasswordModel model);
     }
 }

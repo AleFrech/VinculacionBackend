@@ -65,10 +65,10 @@ namespace VinculacionBackend.Controllers
         }
 
         // Get: api/Projects/FinalReport/
-        [Route("api/Projects/FinalReport/{projectId}/{fieldHours}/{calification}/{beneficiariesQuantities}/{beneficiariGroups}")]
-        public HttpResponseMessage GetProjectFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups)
+        [Route("api/Projects/FinalReport/{projectId}/{sectionId}/{fieldHours}/{calification}/{beneficiariesQuantities}/{beneficiariGroups}")]
+        public HttpResponseMessage GetProjectFinalReport(long projectId,long sectionId,int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups)
         {
-            return _services.GetFinalReport(projectId,fieldHours,calification,beneficiariesQuantities,beneficiariGroups);
+            return _services.GetFinalReport(projectId,sectionId,fieldHours,calification,beneficiariesQuantities,beneficiariGroups);
         }
 
         // GET: api/Projects/5

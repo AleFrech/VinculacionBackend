@@ -56,6 +56,8 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\VinculacionContext.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Interfaces\IProfessorRepository.cs" />
     <Compile Include="Interfaces\IProjectRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\ISectionProjectRepository.cs" />
     <Compile Include="Interfaces\ISectionRepository.cs" />
     <Compile Include="Interfaces\IStudentRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
@@ -102,6 +105,10 @@
     <Compile Include="Migrations\201608052222482_Finiquito.Designer.cs">
       <DependentUpon>201608052222482_Finiquito.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608190157159_ApproveInSecProject.cs" />
+    <Compile Include="Migrations\201608190157159_ApproveInSecProject.Designer.cs">
+      <DependentUpon>201608190157159_ApproveInSecProject.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\MajorProjectTotalmodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -113,6 +120,7 @@
     <Compile Include="Repositories\PeriodRepository.cs" />
     <Compile Include="Repositories\ProfessorRepository.cs" />
     <Compile Include="Repositories\ProjectRepository.cs" />
+    <Compile Include="Repositories\SectionProjectRepository.cs" />
     <Compile Include="Repositories\SectionRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
@@ -130,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608052222482_Finiquito.resx">
       <DependentUpon>201608052222482_Finiquito.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608190157159_ApproveInSecProject.resx">
+      <DependentUpon>201608190157159_ApproveInSecProject.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

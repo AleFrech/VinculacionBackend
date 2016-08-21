@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Reflection;
-using System.Web;
-using VinculacionBackend.Data.Entities;
-using VinculacionBackend.Models;
 
-namespace VinculacionBackend
+namespace VinculacionBackend.Extensions
 {
     public static class ReportsExtensionMethods
     {

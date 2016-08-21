@@ -24,7 +24,7 @@ namespace VinculacionBackend.Reports
         }
 
 
-        public HttpResponseMessage GenerateFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantity, string beneficiarieGroups)
+        public HttpResponseMessage GenerateFinalReport(long projectId, long sectionprojectId,int fieldHours, int calification, int beneficiariesQuantity, string beneficiarieGroups)
         {
             var project = _projectRepository.Get(projectId);
             var doc = _textDoucmentServices.CreaDocument();
@@ -52,6 +52,7 @@ namespace VinculacionBackend.Reports
             var professorName = section.User != null ? section.User.Name : "Maestro Pendiente";
             string[][] table1Data =
             {
+                new[] {"Codigo", sectionprojectId.ToString()},
                 new[] {"Nombre del producto entregado", project.Name},
                 new[] {"Nombre de la organización beneficiada", project.BeneficiarieOrganization},
                 new[] {"Nombre de la asignatura", section.Class.Name},

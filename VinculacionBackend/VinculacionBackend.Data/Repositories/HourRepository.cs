@@ -25,7 +25,7 @@ namespace VinculacionBackend.Data.Repositories
 
         public Hour Get(long id)
         {
-            return _db.Hours.Find(id);
+            return _db.Hours.Include("User").Include("SectionProject").FirstOrDefault(x=>x.Id==id);
         }
 
         public IQueryable<Hour> GetAll()
@@ -37,7 +37,15 @@ namespace VinculacionBackend.Data.Repositories
         {
             return _db.Hours.Where(hour => hour.User.AccountId == accountId)
                 .Include("SectionProject.Project").Include("SectionProject.Section").Include("SectionProject.Section.Period");
-        }     
+        }
+
+        public SectionProject GetSectionProjectRel(long sectionProjectId)
+        {
+            return
+                _db.SectionProjectsRels.Include(rel => rel.Section)
+                    .Include(rel => rel.Project)
+                    .FirstOrDefault(rel => rel.Id == sectionProjectId);
+        }
 
         public void Insert(Hour ent)
         {
@@ -75,6 +83,12 @@ namespace VinculacionBackend.Data.Repositories
         public void Update(Hour ent)
         {
             _db.Entry(ent).State = EntityState.Modified;
+        }
+
+        public void Update(SectionProject ent)
+        {
+            _db.Entry(ent).State = EntityState.Modified;
+            
         }
     }
 }

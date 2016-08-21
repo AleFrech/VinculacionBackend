@@ -10,6 +10,7 @@ using VinculacionBackend.Data.Interfaces;
 
 namespace VinculacionBackend.Data.Repositories
 {
+
     public class StudentRepository : IStudentRepository
     {
         private readonly VinculacionContext _db;
@@ -122,11 +123,6 @@ namespace VinculacionBackend.Data.Repositories
                 return _db.Users.Include(m => m.Major).Include(f => f.Major.Faculty).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Inactive);
             if (status == "Active")
                 return _db.Users.Include(m => m.Major).Include(f => f.Major.Faculty).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Active);
-            if (status == "Verified")
-                return _db.Users.Include(m => m.Major).Include(f => f.Major.Faculty).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Verified);
-            if (status == "Rejected")
-                return _db.Users.Include(m => m.Major).Include(f => f.Major.Faculty).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Rejected);
-
             return new List<User>();
         }
 
@@ -233,6 +229,32 @@ namespace VinculacionBackend.Data.Repositories
                             .Where(b => accountId.Equals(b.User.AccountId))
                             .FirstOrDefault();
             return user != null ? user.Amount : 0;
+        }
+
+        public IQueryable<object> GetStudentSections(string accountId)
+        {
+            var hours = _db.Hours.Where(a => accountId.Equals(a.User.AccountId)).Include(c=> c.User).Include(b => b.SectionProject.Section).ToList();
+            var sections = _db.SectionUserRels.Where(a => a.User.AccountId == accountId)
+                                      .Select(b => b.Section).Include(c => c.Class)
+                                      .ToList();
+            var results = sections.Select(a => new
+            {
+                Id = a.Id,
+                Code = a.Code,
+                Class = a.Class,
+                HoursWorked = hours.Where(b => b.SectionProject.Section.Id == a.Id)
+                                   .DefaultIfEmpty(new Hour { Amount = 0 })
+                                   .First().Amount
+            });
+            return results.AsQueryable();
+        }
+
+        public void InsertMany(IList<User> students)
+        {
+            foreach (var student in students)
+            {
+                Insert(student);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net.Http;
+using Microsoft.Ajax.Utilities;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
 using VinculacionBackend.Data.Interfaces;
@@ -58,6 +59,14 @@ namespace VinculacionBackend.Services
             student.Finiquiteado = false;
         }
 
+        public void ChangePassword(StudentChangePasswordModel model)
+        {
+            var student=_studentRepository.GetByAccountNumber(model.AccountId);
+            student.Password = _encryption.Encrypt(model.Password);
+            _studentRepository.Update(student);
+            _studentRepository.Save();
+        }
+
 
         public void Add(User user)
         {
@@ -85,34 +94,17 @@ namespace VinculacionBackend.Services
             return _studentRepository.GetStudentsByStatus(status) as IQueryable<User>;
         }
 
-        public User RejectUser(string accountId)
-        {
-            var student = Find(accountId);
-            student.Status = Status.Rejected;
-            _studentRepository.Save();
-
-            return student;
-        }
 
         public User ActivateUser(string accountId)
         {
             var student = Find(accountId);
             student.Status = Status.Active;
+            _studentRepository.Update(student);
            _studentRepository.Save();
             return student;
         }
 
-        public User VerifyUser(string accountId)
-        {
-            var student = Find(accountId);
-            student.Status = Status.Verified;
-           _studentRepository.Save();
-            
-            return student;
-        }
-
-       
-
+      
         public User DeleteUser(string accountId)
         {
             var user = _studentRepository.DeleteByAccountNumber(accountId);
@@ -268,6 +260,16 @@ namespace VinculacionBackend.Services
         public int GetStudentHoursBySection(string accountId, long sectionId)
         {
             return _studentRepository.GetStudentHoursBySection(accountId, sectionId);
+        }
+
+        public IQueryable<object> GetStudentSections(string accountId)
+        {
+            return _studentRepository.GetStudentSections(accountId);
+        }
+
+        public void AddMany(IList<User> students)
+        {
+            students.ForEach(Add);
         }
     }
 }

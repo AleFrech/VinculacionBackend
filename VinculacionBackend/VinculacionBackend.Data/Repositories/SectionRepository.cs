@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
@@ -104,17 +103,14 @@ namespace VinculacionBackend.Data.Repositories
             return students;
         }
 
-        public IQueryable<object> GetSectionStudentsHours(long sectionId)
+        public IQueryable<object> GetSectionStudentsHours(long sectionId, long projectId)
         {
-
-            return _db.SectionUserRels.Where(c => c.Section.Id == sectionId)
-                            .Select(a => new {
-                                User = a.User,
-                                Hours = (_db.Hours.Where(b => b.SectionProject.Section.Id == sectionId
-                                                    && b.User.Id == a.User.Id)).Sum(hour=>hour.Amount)}
-                                            );
+            return
+                _db.Hours.Where(
+                    a => a.SectionProject.Section.Id == sectionId && a.SectionProject.Project.Id == projectId)
+                    .Include(u => u.User);
+        
         }
-
 
         public IQueryable<Project> GetSectionProjects(long sectionId)
         {
@@ -125,31 +121,6 @@ namespace VinculacionBackend.Data.Repositories
             var projects =
                 _db.Projects.Where(x => secProjRel.Any(a => a.Project.Id == x.Id) && x.IsDeleted == false).ToList();
 
-            foreach (var project in projects)
-            {
-                var projectmajors =
-                    _db.ProjectMajorRels.Include(a => a.Project)
-                        .Include(b => b.Major)
-                        .Where(x => x.Project.Id == project.Id)
-                        .ToList();
-                var majorsId = new List<string>();
-                foreach (var x in projectmajors)
-                {
-                    majorsId.Add(x.Major.MajorId);
-                }
-                project.MajorIds = majorsId;
-                var projectSections =
-                    _db.SectionProjectsRels.Include(a => a.Project)
-                        .Include(b => b.Section)
-                        .Where(x => x.Project.Id == project.Id)
-                        .ToList();
-                var sectionsId = new List<long>();
-                foreach (var x in projectSections)
-                {
-                    sectionsId.Add(x.Section.Id);
-                }
-                project.SectionIds = sectionsId;
-            }
             return projects.AsQueryable();
         }
 
@@ -174,7 +145,6 @@ namespace VinculacionBackend.Data.Repositories
         public void Update(Section ent)
         {
             _db.Classes.Attach(ent.Class);
-            //_db.Periods.Attach(ent.Period);
             _db.Users.Attach(ent.User);
             _db.Sections.AddOrUpdate(ent);
         }
