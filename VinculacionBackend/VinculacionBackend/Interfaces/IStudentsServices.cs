@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Models;
+using VinculacionBackend.Services;
 
 namespace VinculacionBackend.Interfaces
 {
@@ -20,12 +21,14 @@ namespace VinculacionBackend.Interfaces
         HttpResponseMessage GetFiniquitoReport(string accountId);
         User FindByEmail(string email);
         User UpdateStudent(string accountId, UserEntryModel model);
-        DataTable[] CreateStudentReport(int year);
+        List<StudentReportModel> CreateStudentReport(int year);
         IQueryable<FiniquitoUserModel> GetPendingStudentsFiniquito();
         User GetCurrentStudents(long userId);
         int GetStudentHoursBySection(string accountId, long sectionId);
         IQueryable<object> GetStudentSections(string accountId);
         void AddMany(IList<User> students);
         void ChangePassword(StudentChangePasswordModel model);
+
+        List<StudentReportModel> CreateStudentReport2ndTable(int year);
     }
 }

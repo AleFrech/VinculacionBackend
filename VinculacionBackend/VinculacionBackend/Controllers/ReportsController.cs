@@ -1,5 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Data;
+using System.Collections.Generic;
 using VinculacionBackend.Interfaces;
 
 namespace VinculacionBackend.Controllers
@@ -59,7 +61,10 @@ namespace VinculacionBackend.Controllers
         [Route("api/Reports/StudentsReport/{year}")]
         public IHttpActionResult GetStudentsReport(int year)
         {
-            var context = _reportsServices.GenerateReport(_studentServices.CreateStudentReport(year),
+            var datatables = new DataTable[2];
+            datatables[0] = _studentServices.CreateStudentReport(year).ToDataTable();
+            datatables[1] = _studentServices.CreateStudentReport2ndTable(year).ToDataTable();
+            var context = _reportsServices.GenerateReport(datatables,
                 "Reporte de Alumnos");
             context.Response.Flush();
             context.Response.End();
