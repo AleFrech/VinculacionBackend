@@ -184,7 +184,7 @@ namespace VinculacionBackend.Services
             return report;
         }
 
-        public List<StudentReportModel> CreateStudentReport2ndTable(int year)
+        public List<StudentReportModel> CreateHourNumberReport(int year)
         {
             var report = new List<StudentReportModel>();
 

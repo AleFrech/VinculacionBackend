@@ -29,6 +29,6 @@ namespace VinculacionBackend.Interfaces
         void AddMany(IList<User> students);
         void ChangePassword(StudentChangePasswordModel model);
 
-        List<StudentReportModel> CreateStudentReport2ndTable(int year);
+        List<StudentReportModel> CreateHourNumberReport(int year);
     }
 }

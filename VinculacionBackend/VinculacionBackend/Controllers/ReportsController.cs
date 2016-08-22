@@ -63,7 +63,7 @@ namespace VinculacionBackend.Controllers
         {
             var datatables = new DataTable[2];
             datatables[0] = _studentServices.CreateStudentReport(year).ToDataTable();
-            datatables[1] = _studentServices.CreateStudentReport2ndTable(year).ToDataTable();
+            datatables[1] = _studentServices.CreateHourNumberReport(year).ToDataTable();
             var context = _reportsServices.GenerateReport(datatables,
                 "Reporte de Alumnos");
             context.Response.Flush();
@@ -83,7 +83,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Reports/PeriodReport/{year}")]
         public IHttpActionResult GetPeriodReport(int year)
         {
-            var context = _reportsServices.GenerateReport(_projectServices.CreatePeriodReport(year, 1),
+            var context = _reportsServices.GenerateReport(_projectServices.CreatePeriodReport(year, 1).ToDataTable(),
                 1 + " " + year);
             context.Response.Flush();
             context.Response.End();

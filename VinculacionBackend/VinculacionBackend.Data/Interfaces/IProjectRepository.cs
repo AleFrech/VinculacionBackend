@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Models;
+using VinculacionBackend.Data.Repositories;
 
 namespace VinculacionBackend.Data.Interfaces
 {
@@ -23,7 +24,7 @@ namespace VinculacionBackend.Data.Interfaces
         string GetMajors(List<Major> majors);
         string GetProfessor(long id);
         string GetTotalHours(long id);
-        IQueryable<Project> GetByYearAndPeriod(int year, int period);
+        IQueryable<PeriodReportModel> GetByYearAndPeriod(int year, int period);
         IQueryable<Project> GetProjectsBySection(long sectionId);
         SectionProject GetSectionProject(long projectId, long sectionId);
     }

@@ -72,7 +72,13 @@
       <DependentUpon>FacultiesCostReport.feature</DependentUpon>
     </Compile>
     <Compile Include="Features\Reports\FacultiesCostReportSteps.cs" />
+    <Compile Include="Features\Reports\HourNumberReportSteps.cs" />
     <Compile Include="Features\Reports\StudentReportSteps.cs" />
+    <Compile Include="HourNumberReport.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HourNumberReport.feature</DependentUpon>
+    </Compile>
     <Compile Include="StudentReport.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -86,6 +92,10 @@
     <None Include="FacultiesCostReport.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FacultiesCostReport.feature.cs</LastGenOutput>
+    </None>
+    <None Include="HourNumberReport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>HourNumberReport.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="StudentReport.feature">
