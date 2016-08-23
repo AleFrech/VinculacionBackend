@@ -14,6 +14,14 @@ using VinculacionBackend.Reports;
 
 namespace VinculacionBackend.Services
 {
+    public class StudentReportModel
+    {
+        public string StudentNumber { get; set; }
+        public int FirstPeriod { get; set; }
+        public int SecondPeriod { get; set; }
+        public int FourthPeriod { get; set; }
+        public int FifthPeriod { get; set; }
+    }
     public class StudentsServices : IStudentsServices
     {
         private readonly IStudentRepository _studentRepository;
@@ -144,75 +152,68 @@ namespace VinculacionBackend.Services
             return student;
         }
 
-        public DataTable[] CreateStudentReport(int year)
+        public List<StudentReportModel> CreateStudentReport(int year)
         {
-            var dt = new DataTable();
-            dt.Columns.Add("Numero de alumnos", typeof(string));
-            dt.Columns.Add("1er Periodo", typeof(int));
-            dt.Columns.Add("2do Periodo", typeof(int));
-            dt.Columns.Add("3er Periodo", typeof(int));
-            dt.Columns.Add("4to Periodo", typeof(int));
+            var report = new List<StudentReportModel>();
 
-            dt.Rows.Add("Inglés", _studentRepository.GetStudentCount(1, "Inglés", year), _studentRepository.GetStudentCount(2, "Inglés", year), _studentRepository.GetStudentCount(4, "Inglés", year), _studentRepository.GetStudentCount(5, "Inglés", year));
-            dt.Rows.Add("Ofimática", _studentRepository.GetStudentCount(1, "Ofimática", year), _studentRepository.GetStudentCount(2, "Ofimática", year), _studentRepository.GetStudentCount(4, "Ofimática", year), _studentRepository.GetStudentCount(5, "Ofimática", year));
-            dt.Rows.Add("Sociología", _studentRepository.GetStudentCount(1, "Sociología", year), _studentRepository.GetStudentCount(2, "Sociología", year), _studentRepository.GetStudentCount(4, "Sociología", year), _studentRepository.GetStudentCount(5, "Sociología", year));
-            dt.Rows.Add("Filosofía", _studentRepository.GetStudentCount(1, "Filosofía", year), _studentRepository.GetStudentCount(2, "Filosofía", year), _studentRepository.GetStudentCount(4, "Filosofía", year), _studentRepository.GetStudentCount(5, "Filosofía", year));
-            dt.Rows.Add("Ecología", _studentRepository.GetStudentCount(1, "Ecología", year), _studentRepository.GetStudentCount(2, "Ecología", year), _studentRepository.GetStudentCount(4, "Ecología", year), _studentRepository.GetStudentCount(5, "Ecología", year));
-            dt.Rows.Add("FIA", _studentRepository.GetStudentByFacultyCount(1, 1, year), _studentRepository.GetStudentByFacultyCount(2, 1, year), _studentRepository.GetStudentByFacultyCount(4, 1, year), _studentRepository.GetStudentByFacultyCount(5, 1, year));
-            dt.Rows.Add("FCAS", _studentRepository.GetStudentByFacultyCount(1, 2, year), _studentRepository.GetStudentByFacultyCount(2, 2, year), _studentRepository.GetStudentByFacultyCount(4, 2, year), _studentRepository.GetStudentByFacultyCount(5, 2, year));
-            dt.Rows.Add();
+            var count = _studentRepository.GetStudentCount( "Inglés", year);
+            report.Add(new StudentReportModel { StudentNumber = "Inglés", FirstPeriod = count.FirstPeriod ,SecondPeriod = count.SecondPeriod,FourthPeriod = count.FourthPeriod,FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetStudentCount("Ofimática", year);
+            report.Add(new StudentReportModel { StudentNumber = "Ofimática", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetStudentCount("Sociología", year);
+            report.Add(new StudentReportModel { StudentNumber = "Sociología", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetStudentCount("Filosofía", year);
+            report.Add(new StudentReportModel { StudentNumber = "Filosofía", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetStudentCount("Ecología", year);
+            report.Add(new StudentReportModel { StudentNumber = "Ecología", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetStudentByFacultyCount(1, year);
+            report.Add(new StudentReportModel { StudentNumber = "FIA", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetStudentByFacultyCount(2, year);
+            report.Add(new StudentReportModel { StudentNumber = "FCAS", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
 
-            int[] sum = new int[4];
-            foreach (DataRow dr in dt.Rows)
+            var sum = new StudentReportModel { StudentNumber = "Total"};
+            foreach (StudentReportModel model in report)
             {
-                int col = 0;
-                foreach (DataColumn dc in dt.Columns)
-                {
-                    var value = dr[dc];
-                    if (!dc.ColumnName.Equals("Numero de alumnos") && value is int)
-                    {
-                        sum[col++] += (int)value;
-                    }
-                }
+                sum.FirstPeriod += model.FirstPeriod;
+                sum.SecondPeriod += model.SecondPeriod;
+                sum.FourthPeriod += model.FourthPeriod;
+                sum.FifthPeriod += model.FifthPeriod;
             }
-            dt.Rows.Add("Total", sum[0], sum[1], sum[2], sum[3]);
+            report.Add(sum);
 
-            var dataTables = new DataTable[2];
-            dataTables[0] = dt;
+            return report;
+        }
 
-            var dt2 = new DataTable();
-            dt2.Columns.Add("Numero de Horas", typeof(string));
-            dt2.Columns.Add("1er Periodo", typeof(int));
-            dt2.Columns.Add("2do Periodo", typeof(int));
-            dt2.Columns.Add("3er Periodo", typeof(int));
-            dt2.Columns.Add("4to Periodo", typeof(int));
+        public List<StudentReportModel> CreateHourNumberReport(int year)
+        {
+            var report = new List<StudentReportModel>();
 
-            dt2.Rows.Add("Inglés", _studentRepository.GetHoursCount(1, "Inglés", year), _studentRepository.GetHoursCount(2, "Inglés", year), _studentRepository.GetHoursCount(4, "Inglés", year), _studentRepository.GetHoursCount(5, "Inglés", year));
-            dt2.Rows.Add("Ofimática", _studentRepository.GetHoursCount(1, "Ofimática", year), _studentRepository.GetHoursCount(2, "Ofimática", year), _studentRepository.GetHoursCount(4, "Ofimática", year), _studentRepository.GetHoursCount(5, "Ofimática", year));
-            dt2.Rows.Add("Sociología", _studentRepository.GetHoursCount(1, "Sociología", year), _studentRepository.GetHoursCount(2, "Sociología", year), _studentRepository.GetHoursCount(4, "Sociología", year), _studentRepository.GetHoursCount(5, "Sociología", year));
-            dt2.Rows.Add("Filosofía", _studentRepository.GetHoursCount(1, "Filosofía", year), _studentRepository.GetHoursCount(2, "Filosofía", year), _studentRepository.GetHoursCount(4, "Filosofía", year), _studentRepository.GetHoursCount(5, "Filosofía", year));
-            dt2.Rows.Add("Ecología", _studentRepository.GetHoursCount(1, "Ecología", year), _studentRepository.GetHoursCount(2, "Ecología", year), _studentRepository.GetHoursCount(4, "Ecología", year), _studentRepository.GetHoursCount(5, "Ecología", year));
-            dt2.Rows.Add("FIA", _studentRepository.GetHoursByFacultyCount(1, 1, year), _studentRepository.GetHoursByFacultyCount(2, 1, year), _studentRepository.GetHoursByFacultyCount(4, 1, year), _studentRepository.GetHoursByFacultyCount(5, 1, year));
-            dt2.Rows.Add("FCAS", _studentRepository.GetHoursByFacultyCount(1, 2, year), _studentRepository.GetHoursByFacultyCount(2, 2, year), _studentRepository.GetHoursByFacultyCount(4, 2, year), _studentRepository.GetHoursByFacultyCount(5, 2, year));
-            dt2.Rows.Add();
+            var count = _studentRepository.GetHoursCount("Inglés", year);
+            report.Add(new StudentReportModel { StudentNumber = "Inglés", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetHoursCount("Ofimática", year);
+            report.Add(new StudentReportModel { StudentNumber = "Ofimática", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetHoursCount("Sociología", year);
+            report.Add(new StudentReportModel { StudentNumber = "Sociología", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetHoursCount("Filosofía", year);
+            report.Add(new StudentReportModel { StudentNumber = "Filosofía", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetHoursCount("Ecología", year);
+            report.Add(new StudentReportModel { StudentNumber = "Ecología", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetHoursByFacultyCount(1, year);
+            report.Add(new StudentReportModel { StudentNumber = "FIA", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetHoursByFacultyCount(2, year);
+            report.Add(new StudentReportModel { StudentNumber = "FCAS", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
 
-            sum = new int[4];
-            foreach (DataRow dr in dt2.Rows)
+            var sum = new StudentReportModel { StudentNumber = "Total" };
+            foreach (StudentReportModel model in report)
             {
-                int col = 0;
-                foreach (DataColumn dc in dt2.Columns)
-                {
-                    var value = dr[dc];
-                    if (!dc.ColumnName.Equals("Numero de Horas") && value is int)
-                    {
-                        sum[col++] += (int)value;
-                    }
-                }
+                sum.FirstPeriod += model.FirstPeriod;
+                sum.SecondPeriod += model.SecondPeriod;
+                sum.FourthPeriod += model.FourthPeriod;
+                sum.FifthPeriod += model.FifthPeriod;
             }
-            dt2.Rows.Add("Total", sum[0], sum[1], sum[2], sum[3]);
+            report.Add(sum);
 
-            dataTables[1] = dt2;
-            return dataTables;
+            return report;
         }
 
         public IQueryable<FiniquitoUserModel> GetPendingStudentsFiniquito()

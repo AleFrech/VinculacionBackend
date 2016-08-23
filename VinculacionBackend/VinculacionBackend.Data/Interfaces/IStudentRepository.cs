@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
+using VinculacionBackend.Data.Repositories;
 
 namespace VinculacionBackend.Data.Interfaces
 {
@@ -16,10 +17,10 @@ namespace VinculacionBackend.Data.Interfaces
         IEnumerable<User> GetStudentsByStatus(string status);
         User GetByEmail(string email);
         int GetStudentHoursByProject(string accountNumber, long projectId);
-        int GetStudentCount(int periodo, string clase, int year);
-        int GetStudentByFacultyCount(int period, int faculty, int year);
-        int GetHoursCount(int period, string clase, int year);
-        int GetHoursByFacultyCount(int period, int faculty, int year);
+        StudentCountModel GetStudentCount( string clase, int year);
+        StudentCountModel GetStudentByFacultyCount(int faculty, int year);
+        StudentCountModel GetHoursCount( string clase, int year);
+        StudentCountModel GetHoursByFacultyCount( int faculty, int year);
         IEnumerable<User> GetStudentByMajor(string majorId);
         int GetStudentHoursBySection(string accountId, long sectionId);
         IQueryable<object> GetStudentSections(string accountId);
