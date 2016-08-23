@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
@@ -225,39 +226,9 @@ namespace VinculacionBackend.Services
             return dt;
         }
 
-        public DataTable CreatePeriodReport(int year, int period)
+        public IQueryable<PeriodReportModel> CreatePeriodReport(int year, int period)
         {
-            var dt = new DataTable();
-            dt.Columns.Add("Institución", typeof(string));
-            dt.Columns.Add("Producto", typeof(string));
-            dt.Columns.Add("Asignatura", typeof(string));
-            dt.Columns.Add("Carrera", typeof(string));
-            dt.Columns.Add("Catedrático", typeof(string));
-            dt.Columns.Add("Horas", typeof(string));
-            dt.Columns.Add("Fecha de Entrega", typeof(string));
-            dt.Columns.Add("Costo", typeof(double));
-            dt.Columns.Add("# Proy", typeof(long));
-            dt.Columns.Add("Beneficiarios", typeof(string));
-            dt.Columns.Add("Comentarios", typeof(string));
-
-            var projects = _projectRepository.GetByYearAndPeriod(year, period);
-
-            foreach (var project in projects)
-            {
-                var sections = _sectionRepository.GetSectionsByProject(project.Id).ToList();
-                var majors = _majorRepository.GetMajorsByProject(project.Id).ToList();
-                dt.Rows.Add(project.BeneficiarieOrganization, project.Description,
-                    sections.Count > 0 ? _projectRepository.GetClass(sections[0].Id) : "", 
-
-                    _projectRepository.GetMajors(majors), 
-                    _projectRepository.GetProfessor(project.Id),  
-                    _projectRepository.GetTotalHours(project.Id),
-                    "",
-                    project.Cost,
-                    project.Id);
-            }
-
-            return dt;
+            return _projectRepository.GetByYearAndPeriod(year, period);
         }
     }
 

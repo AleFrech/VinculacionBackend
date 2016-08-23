@@ -190,31 +190,75 @@ namespace VinculacionBackend.Data.Repositories
             return total;
         }
 
-        public int GetStudentCount(int periodo, string clase, int year)
+        public StudentCountModel GetStudentCount( string clase, int year)
         {
-            return _db.SectionUserRels.Where( a => a.Section.Period.Number == periodo && a.Section.Period.Year == year).Where(b => b.Section.Class.Name.StartsWith(clase)).Count();
+            var students = _db.SectionUserRels.Where(a => a.Section.Period.Year == year)
+                    .Where(b => b.Section.Class.Name.StartsWith(clase)).Include(d => d.Section).GroupBy(c => c.Section.Period.Number);
+            var first = students.Where(f => f.Key == 1).SingleOrDefault();
+            var second = students.Where(f => f.Key == 2).SingleOrDefault();
+            var fourth = students.Where(f => f.Key == 4).SingleOrDefault();
+            var fifth = students.Where(f => f.Key == 5).SingleOrDefault();
+            return new StudentCountModel
+            {
+                
+                FirstPeriod = first != null ? first.Count() : 0,
+                SecondPeriod = second != null ? second.Count() : 0,
+                FourthPeriod = fourth != null ? fourth.Count() : 0,
+                FifthPeriod = fifth != null ? fifth.Count() : 0
+            };
         }
 
-        public int GetStudentByFacultyCount(int period, int faculty, int year)
+        public StudentCountModel GetStudentByFacultyCount(int faculty, int year)
         {
-            var students = _db.SectionUserRels.Where(a => a.Section.Period.Number == period && a.Section.Period.Year == year);
-            return students.Where(a => a.User.Major.Faculty.Id == faculty).Count();
+            var students = _db.SectionUserRels.Where(a => a.Section.Period.Year == year).Where(a => a.User.Major.Faculty.Id == faculty).GroupBy(c => c.Section.Period.Number);
+            var first = students.Where(f => f.Key == 1).SingleOrDefault();
+            var second = students.Where(f => f.Key == 2).SingleOrDefault();
+            var fourth = students.Where(f => f.Key == 4).SingleOrDefault();
+            var fifth = students.Where(f => f.Key == 5).SingleOrDefault();
+            return new StudentCountModel
+            {
+
+                FirstPeriod = first != null ? first.Count() : 0,
+                SecondPeriod = second != null ? second.Count() : 0,
+                FourthPeriod = fourth != null ? fourth.Count() : 0,
+                FifthPeriod = fifth != null ? fifth.Count() : 0
+            };
         }
 
-        public int GetHoursCount(int period, string clase, int year)
+        public StudentCountModel GetHoursCount( string clase, int year)
         {
-            var periodHours = _db.Hours.Where(a => a.SectionProject.Section.Period.Number == period && a.SectionProject.Section.Period.Year == year);
-            var classHours = periodHours.Where(b => b.SectionProject.Section.Class.Name.StartsWith(clase)).ToList();
-            var sum = (int?)classHours.Sum(c =>  ((int?)c.Amount) ?? 0);
-            return (sum) ?? 0;
+            var periodHours = _db.Hours.Where(a => a.SectionProject.Section.Period.Year == year).Where(b => b.SectionProject.Section.Class.Name.StartsWith(clase))
+                .GroupBy(c => c.SectionProject.Section.Period.Number);
+            var first = periodHours.Where(f => f.Key == 1).SingleOrDefault();
+            var second = periodHours.Where(f => f.Key == 2).SingleOrDefault();
+            var fourth = periodHours.Where(f => f.Key == 4).SingleOrDefault();
+            var fifth = periodHours.Where(f => f.Key == 5).SingleOrDefault();
+            return new StudentCountModel
+            {
+
+                FirstPeriod = first != null ? first.Sum(a => a.Amount) : 0,
+                SecondPeriod = second != null ? second.Sum(a => a.Amount) : 0,
+                FourthPeriod = fourth != null ? fourth.Sum(a => a.Amount) : 0,
+                FifthPeriod = fifth != null ? fifth.Sum(a => a.Amount) : 0
+            };
         }
 
-        public int GetHoursByFacultyCount(int period, int faculty, int year)
+        public StudentCountModel GetHoursByFacultyCount( int faculty, int year)
         {
-            var periodHours = _db.Hours.Where(a => a.SectionProject.Section.Period.Number == period && a.SectionProject.Section.Period.Year == year);
-            var classHours = periodHours.Where(b => b.User.Major.Faculty.Id == faculty).ToList();
-            var sum = (int?)classHours.Sum(c => ((int?)c.Amount) ?? 0);
-            return (sum) ?? 0;
+            var periodHours = _db.Hours.Where(a =>  a.SectionProject.Section.Period.Year == year).Where(b => b.User.Major.Faculty.Id == faculty)
+                .GroupBy(c => c.SectionProject.Section.Period.Number);
+            var first = periodHours.Where(f => f.Key == 1).SingleOrDefault();
+            var second = periodHours.Where(f => f.Key == 2).SingleOrDefault();
+            var fourth = periodHours.Where(f => f.Key == 4).SingleOrDefault();
+            var fifth = periodHours.Where(f => f.Key == 5).SingleOrDefault();
+            return new StudentCountModel
+            {
+
+                FirstPeriod = first != null ? first.Sum(a => a.Amount) : 0,
+                SecondPeriod = second != null ? second.Sum(a => a.Amount) : 0,
+                FourthPeriod = fourth != null ? fourth.Sum(a => a.Amount) : 0,
+                FifthPeriod = fifth != null ? fifth.Sum(a => a.Amount) : 0
+            };
         }
 
         public IEnumerable<User> GetStudentByMajor(string majorId)
@@ -256,5 +300,13 @@ namespace VinculacionBackend.Data.Repositories
                 Insert(student);
             }
         }
+    }
+
+    public class StudentCountModel
+    {
+        public int FifthPeriod { get; set; }
+        public int FirstPeriod { get; set; }
+        public int FourthPeriod { get; set; }
+        public int SecondPeriod { get; set; }
     }
 }
