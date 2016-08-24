@@ -1,4 +1,5 @@
-﻿using VinculacionBackend.Data.Interfaces;
+﻿using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
@@ -15,27 +16,36 @@ namespace VinculacionBackend.Services
             _sectionProjectRepository = new SectionProjectRepository();
         }
 
-        public SectionProjectInfoModel GetInfo(long id)
+        public SectionProject GetInfo(long sectionId,long projectId)
         {
-            var sectionProject = _sectionProjectRepository.Get(id);
+            var sectionProject = _sectionProjectRepository.GetSectionProjectByIds(sectionId,projectId);
             if (sectionProject == null)
-                throw new NotFoundException(id + " not found");
-            return new SectionProjectInfoModel
-            {
-                ClassName = sectionProject.Section.Class.Name,
-                ProfessorName = sectionProject.Section.User.Name,
-                Project = sectionProject.Project
-            };
+                throw new NotFoundException("SectionProject not found");
+            return sectionProject;
         }
 
-        public void Approve(long sectionProjectId)
-        {
-            var rel = _sectionProjectRepository.Get(sectionProjectId);
-            if (rel == null)
-                throw new NotFoundException(sectionProjectId + " not found");
 
+
+        public void Approve(long sectionId,long projectId)
+        {
+            var rel = _sectionProjectRepository.GetSectionProjectByIds(sectionId,projectId);
+            if (rel == null)
+                throw new NotFoundException("SectionProject not found");
             rel.IsApproved = true;
             _sectionProjectRepository.Update(rel);
+            _sectionProjectRepository.Save();
+        }
+
+
+        public void AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel)
+        {
+            var sectionproject = _sectionProjectRepository.GetSectionProjectByIds(sectionProjectEntryModel.SectiontId,
+                sectionProjectEntryModel.ProjectId);
+            if(sectionproject==null)
+                throw new NotFoundException("SectionProject not found");
+            sectionproject.Description = sectionProjectEntryModel.Description;
+            sectionproject.Cost=sectionProjectEntryModel.Cost;
+            _sectionProjectRepository.Update(sectionproject);
             _sectionProjectRepository.Save();
         }
     }
