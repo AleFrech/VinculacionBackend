@@ -1,5 +1,5 @@
-﻿using System;
 using System.Data.Entity;
+﻿using System;
 using System.Linq;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
@@ -58,10 +58,23 @@ namespace VinculacionBackend.Data.Repositories
             _db.Entry(ent).State = EntityState.Modified;
         }
 
+
         public void Insert(SectionProject ent)
         {
             _db.SectionProjectsRels.Add(ent);
         }
-
+        
+        public IQueryable<SectionProject> GetUnapprovedProjects()
+        {
+            return _db.Hours.Include(hour => hour.SectionProject)
+                .Where(hour => !hour.SectionProject.IsApproved)
+                .Select(hour => hour.SectionProject)
+                .Include(rel => rel.Section)
+                .Include(rel => rel.Project)
+                .Include(rel => rel.Section.Class)
+                .Include(rel => rel.Section.User)
+                .Include(rel => rel.Section.Period)
+                .Distinct();
+        }
     }
 }

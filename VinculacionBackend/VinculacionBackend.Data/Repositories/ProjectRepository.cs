@@ -239,11 +239,11 @@ namespace VinculacionBackend.Data.Repositories
                 .Join(_db.ProjectMajorRels, sp => sp.Project.Id, pm => pm.Project.Id, (sp, pm) => new { sp, pm })
                 .Select(b => new PeriodReportModel
                 {
-                    Institución = b.sp.Project.BeneficiarieOrganization,
+                    InstituciÃ³n = b.sp.Project.BeneficiarieOrganization,
                     Producto = b.sp.Project.Name,
                     Asignatura = b.sp.Section.Class.Name,
                     Carrera = b.pm.Major.Name,
-                    Catedrático = b.sp.Section.User.Name,
+                    CatedrÃ¡tico = b.sp.Section.User.Name,
                     Horas = (_db.Hours.Where(hours => hours.SectionProject.Id == b.sp.Id).Sum(a => (int?)a.Amount) ?? 0).ToString(),
                     FechadeEntrega = "",
                     Costo = b.sp.Cost,
@@ -278,12 +278,12 @@ namespace VinculacionBackend.Data.Repositories
         public string Asignatura { get; set; }
         public string Beneficiarios { get; set; }
         public string Carrera { get; set; }
-        public string Catedrático { get; set; }
+        public string CatedrÃ¡tico { get; set; }
         public string Comentarios { get; set; }
         public double Costo { get; set; }
         public string FechadeEntrega { get; set; }
         public string Horas { get; set; }
-        public string Institución { get; set; }
+        public string InstituciÃ³n { get; set; }
         public long NumProy { get; set; }
         public string Producto { get; set; }
     }

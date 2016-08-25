@@ -1,4 +1,5 @@
-﻿using VinculacionBackend.Data.Entities;
+using System.Linq;
+using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Exceptions;
@@ -36,6 +37,11 @@ namespace VinculacionBackend.Services
             _sectionProjectRepository.Save();
         }
 
+        public IQueryable<SectionProject> GetUnapproved()
+        {
+            return _sectionProjectRepository.GetUnapprovedProjects();
+
+        }
 
         public SectionProject AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel)
         {

@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System.Linq;
+using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using VinculacionBackend.ActionFilters;
@@ -20,12 +21,21 @@ namespace VinculacionBackend.Controllers
         }
 
 
+        // GET: api/SectionProjects
+        [Route("api/SectionProjects/UnApproved/")]
+        [CustomAuthorize(Roles = "Admin")]
+        public IQueryable<SectionProject> GetSectionProjecstUnApproved()
+        {
+            return _sectionProjectServices.GetUnapproved();
+        }
+
+
         [ResponseType(typeof(SectionProject))]
         [Route("api/SectionProjects/Info/{sectionId}/{projectId}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
-        public IHttpActionResult GetSectionProject(long sectionId,long projectId)
+        public SectionProject GetSectionProject(long sectionId,long projectId)
         {
-            return Ok(_sectionProjectServices.GetInfo(sectionId,projectId));
+            return _sectionProjectServices.GetInfo(sectionId,projectId);
         }
 
         // POST: api/SectionProjects
