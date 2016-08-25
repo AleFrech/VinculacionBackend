@@ -27,6 +27,5 @@ namespace VinculacionBackend.Data.Interfaces
         IQueryable<PeriodReportModel> GetByYearAndPeriod(int year, int period);
         IQueryable<Project> GetProjectsBySection(long sectionId);
         SectionProject GetSectionProject(long projectId, long sectionId);
-        IQueryable<SectionProject> GetUnapprovedProjects();
     }
 }
