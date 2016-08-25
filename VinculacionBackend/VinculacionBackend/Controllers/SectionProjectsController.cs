@@ -1,6 +1,8 @@
-﻿using System.Web.Http;
+﻿using System.Linq;
+using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
+using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 using VinculacionBackend.Security.BasicAuthentication;
@@ -15,6 +17,15 @@ namespace VinculacionBackend.Controllers
         public SectionProjectsController(ISectionProjectServices sectionProjectServices)
         {
             _sectionProjectServices = sectionProjectServices;
+        }
+
+
+        // GET: api/SectionProjects
+        [Route("api/SectionProjects/UnApproved/")]
+        //[CustomAuthorize(Roles = "Admin")]
+        public IQueryable<SectionProject> GetSectionProjecstUnApproved()
+        {
+            return _sectionProjectServices.GetUnapproved();
         }
 
         // GET: api/SectionProjects/5

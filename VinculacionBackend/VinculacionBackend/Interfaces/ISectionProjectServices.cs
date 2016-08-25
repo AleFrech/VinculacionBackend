@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Interfaces
@@ -11,5 +8,6 @@ namespace VinculacionBackend.Interfaces
     {
         SectionProjectInfoModel GetInfo(long id);
         void Approve(long sectionProjectId);
+        IQueryable<SectionProject> GetUnapproved();
     }
 }

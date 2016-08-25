@@ -1,4 +1,6 @@
-﻿using VinculacionBackend.Data.Interfaces;
+﻿using System.Linq;
+using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
@@ -37,6 +39,11 @@ namespace VinculacionBackend.Services
             rel.IsApproved = true;
             _sectionProjectRepository.Update(rel);
             _sectionProjectRepository.Save();
+        }
+
+        public IQueryable<SectionProject> GetUnapproved()
+        {
+            return _sectionProjectRepository.GetUnapprovedProjects();
         }
     }
 }
