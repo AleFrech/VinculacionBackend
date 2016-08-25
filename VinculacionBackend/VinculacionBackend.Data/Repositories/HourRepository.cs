@@ -5,7 +5,7 @@ using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
-
+using VinculacionBackend.Data.Exceptions;
 
 namespace VinculacionBackend.Data.Repositories
 {
@@ -55,6 +55,8 @@ namespace VinculacionBackend.Data.Repositories
         public Hour InsertHourFromModel(string accountId,long sectionId,long projectId, int hour,string professorUser )
         {
             var sectionProjectRel = Queryable.FirstOrDefault(_db.SectionProjectsRels.Include(x => x.Project).Include(y => y.Section), z => z.Section.Id == sectionId && z.Project.Id == projectId);
+            if (sectionProjectRel.IsApproved)
+                throw new HoursAlreadyApprovedException("Las Horas no se pueden modificar porque ya han sido aprobadas");
             var user = Queryable.FirstOrDefault(_db.Users, x => x.AccountId == accountId);
             var section = Queryable.FirstOrDefault(_db.Sections.Include(x=>x.User).Include(x=>x.Class).Include(x=>x.Period), x => x.Id == sectionId);
             if(user==null)
