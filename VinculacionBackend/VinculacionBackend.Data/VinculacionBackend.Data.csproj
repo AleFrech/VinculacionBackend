@@ -110,6 +110,10 @@
     <Compile Include="Migrations\201608190157159_ApproveInSecProject.Designer.cs">
       <DependentUpon>201608190157159_ApproveInSecProject.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608250352405_SectionProjectRestructure.cs" />
+    <Compile Include="Migrations\201608250352405_SectionProjectRestructure.Designer.cs">
+      <DependentUpon>201608250352405_SectionProjectRestructure.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\MajorProjectTotalmodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -142,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608190157159_ApproveInSecProject.resx">
       <DependentUpon>201608190157159_ApproveInSecProject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608250352405_SectionProjectRestructure.resx">
+      <DependentUpon>201608250352405_SectionProjectRestructure.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
