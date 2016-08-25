@@ -265,6 +265,18 @@ namespace VinculacionBackend.Data.Repositories
         {
             return _db.SectionProjectsRels.Include(rel => rel.Section).Include(rel => rel.Project).FirstOrDefault(rel => rel.Section.Id == sectionId && rel.Project.Id == projectId);
         }
+
+        public IQueryable<SectionProject> GetUnapprovedProjects()
+        {
+            return _db.Hours.Include(hour => hour.SectionProject)
+                .Where(hour => !hour.SectionProject.IsApproved)
+                .Select(hour => hour.SectionProject)
+                .Include(rel => rel.Section)
+                .Include(rel => rel.Project)
+                .Include(rel => rel.Section.Class)
+                .Include(rel => rel.Section.User)
+                .Distinct();
+        }
     }
 
     public class PeriodReportModel
