@@ -2,6 +2,7 @@
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
+using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
@@ -28,22 +29,32 @@ namespace VinculacionBackend.Controllers
             return _sectionProjectServices.GetUnapproved();
         }
 
-        // GET: api/SectionProjects/5
-        [ResponseType(typeof(SectionProjectInfoModel))]
-        [Route("api/SectionProjects/Info/{sectionprojectId}")]
+
+        [ResponseType(typeof(SectionProject))]
+        [Route("api/SectionProjects/Info/{sectionId}/{projectId}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
-        public IHttpActionResult GetSectionProject(long sectionprojectId)
+        public SectionProject GetSectionProject(long sectionId,long projectId)
         {
-            return Ok(_sectionProjectServices.GetInfo(sectionprojectId));
+            return _sectionProjectServices.GetInfo(sectionId,projectId);
         }
 
-        // PUT: api/SectionProjects/5
-        [ResponseType(typeof(void))]
-        [Route("api/SectionProjects/Approve/{sectionprojectId}")]
+        // POST: api/SectionProjects
+        [ResponseType(typeof(SectionProject))]
+        [Route("api/SectionProjects")]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PutSectionProject(long sectionprojectId)
+        [ValidateModel]
+        public IHttpActionResult PostSectionProject(SectionProjectEntryModel sectionProjectEntryModel)
         {
-            _sectionProjectServices.Approve(sectionprojectId);
+            
+            return Ok(_sectionProjectServices.AddOrUpdate(sectionProjectEntryModel));
+        }
+
+        [ResponseType(typeof(void))]
+        [Route("api/SectionProjects/Approve/{sectionId}/{projectId}")]
+        [CustomAuthorize(Roles = "Admin")]
+        public IHttpActionResult PutSectionProject(long sectionId, long projectId)
+        {
+            _sectionProjectServices.Approve(sectionId,projectId);
             return Ok();
         }
 

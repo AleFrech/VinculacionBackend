@@ -1,13 +1,14 @@
-﻿using System.Linq;
-using VinculacionBackend.Data.Entities;
+using System.Linq;
+﻿using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Interfaces
 {
     public interface ISectionProjectServices
     {
-        SectionProjectInfoModel GetInfo(long id);
-        void Approve(long sectionProjectId);
         IQueryable<SectionProject> GetUnapproved();
+        SectionProject GetInfo(long sectionId,long projectId);
+        void Approve(long sectionId,long projectId);
+        SectionProject AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel);
     }
 }

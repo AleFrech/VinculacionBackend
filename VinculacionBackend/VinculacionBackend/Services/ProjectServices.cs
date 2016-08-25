@@ -22,10 +22,11 @@ namespace VinculacionBackend.Services
         private readonly IMajorRepository _majorRepository;
         private readonly IClassRepository _classRepository;
         private readonly IPeriodRepository _periodRepository;
+        private readonly ISectionProjectRepository _sectionProjectRepository;
         List<int> _periods = new List<int>();
 
         public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository,
-            IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IMajorRepository majorRepository, IClassRepository classRepository, IPeriodRepository periodRepository)
+            IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IMajorRepository majorRepository, IClassRepository classRepository, IPeriodRepository periodRepository, ISectionProjectRepository sectionProjectRepository)
         {
             _projectRepository = projectRepository;
             _sectionRepository = sectionRepository;
@@ -34,18 +35,20 @@ namespace VinculacionBackend.Services
             _majorRepository = majorRepository;
             _classRepository = classRepository;
             _periodRepository = periodRepository;
+            _sectionProjectRepository = sectionProjectRepository;
             _periods.Add(1);
             _periods.Add(2);
             _periods.Add(3);
             _periods.Add(5);
         }
 
-        public ProjectServices(IProjectRepository projectRepository, IMajorRepository majorRepository, IClassRepository classRepository, IPeriodRepository periodRepository)
+        public ProjectServices(IProjectRepository projectRepository, IMajorRepository majorRepository, IClassRepository classRepository, IPeriodRepository periodRepository, ISectionProjectRepository sectionProjectRepository)
         {
             _projectRepository = projectRepository;
             _majorRepository = majorRepository;
             _classRepository = classRepository;
             _periodRepository = periodRepository;
+            _sectionProjectRepository = sectionProjectRepository;
         }
 
         public Project Find(long id)
@@ -75,7 +78,6 @@ namespace VinculacionBackend.Services
             project.ProjectId = model.ProjectId;
             project.Name = model.Name;
             project.Description = model.Description;
-            project.Cost = model.Cost;
             project.BeneficiarieOrganization = model.BeneficiarieOrganization;
         }
 
@@ -176,7 +178,7 @@ namespace VinculacionBackend.Services
                 throw new Exception("Las horas de este proyecto ya fueron approvadas");
 
             var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository, _studentRepository,
-                _textDocumentServices, new DownloadbleFile());
+                _textDocumentServices, new DownloadbleFile(),_sectionProjectRepository);
             return finalReport.GenerateFinalReport(projectId,sp.Id,fieldHours, calification, beneficiariesQuantities,
                 beneficiariGroups);
 
@@ -219,7 +221,7 @@ namespace VinculacionBackend.Services
                 var professorsList =_projectRepository.GetProfessorsByProject(project.Id).Select(x => x.Name).Distinct().ToList();
                 var professors = professorsList.Count>0 ? string.Join(",", _projectRepository.GetProfessorsByProject(project.Id).Select(x=>x.Name).Distinct().ToList()):"";
                 var period = _projectRepository.GetPeriodByProject(project.Id);
-                dt.Rows.Add(project.ProjectId, project.Name, project.Cost, project.BeneficiarieOrganization, professors,
+                dt.Rows.Add(project.ProjectId, project.Name, _projectRepository.GetTotalCostByProject(project.Id), project.BeneficiarieOrganization, professors,
                     period.Number, period.Year);
             }
 

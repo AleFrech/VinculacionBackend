@@ -246,7 +246,7 @@ namespace VinculacionBackend.Data.Repositories
                     Catedrático = b.sp.Section.User.Name,
                     Horas = (_db.Hours.Where(hours => hours.SectionProject.Id == b.sp.Id).Sum(a => (int?)a.Amount) ?? 0).ToString(),
                     FechadeEntrega = "",
-                    Costo = b.sp.Project.Cost,
+                    Costo = b.sp.Cost,
                     NumProy = b.sp.Project.Id,
                     Beneficiarios = "",
                     Comentarios = ""
@@ -265,6 +265,12 @@ namespace VinculacionBackend.Data.Repositories
         {
             return _db.SectionProjectsRels.Include(rel => rel.Section).Include(rel => rel.Project).FirstOrDefault(rel => rel.Section.Id == sectionId && rel.Project.Id == projectId);
         }
+
+        public double GetTotalCostByProject(long projectId)
+        {
+            return _db.SectionProjectsRels.Include(rel => rel.Section).Include(rel => rel.Project).Where(rel => rel.Project.Id == projectId).Sum(rel => rel.Cost);
+        }
+
     }
 
     public class PeriodReportModel
