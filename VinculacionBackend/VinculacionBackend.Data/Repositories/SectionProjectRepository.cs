@@ -61,6 +61,7 @@ namespace VinculacionBackend.Data.Repositories
                 .Include(rel => rel.Project)
                 .Include(rel => rel.Section.Class)
                 .Include(rel => rel.Section.User)
+                .Include(rel => rel.Section.Period)
                 .Distinct();
         }
     }
