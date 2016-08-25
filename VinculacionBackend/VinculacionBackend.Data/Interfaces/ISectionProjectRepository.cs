@@ -9,6 +9,6 @@ namespace VinculacionBackend.Data.Interfaces
 {
     public interface ISectionProjectRepository : IRepository<SectionProject>
     {
-
+        IQueryable<SectionProject> GetUnapprovedProjects();
     }
 }
