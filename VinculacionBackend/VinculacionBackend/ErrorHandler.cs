@@ -40,6 +40,16 @@ namespace VinculacionBackend
 
                 context.Result = new UnauthorizedResult(context.Request, result);
             }
+            else if (context.Exception is HoursAlreadyApprovedException)
+            {
+                var result = new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                {
+                    Content = new StringContent(context.Exception.Message),
+                    ReasonPhrase = "Invalid"
+                };
+
+                context.Result = new InvalidOperationResult(context.Request, result);
+            }
             else
             {
                 
@@ -64,7 +74,23 @@ namespace VinculacionBackend
         }
     }
 
+    public class InvalidOperationResult : IHttpActionResult
+    {
+        private HttpRequestMessage _request;
+        private readonly HttpResponseMessage _httpResponseMessage;
 
+
+        public InvalidOperationResult(HttpRequestMessage request, HttpResponseMessage httpResponseMessage)
+        {
+            _request = request;
+            _httpResponseMessage = httpResponseMessage;
+        }
+
+        public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_httpResponseMessage);
+        }
+    }
 
 
     public class UnauthorizedResult : IHttpActionResult

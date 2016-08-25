@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
@@ -27,6 +28,8 @@ namespace VinculacionBackend.Services
         public Hour Update(long hourId,HourEntryModel hourModel)
         {
             var hour = _hourRepository.Get(hourId);
+            if (hour.SectionProject.IsApproved)
+                throw new HoursAlreadyApprovedException("Las Horas no se pueden modificar porque ya han sido aprobadas");
             hour.Amount = hourModel.Hour;
             _hourRepository.Update(hour);
             _hourRepository.Save();
