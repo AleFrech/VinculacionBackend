@@ -24,6 +24,7 @@ namespace VinculacionBackend.Data.Interfaces
         string GetMajors(List<Major> majors);
         string GetProfessor(long id);
         string GetTotalHours(long id);
+        double GetTotalCostByProject(long projectId);
         IQueryable<PeriodReportModel> GetByYearAndPeriod(int year, int period);
         IQueryable<Project> GetProjectsBySection(long sectionId);
         SectionProject GetSectionProject(long projectId, long sectionId);

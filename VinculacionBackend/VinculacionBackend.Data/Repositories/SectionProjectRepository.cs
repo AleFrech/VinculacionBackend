@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using VinculacionBackend.Data.Database;
@@ -32,6 +31,18 @@ namespace VinculacionBackend.Data.Repositories
                     .FirstOrDefault(rel => rel.Id == id);
         }
 
+
+
+        public SectionProject GetSectionProjectByIds(long sectionId, long projectId)
+        {
+            return
+                _db.SectionProjectsRels.Include(rel => rel.Section)
+                    .Include(rel => rel.Project)
+                    .Include(rel => rel.Section.User)
+                    .Include(rel => rel.Section.Class)
+                    .FirstOrDefault(rel => rel.Project.Id == projectId && rel.Section.Id==sectionId);
+        }
+
         public SectionProject Delete(long id)
         {
             throw new NotImplementedException();
@@ -51,5 +62,6 @@ namespace VinculacionBackend.Data.Repositories
         {
             _db.SectionProjectsRels.Add(ent);
         }
+
     }
 }
