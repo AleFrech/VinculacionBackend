@@ -197,32 +197,29 @@ namespace VinculacionBackend.Services
             return list;
         }
 
-
-        public DataTable ProjectsByClass(long classId)
+        public List<ProjectsByClassEntryModel> ProjectsByClass(long classId)
         {
-            var @class = _classRepository.Get(classId);
-            Object[] titleRow = {"Clase: "+@class.Name};
-            var dt = new DataTable();
-           // dt.Rows.Add(titleRow);
-            dt.Columns.Add("Id Proyecto", typeof(string));
-            dt.Columns.Add("Nombre", typeof(string));
-            dt.Columns.Add("Costo", typeof(double));
-            dt.Columns.Add("Beneficiario", typeof(string));
-            dt.Columns.Add("Maestros", typeof(string));
-            dt.Columns.Add("Periodo", typeof(int));
-            dt.Columns.Add("Anio", typeof(int));
-
+            var list = new List<ProjectsByClassEntryModel>();
             var projects = _projectRepository.GetProjectsByClass(classId).ToList();
             foreach (var project in projects)
             {
                 var professorsList =_projectRepository.GetProfessorsByProject(project.Id).Select(x => x.Name).Distinct().ToList();
                 var professors = professorsList.Count>0 ? string.Join(",", _projectRepository.GetProfessorsByProject(project.Id).Select(x=>x.Name).Distinct().ToList()):"";
                 var period = _projectRepository.GetPeriodByProject(project.Id);
-                dt.Rows.Add(project.ProjectId, project.Name, project.Cost, project.BeneficiarieOrganization, professors,
-                    period.Number, period.Year);
+
+                list.Add(new ProjectsByClassEntryModel
+                {
+                    IdProyecto = project.ProjectId,
+                    Nombre = project.Name,
+                    Costo = project.Cost,
+                    Beneficiario = project.BeneficiarieOrganization,
+                    Maestros = professors,
+                    Periodo = period.Number,
+                    Anio = period.Year
+                });
             }
 
-            return dt;
+            return list;
         }
 
         public DataTable CreatePeriodReport(int year, int period)

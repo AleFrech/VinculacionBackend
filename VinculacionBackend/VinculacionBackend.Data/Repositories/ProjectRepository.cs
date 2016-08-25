@@ -14,7 +14,7 @@ namespace VinculacionBackend.Data.Repositories
     {
         private readonly VinculacionContext _db;
         public ProjectRepository()
-        {
+        {       
             _db = new VinculacionContext();
         }
 

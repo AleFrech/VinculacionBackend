@@ -75,7 +75,7 @@ namespace VinculacionBackend.Specs
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Costs report by faculties", ((string[])(null)));
 #line 6
-this.ScenarioSetup(scenarioInfo);
+ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
@@ -393,6 +393,141 @@ this.ScenarioSetup(scenarioInfo);
                         "3"});
 #line 93
  testRunner.Then("I have the projects", ((string)(null)), table18, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("List all the projects that has been made in a class")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FacultiesReports")]
+        public virtual void ListAllTheProjectsThatHasBeenMadeInAClass()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("List all the projects that has been made in a class", ((string[])(null)));
+#line 100
+this.ScenarioSetup(scenarioInfo);
+#line 101
+ testRunner.Given("the Id of the class is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "ProjectId",
+                        "Name",
+                        "Description",
+                        "Cost",
+                        "IsDeleted",
+                        "BeneficiarieOrganization"});
+            table19.AddRow(new string[] {
+                        "1",
+                        "1",
+                        "Vinculacion Unitec",
+                        "Vinculacion Unitec",
+                        "2000",
+                        "false",
+                        "Unitec"});
+            table19.AddRow(new string[] {
+                        "2",
+                        "2",
+                        "Mhotivo",
+                        "Mhotivo",
+                        "3500",
+                        "false",
+                        "Mhotivo"});
+            table19.AddRow(new string[] {
+                        "3",
+                        "3",
+                        "Proyecto CCIC",
+                        "Proyecto CCIC",
+                        "1000",
+                        "false",
+                        "CCIC"});
+#line 102
+ testRunner.And("I have this projects", ((string)(null)), table19, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "AccountId",
+                        "Name",
+                        "Password",
+                        "Major",
+                        "Campus",
+                        "Email",
+                        "CreationDate",
+                        "ModificationDate",
+                        "Finiquiteado",
+                        "Status"});
+            table20.AddRow(new string[] {
+                        "1",
+                        "1",
+                        "Andrea",
+                        "1234",
+                        "1",
+                        "SPS",
+                        "andrea@gmail.com",
+                        "08/08/16",
+                        "10/10/16",
+                        "False",
+                        "Active"});
+            table20.AddRow(new string[] {
+                        "2",
+                        "2",
+                        "Maestro",
+                        "1234",
+                        "2",
+                        "SPS",
+                        "maestro@gmail.com",
+                        "08/08/16",
+                        "10/10/16",
+                        "False",
+                        "Active"});
+#line 107
+ testRunner.And("I have the user table", ((string)(null)), table20, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "MajorId",
+                        "Name",
+                        "Faculty"});
+            table21.AddRow(new string[] {
+                        "1",
+                        "1",
+                        "Ing. Sistemas",
+                        "1"});
+            table21.AddRow(new string[] {
+                        "2",
+                        "2",
+                        "Mecatronica",
+                        "1"});
+#line 111
+ testRunner.And("I have the following majors", ((string)(null)), table21, "And ");
+#line 115
+ testRunner.When("I execute the list projects by class report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                        "IdProyecto",
+                        "Nombre",
+                        "Costo",
+                        "Beneficiario",
+                        "Maestro",
+                        "Periodo",
+                        "Anio"});
+            table22.AddRow(new string[] {
+                        "1",
+                        "Vinculacion Unitec",
+                        "2000",
+                        "Unitec",
+                        "Andrea",
+                        "1",
+                        "2016"});
+            table22.AddRow(new string[] {
+                        "2",
+                        "Mhotivo",
+                        "3500",
+                        "Mhotivo",
+                        "Maestro",
+                        "2",
+                        "2009"});
+#line 116
+ testRunner.Then("I get these results", ((string)(null)), table22, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -3,7 +3,7 @@
 	As manager
 	I want to be told the costs of each faculty
 
-Scenario: Costs report by faculties
+	Scenario: Costs report by faculties
 	Given I have this faculties
 		| Id | Name         |
 		| 1  | Ingenieria   |
@@ -96,5 +96,25 @@ Scenario:  projects number by a major per current period
 		| Mecatronica   | 4        |
 		| Ing. Civil    | 5        |
 		| Lic. Admon    | 3        |
-			
-	
+
+Scenario: List all the projects that has been made in a class
+	Given the Id of the class is 1
+	And I have this projects
+		| Id | ProjectId | Name               | Description        | Cost | IsDeleted | BeneficiarieOrganization |
+		| 1  | 1         | Vinculacion Unitec | Vinculacion Unitec | 2000 | false     | Unitec                   |
+		| 2  | 2         | Mhotivo            | Mhotivo            | 3500 | false     | Mhotivo                  |
+		| 3  | 3         | Proyecto CCIC      | Proyecto CCIC      | 1000 | false     | CCIC                     |
+	And I have the user table
+		| Id | AccountId | Name    | Password | Major  | Campus | Email             | CreationDate | ModificationDate | Finiquiteado | Status |
+		| 1  | 1         | Andrea  | 1234     |   1    | SPS    | andrea@gmail.com  | 08/08/16     | 10/10/16         | False        | Active |
+		| 2  | 2         | Maestro | 1234     |   2    | SPS    | maestro@gmail.com | 08/08/16     | 10/10/16         | False        | Active |
+	And I have the following majors
+		| Id | MajorId | Name          | Faculty |
+		| 1  | 1       | Ing. Sistemas | 1       |
+		| 2  | 2       | Mecatronica   | 1       |
+	When I execute the list projects by class report
+	Then I get these results
+		| IdProyecto | Nombre              | Costo | Beneficiario  | Maestro | Periodo | Anio |
+		| 1          | Vinculacion Unitec  | 2000  | Unitec        | Andrea  | 1       | 2016 |
+		| 2          | Mhotivo			   | 3500  | Mhotivo       | Maestro | 2       | 2009 |
+

@@ -10,6 +10,7 @@ using VinculacionBackend.Data.Models;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 using VinculacionBackend.Services;
+using System.Net.Http;
 
 namespace VinculacionBackend.Specs.Features.Reports
 {
@@ -24,10 +25,13 @@ namespace VinculacionBackend.Specs.Features.Reports
         private readonly Mock<IProjectRepository> _projectRepositoryMock;
         private readonly Mock<IStudentRepository> _studentRepositoryMock;
         private readonly Mock<IPeriodRepository> _periodRepositoryMock;
+        private readonly Mock<IUserRepository> _userRepositoryMock;
         private int _year;
+        private long _class;
         private List<ProjectByMajorEntryModel> _projectsByMajorReport;
         private List<FacultyHoursReportEntryModel> _hoursReport;
         private  List<FacultyCostsReportEntry> _facultiesCostReport;
+        private List<ProjectsByClassEntryModel> _projectsByClassReport;
         public FacultiesCostReportSteps()
         {
             _facultyRepositoryMock = new Mock<IFacultyRepository>();
@@ -36,9 +40,23 @@ namespace VinculacionBackend.Specs.Features.Reports
             _studentRepositoryMock = new Mock<IStudentRepository>();
             _classRepositoryMock = new Mock<IClassRepository>();
             _periodRepositoryMock = new Mock<IPeriodRepository>();
+            _userRepositoryMock = new Mock<IUserRepository>();
             _projectServices = new ProjectServices(_projectRepositoryMock.Object, _majorRepositoryMock.Object, _classRepositoryMock.Object, _periodRepositoryMock.Object);
             _facultiesServices = new FacultiesServices(_facultyRepositoryMock.Object,_majorRepositoryMock.Object,
                                                         _projectRepositoryMock.Object,_studentRepositoryMock.Object);
+        }
+
+        [When(@"I execute the faculties cost report")]
+        public void WhenIExecuteTheFacultiesCostReport()
+        {
+            _facultiesCostReport = _facultiesServices.CreateFacultiesCostReport(_year);
+
+        }
+
+        [Then(@"the faculties cost report should be")]
+        public void ThenTheFacultiesCostReportShouldBe(Table table)
+        {
+            table.CompareToSet(_facultiesCostReport.AsEnumerable());
         }
 
         [Given(@"I have this faculties")]
@@ -59,19 +77,6 @@ namespace VinculacionBackend.Specs.Features.Reports
         {
             var facultyCosts = table.CreateSet<FacultyProjectCostModel>().ToList();
             _facultyRepositoryMock.Setup(l => l.GetFacultyCosts(falcultyId, period, year)).Returns(facultyCosts);
-        }
-        
-        [When(@"I execute the faculties cost report")]
-        public void WhenIExecuteTheFacultiesCostReport()
-        {
-           _facultiesCostReport = _facultiesServices.CreateFacultiesCostReport(_year);
-
-        }
-        
-        [Then(@"the faculties cost report should be")]
-        public void ThenTheFacultiesCostReportShouldBe(Table table)
-        {
-            table.CompareToSet(_facultiesCostReport.AsEnumerable());
         }
 
         [Given(@"the hours for faculty (.*) for the year (.*) is")]
@@ -121,7 +126,6 @@ namespace VinculacionBackend.Specs.Features.Reports
                 }).ToList());
         }
 
-
         [When(@"I execute the projects by major report")]
         public void WhenIExecuteTheProjectsByMajorReport()
         {
@@ -133,6 +137,49 @@ namespace VinculacionBackend.Specs.Features.Reports
         {
             table.CompareToSet(_projectsByMajorReport.AsEnumerable());
         }
-        
+
+
+        [Given(@"the Id of the class is (.*)")]
+        public void GivenTheIdOfTheClassIs(int p0)
+        {
+            _class = p0;
+        }
+
+        [Given(@"I have this projects")]
+        public void GivenIHaveThisProjects(Table table)
+        {
+            var projects = table.CreateSet<Project>().AsQueryable();
+            _projectRepositoryMock.Setup(x => x.GetProjectsByClass(_class)).Returns((projects));
+        }
+
+        [Given(@"I have the user table")]
+        public void GivenIHaveTheUserTable(Table table)
+        {
+            var users = table.CreateSet<User>().AsQueryable();
+            _userRepositoryMock.Setup(x => x.GetAll()).Returns(users);
+
+        }
+
+        [Given(@"I have the following majors")]
+        public void GivenIHaveTheFollowingMajors(Table table)
+        {
+            var majors = table.CreateSet<Major>().AsQueryable();
+           _majorRepositoryMock.Setup(x => x.GetAll()).Returns(majors);
+        }
+
+        [When(@"I execute the list projects by class report")]
+        public void WhenIExecuteTheListProjectsByClassReport()
+        {
+            _projectsByClassReport = _projectServices.ProjectsByClass(_class);
+        }
+
+        [Then(@"I get these results")]
+        public void ThenIGetTheseResults(Table table)
+        {
+            table.CompareToSet(_projectsByClassReport.AsEnumerable());
+        }
+
+
+
     }
 }

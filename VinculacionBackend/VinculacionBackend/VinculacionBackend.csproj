@@ -250,6 +250,7 @@
     <Compile Include="Models\ProjectByMajorEntryModel.cs" />
     <Compile Include="Models\HourCollectionEntryModel.cs" />
     <Compile Include="Models\FiniquitoUserModel.cs" />
+    <Compile Include="Models\ProjectsByClassEntryModel.cs" />
     <Compile Include="Models\ProjectsSectionModel.cs" />
     <Compile Include="Models\SectionProjectInfoModel.cs" />
     <Compile Include="Models\StudentChangePasswordModel.cs" />
