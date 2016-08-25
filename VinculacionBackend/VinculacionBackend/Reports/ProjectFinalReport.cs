@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using Spire.Doc.Documents;
 using VinculacionBackend.Data.Interfaces;
@@ -13,14 +14,16 @@ namespace VinculacionBackend.Reports
         private readonly IStudentRepository _studentRepository;
         private readonly ITextDocumentServices _textDoucmentServices;
         private readonly IDownloadbleFile _downloadbleFile;
+        private readonly ISectionProjectRepository _sectionProjectRepository;
 
-        public ProjectFinalReport(IProjectRepository projectRepository, ISectionRepository sectionRepository, IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IDownloadbleFile downloadbleFile)
+        public ProjectFinalReport(IProjectRepository projectRepository, ISectionRepository sectionRepository, IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IDownloadbleFile downloadbleFile, ISectionProjectRepository sectionProjectRepository)
         {
             _projectRepository = projectRepository;
             _sectionRepository = sectionRepository;
             _studentRepository = studentRepository;
             _textDoucmentServices = textDocumentServices;
             _downloadbleFile = downloadbleFile;
+            _sectionProjectRepository = sectionProjectRepository;
         }
 
 
@@ -91,13 +94,14 @@ namespace VinculacionBackend.Reports
                 i++;
                 totalHours += sh.Value;
             }
+
             string[][] table3Data =
             {
                 new[] {"Horas de trabajo de campo alumnos ", fieldHours.ToString()},
                 new[] {"Horas de trabajo en clase alumnos ", (totalHours - fieldHours).ToString()},
                 new[] {"Total Horas de Trabajo del Proyecto", totalHours.ToString()},
                 new[] {"Nota asignada al proyecto (%)*", calification + "%"},
-                new[] {"Valor en el mercado del producto (Lps.)", project.Cost.ToString()},
+                new[] {"Valor en el mercado del producto (Lps.)", _sectionProjectRepository.Get(sectionprojectId).Cost.ToString(CultureInfo.InvariantCulture)},
             };
             table3.ResetCells(table3Data.Length, 2);
             _textDoucmentServices.AddDataToTable(table3, table3Data, "Times New Roman", 12, 0);

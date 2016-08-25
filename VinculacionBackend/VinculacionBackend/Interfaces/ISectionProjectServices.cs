@@ -7,6 +7,6 @@ namespace VinculacionBackend.Interfaces
     {
         SectionProject GetInfo(long sectionId,long projectId);
         void Approve(long sectionId,long projectId);
-        void AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel);
+        SectionProject AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel);
     }
 }

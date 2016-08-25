@@ -35,8 +35,8 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostSectionProject(SectionProjectEntryModel sectionProjectEntryModel)
         {
-             _sectionProjectServices.AddOrUpdate(sectionProjectEntryModel);
-            return Ok();
+            
+            return Ok(_sectionProjectServices.AddOrUpdate(sectionProjectEntryModel));
         }
 
         [ResponseType(typeof(void))]

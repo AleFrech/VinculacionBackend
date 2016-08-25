@@ -37,7 +37,7 @@ namespace VinculacionBackend.Services
         }
 
 
-        public void AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel)
+        public SectionProject AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel)
         {
             var sectionproject = _sectionProjectRepository.GetSectionProjectByIds(sectionProjectEntryModel.SectiontId,
                 sectionProjectEntryModel.ProjectId);
@@ -47,6 +47,7 @@ namespace VinculacionBackend.Services
             sectionproject.Cost=sectionProjectEntryModel.Cost;
             _sectionProjectRepository.Update(sectionproject);
             _sectionProjectRepository.Save();
+            return sectionproject;
         }
     }
 }
