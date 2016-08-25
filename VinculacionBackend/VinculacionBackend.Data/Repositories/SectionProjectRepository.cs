@@ -51,5 +51,17 @@ namespace VinculacionBackend.Data.Repositories
         {
             _db.SectionProjectsRels.Add(ent);
         }
+        
+        public IQueryable<SectionProject> GetUnapprovedProjects()
+        {
+            return _db.Hours.Include(hour => hour.SectionProject)
+                .Where(hour => !hour.SectionProject.IsApproved)
+                .Select(hour => hour.SectionProject)
+                .Include(rel => rel.Section)
+                .Include(rel => rel.Project)
+                .Include(rel => rel.Section.Class)
+                .Include(rel => rel.Section.User)
+                .Distinct();
+        }
     }
 }
