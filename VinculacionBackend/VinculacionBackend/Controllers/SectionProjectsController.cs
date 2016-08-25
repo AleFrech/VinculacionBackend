@@ -23,7 +23,7 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/SectionProjects
         [Route("api/SectionProjects/UnApproved/")]
-        //[CustomAuthorize(Roles = "Admin")]
+        [CustomAuthorize(Roles = "Admin")]
         public IQueryable<SectionProject> GetSectionProjecstUnApproved()
         {
             return _sectionProjectServices.GetUnapproved();
