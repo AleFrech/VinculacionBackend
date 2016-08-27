@@ -1,6 +1,9 @@
-﻿using System.Web.Http;
+﻿using System.Linq;
+using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
+using VinculacionBackend.ActionFilters;
+using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 using VinculacionBackend.Security.BasicAuthentication;
@@ -17,22 +20,41 @@ namespace VinculacionBackend.Controllers
             _sectionProjectServices = sectionProjectServices;
         }
 
-        // GET: api/SectionProjects/5
-        [ResponseType(typeof(SectionProjectInfoModel))]
-        [Route("api/SectionProjects/Info/{sectionprojectId}")]
-        [CustomAuthorize(Roles = "Admin,Professor")]
-        public IHttpActionResult GetSectionProject(long sectionprojectId)
+
+        // GET: api/SectionProjects
+        [Route("api/SectionProjects/UnApproved/")]
+        [CustomAuthorize(Roles = "Admin")]
+        public IQueryable<SectionProject> GetSectionProjecstUnApproved()
         {
-            return Ok(_sectionProjectServices.GetInfo(sectionprojectId));
+            return _sectionProjectServices.GetUnapproved();
         }
 
-        // PUT: api/SectionProjects/5
-        [ResponseType(typeof(void))]
-        [Route("api/SectionProjects/Approve/{sectionprojectId}")]
-        [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PutSectionProject(long sectionprojectId)
+
+        [ResponseType(typeof(SectionProject))]
+        [Route("api/SectionProjects/Info/{sectionId}/{projectId}")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
+        public SectionProject GetSectionProject(long sectionId,long projectId)
         {
-            _sectionProjectServices.Approve(sectionprojectId);
+            return _sectionProjectServices.GetInfo(sectionId,projectId);
+        }
+
+        // POST: api/SectionProjects
+        [ResponseType(typeof(SectionProject))]
+        [Route("api/SectionProjects")]
+        [CustomAuthorize(Roles = "Admin")]
+        [ValidateModel]
+        public IHttpActionResult PostSectionProject(SectionProjectEntryModel sectionProjectEntryModel)
+        {
+            
+            return Ok(_sectionProjectServices.AddOrUpdate(sectionProjectEntryModel));
+        }
+
+        [ResponseType(typeof(void))]
+        [Route("api/SectionProjects/Approve/{sectionId}/{projectId}")]
+        [CustomAuthorize(Roles = "Admin")]
+        public IHttpActionResult PutSectionProject(long sectionId, long projectId)
+        {
+            _sectionProjectServices.Approve(sectionId,projectId);
             return Ok();
         }
 

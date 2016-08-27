@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Interfaces
@@ -22,7 +23,7 @@ namespace VinculacionBackend.Interfaces
         IQueryable<Project> GetUserProjects(long userId, string[] roles);
         HttpResponseMessage GetFinalReport(long projectId,long sectionId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups);
         DataTable ProjectsByClass(long classId);
-        DataTable CreatePeriodReport(int year, int period);
+        IQueryable<PeriodReportModel> CreatePeriodReport(int year, int period);
         void AssignProjectsToSection(ProjectsSectionModel model);
         IQueryable<Project> GetProjectsBySection(long sectionId);
     }

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Data;
+using System.Collections.Generic;
 using OfficeOpenXml;
 using VinculacionBackend.Extensions;
 using VinculacionBackend.Interfaces;
@@ -67,7 +69,10 @@ namespace VinculacionBackend.Controllers
         [Route("api/Reports/StudentsReport/{year}")]
         public IHttpActionResult GetStudentsReport(int year)
         {
-            var context = _reportsServices.GenerateReport(_studentServices.CreateStudentReport(year),
+            var datatables = new DataTable[2];
+            datatables[0] = _studentServices.CreateStudentReport(year).ToDataTable();
+            datatables[1] = _studentServices.CreateHourNumberReport(year).ToDataTable();
+            var context = _reportsServices.GenerateReport(datatables,
                 "Reporte de Alumnos");
             context.Response.Flush();
             context.Response.End();
@@ -86,41 +91,13 @@ namespace VinculacionBackend.Controllers
         [Route("api/Reports/PeriodReport/{year}")]
         public IHttpActionResult GetPeriodReport(int year)
         {
-            var context = _reportsServices.GenerateReport(_projectServices.CreatePeriodReport(year, 1),
+            var context = _reportsServices.GenerateReport(_projectServices.CreatePeriodReport(year, 1).ToDataTable(),
                 1 + " " + year);
             context.Response.Flush();
             context.Response.End();
             return Ok();
         }
 
-        public async Task<List<string>> UploadStudents()
-        {
-            if (Request.Content.IsMimeMultipartContent())
-            {
-                string uploadPath = HttpContext.Current.Server.MapPath("~/Files");
-
-                MyStreamProvider streamProvider = new MyStreamProvider(uploadPath);
-
-                await Request.Content.ReadAsMultipartAsync(streamProvider);
-
-                foreach (var file in streamProvider.FileData)
-                {
-                    FileInfo fi = new FileInfo(file.LocalFileName);
-                    if (Path.GetExtension(fi.Name) == ".xlsx")
-                    {
-                        ExcelPackage package = new ExcelPackage(fi);
-                        var enumerable = package.ToDataTable();
-                    }
-                }
-
-                return new List<string>();
-            }
-            else
-            {
-                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Request!");
-                throw new HttpResponseException(response);
-            }
-        }
-
+     
     }
 }

@@ -133,6 +133,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -243,6 +244,7 @@
     <Compile Include="Controllers\ClassesController.cs" />
     <Compile Include="MyStreamProvider.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Models\SectionProjectEntryModel.cs" />
     <Compile Include="Controllers\SectionProjectsController.cs" />
     <Compile Include="CustomDataNotations\AccountNumberDosentExistAttribute.cs" />
     <Compile Include="CustomDataNotations\EmailDosentExistAttribute.cs" />
@@ -255,7 +257,6 @@
     <Compile Include="Models\HourCollectionEntryModel.cs" />
     <Compile Include="Models\FiniquitoUserModel.cs" />
     <Compile Include="Models\ProjectsSectionModel.cs" />
-    <Compile Include="Models\SectionProjectInfoModel.cs" />
     <Compile Include="Models\StudentChangePasswordModel.cs" />
     <Compile Include="Models\TokenModel.cs" />
     <Compile Include="Extensions\ReportsExtensionMethods.cs" />
