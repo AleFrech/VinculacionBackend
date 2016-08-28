@@ -7,8 +7,8 @@ namespace VinculacionBackend.Interfaces
     public interface ISectionProjectServices
     {
         IQueryable<SectionProject> GetUnapproved();
-        SectionProject GetInfo(long sectionId,long projectId);
-        void Approve(long sectionId,long projectId);
+        SectionProject GetInfo(long sectionprojectId);
+        void Approve(long sectionprojectId);
         SectionProject AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel);
     }
 }

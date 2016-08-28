@@ -31,11 +31,11 @@ namespace VinculacionBackend.Controllers
 
 
         [ResponseType(typeof(SectionProject))]
-        [Route("api/SectionProjects/Info/{sectionId}/{projectId}")]
+        [Route("api/SectionProjects/Info/{sectionprojectId}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
-        public SectionProject GetSectionProject(long sectionId,long projectId)
+        public SectionProject GetSectionProject(long sectionprojectId)
         {
-            return _sectionProjectServices.GetInfo(sectionId,projectId);
+            return _sectionProjectServices.GetInfo(sectionprojectId);
         }
 
         // POST: api/SectionProjects
@@ -50,11 +50,11 @@ namespace VinculacionBackend.Controllers
         }
 
         [ResponseType(typeof(void))]
-        [Route("api/SectionProjects/Approve/{sectionId}/{projectId}")]
+        [Route("api/SectionProjects/Approve/{sectionprojectId}")]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PutSectionProject(long sectionId, long projectId)
+        public IHttpActionResult PutSectionProject(long sectionprojectId)
         {
-            _sectionProjectServices.Approve(sectionId,projectId);
+            _sectionProjectServices.Approve(sectionprojectId);
             return Ok();
         }
 

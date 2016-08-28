@@ -17,9 +17,9 @@ namespace VinculacionBackend.Services
             _sectionProjectRepository = new SectionProjectRepository();
         }
 
-        public SectionProject GetInfo(long sectionId,long projectId)
+        public SectionProject GetInfo(long sectionprojectId)
         {
-            var sectionProject = _sectionProjectRepository.GetSectionProjectByIds(sectionId,projectId);
+            var sectionProject = _sectionProjectRepository.Get(sectionprojectId);
             if (sectionProject == null)
                 throw new NotFoundException("SectionProject not found");
             return sectionProject;
@@ -27,9 +27,9 @@ namespace VinculacionBackend.Services
 
 
 
-        public void Approve(long sectionId,long projectId)
+        public void Approve(long sectionprojectId)
         {
-            var rel = _sectionProjectRepository.GetSectionProjectByIds(sectionId,projectId);
+            var rel = _sectionProjectRepository.Get(sectionprojectId);
             if (rel == null)
                 throw new NotFoundException("SectionProject not found");
             rel.IsApproved = true;

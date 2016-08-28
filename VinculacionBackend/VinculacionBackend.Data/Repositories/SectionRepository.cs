@@ -110,6 +110,7 @@ namespace VinculacionBackend.Data.Repositories
                     .Select(x => new
                     {
                         User = x.sp.User,
+                        IsApproved = x.su.IsApproved,
                         Hours = _db.Hours.Where(d => d.User.Id == x.sp.User.Id && d.SectionProject.Id == x.su.Id).FirstOrDefault()
                     });
         }
