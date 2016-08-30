@@ -34,5 +34,10 @@ namespace VinculacionBackend.Services
         {
             return _majorRepository.GetMajorsByProject(projectId);
         }
+
+        public Major FindByName(string name)
+        {
+            return _majorRepository.GetMajorByName(name);
+        }
     }
 }

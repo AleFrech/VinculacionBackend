@@ -66,7 +66,7 @@ namespace VinculacionBackend.Controllers
 
         [Route("api/Students/Import")]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PostAddManyStudents([FromBody]List<User> students)
+        public IHttpActionResult PostAddManyStudents([FromBody]List<StudentAddManyEntryModel> students)
         {
             _studentsServices.AddMany(students);
             return Ok();
