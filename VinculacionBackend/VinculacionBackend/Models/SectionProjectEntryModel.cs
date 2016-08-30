@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace VinculacionBackend.Models
 {
@@ -7,7 +8,7 @@ namespace VinculacionBackend.Models
         [Required(ErrorMessage = "*requerido")]
         public long SectiontId { get; set; }
         [Required(ErrorMessage = "*requerido")]
-        public long ProjectId { get; set; }
+        public IList<long> ProjectIds { get; set; }
         [Required(ErrorMessage = "*requerido")]
         public string Description { get; set; }
         [Required(ErrorMessage = "*requerido")]

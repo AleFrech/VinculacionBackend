@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
@@ -43,17 +44,23 @@ namespace VinculacionBackend.Services
 
         }
 
-        public SectionProject AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel)
+        public IList<SectionProject> AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel)
         {
-            var sectionproject = _sectionProjectRepository.GetSectionProjectByIds(sectionProjectEntryModel.SectiontId,
-                sectionProjectEntryModel.ProjectId);
-            if(sectionproject==null)
-                throw new NotFoundException("SectionProject not found");
-            sectionproject.Description = sectionProjectEntryModel.Description;
-            sectionproject.Cost=sectionProjectEntryModel.Cost;
-            _sectionProjectRepository.Update(sectionproject);
+            IList<SectionProject> sectionProjects = new List<SectionProject>();
+
+            foreach (var ProjectId in sectionProjectEntryModel.ProjectIds)
+            {
+                var sectionproject = _sectionProjectRepository.GetSectionProjectByIds(sectionProjectEntryModel.SectiontId,
+                ProjectId);
+                if (sectionproject == null)
+                    throw new NotFoundException("SectionProject not found");
+                sectionproject.Description = sectionProjectEntryModel.Description;
+                sectionproject.Cost = sectionProjectEntryModel.Cost;
+                _sectionProjectRepository.Update(sectionproject);
+            }
+
             _sectionProjectRepository.Save();
-            return sectionproject;
+            return sectionProjects;
         }
     }
 }

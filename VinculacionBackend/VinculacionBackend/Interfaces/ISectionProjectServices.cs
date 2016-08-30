@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 ﻿using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Models;
@@ -9,6 +10,6 @@ namespace VinculacionBackend.Interfaces
         IQueryable<SectionProject> GetUnapproved();
         SectionProject GetInfo(long sectionprojectId);
         void Approve(long sectionprojectId);
-        SectionProject AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel);
+        IList<SectionProject> AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel);
     }
 }
