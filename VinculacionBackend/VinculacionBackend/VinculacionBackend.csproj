@@ -238,7 +238,6 @@
     <Compile Include="Cache\MemoryCacher.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
-    <Compile Include="Models\SectionProjectEntryModel.cs" />
     <Compile Include="Controllers\SectionProjectsController.cs" />
     <Compile Include="CustomDataNotations\AccountNumberDosentExistAttribute.cs" />
     <Compile Include="CustomDataNotations\EmailDosentExistAttribute.cs" />
@@ -250,6 +249,8 @@
     <Compile Include="Models\HourCollectionEntryModel.cs" />
     <Compile Include="Models\FiniquitoUserModel.cs" />
     <Compile Include="Models\ProjectsSectionModel.cs" />
+    <Compile Include="Models\SectionProjectInfoModel.cs" />
+    <Compile Include="Models\StudentAddManyEntryModel.cs" />
     <Compile Include="Models\StudentChangePasswordModel.cs" />
     <Compile Include="Models\TokenModel.cs" />
     <Compile Include="ReportsExtensionMethods.cs" />

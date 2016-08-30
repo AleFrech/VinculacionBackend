@@ -268,9 +268,21 @@ namespace VinculacionBackend.Services
             return _studentRepository.GetStudentSections(accountId);
         }
 
-        public void AddMany(IList<User> students)
+        public void AddMany(IList<StudentAddManyEntryModel> entries)
         {
-            students.ForEach(Add);
+            entries.Select(entry => new User
+            {
+                Name = entry.Name,
+                AccountId = entry.AccountId,
+                Major = _majorServices.FindByName(entry.Major),
+                Email = entry.Email, Password = _encryption.Encrypt("12345"),
+                Campus = "SPS",
+                CreationDate = DateTime.Now,
+                ModificationDate = DateTime.Now,
+                Finiquiteado = false,
+                Status = Status.Inactive
+            }).ToList().ForEach(Add);
+
         }
     }
 }
