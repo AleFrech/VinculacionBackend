@@ -12,15 +12,18 @@ namespace VinculacionBackend.Services
     public class HoursServices : IHoursServices
     {
         private readonly IHourRepository _hourRepository;
+        private readonly IUserRepository _userRepository;
 
-        public HoursServices(IHourRepository hourRepository)
+        public HoursServices(IHourRepository hourRepository, IUserRepository userRepository)
         {
             this._hourRepository = hourRepository;
+            _userRepository = userRepository;
         }
 
         public Hour Add(HourEntryModel hourModel,string professorUser)
         {
-            var hour =_hourRepository.InsertHourFromModel(hourModel.AccountId, hourModel.SectionId, hourModel.ProjectId, hourModel.Hour,professorUser);
+            var isAdmin = _userRepository.isAdmin(professorUser);
+            var hour =_hourRepository.InsertHourFromModel(hourModel.AccountId, hourModel.SectionId, hourModel.ProjectId, hourModel.Hour,professorUser, isAdmin);
             _hourRepository.Save();
             return hour;
         }

@@ -52,7 +52,7 @@ namespace VinculacionBackend.Data.Repositories
             _db.Hours.Add(ent);
         }
 
-        public Hour InsertHourFromModel(string accountId,long sectionId,long projectId, int hour,string professorUser )
+        public Hour InsertHourFromModel(string accountId,long sectionId,long projectId, int hour,string professorUser, bool isAdmin )
         {
             var sectionProjectRel = Queryable.FirstOrDefault(_db.SectionProjectsRels.Include(x => x.Project).Include(y => y.Section), z => z.Section.Id == sectionId && z.Project.Id == projectId);
             if (sectionProjectRel.IsApproved)
@@ -66,7 +66,7 @@ namespace VinculacionBackend.Data.Repositories
             if(sectionProjectRel==null)
                 throw new NotFoundException("No se encontro el proyecto");
             
-                if(section.User.Email!=professorUser)
+                if(section.User.Email!=professorUser && !isAdmin)
                     throw new UnauthorizedException("No tiene permisos para agregar horas a este proyecto");
                 var Hour = new Hour();
                 Hour.Amount = hour;
