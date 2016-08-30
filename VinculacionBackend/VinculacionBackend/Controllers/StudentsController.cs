@@ -148,7 +148,7 @@ namespace VinculacionBackend.Controllers
 
 
         [ResponseType(typeof(User))]
-        [Route("api/Students/ChangePassword")]
+        [Route("api/Students/EnableStudent")]
         [ValidateModel]
         public IHttpActionResult PostChangePassword(StudentChangePasswordModel model)
         {
