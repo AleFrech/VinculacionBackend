@@ -316,12 +316,11 @@ namespace VinculacionBackend.Services
                           {
                               Cuenta = row.Field<string>("Numero de Cuenta"),
                               Nombre = row.Field<string>("Nombre"),
+                              Correo = row.Field<string>("Correo"),
                               Carrera = row.Field<string>("Carrera"),
                               Estado = row.Field<string>("Estado"),
                           };
             return results.AsQueryable();
         }
-
-
     }
 }
