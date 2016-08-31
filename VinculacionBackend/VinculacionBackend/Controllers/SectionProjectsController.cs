@@ -41,7 +41,7 @@ namespace VinculacionBackend.Controllers
         // POST: api/SectionProjects
         [ResponseType(typeof(SectionProject))]
         [Route("api/SectionProjects")]
-        [CustomAuthorize(Roles = "Admin")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
         [ValidateModel]
         public IHttpActionResult PostSectionProject(SectionProjectEntryModel sectionProjectEntryModel)
         {
