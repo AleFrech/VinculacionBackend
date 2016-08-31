@@ -6,6 +6,7 @@ using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
+using VinculacionBackend.Exceptions;
 
 namespace VinculacionBackend.Data.Repositories
 {
@@ -39,7 +40,7 @@ namespace VinculacionBackend.Data.Repositories
             {
                 if (!StudentIsNotInOrClass(sectionId, studentId))
                 {
-                    throw new StudentAlreadyRegisteredInClassException("El Alumno " + studentId +
+                    throw new NotFoundException("El Alumno " + studentId +
                                                                        " ya esta registrado en esta clase en este periodo");
                 }
             }
