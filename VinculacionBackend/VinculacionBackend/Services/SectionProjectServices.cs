@@ -53,11 +53,11 @@ namespace VinculacionBackend.Services
                 var sectionproject = _sectionProjectRepository.GetSectionProjectByIds(sectionProjectEntryModel.SectiontId,
                 ProjectId);
                 if (sectionproject == null){
-                  sectionProject = new SectionProject {
-                    SectionId = sectionProjectEntryModel.SectionId,
-                    ProjectId = ProjectId
+                   
+                  sectionproject = new SectionProject {
+
                   };
-                  _sectionProjectRepository.Insert(sectionProject);
+                  _sectionProjectRepository.Insert(sectionproject);
                 }
                 sectionproject.Description = sectionProjectEntryModel.Description;
                 sectionproject.Cost = sectionProjectEntryModel.Cost;
