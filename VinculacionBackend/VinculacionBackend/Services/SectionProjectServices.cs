@@ -52,13 +52,13 @@ namespace VinculacionBackend.Services
         {
             IList<SectionProject> sectionProjects = new List<SectionProject>();
 
-            foreach (var ProjectId in sectionProjectEntryModel.ProjectIds)
+            foreach (var projectId in sectionProjectEntryModel.ProjectIds)
             {
             var sectionproject = _sectionProjectRepository.GetSectionProjectByIds(sectionProjectEntryModel.SectiontId,
-                ProjectId);
+                projectId);
                 if (sectionproject == null)
                 {
-                    var project = _projectRepository.Get(ProjectId);
+                    var project = _projectRepository.Get(projectId);
                     var section = _sectionRepository.Get(sectionProjectEntryModel.SectiontId);
 
                     if (project == null)
@@ -72,15 +72,18 @@ namespace VinculacionBackend.Services
                   sectionproject = new SectionProject {
                       Section = section,
                       Project = project,
-                      IsApproved = false,
+                      Description = sectionProjectEntryModel.Description,
+                      Cost=sectionProjectEntryModel.Cost,
+                      IsApproved = false
                    };
                   _sectionProjectRepository.Insert(sectionproject);
+                  _sectionProjectRepository.Save();
                 }
-            sectionproject.Description = sectionProjectEntryModel.Description;
+                sectionproject.Description = sectionProjectEntryModel.Description;
                 sectionproject.Cost = sectionProjectEntryModel.Cost;
-            _sectionProjectRepository.Update(sectionproject);
-
+                _sectionProjectRepository.Update(sectionproject);
                 sectionProjects.Add(sectionproject);
+                _sectionProjectRepository.Save();
             }
 
             _sectionProjectRepository.Save();
