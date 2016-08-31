@@ -68,10 +68,9 @@ namespace VinculacionBackend.Controllers
         }
 
 
-        [ResponseType(typeof(User))]
-        [Route("api/Students/AddMany")]
+        [Route("api/Students/Import")]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PostAddManyStudents([FromBody]List<User> students)
+        public IHttpActionResult PostAddManyStudents([FromBody]List<StudentAddManyEntryModel> students)
         {
             _studentsServices.AddMany(students);
             return Ok();
@@ -153,7 +152,7 @@ namespace VinculacionBackend.Controllers
 
 
         [ResponseType(typeof(User))]
-        [Route("api/Students/ChangePassword")]
+        [Route("api/Students/EnableStudent")]
         [ValidateModel]
         public IHttpActionResult PostChangePassword(StudentChangePasswordModel model)
         {

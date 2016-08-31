@@ -28,7 +28,7 @@ namespace VinculacionBackend.Interfaces
         User GetCurrentStudents(long userId);
         int GetStudentHoursBySection(string accountId, long sectionId);
         IQueryable<object> GetStudentSections(string accountId);
-        void AddMany(IList<User> students);
+        void AddMany(IList<StudentAddManyEntryModel> students);
         void ChangePassword(StudentChangePasswordModel model);
 
         List<StudentReportModel> CreateHourNumberReport(int year);

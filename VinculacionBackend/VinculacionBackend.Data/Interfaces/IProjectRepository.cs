@@ -9,7 +9,7 @@ namespace VinculacionBackend.Data.Interfaces
     public interface IProjectRepository : IRepository<Project>
     {
         IQueryable<User> GetProjectStudents(long projectId);
-        void Insert(Project ent, List<string> majorIds, List<long> sectionIds);
+        void Insert(Project ent, List<string> majorIds);
         void AssignToSection(long projectId, long sectionId);
         SectionProject RemoveFromSection(long projectId, long sectionId);
         IQueryable<Project> GetAllStudent(long userId);
@@ -28,5 +28,6 @@ namespace VinculacionBackend.Data.Interfaces
         IQueryable<PeriodReportModel> GetByYearAndPeriod(int year, int period);
         IQueryable<Project> GetProjectsBySection(long sectionId);
         SectionProject GetSectionProject(long projectId, long sectionId);
+        string GetNextProjectCode(Period currentPeriod);
     }
 }

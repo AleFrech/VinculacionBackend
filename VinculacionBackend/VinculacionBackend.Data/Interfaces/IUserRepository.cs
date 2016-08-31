@@ -7,5 +7,6 @@ namespace VinculacionBackend.Data.Interfaces
 	{
 		User GetUserByEmailAndPassword(string email, string password);
 		Role GetUserRole(string email);
-	}
+        bool isAdmin(string userEmail);
+    }
 }

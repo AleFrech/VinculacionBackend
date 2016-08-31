@@ -103,15 +103,19 @@ namespace VinculacionBackend.Data.Repositories
             return students;
         }
 
-        public IQueryable<object> GetSectionStudentsHours(long sectionId, long projectId)
+        public object GetSectionStudentsHours(long sectionId, long projectId)
         {
-            return _db.SectionProjectsRels.Where(a => a.Project.Id == projectId && a.Section.Id == sectionId)
+            return new
+            {
+                IsApproved = _db.SectionProjectsRels.Where(a => a.Project.Id == projectId && a.Section.Id == sectionId).Single().IsApproved,
+                Hours = _db.SectionProjectsRels.Where(a => a.Project.Id == projectId && a.Section.Id == sectionId)
                     .Join(_db.SectionUserRels, su => su.Section.Id, sp => sp.Section.Id, (su, sp) => new { su, sp })
                     .Select(x => new
                     {
                         User = x.sp.User,
                         Hours = _db.Hours.Where(d => d.User.Id == x.sp.User.Id && d.SectionProject.Id == x.su.Id).FirstOrDefault()
-                    });
+                    })
+            };
         }
 
         public IQueryable<Project> GetSectionProjects(long sectionId)

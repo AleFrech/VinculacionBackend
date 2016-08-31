@@ -75,7 +75,6 @@ namespace VinculacionBackend.Services
 
         private void Map(Project project, ProjectModel model)
         {
-            project.ProjectId = model.ProjectId;
             project.Name = model.Name;
             project.Description = model.Description;
             project.BeneficiarieOrganization = model.BeneficiarieOrganization;
@@ -86,7 +85,9 @@ namespace VinculacionBackend.Services
 
             var project = new Project();
             Map(project, model);
-            _projectRepository.Insert(project, model.MajorIds, model.SectionIds);
+            var currentPeriod = _periodRepository.GetCurrent();
+            project.ProjectId = _projectRepository.GetNextProjectCode(currentPeriod);
+            _projectRepository.Insert(project, model.MajorIds);
             _projectRepository.Save();
             return project;
         }

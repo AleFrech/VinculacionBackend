@@ -177,7 +177,7 @@ namespace VinculacionBackend.Services
 
         }
 
-        public IQueryable<object> GetSectionStudentsHour(long sectionId,long projectId )
+        public object GetSectionStudentsHour(long sectionId,long projectId )
         {
             return _sectionsRepository.GetSectionStudentsHours(sectionId,projectId);
         }

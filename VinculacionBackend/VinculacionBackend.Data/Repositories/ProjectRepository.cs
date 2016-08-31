@@ -124,18 +124,13 @@ namespace VinculacionBackend.Data.Repositories
             _db.SaveChanges();
         }
 
-        public void Insert(Project ent, List<string> majorIds, List<long> sectionIds)
+        public void Insert(Project ent, List<string> majorIds)
         {
             var majors = _db.Majors.Where(x => majorIds.Any(y => y == x.MajorId)).ToList();
             foreach (var major in majors)
             {
                 _db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
-            }
-            var sections = _db.Sections.Where(x=>sectionIds.Any(y=>y==x.Id)).ToList();
-            foreach (var section in sections)
-            {
-                _db.SectionProjectsRels.Add(new SectionProject { Project = ent, Section = section });
-            }           
+            }          
 
             Insert(ent);
         }
@@ -271,6 +266,24 @@ namespace VinculacionBackend.Data.Repositories
             return _db.SectionProjectsRels.Include(rel => rel.Section).Include(rel => rel.Project).Where(rel => rel.Project.Id == projectId).Sum(rel => rel.Cost);
         }
 
+        public string GetNextProjectCode(Period currentPeriod)
+        {
+            var count = _db.SectionProjectsRels.Where(a => a.Section.Period.Id == currentPeriod.Id).Count().ToString();
+            var padLength = count.Length >= 5 ? 0 : 5 - count.Length;
+            return "USPS-"+ToRoman(currentPeriod.Number) +"-"+currentPeriod.Year+"-"+count.PadLeft(padLength, '0');
+        }
+
+        private string ToRoman(int number)
+        {
+            switch (number)
+            {
+                case 1: return "I";
+                case 2: return "II";
+                case 4: return "IV";
+                case 5: return "V";
+            }
+            throw new Exception("Not a valid period number");
+        }
     }
 
     public class PeriodReportModel

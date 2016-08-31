@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -56,5 +57,10 @@ namespace VinculacionBackend.Data.Repositories
 		{
 			return _db.UserRoleRels.Include(x=>x.User).Include(y=>y.Role).FirstOrDefault(z=>z.User.Email == email)?.Role;
 		}
-	}
+
+        public bool isAdmin(string userEmail)
+        {
+            return _db.UserRoleRels.Where(a => a.User.Email == userEmail && a.Role.Name.Equals("Admin")).Any();
+        }
+    }
 }
