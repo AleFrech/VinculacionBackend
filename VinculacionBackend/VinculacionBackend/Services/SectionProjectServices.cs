@@ -12,10 +12,14 @@ namespace VinculacionBackend.Services
     public class SectionProjectServices : ISectionProjectServices
     {
         private readonly ISectionProjectRepository _sectionProjectRepository;
+        private readonly ISectionRepository _sectionRepository;
+        private readonly IProjectRepository _projectRepository;
 
         public SectionProjectServices()
         {
             _sectionProjectRepository = new SectionProjectRepository();
+            _sectionRepository = new SectionRepository();
+            _projectRepository = new ProjectRepository();
         }
 
         public SectionProject GetInfo(long sectionprojectId)
@@ -52,18 +56,31 @@ namespace VinculacionBackend.Services
             {
                 var sectionproject = _sectionProjectRepository.GetSectionProjectByIds(sectionProjectEntryModel.SectiontId,
                 ProjectId);
-                if (sectionproject == null){
-                  sectionProject = new SectionProject {
-                    SectionId = sectionProjectEntryModel.SectionId,
-                    ProjectId = ProjectId
-                  };
-                  _sectionProjectRepository.Insert(sectionProject);
+                if (sectionproject == null)
+                {
+                    var project = _projectRepository.Get(ProjectId);
+                    var section = _sectionRepository.Get(sectionProjectEntryModel.SectiontId);
+
+                    if (project == null)
+                    {
+                        throw new NotFoundException("project not found");
+                    }
+                    if (section == null)
+                    {
+                        throw new NotFoundException("section not found");
+                    }
+                  sectionproject = new SectionProject {
+                      Section = section,
+                      Project = project,
+                      IsApproved = false,
+                   };
+                  _sectionProjectRepository.Insert(sectionproject);
                 }
                 sectionproject.Description = sectionProjectEntryModel.Description;
                 sectionproject.Cost = sectionProjectEntryModel.Cost;
                 _sectionProjectRepository.Update(sectionproject);
 
-                sectionProjects.Add(sectionProject);
+                sectionProjects.Add(sectionproject);
             }
 
             _sectionProjectRepository.Save();
