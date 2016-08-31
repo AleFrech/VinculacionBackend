@@ -1,8 +1,11 @@
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net.Http;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.Ajax.Utilities;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
@@ -282,7 +285,53 @@ namespace VinculacionBackend.Services
                 Finiquiteado = false,
                 Status = Status.Inactive
             }).ToList().ForEach(Add);
+        }
 
+        public DataTable FromExcelToDataTable(XLWorkbook excel)
+        {
+            var dataTable = new DataTable();
+            var firstRow = true;
+            foreach (IXLRow row in excel.Worksheet(1).Rows())
+            {
+                if (firstRow)
+                {
+                    foreach (IXLCell cell in row.Cells())
+                    {
+                        dataTable.Columns.Add(cell.Value.ToString());
+                    }
+                    dataTable.Columns.Add("Estado");
+                    firstRow = false;
+                }
+                else
+                {
+                    dataTable.Rows.Add();
+                    int pos = 0;
+                    foreach (IXLCell cell in row.Cells())
+                    {
+                        dataTable.Rows[dataTable.Rows.Count - 1][pos] = cell.Value.ToString();
+                        pos++;
+                    }
+                    var accountNumber = dataTable.Rows[0][0].ToString();
+                    dataTable.Rows[dataTable.Rows.Count - 1][pos] = _studentRepository.GetAll().Any(x => x.AccountId == accountNumber);
+
+                }
+            }
+            return dataTable;
+        }
+        public IQueryable<object> ParseExcelStudents(XLWorkbook excel)
+        {
+            var dataTable = FromExcelToDataTable(excel);
+          
+            var results = from row in dataTable.AsEnumerable()
+                          select new
+                          {
+                              Cuenta = row.Field<string>("Numero de Cuenta"),
+                              Nombre = row.Field<string>("Nombre"),
+                              Correo = row.Field<string>("Correo"),
+                              Carrera = row.Field<string>("Carrera"),
+                              Estado = row.Field<string>("Estado"),
+                          };
+            return results.AsQueryable();
         }
     }
 }

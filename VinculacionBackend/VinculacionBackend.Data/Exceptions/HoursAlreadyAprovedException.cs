@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace VinculacionBackend.Exceptions
 {
     public class HoursAlreadyApprovedException : Exception
-    {
+{
         public HoursAlreadyApprovedException(string message) : base(message)
-        {
+    {
 
         }
     }

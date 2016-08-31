@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -9,11 +11,13 @@ using System.Web.Http.Description;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using System.Web.OData;
+using ClosedXML.Excel;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security.BasicAuthentication;
+using System.Data;
 
 namespace VinculacionBackend.Controllers
 {
@@ -199,6 +203,18 @@ namespace VinculacionBackend.Controllers
         {
             return _hoursServices.HourReport(accountId);
         }
-        
+
+
+       
+        [HttpPost]
+        [Route("api/Students/Parse")]
+        public IQueryable<object> Parse([FromBody]string data)
+        {
+           
+            var content = Convert.FromBase64String(data);
+            MemoryStream stream = new MemoryStream(content);
+            var excel = new XLWorkbook(stream);
+            return _studentsServices.ParseExcelStudents(excel);
+        }
     }
 }

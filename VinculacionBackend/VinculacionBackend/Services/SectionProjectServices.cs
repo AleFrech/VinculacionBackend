@@ -54,7 +54,7 @@ namespace VinculacionBackend.Services
 
             foreach (var ProjectId in sectionProjectEntryModel.ProjectIds)
             {
-                var sectionproject = _sectionProjectRepository.GetSectionProjectByIds(sectionProjectEntryModel.SectiontId,
+            var sectionproject = _sectionProjectRepository.GetSectionProjectByIds(sectionProjectEntryModel.SectiontId,
                 ProjectId);
                 if (sectionproject == null)
                 {
@@ -76,9 +76,9 @@ namespace VinculacionBackend.Services
                    };
                   _sectionProjectRepository.Insert(sectionproject);
                 }
-                sectionproject.Description = sectionProjectEntryModel.Description;
+            sectionproject.Description = sectionProjectEntryModel.Description;
                 sectionproject.Cost = sectionProjectEntryModel.Cost;
-                _sectionProjectRepository.Update(sectionproject);
+            _sectionProjectRepository.Update(sectionproject);
 
                 sectionProjects.Add(sectionproject);
             }

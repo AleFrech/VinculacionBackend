@@ -234,7 +234,7 @@ namespace VinculacionBackend.Data.Repositories
             var fourth = periodHours.Where(f => f.Key == 4).SingleOrDefault();
             var fifth = periodHours.Where(f => f.Key == 5).SingleOrDefault();
             return new StudentCountModel
-            {
+        {
 
                 FirstPeriod = first != null ? first.Sum(a => a.Amount) : 0,
                 SecondPeriod = second != null ? second.Sum(a => a.Amount) : 0,
@@ -252,7 +252,7 @@ namespace VinculacionBackend.Data.Repositories
             var fourth = periodHours.Where(f => f.Key == 4).SingleOrDefault();
             var fifth = periodHours.Where(f => f.Key == 5).SingleOrDefault();
             return new StudentCountModel
-            {
+        {
 
                 FirstPeriod = first != null ? first.Sum(a => a.Amount) : 0,
                 SecondPeriod = second != null ? second.Sum(a => a.Amount) : 0,

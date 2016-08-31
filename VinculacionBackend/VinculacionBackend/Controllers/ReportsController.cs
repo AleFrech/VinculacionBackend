@@ -1,13 +1,21 @@
-﻿using System.Web.Http;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Data;
 using System.Collections.Generic;
+using OfficeOpenXml;
+using VinculacionBackend.Extensions;
 using VinculacionBackend.Interfaces;
 
 namespace VinculacionBackend.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-
 
     public class ReportsController : ApiController
     {
@@ -89,5 +97,7 @@ namespace VinculacionBackend.Controllers
             context.Response.End();
             return Ok();
         }
+
+     
     }
 }

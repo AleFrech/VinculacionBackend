@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using System.Net.Http;
+using ClosedXML.Excel;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Models;
 using VinculacionBackend.Services;
@@ -11,6 +12,7 @@ namespace VinculacionBackend.Interfaces
     public interface IStudentsServices
     {
         void Map(User student,UserEntryModel userModel);
+        IQueryable<object> ParseExcelStudents(XLWorkbook excel);
         void Add(User user);
         User Find(string accountId);
         IQueryable<User> ListbyStatus(string status);
