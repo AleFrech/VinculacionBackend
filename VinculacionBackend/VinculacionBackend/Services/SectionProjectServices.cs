@@ -56,7 +56,7 @@ namespace VinculacionBackend.Services
                   sectionProject = new SectionProject {
                     SectionId = sectionProjectEntryModel.SectionId,
                     ProjectId = ProjectId
-                  }
+                  };
                   _sectionProjectRepository.Insert(sectionProject);
                 }
                 sectionproject.Description = sectionProjectEntryModel.Description;
