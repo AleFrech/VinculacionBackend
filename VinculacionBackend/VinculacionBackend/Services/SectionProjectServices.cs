@@ -52,11 +52,18 @@ namespace VinculacionBackend.Services
             {
                 var sectionproject = _sectionProjectRepository.GetSectionProjectByIds(sectionProjectEntryModel.SectiontId,
                 ProjectId);
-                if (sectionproject == null)
-                    throw new NotFoundException("SectionProject not found");
+                if (sectionproject == null){
+                  sectionProject = new SectionProject {
+                    SectionId = sectionProjectEntryModel.SectionId,
+                    ProjectId = ProjectId
+                  }
+                  _sectionProjectRepository.Insert(sectionProject);
+                }
                 sectionproject.Description = sectionProjectEntryModel.Description;
                 sectionproject.Cost = sectionProjectEntryModel.Cost;
                 _sectionProjectRepository.Update(sectionproject);
+
+                sectionProjects.Add(sectionProject);
             }
 
             _sectionProjectRepository.Save();
