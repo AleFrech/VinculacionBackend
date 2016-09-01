@@ -159,16 +159,16 @@ namespace VinculacionBackend.Services
         {
             var report = new List<StudentReportModel>();
 
-            var count = _studentRepository.GetStudentCount( "InglÈs", year);
-            report.Add(new StudentReportModel { StudentNumber = "InglÈs", FirstPeriod = count.FirstPeriod ,SecondPeriod = count.SecondPeriod,FourthPeriod = count.FourthPeriod,FifthPeriod = count.FifthPeriod });
-            count = _studentRepository.GetStudentCount("Ofim·tica", year);
-            report.Add(new StudentReportModel { StudentNumber = "Ofim·tica", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
-            count = _studentRepository.GetStudentCount("SociologÌa", year);
-            report.Add(new StudentReportModel { StudentNumber = "SociologÌa", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
-            count = _studentRepository.GetStudentCount("FilosofÌa", year);
-            report.Add(new StudentReportModel { StudentNumber = "FilosofÌa", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
-            count = _studentRepository.GetStudentCount("EcologÌa", year);
-            report.Add(new StudentReportModel { StudentNumber = "EcologÌa", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            var count = _studentRepository.GetStudentCount( "Ingl√©s", year);
+            report.Add(new StudentReportModel { StudentNumber = "Ingl√©s", FirstPeriod = count.FirstPeriod ,SecondPeriod = count.SecondPeriod,FourthPeriod = count.FourthPeriod,FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetStudentCount("Ofim√°tica", year);
+            report.Add(new StudentReportModel { StudentNumber = "Ofim√°tica", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetStudentCount("Sociolog√≠a", year);
+            report.Add(new StudentReportModel { StudentNumber = "Sociolog√≠a", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetStudentCount("Filosof√≠a", year);
+            report.Add(new StudentReportModel { StudentNumber = "Filosof√≠a", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetStudentCount("Ecolog√≠a", year);
+            report.Add(new StudentReportModel { StudentNumber = "Ecolog√≠a", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
             count = _studentRepository.GetStudentByFacultyCount(1, year);
             report.Add(new StudentReportModel { StudentNumber = "FIA", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
             count = _studentRepository.GetStudentByFacultyCount(2, year);
@@ -191,16 +191,16 @@ namespace VinculacionBackend.Services
         {
             var report = new List<StudentReportModel>();
 
-            var count = _studentRepository.GetHoursCount("InglÈs", year);
-            report.Add(new StudentReportModel { StudentNumber = "InglÈs", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
-            count = _studentRepository.GetHoursCount("Ofim·tica", year);
-            report.Add(new StudentReportModel { StudentNumber = "Ofim·tica", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
-            count = _studentRepository.GetHoursCount("SociologÌa", year);
-            report.Add(new StudentReportModel { StudentNumber = "SociologÌa", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
-            count = _studentRepository.GetHoursCount("FilosofÌa", year);
-            report.Add(new StudentReportModel { StudentNumber = "FilosofÌa", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
-            count = _studentRepository.GetHoursCount("EcologÌa", year);
-            report.Add(new StudentReportModel { StudentNumber = "EcologÌa", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            var count = _studentRepository.GetHoursCount("Ingl√©s", year);
+            report.Add(new StudentReportModel { StudentNumber = "Ingl√©s", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetHoursCount("Ofim√°tica", year);
+            report.Add(new StudentReportModel { StudentNumber = "Ofim√°tica", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetHoursCount("Sociolog√≠a", year);
+            report.Add(new StudentReportModel { StudentNumber = "Sociolog√≠a", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetHoursCount("Filosof√≠a", year);
+            report.Add(new StudentReportModel { StudentNumber = "Filosof√≠a", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
+            count = _studentRepository.GetHoursCount("Ecolog√≠a", year);
+            report.Add(new StudentReportModel { StudentNumber = "Ecolog√≠a", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
             count = _studentRepository.GetHoursByFacultyCount(1, year);
             report.Add(new StudentReportModel { StudentNumber = "FIA", FirstPeriod = count.FirstPeriod, SecondPeriod = count.SecondPeriod, FourthPeriod = count.FourthPeriod, FifthPeriod = count.FifthPeriod });
             count = _studentRepository.GetHoursByFacultyCount(2, year);
@@ -277,7 +277,7 @@ namespace VinculacionBackend.Services
             {
                 Name = entry.Name,
                 AccountId = entry.AccountId,
-                Major = _majorServices.FindByName(entry.Major),
+                Major = _majorServices.GetMajorByMajorId(entry.Major),
                 Email = entry.Email, Password = _encryption.Encrypt("12345"),
                 Campus = "SPS",
                 CreationDate = DateTime.Now,
