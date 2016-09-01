@@ -329,7 +329,7 @@ namespace VinculacionBackend.Services
                               Nombre = row.Field<string>("Nombre"),
                               Correo = row.Field<string>("Correo"),
                               Carrera = row.Field<string>("Carrera"),
-                              Estado = row.Field<string>("Estado"),
+                              Estado = row.Field<bool>("Estado"),
                           };
             return results.AsQueryable();
         }
