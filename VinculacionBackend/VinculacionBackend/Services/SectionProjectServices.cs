@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
@@ -88,6 +89,14 @@ namespace VinculacionBackend.Services
 
             _sectionProjectRepository.Save();
             return sectionProjects;
+        }
+
+        public SectionProject GetInfo(long sectionId, long projectId)
+        {
+            var sectionProject = _sectionProjectRepository.GetSectionProjectByIds(sectionId, projectId);
+            if (sectionProject == null)
+                throw new NotFoundException("SectionProject not found");
+            return sectionProject;
         }
     }
 }

@@ -38,6 +38,14 @@ namespace VinculacionBackend.Controllers
             return _sectionProjectServices.GetInfo(sectionprojectId);
         }
 
+        [ResponseType(typeof(SectionProject))]
+        [Route("api/SectionProjects/Info/{sectionId}/{projectId}")]
+        [CustomAuthorize(Roles = "Admin,Professor")]
+        public SectionProject GetSectionProject(long sectionId,long projectId)
+        {
+            return _sectionProjectServices.GetInfo(sectionId, projectId);
+        }
+
         // POST: api/SectionProjects
         [ResponseType(typeof(SectionProject))]
         [Route("api/SectionProjects")]

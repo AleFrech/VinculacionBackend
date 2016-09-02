@@ -11,5 +11,6 @@ namespace VinculacionBackend.Interfaces
         SectionProject GetInfo(long sectionprojectId);
         void Approve(long sectionprojectId);
         IList<SectionProject> AddOrUpdate(SectionProjectEntryModel sectionProjectEntryModel);
+        SectionProject GetInfo(long sectionId, long projectId);
     }
 }

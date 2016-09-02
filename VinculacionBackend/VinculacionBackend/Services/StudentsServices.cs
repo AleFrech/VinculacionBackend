@@ -277,7 +277,7 @@ namespace VinculacionBackend.Services
             {
                 Name = entry.Name,
                 AccountId = entry.AccountId,
-                Major = _majorServices.GetMajorByMajorId(entry.Major),
+                Major = _majorServices.Find(entry.Major),
                 Email = entry.Email, Password = _encryption.Encrypt("12345"),
                 Campus = "SPS",
                 CreationDate = DateTime.Now,
