@@ -5,6 +5,7 @@ using System.Linq;
 using Castle.Components.DictionaryAdapter;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Models;
 
@@ -87,7 +88,7 @@ namespace VinculacionBackend.Data.Repositories
                 return section;
             }
 
-            throw new Exception("not found");
+            throw new NotFoundException("Seccion no encontrada");
 
         }
 
@@ -282,7 +283,7 @@ namespace VinculacionBackend.Data.Repositories
                 case 4: return "IV";
                 case 5: return "V";
             }
-            throw new Exception("Not a valid period number");
+            throw new InvalidPerioNumberException("Not a valid period number");
         }
     }
 

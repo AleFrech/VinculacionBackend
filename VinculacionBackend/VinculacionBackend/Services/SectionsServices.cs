@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
@@ -45,7 +46,7 @@ namespace VinculacionBackend.Services
             {
                 return _sectionsRepository.GetAllByStudent(userId);
             }
-            throw new Exception("No tiene permiso");
+            throw new UnauthorizedException("No tiene permiso");
         }
 
         public IQueryable<Section> GetCurrentPeriodSectionsByUser(long userId, string role)
@@ -63,7 +64,7 @@ namespace VinculacionBackend.Services
             {
                 return _sectionsRepository.GetAllByStudent(userId).Where(x => x.Period.Id == currentPeriod.Id).Distinct();
             }
-            throw new Exception("No tiene permiso");
+            throw new UnauthorizedException("No tiene permiso");
         }
 
         public IQueryable<Section> GetSectionsByProject(long projectId, string role, long userId)
@@ -81,7 +82,7 @@ namespace VinculacionBackend.Services
                 return _sectionsRepository.GetSectionsByProject(projectId).Join(_sectionsRepository.GetSectionsUsersRels(), s => s.Id, su => su.Section.Id, (s,su)=> su).Where(u => u.User.Id == userId).Select(x => x.Section).Include(p => p.Period).Include( p=> p.User).Include(p => p.Class);
 
             }
-            throw new Exception("No tiene permiso");
+            throw new UnauthorizedException("No tiene permiso");
         }
 
         public IQueryable<Section> GetCurrentPeriodSections()
