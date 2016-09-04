@@ -34,7 +34,7 @@ namespace VinculacionBackend.Services
             professor.Finiquiteado = true;
         }
 
-        public void PutMap(User professor, ProfessorEntryModel professorModel)
+        public void PutMap(User professor, ProfessorUpdateModel professorModel)
         {
             professor.AccountId = professorModel.AccountId;
             professor.Name = professorModel.Name;
@@ -76,7 +76,7 @@ namespace VinculacionBackend.Services
         }
 
 
-        public User UpdateProfessor(string accountId,ProfessorEntryModel model)
+        public User UpdateProfessor(string accountId, ProfessorUpdateModel model)
         {
             var professor = _professorRepository.GetByAccountId(accountId);
             if (professor == null)

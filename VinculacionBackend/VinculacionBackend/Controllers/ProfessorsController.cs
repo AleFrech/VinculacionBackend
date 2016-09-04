@@ -81,7 +81,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Professors/{accountId}")]
         [ValidateModel]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PutProfessor(string accountId, ProfessorEntryModel model)
+        public IHttpActionResult PutProfessor(string accountId, ProfessorUpdateModel model)
         {
 
             var professor = _professorsServices.UpdateProfessor(accountId, model);
