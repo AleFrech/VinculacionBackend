@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Repositories;
-using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 using VinculacionBackend.Reports;
@@ -145,7 +145,7 @@ namespace VinculacionBackend.Services
 
             if (rel == null)
             {
-                throw new NotFoundException("Seccion o Proyecto invalido");
+                throw new InvalidSectionOrProjectException("Seccion o Proyecto invalido");
             }
 
             return true;
@@ -165,7 +165,7 @@ namespace VinculacionBackend.Services
             {
                 return _projectRepository.GetAllStudent(userId);
             }
-            throw new Exception("No tiene permiso");
+            throw new UnauthorizedException("No tiene permiso");
 
         }
 
@@ -176,7 +176,7 @@ namespace VinculacionBackend.Services
         {
             var sp = _projectRepository.GetSectionProject(projectId, sectionId);
             if (sp.IsApproved)
-                throw new Exception("Las horas de este proyecto ya fueron approvadas");
+                throw new HoursAlreadyApprovedException("Las horas de este proyecto ya fueron approvadas");
 
             var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository, _studentRepository,
                 _textDocumentServices, new DownloadbleFile(),_sectionProjectRepository);

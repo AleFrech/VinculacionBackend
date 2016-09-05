@@ -5,7 +5,6 @@ using System.Linq;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Exceptions;
 
 namespace VinculacionBackend.Data.Repositories
 {

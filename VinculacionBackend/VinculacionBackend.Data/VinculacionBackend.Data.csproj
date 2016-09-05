@@ -78,9 +78,13 @@
     <Compile Include="Entities\UserRole.cs" />
     <Compile Include="Enums\Status.cs" />
     <Compile Include="Exceptions\HoursAlreadyAprovedException.cs" />
+    <Compile Include="Exceptions\InvalidPerioNumberException.cs" />
+    <Compile Include="Exceptions\InvalidSectionOrProjectException.cs" />
+    <Compile Include="Exceptions\InvalidUsernameOrPasswordException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Exceptions\StudentAlreadyRegisteredInClassException.cs" />
     <Compile Include="Exceptions\UnauthorizedException.cs" />
+    <Compile Include="Exceptions\UserNotVerifiedException.cs" />
     <Compile Include="Interfaces\IClassRepository.cs" />
     <Compile Include="Interfaces\IEncryption.cs" />
     <Compile Include="Interfaces\IFacultyRepository.cs" />

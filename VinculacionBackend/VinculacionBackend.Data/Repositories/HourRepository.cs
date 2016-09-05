@@ -4,7 +4,6 @@ using Castle.Components.DictionaryAdapter.Xml;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Exceptions;
 using VinculacionBackend.Data.Exceptions;
 
 namespace VinculacionBackend.Data.Repositories

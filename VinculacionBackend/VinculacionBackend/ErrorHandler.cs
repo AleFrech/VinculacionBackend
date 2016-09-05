@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
-using VinculacionBackend.Exceptions;
+using VinculacionBackend.Data.Exceptions;
 
 namespace VinculacionBackend
 {
@@ -36,7 +36,8 @@ namespace VinculacionBackend
 
                 context.Result = new UnauthorizedResult(context.Request, result);
             }
-            else if (context.Exception is HoursAlreadyApprovedException)
+            else if (context.Exception is HoursAlreadyApprovedException ||
+                     context.Exception is StudentAlreadyRegisteredInClassException)
             {
                 var result = new HttpResponseMessage(HttpStatusCode.Unauthorized)
                 {
@@ -48,7 +49,13 @@ namespace VinculacionBackend
             }
             else
             {
-                
+                var result = new HttpResponseMessage(HttpStatusCode.NotAcceptable)
+                {
+                    Content = new StringContent(context.Exception.Message),
+                    ReasonPhrase = "Invalid"
+                };
+
+                context.Result = new InvalidOperationResult(context.Request, result);
             }
         }
     }

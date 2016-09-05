@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Repositories;
-using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
@@ -27,7 +27,7 @@ namespace VinculacionBackend.Services
         {
             var sectionProject = _sectionProjectRepository.Get(sectionprojectId);
             if (sectionProject == null)
-                throw new NotFoundException("SectionProject not found");
+                throw new InvalidSectionOrProjectException("Seccion o proyecto invalido");
             return sectionProject;
         }
 
@@ -37,7 +37,7 @@ namespace VinculacionBackend.Services
         {
             var rel = _sectionProjectRepository.Get(sectionprojectId);
             if (rel == null)
-                throw new NotFoundException("SectionProject not found");
+                throw new InvalidSectionOrProjectException("Seccion o proyecto invalido");
             rel.IsApproved = true;
             _sectionProjectRepository.Update(rel);
             _sectionProjectRepository.Save();
@@ -62,14 +62,11 @@ namespace VinculacionBackend.Services
                     var project = _projectRepository.Get(projectId);
                     var section = _sectionRepository.Get(sectionProjectEntryModel.SectiontId);
 
-                    if (project == null)
+                    if (project == null || section == null)
                     {
-                        throw new NotFoundException("project not found");
+                        throw new InvalidSectionOrProjectException("proyecto o seccion no valido");
                     }
-                    if (section == null)
-                    {
-                        throw new NotFoundException("section not found");
-                    }
+    
                   sectionproject = new SectionProject {
                       Section = section,
                       Project = project,
@@ -95,7 +92,7 @@ namespace VinculacionBackend.Services
         {
             var sectionProject = _sectionProjectRepository.GetSectionProjectByIds(sectionId, projectId);
             if (sectionProject == null)
-                throw new NotFoundException("SectionProject not found");
+                throw new InvalidSectionOrProjectException("Seccion o proyecto invalido");
             return sectionProject;
         }
     }
