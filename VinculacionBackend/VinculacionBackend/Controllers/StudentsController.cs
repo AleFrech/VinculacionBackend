@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -17,7 +16,6 @@ using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security.BasicAuthentication;
-using System.Data;
 
 namespace VinculacionBackend.Controllers
 {

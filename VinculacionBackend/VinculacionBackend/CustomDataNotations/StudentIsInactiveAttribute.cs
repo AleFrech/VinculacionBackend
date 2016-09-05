@@ -14,8 +14,9 @@ namespace VinculacionBackend.CustomDataNotations
             var accountNumber = value.ToString();
             var context = new VinculacionContext();
             var student = context.Users.FirstOrDefault(x => x.AccountId == accountNumber);
-            return student.Status == Status.Inactive;
-
+            if(student!=null)
+                return student.Status == Status.Inactive;
+            return false;
         }
     }
 }

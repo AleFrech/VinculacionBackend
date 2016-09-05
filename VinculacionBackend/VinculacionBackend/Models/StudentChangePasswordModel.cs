@@ -6,8 +6,8 @@ namespace VinculacionBackend.Models
     public class StudentChangePasswordModel
     {
         [Required(ErrorMessage = "*requerido")]
-        [AccountNumberDosentExist(ErrorMessage = "El numero de cuenta no existe")]
         [StudentIsInactive(ErrorMessage = "El estudiante ya esta activo")]
+        [AccountNumberDosentExist(ErrorMessage = "El numero de cuenta no existe")]
         public string AccountId { get; set; }
         [Required(ErrorMessage = "*requerido")]
         [EmailDosentExist(ErrorMessage = "El correo no existe en la base de datos")]
