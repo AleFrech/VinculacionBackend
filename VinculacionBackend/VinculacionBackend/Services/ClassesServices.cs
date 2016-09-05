@@ -2,7 +2,6 @@
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
