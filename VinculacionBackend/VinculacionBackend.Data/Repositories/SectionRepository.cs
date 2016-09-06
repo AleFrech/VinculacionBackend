@@ -4,6 +4,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
 
 namespace VinculacionBackend.Data.Repositories
