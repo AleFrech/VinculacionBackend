@@ -136,7 +136,6 @@ namespace VinculacionBackend.Controllers
         // POST: api/Students
         [ResponseType(typeof(User))]
         [Route("api/Students")]
-        [CustomAuthorize(Roles = "Anonymous")]
         [ValidateModel]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
