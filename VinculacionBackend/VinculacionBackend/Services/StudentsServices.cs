@@ -143,7 +143,7 @@ namespace VinculacionBackend.Services
             return student;
         }
 
-        public User UpdateStudent(string accountId, UserEntryModel model)
+        public User UpdateStudent(string accountId, UserUpdateModel model)
         {
             var student = _studentRepository.GetByAccountNumber(accountId);
             if (student == null)

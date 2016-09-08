@@ -22,7 +22,7 @@ namespace VinculacionBackend.Interfaces
         int GetStudentHours(string accountId);
         HttpResponseMessage GetFiniquitoReport(string accountId);
         User FindByEmail(string email);
-        User UpdateStudent(string accountId, UserEntryModel model);
+        User UpdateStudent(string accountId, UserUpdateModel model);
         List<StudentReportModel> CreateStudentReport(int year);
         IQueryable<FiniquitoUserModel> GetPendingStudentsFiniquito();
         User GetCurrentStudents(long userId);

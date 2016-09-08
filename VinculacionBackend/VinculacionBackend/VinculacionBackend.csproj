@@ -247,6 +247,7 @@
     <Compile Include="Cache\MemoryCacher.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
     <Compile Include="Models\ProfessorUpdateModel.cs" />
+    <Compile Include="Models\UserUpdateModel.cs" />
     <Compile Include="MyStreamProvider.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SectionProjectsController.cs" />
