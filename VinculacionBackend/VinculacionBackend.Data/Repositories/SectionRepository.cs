@@ -117,6 +117,15 @@ namespace VinculacionBackend.Data.Repositories
             };
         }
 
+        public void ClearSectionStudents(long sectionId)
+        {
+            var sectionStudents = _db.SectionProjectsRels.Include(x => x.Section).Where(x => x.Section.Id == sectionId);
+            foreach(var rel in sectionStudents)
+            {
+                _db.SectionUserRels.Remove(rel);
+            }
+        }
+
         public IQueryable<Project> GetSectionProjects(long sectionId)
         {
             var secProjRel =
