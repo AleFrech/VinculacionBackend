@@ -299,7 +299,7 @@ namespace VinculacionBackend.Services
                     {
                         dataTable.Columns.Add(cell.Value.ToString());
                     }
-                    dataTable.Columns.Add("State");
+                    dataTable.Columns.Add("Exists");
                     firstRow = false;
                 }
                 else
@@ -329,7 +329,7 @@ namespace VinculacionBackend.Services
                               Nombre = row.Field<string>("Name"),
                               Correo = row.Field<string>("Email"),
                               Carrera = row.Field<string>("Major"),
-                              Estado = row.Field<bool>("State"),
+                              Estado = row.Field<bool>("Exists"),
                           };
             return results.AsQueryable();
         }
