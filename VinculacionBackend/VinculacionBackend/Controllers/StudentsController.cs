@@ -176,7 +176,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Students/{accountId}")]
         [ValidateModel]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PutStudent(string accountId, UserEntryModel model)
+        public IHttpActionResult PutStudent(string accountId, UserUpdateModel model)
         {
 
             var student = _studentsServices.UpdateStudent(accountId, model);

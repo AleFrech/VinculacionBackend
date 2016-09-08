@@ -57,7 +57,7 @@ namespace VinculacionBackend.Services
         }
 
 
-        public void PutMap(User student, UserEntryModel userModel)
+        public void PutMap(User student, UserUpdateModel userModel)
         {
             student.AccountId = userModel.AccountId;
             student.Name = userModel.Name;
