@@ -149,6 +149,17 @@ namespace VinculacionBackend.Controllers
             return Ok(section);
         }
 
-      
+        [Route("api/Sections/Reassign")]
+        [ResponseType(typeof(Section))]
+        [CustomAuthorize(Roles = "Admin,Professor")]
+        [ValidateModel]
+        public IHttpActionResult PostReassignStudents(SectionStudentModel model)
+        {
+
+            _sectionServices.RebuildSectionStudentRelationships(model);
+            return Ok();
+        }
+
+
     }
 }

@@ -181,5 +181,11 @@ namespace VinculacionBackend.Services
         {
             return _sectionsRepository.GetSectionStudentsHours(sectionId,projectId);
         }
+
+        public void RebuildSectionStudentRelationships(SectionStudentModel model)
+        {
+            _sectionsRepository.ClearSectionStudents(model.SectionId);
+            _sectionsRepository.AssignStudents(model.SectionId, model.StudenstIds);    
+        }
     }
 }
