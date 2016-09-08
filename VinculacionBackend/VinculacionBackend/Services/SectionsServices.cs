@@ -187,6 +187,7 @@ namespace VinculacionBackend.Services
             _sectionsRepository.ClearSectionStudents(model.SectionId);
             _sectionsRepository.Save();
             _sectionsRepository.AssignStudents(model.SectionId, model.StudenstIds);    
+            _sectionsRepository.Save();
         }
     }
 }
