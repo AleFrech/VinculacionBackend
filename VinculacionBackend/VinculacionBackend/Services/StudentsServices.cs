@@ -295,10 +295,10 @@ namespace VinculacionBackend.Services
             {
                 if (firstRow)
                 {
-                    foreach (IXLCell cell in row.Cells())
-                    {
-                        dataTable.Columns.Add(cell.Value.ToString());
-                    }
+                    dataTable.Columns.Add("AccountId");
+                    dataTable.Columns.Add("Name");
+                    dataTable.Columns.Add("Email");
+                    dataTable.Columns.Add("Major");
                     dataTable.Columns.Add("Exists");
                     firstRow = false;
                 }
