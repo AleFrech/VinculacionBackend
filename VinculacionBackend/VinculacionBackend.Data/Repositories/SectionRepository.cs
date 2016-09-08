@@ -119,7 +119,7 @@ namespace VinculacionBackend.Data.Repositories
 
         public void ClearSectionStudents(long sectionId)
         {
-            List<SectionUser> sectionStudents = _db.SectionProjectsRels.Include(x => x.Section).Where(x => x.Section.Id == sectionId);
+            List<SectionUser> sectionStudents = _db.SectionUserRels.Include(x => x.Section).Where(x => x.Section.Id == sectionId).ToList();
             foreach(var rel in sectionStudents)
             {
                 _db.SectionUserRels.Remove(rel);
