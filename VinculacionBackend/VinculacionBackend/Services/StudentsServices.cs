@@ -325,11 +325,11 @@ namespace VinculacionBackend.Services
             var results = from row in dataTable.AsEnumerable()
                           select new
                           {
-                              Cuenta = row.Field<string>("AccountId"),
-                              Nombre = row.Field<string>("Name"),
-                              Correo = row.Field<string>("Email"),
-                              Carrera = row.Field<string>("Major"),
-                              Estado = row.Field<bool>("Exists"),
+                              AccountId = row.Field<string>("AccountId"),
+                              Name = row.Field<string>("Name"),
+                              Email = row.Field<string>("Email"),
+                              Major = row.Field<string>("Major"),
+                              Exists = Convert.ToBoolean(row.Field<string>("Exists"))
                           };
             return results.AsQueryable();
         }
