@@ -299,7 +299,7 @@ namespace VinculacionBackend.Services
                     {
                         dataTable.Columns.Add(cell.Value.ToString());
                     }
-                    dataTable.Columns.Add("Estado");
+                    dataTable.Columns.Add("State");
                     firstRow = false;
                 }
                 else
@@ -325,11 +325,11 @@ namespace VinculacionBackend.Services
             var results = from row in dataTable.AsEnumerable()
                           select new
                           {
-                              Cuenta = row.Field<string>("Numero de Cuenta"),
-                              Nombre = row.Field<string>("Nombre"),
-                              Correo = row.Field<string>("Correo"),
-                              Carrera = row.Field<string>("Carrera"),
-                              Estado = row.Field<bool>("Estado"),
+                              Cuenta = row.Field<string>("AccountId"),
+                              Nombre = row.Field<string>("Name"),
+                              Correo = row.Field<string>("Email"),
+                              Carrera = row.Field<string>("Major"),
+                              Estado = row.Field<bool>("State"),
                           };
             return results.AsQueryable();
         }
