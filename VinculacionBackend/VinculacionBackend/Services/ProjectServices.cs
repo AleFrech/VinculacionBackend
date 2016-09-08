@@ -112,7 +112,7 @@ namespace VinculacionBackend.Services
             if (tmpProject == null)
                 throw new NotFoundException("No se encontro el proyecto");
             Map(tmpProject, model);
-            _projectRepository.Update(tmpProject);
+            _projectRepository.Update(tmpProject,model.MajorIds);
             _projectRepository.Save();
             return tmpProject;
         }

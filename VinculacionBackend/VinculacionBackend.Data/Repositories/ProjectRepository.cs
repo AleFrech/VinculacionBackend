@@ -141,6 +141,23 @@ namespace VinculacionBackend.Data.Repositories
             _db.Entry(ent).State = EntityState.Modified;
         }
 
+        public void Update(Project ent, List<string> majorIds)
+        {
+
+            var projectMajors = _db.ProjectMajorRels.Include(x => x.Project).Where(x => x.Project.Id == ent.Id).ToList();
+            foreach (var rel in projectMajors)
+            {
+                _db.ProjectMajorRels.Remove(rel);
+            }
+
+            var majors = _db.Majors.Where(x => majorIds.Any(y => y == x.MajorId)).ToList();
+            foreach (var major in majors)
+            {
+                _db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
+            }
+            _db.Entry(ent).State = EntityState.Modified;
+        }
+
         public IQueryable<User> GetProjectStudents(long projectId)
         {
             var sections = _db.SectionProjectsRels.Where(a => a.Project.Id == projectId).Select(b => b.Section).ToList();

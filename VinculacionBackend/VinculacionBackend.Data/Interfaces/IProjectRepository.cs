@@ -29,5 +29,6 @@ namespace VinculacionBackend.Data.Interfaces
         IQueryable<Project> GetProjectsBySection(long sectionId);
         SectionProject GetSectionProject(long projectId, long sectionId);
         string GetNextProjectCode(Period currentPeriod);
+        void Update(Project ent, List<string> majorIds);
     }
 }
