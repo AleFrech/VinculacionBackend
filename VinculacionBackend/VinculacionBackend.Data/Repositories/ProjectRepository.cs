@@ -149,7 +149,6 @@ namespace VinculacionBackend.Data.Repositories
             {
                 _db.ProjectMajorRels.Remove(rel);
             }
-
             var majors = _db.Majors.Where(x => majorIds.Any(y => y == x.MajorId)).ToList();
             foreach (var major in majors)
             {
@@ -250,7 +249,7 @@ namespace VinculacionBackend.Data.Repositories
             return _db.SectionProjectsRels.Where(a => a.Section.Period.Number == period && a.Section.Period.Year == year)
                 .Where(x => x.Project.IsDeleted == false)
                 .Join(_db.ProjectMajorRels, sp => sp.Project.Id, pm => pm.Project.Id, (sp, pm) => new { sp, pm })
-                .Select(b => new PeriodReportModel
+                .Distinct().Select(b => new PeriodReportModel
                 {
                     Institución = b.sp.Project.BeneficiarieOrganization,
                     Producto = b.sp.Project.Name,
