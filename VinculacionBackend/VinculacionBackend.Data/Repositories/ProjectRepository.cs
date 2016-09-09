@@ -249,7 +249,7 @@ namespace VinculacionBackend.Data.Repositories
             return _db.SectionProjectsRels.Where(a => a.Section.Period.Number == period && a.Section.Period.Year == year)
                 .Where(x => x.Project.IsDeleted == false)
                 .Join(_db.ProjectMajorRels, sp => sp.Project.Id, pm => pm.Project.Id, (sp, pm) => new { sp, pm })
-                .Distinct().Select(b => new PeriodReportModel
+                .Select(b => new PeriodReportModel
                 {
                     Institución = b.sp.Project.BeneficiarieOrganization,
                     Producto = b.sp.Project.Name,
@@ -262,7 +262,7 @@ namespace VinculacionBackend.Data.Repositories
                     NumProy = b.sp.Project.Id,
                     Beneficiarios = "",
                     Comentarios = ""
-                });
+                }).Distinct();
         }
 
         public IQueryable<Project> GetProjectsBySection(long sectionId)
