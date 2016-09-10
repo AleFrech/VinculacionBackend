@@ -82,6 +82,7 @@
     <Compile Include="Exceptions\InvalidSectionOrProjectException.cs" />
     <Compile Include="Exceptions\InvalidUsernameOrPasswordException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
+    <Compile Include="Exceptions\ProjectAlreadyInSectionException.cs" />
     <Compile Include="Exceptions\StudentAlreadyRegisteredInClassException.cs" />
     <Compile Include="Exceptions\UnauthorizedException.cs" />
     <Compile Include="Exceptions\UserNotVerifiedException.cs" />
