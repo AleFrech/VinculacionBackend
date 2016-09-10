@@ -121,7 +121,7 @@ namespace VinculacionBackend.Services
         {
             var projectSection = _sectionProjectRepository.GetSectionProjectByIds(model.SectionId, model.ProjectId);
             if(projectSection != null) {
-                throw new ProjectAlreadyInSectionException("El proyecto ya esta registrado en esa seccion.")
+                throw new ProjectAlreadyInSectionException("El proyecto ya esta registrado en esa seccion.");
             }
             
             _projectRepository.AssignToSection(model.ProjectId, model.SectionId);
