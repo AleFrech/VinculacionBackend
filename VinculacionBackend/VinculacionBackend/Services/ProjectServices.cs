@@ -132,12 +132,18 @@ namespace VinculacionBackend.Services
 
         public void AssignProjectsToSection(ProjectsSectionModel model)
         {
+
             foreach (var p in model.ProjectIds)
             {
                 var projectSection = _sectionProjectRepository.GetSectionProjectByIds(model.SectionId, p);
-                if(projectSection == null) {
-                    _projectRepository.AssignToSection(p,model.SectionId);
+                if(projectSection != null) {
+                    throw new ProjectAlreadyInSectionException("El proyecto ya esta registrado en esa seccion.");
                 }
+            }
+
+            foreach (var p in model.ProjectIds)
+            {
+                _projectRepository.AssignToSection(p,model.SectionId);
             }
             _projectRepository.Save();
         }
