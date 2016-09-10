@@ -7,7 +7,7 @@ namespace VinculacionBackend.Models
 {
     public class TokenModel
     {
-        public long Id;
+        public string Id;
         public string Token;
     }
 }
