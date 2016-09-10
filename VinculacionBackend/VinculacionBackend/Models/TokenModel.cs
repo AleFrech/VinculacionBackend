@@ -7,7 +7,8 @@ namespace VinculacionBackend.Models
 {
     public class TokenModel
     {
-        public string Id;
+        public long Id;
+        public string AccountId;
         public string Token;
     }
 }
