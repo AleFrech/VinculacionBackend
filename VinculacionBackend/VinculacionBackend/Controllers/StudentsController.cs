@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -8,6 +10,7 @@ using System.Web.Http.Description;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using System.Web.OData;
+using ClosedXML.Excel;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Interfaces;
@@ -52,6 +55,26 @@ namespace VinculacionBackend.Controllers
         }
 
         [ResponseType(typeof(User))]
+        [Route("api/Students/Me")]
+        [CustomAuthorize(Roles = "Student")]
+        public IHttpActionResult GetCurrentStudent()
+        {
+            var currentUser = (CustomPrincipal)HttpContext.Current.User;
+
+            var student = _studentsServices.GetCurrentStudents(currentUser.UserId);
+            return Ok(student);
+        }
+
+
+        [Route("api/Students/Import")]
+        [CustomAuthorize(Roles = "Admin")]
+        public IHttpActionResult PostAddManyStudents([FromBody]List<StudentAddManyEntryModel> students)
+        {
+            _studentsServices.AddMany(students);
+            return Ok();
+        }
+
+        [ResponseType(typeof(User))]
         [Route("api/StudentByEmail")]
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
         public IHttpActionResult PostStudentByEmail(EmailModel model)
@@ -60,6 +83,13 @@ namespace VinculacionBackend.Controllers
             return Ok(student);
         }
 
+        [Route("api/Students/PendingFiniquitoStudents")]
+        [EnableQuery]
+        public IQueryable<FiniquitoUserModel> GetStudentsPendingFiniquito()
+        {
+
+            return _studentsServices.GetPendingStudentsFiniquito();
+        }
 
         [Route("api/Students/FiniquitoReport/{accountId}")]
         public HttpResponseMessage GetProjectFinalReport(string accountId)
@@ -78,6 +108,22 @@ namespace VinculacionBackend.Controllers
             return Ok(total);
         }
 
+        [ResponseType(typeof(User))]
+        [Route("api/Students/{accountId}/Section/{sectionid}/Hours")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IHttpActionResult GetStudentHourBySection(string accountId, long sectionId)
+        {
+            var total = _studentsServices.GetStudentHoursBySection(accountId, sectionId);
+            return Ok(total);
+        }
+
+        [Route("api/Students/{accountId}/SectionHours")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public IQueryable<object> GetStudentSection(string accountId)
+        {
+            return _studentsServices.GetStudentSections(accountId);
+        }
+
         [Route("api/Students/Filter/{status}")]
         [CustomAuthorize(Roles = "Admin,Professor")]
         public IQueryable<User> GetStudents(string status)
@@ -86,23 +132,10 @@ namespace VinculacionBackend.Controllers
 
         }
 
-        //Put: api/Students/Verified
-        [ResponseType(typeof(User))]
-        [Route("api/Students/Verified")]
-        [CustomAuthorize(Roles = "Admin")]
-        [ValidateModel]
-        public IHttpActionResult PutAcceptVerified(VerifiedModel model) 
-        {
-            var student = _studentsServices.VerifyUser(model.AccountId);    
-            _email.Send(student.Email, "Fue Aceptado para participar en Projectos de Vinculación", "Vinculación");
-            return Ok(student);
-        }
-
 
         // POST: api/Students
         [ResponseType(typeof(User))]
         [Route("api/Students")]
-        [CustomAuthorize(Roles = "Anonymous")]
         [ValidateModel]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
@@ -112,6 +145,18 @@ namespace VinculacionBackend.Controllers
             var stringparameter = _encryption.Encrypt(newStudent.AccountId);
             _email.Send(newStudent.Email, "Hacer click en el siguiente link para activar su cuenta: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
             return Ok(newStudent);
+        }
+
+
+        [ResponseType(typeof(User))]
+        [Route("api/Students/EnableStudent")]
+        [ValidateModel]
+        public IHttpActionResult PostChangePassword(StudentChangePasswordModel model)
+        {
+            _studentsServices.ChangePassword(model);
+            var stringparameter = _encryption.Encrypt(model.AccountId);
+            _email.Send(model.Email, "Hacer click en el siguiente link para activar su cuenta: " + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/api/Students/" + HttpContext.Current.Server.UrlEncode(stringparameter) + "/Active", "Vinculación");
+            return Ok();
         }
 
 
@@ -127,23 +172,11 @@ namespace VinculacionBackend.Controllers
         }
 
 
-        //Post: api/Students/Rejected
-        [ResponseType(typeof(User))]
-        [Route("api/Students/Rejected")]
-        [CustomAuthorize(Roles = "Admin")]
-        [ValidateModel]
-        public IHttpActionResult PostRejectStudent(RejectedModel model)
-        {
-            var student = _studentsServices.RejectUser(model.AccountId);
-            _email.Send(student.Email, model.Message, "Vinculación");
-             return Ok(student);
-        }
-
         [ResponseType(typeof(User))]
         [Route("api/Students/{accountId}")]
         [ValidateModel]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PutStudent(string accountId, UserEntryModel model)
+        public IHttpActionResult PutStudent(string accountId, UserUpdateModel model)
         {
 
             var student = _studentsServices.UpdateStudent(accountId, model);
@@ -167,6 +200,18 @@ namespace VinculacionBackend.Controllers
         {
             return _hoursServices.HourReport(accountId);
         }
-        
+
+
+       
+        [HttpPost]
+        [Route("api/Students/Parse")]
+        public IQueryable<object> Parse([FromBody]string data)
+        {
+           
+            var content = Convert.FromBase64String(data);
+            MemoryStream stream = new MemoryStream(content);
+            var excel = new XLWorkbook(stream);
+            return _studentsServices.ParseExcelStudents(excel);
+        }
     }
 }

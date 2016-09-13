@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
@@ -30,10 +31,29 @@ namespace VinculacionBackend.Controllers
         [EnableQuery]
         public IQueryable<Project> GetProjects()
         {
+            return _services.All();
+        }
+
+
+
+        // GET: api/Projects
+        [Route("api/Projects/ProjectsByUser")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        [EnableQuery]
+        public IQueryable<Project> GetProjectsByUser()
+        {
             var currentUser = (CustomPrincipal)HttpContext.Current.User;
             return _services.GetUserProjects(currentUser.UserId, currentUser.roles);
         }
-        
+
+        [Route("api/ProjectsCount")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public int GetProjectsCount()
+        {
+            var currentUser = (CustomPrincipal)HttpContext.Current.User;
+            return _services.GetUserProjects(currentUser.UserId, currentUser.roles).Count();
+        }
+
         // GET: api/Projects/5
         [ResponseType(typeof(Project))]
         [Route("api/Projects/{projectId}")]
@@ -45,11 +65,10 @@ namespace VinculacionBackend.Controllers
         }
 
         // Get: api/Projects/FinalReport/
-        [Route("api/Projects/FinalReport/{projectId}/{fieldHours}/{calification}/{beneficiariesQuantities}/{beneficiariGroups}")]
-        public HttpResponseMessage GetProjectFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups)
+        [Route("api/Projects/FinalReport/{projectId}/{sectionId}/{fieldHours}/{calification}/{beneficiariesQuantities}/{beneficiariGroups}")]
+        public HttpResponseMessage GetProjectFinalReport(long projectId,long sectionId,int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups)
         {
-
-            return _services.GetFinalReport(projectId,fieldHours,calification,beneficiariesQuantities,beneficiariGroups);
+            return _services.GetFinalReport(projectId,sectionId,fieldHours,calification,beneficiariesQuantities,beneficiariGroups);
         }
 
         // GET: api/Projects/5
@@ -59,6 +78,17 @@ namespace VinculacionBackend.Controllers
         public IQueryable<User> GetProjectStudents(long projectId)
         {
             return _services.GetProjectStudents(projectId);
+        }
+
+
+        // GET: api/Projects
+        [Route("api/Projects/ProjectsBySection/{sectionId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        [EnableQuery]
+        public IQueryable<Project> GetProjectsBySection(long sectionId)
+        {
+            var projects = _services.GetProjectsBySection(sectionId);
+            return projects;
         }
 
         // PUT: api/Projects/5
@@ -77,6 +107,15 @@ namespace VinculacionBackend.Controllers
         public IHttpActionResult PostAssignSection(ProjectSectionModel model)
         {
             _services.AssignSection(model);
+            return Ok();
+        }
+
+        [ResponseType(typeof(void))]
+        [Route("api/Projects/AssignProjectsToSection")]
+        [ValidateModel]
+        public IHttpActionResult PostAssignSections(ProjectsSectionModel model)
+        {
+            _services.AssignProjectsToSection(model);
             return Ok();
         }
 

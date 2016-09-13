@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
@@ -23,11 +24,35 @@ namespace VinculacionBackend.Controllers
 
         // GET: api/Sections
         [Route("api/Sections")]
-        [CustomAuthorize(Roles = "Admin,Professor")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
         [EnableQuery]
         public IQueryable<Section> GetSections()
         {
-            return _sectionServices.All();
+            var currentUser = (CustomPrincipal)HttpContext.Current.User;
+            return _sectionServices.AllByUser(currentUser.UserId, currentUser.roles);
+        }
+
+
+        // GET: api/Sections
+        [Route("api/Sections/CurrentPeriodSections")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        [EnableQuery]
+        public IQueryable<Section> GetCurrentPeriodSections()
+        {
+            var currentUser = (CustomPrincipal)HttpContext.Current.User;
+            return _sectionServices.GetCurrentPeriodSectionsByUser(currentUser.UserId, currentUser.roles.Single());
+        }
+
+
+        // GET: api/Sections
+        [Route("api/Sections/SectionsByProject/{projectId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        [EnableQuery]
+        public IQueryable<Section> GetSectionsByProject(long projectId)
+        {
+            var currentUser = (CustomPrincipal)HttpContext.Current.User;
+            var sections = _sectionServices.GetSectionsByProject(projectId,currentUser.roles.Single(),currentUser.UserId);
+            return sections;
         }
 
         // GET: api/Sections/5
@@ -47,6 +72,15 @@ namespace VinculacionBackend.Controllers
         public IQueryable<User> GetSectionStudents(long sectionId)
         {
             return _sectionServices.GetSectionStudents(sectionId);
+        }
+
+
+        [ResponseType(typeof(Project))]
+        [Route("api/Sections/StudentsHour/{sectionId}/{projectId}")]
+        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        public object GetSectionStudentsHour(long sectionId,long projectId)
+        {
+            return _sectionServices.GetSectionStudentsHour(sectionId,projectId);
         }
 
         // GET: api/Sections/5
@@ -115,6 +149,17 @@ namespace VinculacionBackend.Controllers
             return Ok(section);
         }
 
-      
+        [Route("api/Sections/Reassign")]
+        [ResponseType(typeof(Section))]
+        [CustomAuthorize(Roles = "Admin,Professor")]
+        [ValidateModel]
+        public IHttpActionResult PostReassignStudents(SectionStudentModel model)
+        {
+
+            _sectionServices.RebuildSectionStudentRelationships(model);
+            return Ok();
+        }
+
+
     }
 }

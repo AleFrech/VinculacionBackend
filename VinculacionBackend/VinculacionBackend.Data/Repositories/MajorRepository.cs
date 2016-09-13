@@ -14,6 +14,21 @@ namespace VinculacionBackend.Data.Repositories
         {
             _db = new VinculacionContext();
         }
+        public IQueryable<Major> GetMajorsByFaculty(long facultyId)
+        {
+            return _db.Majors.Include(major => major.Faculty).Where(major => major.Faculty.Id == facultyId);
+        }
+
+        public IQueryable<Major> GetMajorsByProject(long projectId)
+        {
+            return _db.ProjectMajorRels.Include(rel => rel.Project).Include(rel => rel.Major).Where(rel => rel.Project.Id == projectId).Select(rel => rel.Major).Include(x=>x.Faculty);
+        }
+
+        public Major GetMajorByName(string name)
+        {
+            return _db.Majors.FirstOrDefault(major => major.Name == name);
+        }
+
         public Major Delete(long id)
         {
             var found = Get(id);
@@ -60,7 +75,6 @@ namespace VinculacionBackend.Data.Repositories
         {
             _db.Faculties.Attach(ent.Faculty);
             _db.Majors.AddOrUpdate(ent);
-            _db.Entry(ent).State = System.Data.Entity.EntityState.Modified;
         }
     }
 }

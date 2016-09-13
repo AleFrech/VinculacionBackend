@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
@@ -10,17 +11,60 @@ namespace VinculacionBackend.Services
     public class HoursServices : IHoursServices
     {
         private readonly IHourRepository _hourRepository;
+        private readonly IUserRepository _userRepository;
 
-        public HoursServices(IHourRepository hourRepository)
+        public HoursServices(IHourRepository hourRepository, IUserRepository userRepository)
         {
             this._hourRepository = hourRepository;
+            _userRepository = userRepository;
         }
 
         public Hour Add(HourEntryModel hourModel,string professorUser)
         {
-            var hour =_hourRepository.InsertHourFromModel(hourModel.AccountId, hourModel.SectionId, hourModel.ProjectId, hourModel.Hour,professorUser);
+            var isAdmin = _userRepository.isAdmin(professorUser);
+            var hour =_hourRepository.InsertHourFromModel(hourModel.AccountId, hourModel.SectionId, hourModel.ProjectId, hourModel.Hour,professorUser, isAdmin);
             _hourRepository.Save();
             return hour;
+        }
+
+        public Hour Update(long hourId,HourEntryModel hourModel)
+        {
+            var hour = _hourRepository.Get(hourId);
+            if (hour.SectionProject.IsApproved)
+                throw new HoursAlreadyApprovedException("Las Horas no se pueden modificar porque ya han sido aprobadas");
+            hour.Amount = hourModel.Hour;
+            _hourRepository.Update(hour);
+            _hourRepository.Save();
+            return hour;
+        }
+
+        public void AddMany(HourCollectionEntryModel hourModel, string name)
+        {
+            foreach (var studenthour in hourModel.StudentsHour)
+            {
+                if (studenthour.HourId == -1)
+                {
+                    Add(
+                        new HourEntryModel
+                        {
+                            AccountId = studenthour.AccountId,
+                            Hour = studenthour.Hour,
+                            ProjectId = hourModel.ProjectId,
+                            SectionId = hourModel.SectionId
+                        }
+                        , name);
+                }
+                else
+                {
+                    Update(studenthour.HourId, new HourEntryModel
+                    {
+                        AccountId = studenthour.AccountId,
+                        Hour = studenthour.Hour,
+                        ProjectId = hourModel.ProjectId,
+                        SectionId = hourModel.SectionId
+                    });
+                }
+            }
         }
 
         public HourReportModel HourReport(string accountId)
@@ -34,6 +78,7 @@ namespace VinculacionBackend.Services
                 {
                     ProjectId = hour.SectionProject.Project.ProjectId,
                     ProjectName = hour.SectionProject.Project.Name,
+                    SectionName = hour.SectionProject.Section != null ? hour.SectionProject.Section.Code : "",
                     HoursWorked = hour.Amount,
                     ProjectDescription = hour.SectionProject.Project.Description
                 };

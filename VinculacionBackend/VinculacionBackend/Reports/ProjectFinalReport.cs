@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using Spire.Doc.Documents;
 using VinculacionBackend.Data.Interfaces;
@@ -13,18 +14,20 @@ namespace VinculacionBackend.Reports
         private readonly IStudentRepository _studentRepository;
         private readonly ITextDocumentServices _textDoucmentServices;
         private readonly IDownloadbleFile _downloadbleFile;
+        private readonly ISectionProjectRepository _sectionProjectRepository;
 
-        public ProjectFinalReport(IProjectRepository projectRepository, ISectionRepository sectionRepository, IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IDownloadbleFile downloadbleFile)
+        public ProjectFinalReport(IProjectRepository projectRepository, ISectionRepository sectionRepository, IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IDownloadbleFile downloadbleFile, ISectionProjectRepository sectionProjectRepository)
         {
             _projectRepository = projectRepository;
             _sectionRepository = sectionRepository;
             _studentRepository = studentRepository;
             _textDoucmentServices = textDocumentServices;
             _downloadbleFile = downloadbleFile;
+            _sectionProjectRepository = sectionProjectRepository;
         }
 
 
-        public HttpResponseMessage GenerateFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantity, string beneficiarieGroups)
+        public HttpResponseMessage GenerateFinalReport(long projectId, long sectionprojectId,int fieldHours, int calification, int beneficiariesQuantity, string beneficiarieGroups)
         {
             var project = _projectRepository.Get(projectId);
             var doc = _textDoucmentServices.CreaDocument();
@@ -49,13 +52,15 @@ namespace VinculacionBackend.Reports
             var section = _projectRepository.GetSection(project);
             var studentsInSection = _sectionRepository.GetSectionStudents(section.Id).ToList();
             var majorsOfStudents = _studentRepository.GetStudentMajors(studentsInSection);
+            var professorName = section.User != null ? section.User.Name : "Maestro Pendiente";
             string[][] table1Data =
             {
+                new[] {"Codigo", sectionprojectId.ToString()},
                 new[] {"Nombre del producto entregado", project.Name},
                 new[] {"Nombre de la organización beneficiada", project.BeneficiarieOrganization},
                 new[] {"Nombre de la asignatura", section.Class.Name},
                 new[] {"Nombre de la carrera", majorsOfStudents},
-                new[] {"Nombre del catedrático", section.User.Name},
+                new[] {"Nombre del catedrático", professorName},
                 new[]
                 {"Periodo del Proyecto", "Desde   " + section.Period.FromDate + "   Hasta   " + section.Period.ToDate}
 
@@ -89,13 +94,14 @@ namespace VinculacionBackend.Reports
                 i++;
                 totalHours += sh.Value;
             }
+
             string[][] table3Data =
             {
                 new[] {"Horas de trabajo de campo alumnos ", fieldHours.ToString()},
                 new[] {"Horas de trabajo en clase alumnos ", (totalHours - fieldHours).ToString()},
                 new[] {"Total Horas de Trabajo del Proyecto", totalHours.ToString()},
                 new[] {"Nota asignada al proyecto (%)*", calification + "%"},
-                new[] {"Valor en el mercado del producto (Lps.)", project.Cost.ToString()},
+                new[] {"Valor en el mercado del producto (Lps.)", _sectionProjectRepository.Get(sectionprojectId).Cost.ToString(CultureInfo.InvariantCulture)},
             };
             table3.ResetCells(table3Data.Length, 2);
             _textDoucmentServices.AddDataToTable(table3, table3Data, "Times New Roman", 12, 0);

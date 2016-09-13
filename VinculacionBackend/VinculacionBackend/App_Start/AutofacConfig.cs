@@ -30,6 +30,7 @@ namespace VinculacionBackend
         private static void RegisterRepositories(ContainerBuilder builder)
 
         {
+            builder.RegisterType<FacultyRepository>().As<IFacultyRepository>().InstancePerRequest();
             builder.RegisterType<StudentRepository>().As<IStudentRepository>().InstancePerRequest();
             builder.RegisterType<MajorRepository>().As<IMajorRepository>().InstancePerRequest();
             builder.RegisterType<HourRepository>().As<IHourRepository>().InstancePerRequest();
@@ -39,6 +40,8 @@ namespace VinculacionBackend
             builder.RegisterType<PeriodRepository>().As<IPeriodRepository>().InstancePerRequest();
             builder.RegisterType<SectionRepository>().As<ISectionRepository>().InstancePerRequest();
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerRequest();
+            builder.RegisterType<SectionProjectRepository>().As<ISectionProjectRepository>().InstancePerRequest();
+
 
         }
 
@@ -59,6 +62,11 @@ namespace VinculacionBackend
             builder.RegisterType<Encryption>().As<IEncryption>().InstancePerRequest();
             builder.RegisterType<DownloadbleFile>().As<IDownloadbleFile>().InstancePerRequest();
             builder.RegisterType<SectionsServices>().As<ISectionsServices>().InstancePerRequest();
+            builder.RegisterType<FacultiesServices>().As<IFacultiesServices>().InstancePerRequest();
+            builder.RegisterType<SectionProjectServices>().As<ISectionProjectServices>().InstancePerRequest();
+            builder.RegisterType<ReportsServices>().As<ISheetsReportsServices>().InstancePerRequest();
+
+
         }
     }
 

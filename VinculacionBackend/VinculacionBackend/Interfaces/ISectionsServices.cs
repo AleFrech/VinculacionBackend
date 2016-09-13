@@ -16,5 +16,11 @@ namespace VinculacionBackend.Interfaces
         Section UpdateSection(long sectionId,SectionEntryModel model);
         IQueryable<User> GetSectionStudents(long sectionId);
         IQueryable<Project> GetSectionsProjects(long sectionId);
+        IQueryable<Section> GetCurrentPeriodSections();
+        IQueryable<Section> AllByUser(long userId, string[] roles);
+        IQueryable<Section> GetCurrentPeriodSectionsByUser(long userId, string role);
+        IQueryable<Section> GetSectionsByProject(long projectId, string single, long userId);
+        object GetSectionStudentsHour(long sectionId, long projectId);
+        void RebuildSectionStudentRelationships(SectionStudentModel model);
     }
 }

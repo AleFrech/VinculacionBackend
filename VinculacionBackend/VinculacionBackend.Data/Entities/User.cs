@@ -14,6 +14,7 @@ namespace VinculacionBackend.Data.Entities
         public string Email { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime ModificationDate { get; set; }
+        public bool Finiquiteado { get; set; }
         public Status Status { get; set; }
 
     }

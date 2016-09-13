@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
@@ -38,6 +39,16 @@ namespace VinculacionBackend.Controllers
         {
             Major major = _majorsServices.Find(majorId);
             return Ok(major);
-        }   
+        }
+
+
+        [ResponseType(typeof(Major))]
+        [Route("api/Majors/MajorsByProject/{projectId}")]
+        public IQueryable<Major> GetMajorsByProject(long projectId)
+        {
+            return _majorsServices.GetByProject(projectId);
+        }
+              
+
     }
 }

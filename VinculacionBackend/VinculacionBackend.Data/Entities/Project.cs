@@ -9,9 +9,6 @@ namespace VinculacionBackend.Data.Entities
         public string ProjectId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public double Cost { get; set; }
-        public List<string> MajorIds { get; set; }
-        public List<long> SectionIds { get; set; }
         public bool IsDeleted {get; set;}
         public string BeneficiarieOrganization{get;set;}
     }

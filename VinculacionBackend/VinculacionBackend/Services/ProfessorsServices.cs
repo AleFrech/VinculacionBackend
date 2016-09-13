@@ -2,8 +2,8 @@
 using System.Linq;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
@@ -31,10 +31,10 @@ namespace VinculacionBackend.Services
             professor.Status = Status.Inactive;
             professor.CreationDate = DateTime.Now;
             professor.ModificationDate = DateTime.Now;
+            professor.Finiquiteado = true;
         }
 
-
-        public void PutMap(User professor, ProfessorEntryModel professorModel)
+        public void PutMap(User professor, ProfessorUpdateModel professorModel)
         {
             professor.AccountId = professorModel.AccountId;
             professor.Name = professorModel.Name;
@@ -43,6 +43,7 @@ namespace VinculacionBackend.Services
             professor.Campus = professorModel.Campus;
             professor.Email = professorModel.Email;
             professor.ModificationDate = DateTime.Now;
+            professor.Finiquiteado = true;
         }
 
 
@@ -75,7 +76,7 @@ namespace VinculacionBackend.Services
         }
 
 
-        public User UpdateProfessor(string accountId,ProfessorEntryModel model)
+        public User UpdateProfessor(string accountId, ProfessorUpdateModel model)
         {
             var professor = _professorRepository.GetByAccountId(accountId);
             if (professor == null)
@@ -92,7 +93,7 @@ namespace VinculacionBackend.Services
             if (professor == null)
                 throw new NotFoundException("No se encontro el professor");
             professor.Password = _encryption.Encrypt(model.Password);
-            professor.Status=Status.Verified;
+            professor.Status=Status.Active;
             _professorRepository.Update(professor);
             _professorRepository.Save();
         }

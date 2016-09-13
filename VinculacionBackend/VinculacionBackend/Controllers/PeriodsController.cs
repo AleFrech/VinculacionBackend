@@ -39,10 +39,19 @@ namespace VinculacionBackend.Controllers
             return Ok(period);
         }
 
+        // GET: api/Periods/5
+        [ResponseType(typeof(Period))]
+        [Route("api/Periods/GetCurrentPeriod")]
+
+        public IHttpActionResult GetCurrentPeriod()
+        {
+            return Ok (_periodsServices.GetCurrentPeriod());
+        }
+
         // PUT: api/Periods/SetCurrentPeriod/5
         [ResponseType(typeof(Period))]
         [Route("api/Periods/SetCurrentPeriod/{periodId}")]
-        [CustomAuthorize(Roles = "Admin,Professor,Student")]
+        [CustomAuthorize(Roles = "Admin")]
         public IHttpActionResult PutSetCurrentPeriod(long periodId)
         {
             var period=_periodsServices.SetCurrentPeriod(periodId);

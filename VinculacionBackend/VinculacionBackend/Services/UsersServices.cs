@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Enums;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 
 namespace VinculacionBackend.Services
@@ -23,9 +19,9 @@ namespace VinculacionBackend.Services
         {
             var user = _userRepository.GetUserByEmailAndPassword(username, password);
             if (user == null  )
-                throw new NotFoundException("Usuario o contraseña incorrecto");
-            if(user.Status != Status.Verified)
-                throw new NotFoundException("El usuario no ha sido verificado aun");
+                throw new InvalidUsernameOrPasswordException("Usuario o contraseña incorrecto");
+            if(user.Status != Status.Active)
+                throw new UserNotVerifiedException("El usuario no ha sido verificado aun");
             return user;
         }
         

@@ -5,6 +5,7 @@ using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Security.BasicAuthentication;
+using System.Web.Http.Description;
 
 
 namespace VinculacionBackend.Controllers
@@ -21,8 +22,8 @@ namespace VinculacionBackend.Controllers
             _encryption = encryption;
         }
 
+        [ResponseType(typeof(TokenModel))]
         [Route("api/Login")]
-        [CustomAuthorize(Roles = "Anonymous")]
         [ValidateModel]
         public IHttpActionResult PostUserLogin(LoginUserModel loginUser)
         {
@@ -30,7 +31,8 @@ namespace VinculacionBackend.Controllers
             string userInfo = user.Email + ":" + user.Password;
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(userInfo);
             string token = System.Convert.ToBase64String(plainTextBytes);
-            return Ok("Basic " + token);
+            var tokenModel = new TokenModel { Token = "Basic " + token, Id = user.Id, AccountId = user.AccountId };
+            return Ok(tokenModel);
 
         }
 

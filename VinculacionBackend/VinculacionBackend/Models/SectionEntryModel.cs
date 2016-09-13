@@ -9,8 +9,6 @@ namespace VinculacionBackend.Models
         [Required(ErrorMessage = "*requerido")]
         public long ClassId { get; set; }
         [Required(ErrorMessage = "*requerido")]
-        public long PeriodId { get; set; }
-        [Required(ErrorMessage = "*requerido")]
         public string ProffesorAccountId { get; set; }
     }
 }

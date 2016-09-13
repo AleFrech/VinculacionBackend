@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 
 namespace VinculacionBackend.Services
@@ -26,6 +28,16 @@ namespace VinculacionBackend.Services
         public IQueryable<Major> All()
         {
             return _majorRepository.GetAll();
+        }
+
+        public IQueryable<Major> GetByProject(long projectId)
+        {
+            return _majorRepository.GetMajorsByProject(projectId);
+        }
+
+        public Major FindByName(string name)
+        {
+            return _majorRepository.GetMajorByName(name);
         }
     }
 }

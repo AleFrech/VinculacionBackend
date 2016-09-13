@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Data.Entity;
+using System.Linq;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Exceptions;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 
@@ -13,6 +15,7 @@ namespace VinculacionBackend.Services
         private readonly IProfessorsServices _professorsServices;
         private readonly IClassesServices _classServices;
         private readonly IPeriodsServices _periodsServices;
+        private readonly IStudentsServices _studentServices;
 
         public SectionsServices(ISectionRepository sectionsRepository, IProfessorsServices professorsServices, IClassesServices classServices, IPeriodsServices periodsServices)
         {
@@ -20,14 +23,75 @@ namespace VinculacionBackend.Services
             _professorsServices = professorsServices;
             _classServices = classServices;
             _periodsServices = periodsServices;
-            ;
+            
         }
 
         public IQueryable<Section> All()
         {
            return _sectionsRepository.GetAll();
         }
-        
+
+        public IQueryable<Section> AllByUser(long userId, string[] roles)
+        {
+            if (roles.Contains("Admin"))
+            {
+                return _sectionsRepository.GetAll();
+            }
+            else if (roles.Contains("Professor"))
+            {
+                return _sectionsRepository.GetAllByProfessor(userId);
+            }
+            else if (roles.Contains("Student"))
+            {
+                return _sectionsRepository.GetAllByStudent(userId);
+            }
+            throw new UnauthorizedException("No tiene permiso");
+        }
+
+        public IQueryable<Section> GetCurrentPeriodSectionsByUser(long userId, string role)
+        {
+            var currentPeriod = _periodsServices.GetCurrentPeriod();
+            if (role.Equals("Admin"))
+            {
+                return _sectionsRepository.GetAll().Where(x => x.Period.Id == currentPeriod.Id).Distinct();
+            }
+            else if (role.Equals("Professor"))
+            {
+                return _sectionsRepository.GetAllByProfessor(userId).Where(a=>a.Period.Id == currentPeriod.Id).Distinct();
+            }
+            else if (role.Equals("Student"))
+            {
+                return _sectionsRepository.GetAllByStudent(userId).Where(x => x.Period.Id == currentPeriod.Id).Distinct();
+            }
+            throw new UnauthorizedException("No tiene permiso");
+        }
+
+        public IQueryable<Section> GetSectionsByProject(long projectId, string role, long userId)
+        {
+            if (role.Equals("Admin"))
+            {
+                return _sectionsRepository.GetSectionsByProject(projectId);
+            }
+            else if (role.Equals("Professor"))
+            {
+                return _sectionsRepository.GetSectionsByProject(projectId).Where(x=>x.User.Id==userId);
+            }
+            else if (role.Equals("Student"))
+            {
+                return _sectionsRepository.GetSectionsByProject(projectId).Join(_sectionsRepository.GetSectionsUsersRels(), s => s.Id, su => su.Section.Id, (s,su)=> su).Where(u => u.User.Id == userId).Select(x => x.Section).Include(p => p.Period).Include( p=> p.User).Include(p => p.Class);
+
+            }
+            throw new UnauthorizedException("No tiene permiso");
+        }
+
+        public IQueryable<Section> GetCurrentPeriodSections()
+        {
+            var currentPeriod = _periodsServices.GetCurrentPeriod();
+            var sections= _sectionsRepository.GetAll().Where(x => x.Period.Id ==currentPeriod.Id);
+
+            return sections;
+        }
+
         public Section Delete(long sectionId)
         {
             var section = _sectionsRepository.Delete(sectionId);
@@ -45,9 +109,17 @@ namespace VinculacionBackend.Services
                 section.Class = _classServices.Find(sectionModel.ClassId);
             if (section.User==null || section.User.AccountId != sectionModel.ProffesorAccountId)
                 section.User =_professorsServices.Find(sectionModel.ProffesorAccountId);
-            if (section.Period==null ||section.Period.Id != sectionModel.PeriodId)
-                section.Period = _periodsServices.Find(sectionModel.PeriodId);
+            section.Period = _periodsServices.GetCurrentPeriod();
 
+        }
+
+        public void PutMap(Section section, SectionEntryModel sectionModel)
+        {
+            section.Code = sectionModel.Code;
+            if (section.Class == null || section.Class.Id != sectionModel.ClassId)
+                section.Class = _classServices.Find(sectionModel.ClassId);
+            if (section.User == null || section.User.AccountId != sectionModel.ProffesorAccountId)
+                section.User = _professorsServices.Find(sectionModel.ProffesorAccountId);
         }
 
         public void Add(Section section)
@@ -62,7 +134,7 @@ namespace VinculacionBackend.Services
             var tmpSection = _sectionsRepository.Get(sectionId);
             if (tmpSection == null)
                 throw new NotFoundException("No se encontro la seccion");
-            Map(tmpSection,model);
+            PutMap(tmpSection,model);
             tmpSection.Id = sectionId;
             _sectionsRepository.Update(tmpSection);
             _sectionsRepository.Save();
@@ -103,6 +175,19 @@ namespace VinculacionBackend.Services
 
             return section;
 
-        }       
+        }
+
+        public object GetSectionStudentsHour(long sectionId,long projectId )
+        {
+            return _sectionsRepository.GetSectionStudentsHours(sectionId,projectId);
+        }
+
+        public void RebuildSectionStudentRelationships(SectionStudentModel model)
+        {
+            _sectionsRepository.ClearSectionStudents(model.SectionId);
+            _sectionsRepository.Save();
+            _sectionsRepository.AssignStudents(model.SectionId, model.StudenstIds);    
+            _sectionsRepository.Save();
+        }
     }
 }

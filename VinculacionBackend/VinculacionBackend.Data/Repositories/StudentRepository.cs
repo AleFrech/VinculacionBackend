@@ -10,6 +10,7 @@ using VinculacionBackend.Data.Interfaces;
 
 namespace VinculacionBackend.Data.Repositories
 {
+
     public class StudentRepository : IStudentRepository
     {
         private readonly VinculacionContext _db;
@@ -122,11 +123,6 @@ namespace VinculacionBackend.Data.Repositories
                 return _db.Users.Include(m => m.Major).Include(f => f.Major.Faculty).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Inactive);
             if (status == "Active")
                 return _db.Users.Include(m => m.Major).Include(f => f.Major.Faculty).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Active);
-            if (status == "Verified")
-                return _db.Users.Include(m => m.Major).Include(f => f.Major.Faculty).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Verified);
-            if (status == "Rejected")
-                return _db.Users.Include(m => m.Major).Include(f => f.Major.Faculty).Where(x => rels.Any(y => y.User.Id == x.Id) && x.Status == Status.Rejected);
-
             return new List<User>();
         }
 
@@ -175,21 +171,142 @@ namespace VinculacionBackend.Data.Repositories
             {
                 throw new Exception("Student Not Found");
             }
-            var studentHours = _db.Hours.Include(a => a.User).Include(b=>b.SectionProject).Where(x => x.User.Id == student.Id).ToList();
+            var studentHours = _db.Hours.Include(a => a.User).Include(b => b.SectionProject).Include(c => c.SectionProject.Project).Where(x => x.User.Id == student.Id).ToList();
 
             var total = 0;
-            foreach(var studentHour in studentHours)
+            foreach (var studentHour in studentHours)
             {
-                var sectionProject = _db.SectionProjectsRels.Include(a => a.Project).FirstOrDefault(x => x.Id == studentHour.Id);
+                var sectionProject = _db.SectionProjectsRels.Include(a => a.Project).FirstOrDefault(x => x.Id == studentHour.SectionProject.Id);
+                if (sectionProject == null)
+                    continue;
                 if(sectionProject.Project.Id == projectId)
+
                 {
                     total += studentHour.Amount;
                 }
-                
+
             }
 
             return total;
         }
 
+        public StudentCountModel GetStudentCount( string clase, int year)
+        {
+            var students = _db.SectionUserRels.Where(a => a.Section.Period.Year == year)
+                    .Where(b => b.Section.Class.Name.StartsWith(clase)).Include(d => d.Section).GroupBy(c => c.Section.Period.Number);
+            var first = students.Where(f => f.Key == 1).SingleOrDefault();
+            var second = students.Where(f => f.Key == 2).SingleOrDefault();
+            var fourth = students.Where(f => f.Key == 4).SingleOrDefault();
+            var fifth = students.Where(f => f.Key == 5).SingleOrDefault();
+            return new StudentCountModel
+            {
+                
+                FirstPeriod = first != null ? first.Count() : 0,
+                SecondPeriod = second != null ? second.Count() : 0,
+                FourthPeriod = fourth != null ? fourth.Count() : 0,
+                FifthPeriod = fifth != null ? fifth.Count() : 0
+            };
+        }
+
+        public StudentCountModel GetStudentByFacultyCount(int faculty, int year)
+        {
+            var students = _db.SectionUserRels.Where(a => a.Section.Period.Year == year).Where(a => a.User.Major.Faculty.Id == faculty).GroupBy(c => c.Section.Period.Number);
+            var first = students.Where(f => f.Key == 1).SingleOrDefault();
+            var second = students.Where(f => f.Key == 2).SingleOrDefault();
+            var fourth = students.Where(f => f.Key == 4).SingleOrDefault();
+            var fifth = students.Where(f => f.Key == 5).SingleOrDefault();
+            return new StudentCountModel
+            {
+
+                FirstPeriod = first != null ? first.Count() : 0,
+                SecondPeriod = second != null ? second.Count() : 0,
+                FourthPeriod = fourth != null ? fourth.Count() : 0,
+                FifthPeriod = fifth != null ? fifth.Count() : 0
+            };
+        }
+
+        public StudentCountModel GetHoursCount( string clase, int year)
+        {
+            var periodHours = _db.Hours.Where(a => a.SectionProject.Section.Period.Year == year).Where(b => b.SectionProject.Section.Class.Name.StartsWith(clase))
+                .GroupBy(c => c.SectionProject.Section.Period.Number);
+            var first = periodHours.Where(f => f.Key == 1).SingleOrDefault();
+            var second = periodHours.Where(f => f.Key == 2).SingleOrDefault();
+            var fourth = periodHours.Where(f => f.Key == 4).SingleOrDefault();
+            var fifth = periodHours.Where(f => f.Key == 5).SingleOrDefault();
+            return new StudentCountModel
+        {
+
+                FirstPeriod = first != null ? first.Sum(a => a.Amount) : 0,
+                SecondPeriod = second != null ? second.Sum(a => a.Amount) : 0,
+                FourthPeriod = fourth != null ? fourth.Sum(a => a.Amount) : 0,
+                FifthPeriod = fifth != null ? fifth.Sum(a => a.Amount) : 0
+            };
+        }
+
+        public StudentCountModel GetHoursByFacultyCount( int faculty, int year)
+        {
+            var periodHours = _db.Hours.Where(a =>  a.SectionProject.Section.Period.Year == year).Where(b => b.User.Major.Faculty.Id == faculty)
+                .GroupBy(c => c.SectionProject.Section.Period.Number);
+            var first = periodHours.Where(f => f.Key == 1).SingleOrDefault();
+            var second = periodHours.Where(f => f.Key == 2).SingleOrDefault();
+            var fourth = periodHours.Where(f => f.Key == 4).SingleOrDefault();
+            var fifth = periodHours.Where(f => f.Key == 5).SingleOrDefault();
+            return new StudentCountModel
+        {
+
+                FirstPeriod = first != null ? first.Sum(a => a.Amount) : 0,
+                SecondPeriod = second != null ? second.Sum(a => a.Amount) : 0,
+                FourthPeriod = fourth != null ? fourth.Sum(a => a.Amount) : 0,
+                FifthPeriod = fifth != null ? fifth.Sum(a => a.Amount) : 0
+            };
+        }
+
+        public IEnumerable<User> GetStudentByMajor(string majorId)
+        {
+            var students = GetAll();
+            return students.AsQueryable().Include(x => x.Major).Where(a => a.Major.MajorId == majorId).ToList();
+        }
+
+        public int GetStudentHoursBySection(string accountId, long sectionId)
+        {
+            var user = _db.Hours.Where(a => a.SectionProject.Section.Id == sectionId)
+                            .Where(b => accountId.Equals(b.User.AccountId))
+                            .FirstOrDefault();
+            return user != null ? user.Amount : 0;
+        }
+
+        public IQueryable<object> GetStudentSections(string accountId)
+        {
+            var hours = _db.Hours.Where(a => accountId.Equals(a.User.AccountId)).Include(c=> c.User).Include(b => b.SectionProject.Section).ToList();
+            var sections = _db.SectionUserRels.Where(a => a.User.AccountId == accountId)
+                                      .Select(b => b.Section).Include(c => c.Class)
+                                      .ToList();
+            var results = sections.Select(a => new
+            {
+                Id = a.Id,
+                Code = a.Code,
+                Class = a.Class,
+                HoursWorked = hours.Where(b => b.SectionProject.Section.Id == a.Id)
+                                   .DefaultIfEmpty(new Hour { Amount = 0 })
+                                   .First().Amount
+            });
+            return results.AsQueryable();
+        }
+
+        public void InsertMany(IList<User> students)
+        {
+            foreach (var student in students)
+            {
+                Insert(student);
+            }
+        }
+    }
+
+    public class StudentCountModel
+    {
+        public int FifthPeriod { get; set; }
+        public int FirstPeriod { get; set; }
+        public int FourthPeriod { get; set; }
+        public int SecondPeriod { get; set; }
     }
 }

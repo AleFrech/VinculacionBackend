@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Interfaces
@@ -9,6 +12,8 @@ namespace VinculacionBackend.Interfaces
     {
         Project Find(long id);
         IQueryable<Project> All();
+        int GetProjectsTotalByMajor(Major major);
+        DataTable CreateProjectsByMajor();
         Project Add(ProjectModel project);
         Project Delete(long projectId);
         IQueryable<User> GetProjectStudents(long projectId);
@@ -16,6 +21,10 @@ namespace VinculacionBackend.Interfaces
         bool AssignSection(ProjectSectionModel model);
         bool RemoveFromSection(long projectId, long sectionId);
         IQueryable<Project> GetUserProjects(long userId, string[] roles);
-        HttpResponseMessage GetFinalReport(long projectId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups);
+        HttpResponseMessage GetFinalReport(long projectId,long sectionId, int fieldHours, int calification, int beneficiariesQuantities, string beneficiariGroups);
+        DataTable ProjectsByClass(long classId);
+        IQueryable<PeriodReportModel> CreatePeriodReport(int year, int period);
+        void AssignProjectsToSection(ProjectsSectionModel model);
+        IQueryable<Project> GetProjectsBySection(long sectionId);
     }
 }

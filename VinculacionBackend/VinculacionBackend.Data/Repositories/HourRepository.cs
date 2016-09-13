@@ -1,10 +1,10 @@
 using System.Data.Entity;
 using System.Linq;
+using Castle.Components.DictionaryAdapter.Xml;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Exceptions;
-
+using VinculacionBackend.Data.Exceptions;
 
 namespace VinculacionBackend.Data.Repositories
 {
@@ -24,28 +24,38 @@ namespace VinculacionBackend.Data.Repositories
 
         public Hour Get(long id)
         {
-            return _db.Hours.Find(id);
+            return _db.Hours.Include("User").Include("SectionProject").FirstOrDefault(x=>x.Id==id);
         }
 
         public IQueryable<Hour> GetAll()
         {
-            return _db.Hours;
+            return _db.Hours.Include("User").Include("SectionProject").Include(x=>x.SectionProject.Section).Include(x => x.SectionProject.Section.Period);
         }
 
         public IQueryable<Hour> GetStudentHours(string accountId)
         {
             return _db.Hours.Where(hour => hour.User.AccountId == accountId)
-                .Include("SectionProject.Project");
-        }     
+                .Include("SectionProject.Project").Include("SectionProject.Section").Include("SectionProject.Section.Period");
+        }
+
+        public SectionProject GetSectionProjectRel(long sectionProjectId)
+        {
+            return
+                _db.SectionProjectsRels.Include(rel => rel.Section)
+                    .Include(rel => rel.Project)
+                    .FirstOrDefault(rel => rel.Id == sectionProjectId);
+        }
 
         public void Insert(Hour ent)
         {
             _db.Hours.Add(ent);
         }
 
-        public Hour InsertHourFromModel(string accountId,long sectionId,long projectId, int hour,string professorUser )
+        public Hour InsertHourFromModel(string accountId,long sectionId,long projectId, int hour,string professorUser, bool isAdmin )
         {
             var sectionProjectRel = Queryable.FirstOrDefault(_db.SectionProjectsRels.Include(x => x.Project).Include(y => y.Section), z => z.Section.Id == sectionId && z.Project.Id == projectId);
+            if (sectionProjectRel.IsApproved)
+                throw new HoursAlreadyApprovedException("Las Horas no se pueden modificar porque ya han sido aprobadas");
             var user = Queryable.FirstOrDefault(_db.Users, x => x.AccountId == accountId);
             var section = Queryable.FirstOrDefault(_db.Sections.Include(x=>x.User).Include(x=>x.Class).Include(x=>x.Period), x => x.Id == sectionId);
             if(user==null)
@@ -55,7 +65,7 @@ namespace VinculacionBackend.Data.Repositories
             if(sectionProjectRel==null)
                 throw new NotFoundException("No se encontro el proyecto");
             
-                if(section.User.Email!=professorUser)
+                if(section.User.Email!=professorUser && !isAdmin)
                     throw new UnauthorizedException("No tiene permisos para agregar horas a este proyecto");
                 var Hour = new Hour();
                 Hour.Amount = hour;
@@ -74,6 +84,12 @@ namespace VinculacionBackend.Data.Repositories
         public void Update(Hour ent)
         {
             _db.Entry(ent).State = EntityState.Modified;
+        }
+
+        public void Update(SectionProject ent)
+        {
+            _db.Entry(ent).State = EntityState.Modified;
+            
         }
     }
 }

@@ -45,5 +45,10 @@ namespace VinculacionBackend.Data.Repositories
         {
             _db.Periods.Add(ent);
         }
+
+        public Period GetCurrent()
+        {
+            return _db.Periods.FirstOrDefault(x =>x.IsCurrent);
+        }
     }
 }

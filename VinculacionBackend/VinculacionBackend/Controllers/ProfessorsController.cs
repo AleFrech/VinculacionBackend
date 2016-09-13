@@ -54,6 +54,7 @@ namespace VinculacionBackend.Controllers
         [ValidateModel]
         public IHttpActionResult PostAcceptVerified(VerifiedProfessorModel model)
         {
+            model.AccountId = HttpContext.Current.Server.UrlDecode(model.AccountId);
             _professorsServices.VerifyProfessor(model);
             return Ok();
         }
@@ -80,7 +81,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Professors/{accountId}")]
         [ValidateModel]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PutProfessor(string accountId, ProfessorEntryModel model)
+        public IHttpActionResult PutProfessor(string accountId, ProfessorUpdateModel model)
         {
 
             var professor = _professorsServices.UpdateProfessor(accountId, model);
