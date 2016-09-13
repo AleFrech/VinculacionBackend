@@ -11,6 +11,6 @@ namespace VinculacionBackend.Interfaces
         Dictionary<string, List<PeriodCostModel>> GetFacultiesCosts(Faculty faculty,int year);
         List<FacultyCostsReportEntry> CreateFacultiesCostReport(int year);
         Dictionary<string, int> GetFacultiesHours(int year);
-        DataTable CreateFacultiesHourReport(int year);
+        List<FacultyHoursReportEntryModel> CreateFacultiesHourReport(int year);
     }
 }

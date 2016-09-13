@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace VinculacionBackend.Data.Models
 {
-    public class MajorProjectTotalmodel
+    public class FacultyHoursReportModel
     {
-        public string Major { get; set; }
-        public int Total { get; set; }
-        public string MajorId { get; set; }
+        public string FacultyName { get; set; }
+        public int ProjectHours { get; set; }
     }
 }

@@ -63,16 +63,14 @@ namespace VinculacionBackend.Services
         {
             return _projectRepository.GetAll();
         }
-
-
-        public int GetProjectsTotalByMajor(Major major)
+        
+        public int  GetProjectsTotalByMajor(Major major)
         {
             var currentPeriod = _periodRepository.GetCurrent();
             var majorProjectTotalmodels = _projectRepository.GetMajorProjectTotal(currentPeriod, major.MajorId);
             return majorProjectTotalmodels.Sum(x => x.Total);
         }
-
-
+        
         private void Map(Project project, ProjectModel model)
         {
             project.Name = model.Name;
@@ -199,48 +197,47 @@ namespace VinculacionBackend.Services
 
         }
 
-        public DataTable CreateProjectsByMajor()
+        public List<ProjectByMajorEntryModel> CreateProjectsByMajor()
         {
-            var dt = new DataTable();
-            dt.Columns.Add("Carrera", typeof(string));
-            dt.Columns.Add("Proyectos", typeof(int));
-
+            var list = new List<ProjectByMajorEntryModel>();
+            
             var majors = _majorRepository.GetAll().ToList();
             foreach (var m in majors)
             {
                 var totalProjectsByMajor = GetProjectsTotalByMajor(m);
-                 dt.Rows.Add(m.Name,totalProjectsByMajor);                
+                 list.Add(new ProjectByMajorEntryModel
+                 {
+                     Carrera = m.Name,
+                     Proyectos = totalProjectsByMajor
+                 });                
             }
 
-            return dt;
+            return list;
         }
 
-
-        public DataTable ProjectsByClass(long classId)
+        public List<ProjectsByClassEntryModel> ProjectsByClass(long classId)
         {
-            var @class = _classRepository.Get(classId);
-            Object[] titleRow = {"Clase: "+@class.Name};
-            var dt = new DataTable();
-           // dt.Rows.Add(titleRow);
-            dt.Columns.Add("Id Proyecto", typeof(string));
-            dt.Columns.Add("Nombre", typeof(string));
-            dt.Columns.Add("Costo", typeof(double));
-            dt.Columns.Add("Beneficiario", typeof(string));
-            dt.Columns.Add("Maestros", typeof(string));
-            dt.Columns.Add("Periodo", typeof(int));
-            dt.Columns.Add("Anio", typeof(int));
-
+            var list = new List<ProjectsByClassEntryModel>();
             var projects = _projectRepository.GetProjectsByClass(classId).ToList();
             foreach (var project in projects)
             {
                 var professorsList =_projectRepository.GetProfessorsByProject(project.Id).Select(x => x.Name).Distinct().ToList();
                 var professors = professorsList.Count>0 ? string.Join(",", _projectRepository.GetProfessorsByProject(project.Id).Select(x=>x.Name).Distinct().ToList()):"";
                 var period = _projectRepository.GetPeriodByProject(project.Id);
-                dt.Rows.Add(project.ProjectId, project.Name, _projectRepository.GetTotalCostByProject(project.Id), project.BeneficiarieOrganization, professors,
-                    period.Number, period.Year);
+
+                list.Add(new ProjectsByClassEntryModel
+                {
+                    IdProyecto = project.ProjectId,
+                    Nombre = project.Name,
+                    Costo = _projectRepository.GetTotalCostByProject(project.Id),
+                    Beneficiario = project.BeneficiarieOrganization,
+                    Maestros = professors,
+                    Periodo = period.Number,
+                    Anio = period.Year
+                });
             }
 
-            return dt;
+            return list;
         }
 
         public IQueryable<PeriodReportModel> CreatePeriodReport(int year, int period)

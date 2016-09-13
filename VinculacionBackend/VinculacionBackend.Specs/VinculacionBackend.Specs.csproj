@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="TechTalk.SpecFlow, Version=2.1.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
       <HintPath>..\packages\SpecFlow.2.1.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
@@ -66,12 +67,12 @@
     </Otherwise>
   </Choose>-->
   <ItemGroup>
-    <Compile Include="FacultiesCostReport.feature.cs">
+    <Compile Include="FacultiesReports.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FacultiesCostReport.feature</DependentUpon>
+      <DependentUpon>FacultiesReports.feature</DependentUpon>
     </Compile>
-    <Compile Include="Features\Reports\FacultiesCostReportSteps.cs" />
+    <Compile Include="Features\Reports\FacultiesReports.cs" />
     <Compile Include="Features\Reports\HourNumberReportSteps.cs" />
     <Compile Include="Features\Reports\StudentReportSteps.cs" />
     <Compile Include="HourNumberReport.feature.cs">
@@ -84,14 +85,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentReport.feature</DependentUpon>
     </Compile>
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="FacultiesCostReport.feature">
+    <None Include="FacultiesReports.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FacultiesCostReport.feature.cs</LastGenOutput>
+      <LastGenOutput>FacultiesReports.feature.cs</LastGenOutput>
     </None>
     <None Include="HourNumberReport.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

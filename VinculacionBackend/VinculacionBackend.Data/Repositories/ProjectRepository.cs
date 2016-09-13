@@ -15,7 +15,7 @@ namespace VinculacionBackend.Data.Repositories
     {
         private readonly VinculacionContext _db;
         public ProjectRepository()
-        {
+        {       
             _db = new VinculacionContext();
         }
 
@@ -42,13 +42,14 @@ namespace VinculacionBackend.Data.Repositories
                 var result =
                     _db.ProjectMajorRels.Where(x => x.Major.MajorId == majorId && x.Project.Id == p)
                         .Where(x => x.Project != null)
-                        .Select(x => x.Major.Name).Distinct().ToList();
+                        .Select(x => new  { x.Major.Name, x.Major.MajorId}).Distinct().ToList();
                 if (result.Count > 0)
                 {
                     projectTotal.Add(new MajorProjectTotalmodel
                     {
-                        Major = result.ElementAt(0),
-                        Total = result.Count
+                        Major = result.ElementAt(0).Name,
+                        Total = result.Count,
+                        MajorId = result.ElementAt(0).MajorId
                     });
                 }
             }

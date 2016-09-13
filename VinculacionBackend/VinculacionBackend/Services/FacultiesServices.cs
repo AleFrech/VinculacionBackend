@@ -107,20 +107,20 @@ namespace VinculacionBackend.Services
             return facultiesCostsReport;
         }
 
-        public DataTable CreateFacultiesHourReport(int year)
+        public List<FacultyHoursReportEntryModel> CreateFacultiesHourReport(int year)
         {
-            var dt = new DataTable();
-            dt.Columns.Add("Facultad", typeof(string));
-            dt.Columns.Add("Horas", typeof(float));
-         
+            var list = new List<FacultyHoursReportEntryModel>();
+     
             var FacultyHours = GetFacultiesHours(year);
             foreach (var key in FacultyHours.Keys)
             {
-                dt.Rows.Add(key, FacultyHours[key]);
+                list.Add(new FacultyHoursReportEntryModel
+                {
+                    Facultad = key,
+                    Horas = FacultyHours[key]
+                });
             }
-
-     
-            return dt;
+            return list;
         }
     }
 }

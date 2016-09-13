@@ -49,7 +49,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Reports/ProjectsByMajorReport")]
         public IHttpActionResult GetProjectCountByMajorReport()
         {
-            var context = _reportsServices.GenerateReport(_projectServices.CreateProjectsByMajor(),
+            var context = _reportsServices.GenerateReport(_projectServices.CreateProjectsByMajor().ToDataTable(),
                 "Proyectos por Carrera");
             context.Response.Flush();
             context.Response.End();
@@ -59,7 +59,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Reports/HoursReport/{year}")]
         public IHttpActionResult GetHoursReport(int year)
         {
-            var context = _reportsServices.GenerateReport(_facultiesServices.CreateFacultiesHourReport(year),
+            var context = _reportsServices.GenerateReport(_facultiesServices.CreateFacultiesHourReport(year).ToDataTable(),
                 "Reporte de Horas por Facultad");
             context.Response.Flush();
             context.Response.End();
@@ -82,7 +82,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Reports/ProjectsByClassReport/{classId}")]
         public IHttpActionResult GetProjectsByClassReport(long classId)
         {
-            var context = _reportsServices.GenerateReport(_projectServices.ProjectsByClass(classId), "Projectos Por "+_classesServices.Find(classId).Name);
+            var context = _reportsServices.GenerateReport(_projectServices.ProjectsByClass(classId).ToDataTable(), "Projectos Por " + _classesServices.Find(classId).Name);
             context.Response.Flush();
             context.Response.End();
             return Ok();
