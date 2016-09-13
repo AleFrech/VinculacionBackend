@@ -9,5 +9,6 @@ namespace VinculacionBackend.Models
     {
         public long Id;
         public string Token;
+        public string AccountId { get; set; }
     }
 }

@@ -10,5 +10,6 @@ namespace VinculacionBackend.Interfaces
         Major Find(string majorId);
         IQueryable<Major> All();
         IQueryable<Major> GetByProject(long projectId);
+        Major FindByName(string name);
     }
 }

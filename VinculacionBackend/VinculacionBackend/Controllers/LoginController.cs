@@ -31,7 +31,7 @@ namespace VinculacionBackend.Controllers
             string userInfo = user.Email + ":" + user.Password;
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(userInfo);
             string token = System.Convert.ToBase64String(plainTextBytes);
-            var tokenModel = new TokenModel { Token = "Basic " + token, Id = user.Id};
+            var tokenModel = new TokenModel { Token = "Basic " + token, Id = user.Id, AccountId = user.AccountId };
             return Ok(tokenModel);
 
         }

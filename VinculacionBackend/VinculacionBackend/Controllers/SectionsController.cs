@@ -78,7 +78,7 @@ namespace VinculacionBackend.Controllers
         [ResponseType(typeof(Project))]
         [Route("api/Sections/StudentsHour/{sectionId}/{projectId}")]
         [CustomAuthorize(Roles = "Admin,Professor,Student")]
-        public IQueryable<object> GetSectionStudentsHour(long sectionId,long projectId)
+        public object GetSectionStudentsHour(long sectionId,long projectId)
         {
             return _sectionServices.GetSectionStudentsHour(sectionId,projectId);
         }
@@ -149,6 +149,17 @@ namespace VinculacionBackend.Controllers
             return Ok(section);
         }
 
-      
+        [Route("api/Sections/Reassign")]
+        [ResponseType(typeof(Section))]
+        [CustomAuthorize(Roles = "Admin,Professor")]
+        [ValidateModel]
+        public IHttpActionResult PostReassignStudents(SectionStudentModel model)
+        {
+
+            _sectionServices.RebuildSectionStudentRelationships(model);
+            return Ok();
+        }
+
+
     }
 }

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
-using VinculacionBackend.Exceptions;
+using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Interfaces;
 using VinculacionBackend.Models;
 using VinculacionBackend.Reports;
@@ -21,10 +22,11 @@ namespace VinculacionBackend.Services
         private readonly IMajorRepository _majorRepository;
         private readonly IClassRepository _classRepository;
         private readonly IPeriodRepository _periodRepository;
+        private readonly ISectionProjectRepository _sectionProjectRepository;
         List<int> _periods = new List<int>();
 
         public ProjectServices(IProjectRepository projectRepository, ISectionRepository sectionRepository,
-            IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IMajorRepository majorRepository, IClassRepository classRepository, IPeriodRepository periodRepository)
+            IStudentRepository studentRepository, ITextDocumentServices textDocumentServices, IMajorRepository majorRepository, IClassRepository classRepository, IPeriodRepository periodRepository, ISectionProjectRepository sectionProjectRepository)
         {
             _projectRepository = projectRepository;
             _sectionRepository = sectionRepository;
@@ -33,18 +35,20 @@ namespace VinculacionBackend.Services
             _majorRepository = majorRepository;
             _classRepository = classRepository;
             _periodRepository = periodRepository;
+            _sectionProjectRepository = sectionProjectRepository;
             _periods.Add(1);
             _periods.Add(2);
             _periods.Add(3);
             _periods.Add(5);
         }
 
-        public ProjectServices(IProjectRepository projectRepository, IMajorRepository majorRepository, IClassRepository classRepository, IPeriodRepository periodRepository)
+        public ProjectServices(IProjectRepository projectRepository, IMajorRepository majorRepository, IClassRepository classRepository, IPeriodRepository periodRepository, ISectionProjectRepository sectionProjectRepository)
         {
             _projectRepository = projectRepository;
             _majorRepository = majorRepository;
             _classRepository = classRepository;
             _periodRepository = periodRepository;
+            _sectionProjectRepository = sectionProjectRepository;
         }
 
         public Project Find(long id)
@@ -69,10 +73,8 @@ namespace VinculacionBackend.Services
         
         private void Map(Project project, ProjectModel model)
         {
-            project.ProjectId = model.ProjectId;
             project.Name = model.Name;
             project.Description = model.Description;
-            project.Cost = model.Cost;
             project.BeneficiarieOrganization = model.BeneficiarieOrganization;
         }
 
@@ -81,7 +83,9 @@ namespace VinculacionBackend.Services
 
             var project = new Project();
             Map(project, model);
-            _projectRepository.Insert(project, model.MajorIds, model.SectionIds);
+            var currentPeriod = _periodRepository.GetCurrent();
+            project.ProjectId = _projectRepository.GetNextProjectCode(currentPeriod);
+            _projectRepository.Insert(project, model.MajorIds);
             _projectRepository.Save();
             return project;
         }
@@ -106,21 +110,35 @@ namespace VinculacionBackend.Services
             if (tmpProject == null)
                 throw new NotFoundException("No se encontro el proyecto");
             Map(tmpProject, model);
-            _projectRepository.Update(tmpProject);
+            _projectRepository.Update(tmpProject,model.MajorIds);
             _projectRepository.Save();
             return tmpProject;
         }
 
         public bool AssignSection(ProjectSectionModel model)
         {
+            var projectSection = _sectionProjectRepository.GetSectionProjectByIds(model.SectionId, model.ProjectId);
+            if(projectSection != null) {
+                throw new ProjectAlreadyInSectionException("El proyecto ya esta registrado en esa seccion.");
+            }
+            
             _projectRepository.AssignToSection(model.ProjectId, model.SectionId);
-            _projectRepository.Save();
+            _projectRepository.Save(); 
             return true;
         }
 
 
         public void AssignProjectsToSection(ProjectsSectionModel model)
         {
+
+            foreach (var p in model.ProjectIds)
+            {
+                var projectSection = _sectionProjectRepository.GetSectionProjectByIds(model.SectionId, p);
+                if(projectSection != null) {
+                    throw new ProjectAlreadyInSectionException("El proyecto ya esta registrado en esa seccion.");
+                }
+            }
+
             foreach (var p in model.ProjectIds)
             {
                 _projectRepository.AssignToSection(p,model.SectionId);
@@ -139,7 +157,7 @@ namespace VinculacionBackend.Services
 
             if (rel == null)
             {
-                throw new NotFoundException("Seccion o Proyecto invalido");
+                throw new InvalidSectionOrProjectException("Seccion o Proyecto invalido");
             }
 
             return true;
@@ -159,7 +177,7 @@ namespace VinculacionBackend.Services
             {
                 return _projectRepository.GetAllStudent(userId);
             }
-            throw new Exception("No tiene permiso");
+            throw new UnauthorizedException("No tiene permiso");
 
         }
 
@@ -170,10 +188,10 @@ namespace VinculacionBackend.Services
         {
             var sp = _projectRepository.GetSectionProject(projectId, sectionId);
             if (sp.IsApproved)
-                throw new Exception("Las horas de este proyecto ya fueron approvadas");
+                throw new HoursAlreadyApprovedException("Las horas de este proyecto ya fueron approvadas");
 
             var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository, _studentRepository,
-                _textDocumentServices, new DownloadbleFile());
+                _textDocumentServices, new DownloadbleFile(),_sectionProjectRepository);
             return finalReport.GenerateFinalReport(projectId,sp.Id,fieldHours, calification, beneficiariesQuantities,
                 beneficiariGroups);
 
@@ -222,39 +240,9 @@ namespace VinculacionBackend.Services
             return list;
         }
 
-        public DataTable CreatePeriodReport(int year, int period)
+        public IQueryable<PeriodReportModel> CreatePeriodReport(int year, int period)
         {
-            var dt = new DataTable();
-            dt.Columns.Add("Institución", typeof(string));
-            dt.Columns.Add("Producto", typeof(string));
-            dt.Columns.Add("Asignatura", typeof(string));
-            dt.Columns.Add("Carrera", typeof(string));
-            dt.Columns.Add("Catedrático", typeof(string));
-            dt.Columns.Add("Horas", typeof(string));
-            dt.Columns.Add("Fecha de Entrega", typeof(string));
-            dt.Columns.Add("Costo", typeof(double));
-            dt.Columns.Add("# Proy", typeof(long));
-            dt.Columns.Add("Beneficiarios", typeof(string));
-            dt.Columns.Add("Comentarios", typeof(string));
-
-            var projects = _projectRepository.GetByYearAndPeriod(year, period);
-
-            foreach (var project in projects)
-            {
-                var sections = _sectionRepository.GetSectionsByProject(project.Id).ToList();
-                var majors = _majorRepository.GetMajorsByProject(project.Id).ToList();
-                dt.Rows.Add(project.BeneficiarieOrganization, project.Description,
-                    sections.Count > 0 ? _projectRepository.GetClass(sections[0].Id) : "", 
-
-                    _projectRepository.GetMajors(majors), 
-                    _projectRepository.GetProfessor(project.Id),  
-                    _projectRepository.GetTotalHours(project.Id),
-                    "",
-                    project.Cost,
-                    project.Id);
-            }
-
-            return dt;
+            return _projectRepository.GetByYearAndPeriod(year, period);
         }
     }
 

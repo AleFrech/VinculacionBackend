@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using System.Net.Http;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Repositories;
 using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Interfaces

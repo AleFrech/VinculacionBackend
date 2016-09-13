@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -24,13 +25,13 @@ namespace VinculacionBackend.Data.Repositories
         public List<FacultyProjectCostModel> GetFacultyCosts(long id,int period,int year)
         {
             List<FacultyProjectCostModel> facultyCostModelList = new List<FacultyProjectCostModel>();
-            var projectsIds = _context.SectionProjectsRels.Where(x => x.Section.Period.Number == period && x.Section.Period.Year == year).Select(x => x.Project.Id).ToList();
+            var projectsIds = _context.SectionProjectsRels.Where(x => x.Section.Period.Number == period && x.Section.Period.Year == year).Include(z => z.Project).ToList();
             foreach (var p in projectsIds)
             {
-                var result = _context.ProjectMajorRels.Where(x => x.Major.Faculty.Id == id && x.Project.Id == p).Where(x=>x.Project!=null).Select(x => new FacultyProjectCostModel
+                var result = _context.ProjectMajorRels.Where(x => x.Major.Faculty.Id == id && x.Project.Id == p.Project.Id).Where(x=>x.Project!=null).Select(x => new FacultyProjectCostModel
                 {
                     FacultyName = x.Major.Faculty.Name,
-                    ProjectCost = x.Project.Cost
+                    ProjectCost = p.Cost
                 }).Distinct();
                 facultyCostModelList.AddRange(result.ToList());
             }

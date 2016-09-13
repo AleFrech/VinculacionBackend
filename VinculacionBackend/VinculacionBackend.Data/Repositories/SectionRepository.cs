@@ -39,8 +39,7 @@ namespace VinculacionBackend.Data.Repositories
             {
                 if (!StudentIsNotInOrClass(sectionId, studentId))
                 {
-                    throw new StudentAlreadyRegisteredInClassException("El Alumno " + studentId +
-                                                                       " ya esta registrado en esta clase en este periodo");
+                    throw new NotFoundException("El Alumno " + studentId+" ya esta registrado en esta clase en este periodo");
                 }
             }
         }
@@ -103,13 +102,28 @@ namespace VinculacionBackend.Data.Repositories
             return students;
         }
 
-        public IQueryable<object> GetSectionStudentsHours(long sectionId, long projectId)
+        public object GetSectionStudentsHours(long sectionId, long projectId)
         {
-            return
-                _db.Hours.Where(
-                    a => a.SectionProject.Section.Id == sectionId && a.SectionProject.Project.Id == projectId)
-                    .Include(u => u.User);
-        
+            return new
+            {
+                IsApproved = _db.SectionProjectsRels.Where(a => a.Project.Id == projectId && a.Section.Id == sectionId).Single().IsApproved,
+                Hours = _db.SectionProjectsRels.Where(a => a.Project.Id == projectId && a.Section.Id == sectionId)
+                    .Join(_db.SectionUserRels, su => su.Section.Id, sp => sp.Section.Id, (su, sp) => new { su, sp })
+                    .Select(x => new
+                    {
+                        User = x.sp.User,
+                        Hours = _db.Hours.Where(d => d.User.Id == x.sp.User.Id && d.SectionProject.Id == x.su.Id).FirstOrDefault()
+                    })
+            };
+        }
+
+        public void ClearSectionStudents(long sectionId)
+        {
+            List<SectionUser> sectionStudents = _db.SectionUserRels.Include(x => x.Section).Where(x => x.Section.Id == sectionId).ToList();
+            foreach(var rel in sectionStudents)
+            {
+                _db.SectionUserRels.Remove(rel);
+            }
         }
 
         public IQueryable<Project> GetSectionProjects(long sectionId)

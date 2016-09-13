@@ -5,6 +5,7 @@ using System.Linq;
 using Castle.Components.DictionaryAdapter;
 using VinculacionBackend.Data.Database;
 using VinculacionBackend.Data.Entities;
+using VinculacionBackend.Data.Exceptions;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Data.Models;
 
@@ -88,7 +89,7 @@ namespace VinculacionBackend.Data.Repositories
                 return section;
             }
 
-            throw new Exception("not found");
+            throw new NotFoundException("Seccion no encontrada");
 
         }
 
@@ -125,24 +126,35 @@ namespace VinculacionBackend.Data.Repositories
             _db.SaveChanges();
         }
 
-        public void Insert(Project ent, List<string> majorIds, List<long> sectionIds)
+        public void Insert(Project ent, List<string> majorIds)
         {
             var majors = _db.Majors.Where(x => majorIds.Any(y => y == x.MajorId)).ToList();
             foreach (var major in majors)
             {
                 _db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
-            }
-            var sections = _db.Sections.Where(x=>sectionIds.Any(y=>y==x.Id)).ToList();
-            foreach (var section in sections)
-            {
-                _db.SectionProjectsRels.Add(new SectionProject { Project = ent, Section = section });
-            }           
+            }          
 
             Insert(ent);
         }
 
         public void Update(Project ent)
         {
+            _db.Entry(ent).State = EntityState.Modified;
+        }
+
+        public void Update(Project ent, List<string> majorIds)
+        {
+
+            var projectMajors = _db.ProjectMajorRels.Include(x => x.Project).Where(x => x.Project.Id == ent.Id).ToList();
+            foreach (var rel in projectMajors)
+            {
+                _db.ProjectMajorRels.Remove(rel);
+            }
+            var majors = _db.Majors.Where(x => majorIds.Any(y => y == x.MajorId)).ToList();
+            foreach (var major in majors)
+            {
+                _db.ProjectMajorRels.Add(new ProjectMajor { Project = ent, Major = major });
+            }
             _db.Entry(ent).State = EntityState.Modified;
         }
 
@@ -233,10 +245,25 @@ namespace VinculacionBackend.Data.Repositories
             return (_db.Hours.Where(hours => hours.SectionProject.Project.Id == id).Sum(a => (int?)a.Amount) ?? 0).ToString();
         }
 
-        public IQueryable<Project> GetByYearAndPeriod(int year, int period)
+        public IQueryable<PeriodReportModel> GetByYearAndPeriod(int year, int period)
         {
             return _db.SectionProjectsRels.Where(a => a.Section.Period.Number == period && a.Section.Period.Year == year)
-                .Select(b => b.Project).Distinct().Where(x => x.IsDeleted == false);
+                .Where(x => x.Project.IsDeleted == false)
+                .Join(_db.ProjectMajorRels, sp => sp.Project.Id, pm => pm.Project.Id, (sp, pm) => new { sp, pm })
+                .Select(b => new PeriodReportModel
+                {
+                    Institución = b.sp.Project.BeneficiarieOrganization,
+                    Producto = b.sp.Project.Name,
+                    Asignatura = b.sp.Section.Class.Name,
+                    Carrera = b.pm.Major.Name,
+                    Catedrático = b.sp.Section.User.Name,
+                    Horas = (_db.Hours.Where(hours => hours.SectionProject.Id == b.sp.Id).Sum(a => (int?)a.Amount) ?? 0).ToString(),
+                    FechadeEntrega = "",
+                    Costo = b.sp.Cost,
+                    NumProy = b.sp.Project.Id,
+                    Beneficiarios = "",
+                    Comentarios = ""
+                }).Distinct();
         }
 
         public IQueryable<Project> GetProjectsBySection(long sectionId)
@@ -251,5 +278,44 @@ namespace VinculacionBackend.Data.Repositories
         {
             return _db.SectionProjectsRels.Include(rel => rel.Section).Include(rel => rel.Project).FirstOrDefault(rel => rel.Section.Id == sectionId && rel.Project.Id == projectId);
         }
+
+        public double GetTotalCostByProject(long projectId)
+        {
+            return _db.SectionProjectsRels.Include(rel => rel.Section).Include(rel => rel.Project).Where(rel => rel.Project.Id == projectId).Sum(rel => rel.Cost);
+        }
+
+        public string GetNextProjectCode(Period currentPeriod)
+        {
+            var count = _db.SectionProjectsRels.Where(a => a.Section.Period.Id == currentPeriod.Id).Count().ToString();
+            var padLength = count.Length >= 5 ? 0 : 5 - count.Length;
+            return "USPS-"+ToRoman(currentPeriod.Number) +"-"+currentPeriod.Year+"-"+count.PadLeft(padLength, '0');
+        }
+
+        private string ToRoman(int number)
+        {
+            switch (number)
+            {
+                case 1: return "I";
+                case 2: return "II";
+                case 4: return "IV";
+                case 5: return "V";
+            }
+            throw new InvalidPerioNumberException("Not a valid period number");
+        }
+    }
+
+    public class PeriodReportModel
+    {
+        public string Asignatura { get; set; }
+        public string Beneficiarios { get; set; }
+        public string Carrera { get; set; }
+        public string Catedrático { get; set; }
+        public string Comentarios { get; set; }
+        public double Costo { get; set; }
+        public string FechadeEntrega { get; set; }
+        public string Horas { get; set; }
+        public string Institución { get; set; }
+        public long NumProy { get; set; }
+        public string Producto { get; set; }
     }
 }

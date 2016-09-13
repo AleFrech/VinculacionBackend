@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -9,6 +10,7 @@ using System.Web.Http.Description;
 using VinculacionBackend.Models;
 using System.Web.Http.Cors;
 using System.Web.OData;
+using ClosedXML.Excel;
 using VinculacionBackend.Data.Entities;
 using VinculacionBackend.ActionFilters;
 using VinculacionBackend.Data.Interfaces;
@@ -64,10 +66,9 @@ namespace VinculacionBackend.Controllers
         }
 
 
-        [ResponseType(typeof(User))]
-        [Route("api/Students/AddMany")]
+        [Route("api/Students/Import")]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PostAddManyStudents([FromBody]List<User> students)
+        public IHttpActionResult PostAddManyStudents([FromBody]List<StudentAddManyEntryModel> students)
         {
             _studentsServices.AddMany(students);
             return Ok();
@@ -135,7 +136,6 @@ namespace VinculacionBackend.Controllers
         // POST: api/Students
         [ResponseType(typeof(User))]
         [Route("api/Students")]
-        [CustomAuthorize(Roles = "Anonymous")]
         [ValidateModel]
         public IHttpActionResult PostStudent(UserEntryModel userModel)
         {
@@ -149,7 +149,7 @@ namespace VinculacionBackend.Controllers
 
 
         [ResponseType(typeof(User))]
-        [Route("api/Students/ChangePassword")]
+        [Route("api/Students/EnableStudent")]
         [ValidateModel]
         public IHttpActionResult PostChangePassword(StudentChangePasswordModel model)
         {
@@ -176,7 +176,7 @@ namespace VinculacionBackend.Controllers
         [Route("api/Students/{accountId}")]
         [ValidateModel]
         [CustomAuthorize(Roles = "Admin")]
-        public IHttpActionResult PutStudent(string accountId, UserEntryModel model)
+        public IHttpActionResult PutStudent(string accountId, UserUpdateModel model)
         {
 
             var student = _studentsServices.UpdateStudent(accountId, model);
@@ -200,6 +200,18 @@ namespace VinculacionBackend.Controllers
         {
             return _hoursServices.HourReport(accountId);
         }
-        
+
+
+       
+        [HttpPost]
+        [Route("api/Students/Parse")]
+        public IQueryable<object> Parse([FromBody]string data)
+        {
+           
+            var content = Convert.FromBase64String(data);
+            MemoryStream stream = new MemoryStream(content);
+            var excel = new XLWorkbook(stream);
+            return _studentsServices.ParseExcelStudents(excel);
+        }
     }
 }

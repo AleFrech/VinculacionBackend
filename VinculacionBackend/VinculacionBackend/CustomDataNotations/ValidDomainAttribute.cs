@@ -10,7 +10,7 @@ namespace VinculacionBackend.CustomDataNotations
             if (value == null)
                 return false;
             var email=value.ToString();
-            Regex validDomain = new Regex(@"^[a-z0-9]+[.]?[a-z0-9]+@unitec\.edu$");
+            Regex validDomain = new Regex(@"^[a-z0-9]+([._]?[a-z0-9])+@unitec\.edu$");
             return validDomain.Match(email).Success;
         }
 

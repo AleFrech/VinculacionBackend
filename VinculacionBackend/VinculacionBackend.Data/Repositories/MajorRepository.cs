@@ -24,6 +24,11 @@ namespace VinculacionBackend.Data.Repositories
             return _db.ProjectMajorRels.Include(rel => rel.Project).Include(rel => rel.Major).Where(rel => rel.Project.Id == projectId).Select(rel => rel.Major).Include(x=>x.Faculty);
         }
 
+        public Major GetMajorByName(string name)
+        {
+            return _db.Majors.FirstOrDefault(major => major.Name == name);
+        }
+
         public Major Delete(long id)
         {
             var found = Get(id);

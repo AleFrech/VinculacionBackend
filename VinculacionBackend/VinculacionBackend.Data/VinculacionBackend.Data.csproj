@@ -77,9 +77,15 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserRole.cs" />
     <Compile Include="Enums\Status.cs" />
+    <Compile Include="Exceptions\HoursAlreadyAprovedException.cs" />
+    <Compile Include="Exceptions\InvalidPerioNumberException.cs" />
+    <Compile Include="Exceptions\InvalidSectionOrProjectException.cs" />
+    <Compile Include="Exceptions\InvalidUsernameOrPasswordException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
+    <Compile Include="Exceptions\ProjectAlreadyInSectionException.cs" />
     <Compile Include="Exceptions\StudentAlreadyRegisteredInClassException.cs" />
     <Compile Include="Exceptions\UnauthorizedException.cs" />
+    <Compile Include="Exceptions\UserNotVerifiedException.cs" />
     <Compile Include="Interfaces\IClassRepository.cs" />
     <Compile Include="Interfaces\IEncryption.cs" />
     <Compile Include="Interfaces\IFacultyRepository.cs" />
@@ -108,6 +114,10 @@
     <Compile Include="Migrations\201608190157159_ApproveInSecProject.cs" />
     <Compile Include="Migrations\201608190157159_ApproveInSecProject.Designer.cs">
       <DependentUpon>201608190157159_ApproveInSecProject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608250352405_SectionProjectRestructure.cs" />
+    <Compile Include="Migrations\201608250352405_SectionProjectRestructure.Designer.cs">
+      <DependentUpon>201608250352405_SectionProjectRestructure.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\FacultyHoursReportModel.cs" />
@@ -142,6 +152,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608190157159_ApproveInSecProject.resx">
       <DependentUpon>201608190157159_ApproveInSecProject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608250352405_SectionProjectRestructure.resx">
+      <DependentUpon>201608250352405_SectionProjectRestructure.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
