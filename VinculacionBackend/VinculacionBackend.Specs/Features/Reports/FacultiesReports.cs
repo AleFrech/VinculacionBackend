@@ -26,6 +26,7 @@ namespace VinculacionBackend.Specs.Features.Reports
         private readonly Mock<IStudentRepository> _studentRepositoryMock;
         private readonly Mock<IPeriodRepository> _periodRepositoryMock;
         private readonly Mock<IUserRepository> _userRepositoryMock;
+        private readonly Mock<ISectionProjectRepository> _sectionProjectRepositoryMock;
         private int _year;
         private long _class;
         private List<ProjectByMajorEntryModel> _projectsByMajorReport;
@@ -41,7 +42,8 @@ namespace VinculacionBackend.Specs.Features.Reports
             _classRepositoryMock = new Mock<IClassRepository>();
             _periodRepositoryMock = new Mock<IPeriodRepository>();
             _userRepositoryMock = new Mock<IUserRepository>();
-            _projectServices = new ProjectServices(_projectRepositoryMock.Object, _majorRepositoryMock.Object, _classRepositoryMock.Object, _periodRepositoryMock.Object);
+            _sectionProjectRepositoryMock = new Mock<ISectionProjectRepository>();
+            _projectServices = new ProjectServices(_projectRepositoryMock.Object, _majorRepositoryMock.Object, _classRepositoryMock.Object, _periodRepositoryMock.Object,_sectionProjectRepositoryMock.Object);
             _facultiesServices = new FacultiesServices(_facultyRepositoryMock.Object,_majorRepositoryMock.Object,
                                                         _projectRepositoryMock.Object,_studentRepositoryMock.Object);
         }

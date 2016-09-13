@@ -229,7 +229,7 @@ namespace VinculacionBackend.Services
                 {
                     IdProyecto = project.ProjectId,
                     Nombre = project.Name,
-                    Costo = project.Cost,
+                    Costo = _projectRepository.GetTotalCostByProject(project.Id),
                     Beneficiario = project.BeneficiarieOrganization,
                     Maestros = professors,
                     Periodo = period.Number,
