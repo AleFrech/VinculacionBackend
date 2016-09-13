@@ -73,6 +73,8 @@ namespace VinculacionBackend.Services
         public void ChangePassword(StudentChangePasswordModel model)
         {
             var student=_studentRepository.GetByAccountNumber(model.AccountId);
+            if (student == null)
+                throw new NotFoundException("No se encontro el estudiante");
             student.Password = _encryption.Encrypt(model.Password);
             _studentRepository.Update(student);
             _studentRepository.Save();
