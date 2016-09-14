@@ -17,7 +17,6 @@ namespace VinculacionBackend.Specs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class FacultiesReportsFeature
     {
@@ -406,45 +405,54 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("List all the projects that has been made in a class", ((string[])(null)));
 #line 100
 this.ScenarioSetup(scenarioInfo);
-#line 101
- testRunner.Given("the Id of the class is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Code",
+                        "Class",
+                        "Period",
+                        "User"});
+            table19.AddRow(new string[] {
+                        "1",
+                        "1",
+                        "1",
+                        "1"});
+#line 101
+ testRunner.Given("I have the section", ((string)(null)), table19, "Given ");
+#line 104
+ testRunner.And("The period is the number 1 of year 2016", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "ProjectId",
                         "Name",
                         "Description",
-                        "Cost",
                         "IsDeleted",
                         "BeneficiarieOrganization"});
-            table19.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "1",
                         "1",
                         "Vinculacion Unitec",
                         "Vinculacion Unitec",
-                        "2000",
                         "false",
                         "Unitec"});
-            table19.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "2",
                         "2",
                         "Mhotivo",
                         "Mhotivo",
-                        "3500",
                         "false",
                         "Mhotivo"});
-            table19.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "3",
                         "3",
                         "Proyecto CCIC",
                         "Proyecto CCIC",
-                        "1000",
                         "false",
                         "CCIC"});
-#line 102
- testRunner.And("I have this projects", ((string)(null)), table19, "And ");
+#line 105
+ testRunner.And("The class 1 has the projects", ((string)(null)), table20, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
                         "AccountId",
                         "Name",
@@ -456,7 +464,7 @@ this.ScenarioSetup(scenarioInfo);
                         "ModificationDate",
                         "Finiquiteado",
                         "Status"});
-            table20.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "1",
                         "1",
                         "Andrea",
@@ -468,45 +476,14 @@ this.ScenarioSetup(scenarioInfo);
                         "10/10/16",
                         "False",
                         "Active"});
-            table20.AddRow(new string[] {
-                        "2",
-                        "2",
-                        "Maestro",
-                        "1234",
-                        "2",
-                        "SPS",
-                        "maestro@gmail.com",
-                        "08/08/16",
-                        "10/10/16",
-                        "False",
-                        "Active"});
-#line 107
- testRunner.And("I have the user table", ((string)(null)), table20, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id",
-                        "MajorId",
-                        "Name",
-                        "Faculty"});
-            table21.AddRow(new string[] {
-                        "1",
-                        "1",
-                        "Ing. Sistemas",
-                        "1"});
-            table21.AddRow(new string[] {
-                        "2",
-                        "2",
-                        "Mecatronica",
-                        "1"});
-#line 111
- testRunner.And("I have the following majors", ((string)(null)), table21, "And ");
-#line 115
+#line 110
+ testRunner.And("The list of professors is", ((string)(null)), table21, "And ");
+#line 113
  testRunner.When("I execute the list projects by class report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         "IdProyecto",
                         "Nombre",
-                        "Costo",
                         "Beneficiario",
                         "Maestro",
                         "Periodo",
@@ -514,7 +491,6 @@ this.ScenarioSetup(scenarioInfo);
             table22.AddRow(new string[] {
                         "1",
                         "Vinculacion Unitec",
-                        "2000",
                         "Unitec",
                         "Andrea",
                         "1",
@@ -522,13 +498,19 @@ this.ScenarioSetup(scenarioInfo);
             table22.AddRow(new string[] {
                         "2",
                         "Mhotivo",
-                        "3500",
                         "Mhotivo",
-                        "Maestro",
-                        "2",
-                        "2009"});
-#line 116
- testRunner.Then("I get these results", ((string)(null)), table22, "Then ");
+                        "Andrea",
+                        "1",
+                        "2016"});
+            table22.AddRow(new string[] {
+                        "3",
+                        "Proyecto CCIC",
+                        "CCIC",
+                        "Andrea",
+                        "1",
+                        "2016"});
+#line 114
+ testRunner.Then("The result should be", ((string)(null)), table22, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

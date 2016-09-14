@@ -28,7 +28,7 @@ namespace VinculacionBackend.Specs.Features.Reports
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly Mock<ISectionProjectRepository> _sectionProjectRepositoryMock;
         private int _year;
-        private long _class;
+        private Section _section;
         private List<ProjectByMajorEntryModel> _projectsByMajorReport;
         private List<FacultyHoursReportEntryModel> _hoursReport;
         private  List<FacultyCostsReportEntry> _facultiesCostReport;
@@ -140,48 +140,51 @@ namespace VinculacionBackend.Specs.Features.Reports
             table.CompareToSet(_projectsByMajorReport.AsEnumerable());
         }
 
-
-        [Given(@"the Id of the class is (.*)")]
-        public void GivenTheIdOfTheClassIs(int p0)
+        [Given(@"I have the section")]
+        public void GivenIHaveTheSection(Table table)
         {
-            _class = p0;
+            _section = new Section
+            {
+                Code = table.Rows[0][0],
+                Class = new Class {Id = Convert.ToInt64(table.Rows[0][1])},
+                Period = new Period {Id = Convert.ToInt64(table.Rows[0][2])},
+                User = new User {Id = Convert.ToInt64(table.Rows[0][3]) }
+            };
         }
 
-        [Given(@"I have this projects")]
-        public void GivenIHaveThisProjects(Table table)
+        [Given(@"The class (.*) has the projects")]
+        public void GivenTheClassHasTheProjects(int p0, Table table)
         {
             var projects = table.CreateSet<Project>().AsQueryable();
-            _projectRepositoryMock.Setup(x => x.GetProjectsByClass(_class)).Returns((projects));
+            _projectRepositoryMock.Setup(x => x.GetProjectsByClass(It.IsAny<long>())).Returns(projects);
         }
 
-        [Given(@"I have the user table")]
-        public void GivenIHaveTheUserTable(Table table)
+        [Given(@"The list of professors is")]
+        public void GivenTheListOfProfessorsIs(Table table)
         {
-            var users = table.CreateSet<User>().AsQueryable();
-            _userRepositoryMock.Setup(x => x.GetAll()).Returns(users);
-
+            var professors = table.CreateSet<User>().AsQueryable();
+            _projectRepositoryMock.Setup(x => x.GetProfessorsByProject(It.IsAny<long>())).Returns(professors.Where( x => x.Id == _section.User.Id));
         }
-
-        [Given(@"I have the following majors")]
-        public void GivenIHaveTheFollowingMajors(Table table)
+        [Given(@"The period is the number (.*) of year (.*)")]
+        public void GivenThePeriodIsTheNumberOfYear(int p0, int p1)
         {
-            var majors = table.CreateSet<Major>().AsQueryable();
-           _majorRepositoryMock.Setup(x => x.GetAll()).Returns(majors);
+            _section.Period.Number = p0;
+            _section.Period.Year = 2016;
+            _projectRepositoryMock.Setup(x => x.GetPeriodByProject(It.IsAny<long>())).Returns(_section.Period);
+
         }
 
         [When(@"I execute the list projects by class report")]
         public void WhenIExecuteTheListProjectsByClassReport()
         {
-            _projectsByClassReport = _projectServices.ProjectsByClass(_class);
+            _projectsByClassReport = _projectServices.ProjectsByClass(_section.Class.Id);
         }
 
-        [Then(@"I get these results")]
-        public void ThenIGetTheseResults(Table table)
+        [Then(@"The result should be")]
+        public void ThenTheResultShouldBe(Table table)
         {
             table.CompareToSet(_projectsByClassReport.AsEnumerable());
         }
-
-
-
-    }
+        
+     }
 }

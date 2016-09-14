@@ -98,23 +98,21 @@ Scenario:  projects number by a major per current period
 		| Lic. Admon    | 3        |
 
 Scenario: List all the projects that has been made in a class
-	Given the Id of the class is 1
-	And I have this projects
-		| Id | ProjectId | Name               | Description        | Cost | IsDeleted | BeneficiarieOrganization |
-		| 1  | 1         | Vinculacion Unitec | Vinculacion Unitec | 2000 | false     | Unitec                   |
-		| 2  | 2         | Mhotivo            | Mhotivo            | 3500 | false     | Mhotivo                  |
-		| 3  | 3         | Proyecto CCIC      | Proyecto CCIC      | 1000 | false     | CCIC                     |
-	And I have the user table
+	Given I have the section
+			| Code | Class | Period | User |
+			| 1    | 1     | 1      | 1    |
+	And The period is the number 1 of year 2016
+	And The class 1 has the projects
+		| Id | ProjectId | Name               | Description        | IsDeleted | BeneficiarieOrganization |
+		| 1  | 1         | Vinculacion Unitec | Vinculacion Unitec | false     | Unitec                   |
+		| 2  | 2         | Mhotivo            | Mhotivo            | false     | Mhotivo                  |
+		| 3  | 3         | Proyecto CCIC      | Proyecto CCIC      | false     | CCIC                     |
+	And The list of professors is
 		| Id | AccountId | Name    | Password | Major  | Campus | Email             | CreationDate | ModificationDate | Finiquiteado | Status |
 		| 1  | 1         | Andrea  | 1234     |   1    | SPS    | andrea@gmail.com  | 08/08/16     | 10/10/16         | False        | Active |
-		| 2  | 2         | Maestro | 1234     |   2    | SPS    | maestro@gmail.com | 08/08/16     | 10/10/16         | False        | Active |
-	And I have the following majors
-		| Id | MajorId | Name          | Faculty |
-		| 1  | 1       | Ing. Sistemas | 1       |
-		| 2  | 2       | Mecatronica   | 1       |
 	When I execute the list projects by class report
-	Then I get these results
-		| IdProyecto | Nombre              | Costo | Beneficiario  | Maestro | Periodo | Anio |
-		| 1          | Vinculacion Unitec  | 2000  | Unitec        | Andrea  | 1       | 2016 |
-		| 2          | Mhotivo			   | 3500  | Mhotivo       | Maestro | 2       | 2009 |
-
+	Then The result should be
+		| IdProyecto | Nombre             | Beneficiario | Maestro | Periodo | Anio |
+		| 1          | Vinculacion Unitec | Unitec       | Andrea  | 1       | 2016 |
+		| 2          | Mhotivo            | Mhotivo      | Andrea  | 1       | 2016 |
+		| 3          | Proyecto CCIC      | CCIC         | Andrea  | 1       | 2016 |
