@@ -4,6 +4,7 @@ using System.Net.Http;
 using Spire.Doc.Documents;
 using VinculacionBackend.Data.Interfaces;
 using VinculacionBackend.Interfaces;
+using VinculacionBackend.Models;
 
 namespace VinculacionBackend.Reports
 {
@@ -27,9 +28,28 @@ namespace VinculacionBackend.Reports
         }
 
 
-        public HttpResponseMessage GenerateFinalReport(long projectId, long sectionprojectId,int fieldHours, int calification, int beneficiariesQuantity, string beneficiarieGroups)
+
+        public ProjectFinalReportModel GenerateFinalReportModel(long projectId, long sectionprojectId, int fieldHours,
+            int calification, int beneficiariesQuantity, string beneficiarieGroups)
         {
-            var project = _projectRepository.Get(projectId);
+            var model = new ProjectFinalReportModel();
+            model.Project= _projectRepository.Get(projectId);
+            model.Section = _projectRepository.GetSection(model.Project);
+            model.BeneficiarieGroups = beneficiarieGroups;
+            model.BeneficiariesQuantity = beneficiariesQuantity;
+            model.Calification = calification;
+            model.FieldHours = fieldHours;
+            model.StudentsInSections= _sectionRepository.GetSectionStudents(model.Section.Id).ToList();
+            model.MajorsOfStudents= _studentRepository.GetStudentMajors(model.StudentsInSections);
+            model.SectionProject = _sectionProjectRepository.Get(sectionprojectId);
+            model.StudentsHours = _studentRepository.GetStudentsHoursByProject(projectId);
+            model.ProfessorName = model.Section.User != null ? model.Section.User.Name : "Maestro Pendiente";
+            return model;
+        }
+
+
+        public HttpResponseMessage GenerateFinalReport(ProjectFinalReportModel model)
+        {
             var doc = _textDoucmentServices.CreaDocument();
             var page1 = _textDoucmentServices.CreatePage(doc);
             var pblank = _textDoucmentServices.CreateParagraph(page1);
@@ -49,20 +69,16 @@ namespace VinculacionBackend.Reports
                 "Times New Roman", 12f, true);
             _textDoucmentServices.AddTextToParagraph("Información General", p1, tableHeadersStyle, doc);
             var table1 = _textDoucmentServices.CreateTable(page1);
-            var section = _projectRepository.GetSection(project);
-            var studentsInSection = _sectionRepository.GetSectionStudents(section.Id).ToList();
-            var majorsOfStudents = _studentRepository.GetStudentMajors(studentsInSection);
-            var professorName = section.User != null ? section.User.Name : "Maestro Pendiente";
             string[][] table1Data =
             {
-                new[] {"Codigo", sectionprojectId.ToString()},
-                new[] {"Nombre del producto entregado", project.Name},
-                new[] {"Nombre de la organización beneficiada", project.BeneficiarieOrganization},
-                new[] {"Nombre de la asignatura", section.Class.Name},
-                new[] {"Nombre de la carrera", majorsOfStudents},
-                new[] {"Nombre del catedrático", professorName},
+                new[] {"Codigo", model.SectionProject.Id.ToString()},
+                new[] {"Nombre del producto entregado", model.Project.Name},
+                new[] {"Nombre de la organización beneficiada", model.Project.BeneficiarieOrganization},
+                new[] {"Nombre de la asignatura", model.Section.Class.Name},
+                new[] {"Nombre de la carrera", model.MajorsOfStudents},
+                new[] {"Nombre del catedrático",model.ProfessorName},
                 new[]
-                {"Periodo del Proyecto", "Desde   " + section.Period.FromDate + "   Hasta   " + section.Period.ToDate}
+                {"Periodo del Proyecto", "Desde   " + model.Section.Period.FromDate + "   Hasta   " + model.Section.Period.ToDate}
 
             };
             table1.ResetCells(table1Data.Length, 2);
@@ -74,8 +90,8 @@ namespace VinculacionBackend.Reports
             var table2 = _textDoucmentServices.CreateTable(page1);
             string[][] table2Data =
             {
-                new[] {"Grupo(s) meta beneficiado(s) con el producto entregado",beneficiarieGroups},
-                new[] {"Número de personas beneficiadas", beneficiariesQuantity.ToString()}
+                new[] {"Grupo(s) meta beneficiado(s) con el producto entregado",model.BeneficiarieGroups},
+                new[] {"Número de personas beneficiadas", model.BeneficiarieGroups.ToString()}
             };
             table2.ResetCells(table2Data.Length, 2);
             _textDoucmentServices.AddDataToTable(table2, table2Data, "Times New Roman", 12, 0);
@@ -84,7 +100,7 @@ namespace VinculacionBackend.Reports
             _textDoucmentServices.AddTextToParagraph("\r\nTiempo y valor del producto ", p3, tableHeadersStyle, doc);
 
             var table3 = _textDoucmentServices.CreateTable(page1);
-            var studentsHours = _studentRepository.GetStudentsHoursByProject(projectId);
+            var studentsHours = _studentRepository.GetStudentsHoursByProject(model.Project.Id);
             var totalHours = 0;
             string[][] table4Data = new string[studentsHours.Count][];
             var i = 0;
@@ -97,11 +113,11 @@ namespace VinculacionBackend.Reports
 
             string[][] table3Data =
             {
-                new[] {"Horas de trabajo de campo alumnos ", fieldHours.ToString()},
-                new[] {"Horas de trabajo en clase alumnos ", (totalHours - fieldHours).ToString()},
+                new[] {"Horas de trabajo de campo alumnos ", model.FieldHours.ToString()},
+                new[] {"Horas de trabajo en clase alumnos ", (totalHours - model.FieldHours).ToString()},
                 new[] {"Total Horas de Trabajo del Proyecto", totalHours.ToString()},
-                new[] {"Nota asignada al proyecto (%)*", calification + "%"},
-                new[] {"Valor en el mercado del producto (Lps.)", _sectionProjectRepository.Get(sectionprojectId).Cost.ToString(CultureInfo.InvariantCulture)},
+                new[] {"Nota asignada al proyecto (%)*", model.Calification + "%"},
+                new[] {"Valor en el mercado del producto (Lps.)", model.SectionProject.Cost.ToString(CultureInfo.InvariantCulture)},
             };
             table3.ResetCells(table3Data.Length, 2);
             _textDoucmentServices.AddDataToTable(table3, table3Data, "Times New Roman", 12, 0);
