@@ -37,7 +37,8 @@ namespace VinculacionBackend
                 context.Result = new UnauthorizedResult(context.Request, result);
             }
             else if (context.Exception is HoursAlreadyApprovedException ||
-                     context.Exception is StudentAlreadyRegisteredInClassException)
+                     context.Exception is StudentAlreadyRegisteredInClassException ||
+                     context.Exception is NoCurrentPeriodException)
             {
                 var result = new HttpResponseMessage(HttpStatusCode.Unauthorized)
                 {

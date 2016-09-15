@@ -51,6 +51,8 @@ namespace VinculacionBackend.Services
         public IQueryable<Section> GetCurrentPeriodSectionsByUser(long userId, string role)
         {
             var currentPeriod = _periodsServices.GetCurrentPeriod();
+            if (currentPeriod == null)
+                throw new NoCurrentPeriodException();
             if (role.Equals("Admin"))
             {
                 return _sectionsRepository.GetAll().Where(x => x.Period.Id == currentPeriod.Id).Distinct();
@@ -110,7 +112,8 @@ namespace VinculacionBackend.Services
             if (section.User==null || section.User.AccountId != sectionModel.ProffesorAccountId)
                 section.User =_professorsServices.Find(sectionModel.ProffesorAccountId);
             section.Period = _periodsServices.GetCurrentPeriod();
-
+            if (section.Period == null)
+                throw new NoCurrentPeriodException();
         }
 
         public void PutMap(Section section, SectionEntryModel sectionModel)

@@ -81,6 +81,7 @@
     <Compile Include="Exceptions\InvalidPerioNumberException.cs" />
     <Compile Include="Exceptions\InvalidSectionOrProjectException.cs" />
     <Compile Include="Exceptions\InvalidUsernameOrPasswordException.cs" />
+    <Compile Include="Exceptions\NoCurrentPeriodException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Exceptions\ProjectAlreadyInSectionException.cs" />
     <Compile Include="Exceptions\StudentAlreadyRegisteredInClassException.cs" />
