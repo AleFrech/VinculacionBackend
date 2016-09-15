@@ -89,7 +89,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 12
  testRunner.And("BeneficiariesQuantity 2042", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.And("BeneficiarieGroups UNITEC", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("BeneficiarieGroups \"UNITEC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
  testRunner.When("I execute GenerateFinalReportModel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -109,8 +109,44 @@ this.ScenarioSetup(scenarioInfo);
                         "Unitec"});
 #line 15
  testRunner.Then("The final report model project should be", ((string)(null)), table1, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Code",
+                        "Class",
+                        "Period",
+                        "User"});
+            table2.AddRow(new string[] {
+                        "1",
+                        "1",
+                        "1",
+                        ""});
 #line 18
- testRunner.And("The final report model Section should be", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The final report model Section should be", ((string)(null)), table2, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "User"});
+            table3.AddRow(new string[] {
+                        "2"});
+#line 21
+ testRunner.And("The final report model StudentsInSection should be", ((string)(null)), table3, "And ");
+#line 24
+ testRunner.And("The final report model MajorsOfString should be \"Ing. En Sistemas\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "User"});
+            table4.AddRow(new string[] {
+                        "2"});
+#line 25
+ testRunner.And("The final report model StudentsHours should be", ((string)(null)), table4, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "User",
+                        "Hours"});
+            table5.AddRow(new string[] {
+                        "2",
+                        "50"});
+#line 28
+ testRunner.And("The final report model ProfessorName should be \"Maestro Pendiente\"", ((string)(null)), table5, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
