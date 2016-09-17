@@ -39,6 +39,27 @@
 * IsDeleted(`bool`): Flag used to mark deleted Project objects in the database.
 * BeneficiarieOrganization(`string`): Name of the organization that the project's destined for.
 
+### Role
+* Id(`long`): Unique database identifier.
+* Name(`string`): The role's specified name.
 
+### Section
+* Id(`long`): Unique database identifier.
+* Code(`string`): Unique string given by the enterprise to represent a specific section.
+* Class(`Class`): The class to which the section belongs.
+* Period(`Period`): The period during which the section will be available.
+* User(`User`): The Professor in charge of the section.
 
+### User
+* Id(`long`): Unique database identifier.
+* AccountId(`string`): Unique alphanum string assigned to represent the user.
+* Name(`string`): The user's specified name.
+* Password(`string`): The user's account password.
+* Major(`Major`): The major to which the user belongs.
+* Campus(`string`): String to indicate the campus to which the user assists.
+* Email(`string`): The user's email address.
+* CreationDate(`DateTime`): The date and time at which the user was added to the system.
+* ModificationDate(`DateTime`): The date and time when changes were performed on the user.
+* Finiquiteado(`bool`): Flag to indicate if a student's hours have been settled (Has enough hours and has signed off on his worked hours).
+* Status(`Status`): Indicates the current state of an account.
 
