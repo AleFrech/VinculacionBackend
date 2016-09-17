@@ -52,7 +52,7 @@
 
 ### User
 * Id(`long`): Unique database identifier.
-* AccountId(`string`): Unique alphanum string assigned to represent the user.
+* AccountId(`string`): Unique alphanumeric string assigned to represent the user.
 * Name(`string`): The user's specified name.
 * Password(`string`): The user's account password.
 * Major(`Major`): The major to which the user belongs.
@@ -63,3 +63,35 @@
 * Finiquiteado(`bool`): Flag to indicate if a student's hours have been settled (Has enough hours and has signed off on his worked hours).
 * Status(`Status`): Indicates the current state of an account.
 
+### MajorUser
+Entity that handles the relationships between Majors and Users
+* Id(`long`): Unique database identifier.
+* Major(`Major`): Major to which the User belongs.
+* User(`User`): User that forms part of a specific major.
+
+### ProjectMajor
+Entity that handles the relationship between projects and majors.
+* Id(`long`): Unique database identifier.
+* Project(`long`): A project restricted to be worked on by members of a specific major.
+* Major(`long`): A major that's allowed to work on a given project.
+
+### SectionProject
+Entity that handles the relationship between sections and projects.
+* Id(`long`): Unique database identifier.
+* Section(`Section`): Section that's worked or is working on a specific project.
+* Project(`Projects`): Project on which a specific section has worked or is currently working on.
+* IsApproved(`bool`): Flag that indicates if a section working on a project has been approved by the enterprise.
+* Description(`string`): Brief explanation and listing of the work details.
+* Cost(`double`): The amount spent on working on the project by the section.
+
+### SectionUser
+Entity that handles the relationships between sections and users.
+* Id(`long`): Unique database identifier.
+* Section(`Section`): A section to which the user belongs.
+* User(`User`): A user that forms part of a specific section.
+
+### UserRole
+Entity that handles the roles of a specific user.
+* Id(`long`): Unique database identifier.
+* User(`User`): user that possesses a specific role.
+* Role(`Role`): A role assigned to a specific user.
