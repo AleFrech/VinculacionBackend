@@ -1,5 +1,17 @@
 # VinculacionBackend
 
+## Installation 
+
+To install the project on your computer, simply use `git clone` on your terminal.
+
+If you prefer, you can also just download the compressed project.
+
+After downloading the project, use the package installer to restore the missing packages. After this you're ready to use the program!
+
+## Migrations
+
+
+
 ## Entities
 
 ### Class
