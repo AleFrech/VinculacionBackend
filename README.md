@@ -11,8 +11,8 @@ After downloading the project, use the package installer to restore the missing 
 ## Migrations
 
 To perform a new migration on the existing database you simply need to use the commands
-`Add-Migration MigrationName -Force`
-`Update-Database`
+* `Add-Migration MigrationName -Force`
+* `Update-Database`
 
 ## Entities
 
