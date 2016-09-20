@@ -192,8 +192,9 @@ namespace VinculacionBackend.Services
 
             var finalReport = new ProjectFinalReport(_projectRepository, _sectionRepository, _studentRepository,
                 _textDocumentServices, new DownloadbleFile(),_sectionProjectRepository);
-            return finalReport.GenerateFinalReport(projectId,sp.Id,fieldHours, calification, beneficiariesQuantities,
+            var model=finalReport.GenerateFinalReportModel(projectId,sp.Id,fieldHours, calification, beneficiariesQuantities,
                 beneficiariGroups);
+            return finalReport.GenerateFinalReport(model);
 
         }
 

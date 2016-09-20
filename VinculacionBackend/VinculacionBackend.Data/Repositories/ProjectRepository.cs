@@ -80,9 +80,9 @@ namespace VinculacionBackend.Data.Repositories
         }
 
 
-        public Section GetSection(Project project)
+        public Section GetSection(long projectId)
         {
-            var rels = _db.SectionProjectsRels.Include(a => a.Section).Include(b => b.Project).FirstOrDefault(x=>x.Project.Id==project.Id);
+            var rels = _db.SectionProjectsRels.Include(a => a.Section).Include(b => b.Project).FirstOrDefault(x=>x.Project.Id==projectId);
             if (rels != null)
             {
                 var section = _db.Sections.Include(a => a.Class).Include(b => b.Period).Include(c => c.User).FirstOrDefault(x => x.Id == rels.Section.Id);

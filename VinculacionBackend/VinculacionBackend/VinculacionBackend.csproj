@@ -321,6 +321,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProjectFinalReportModel.cs" />
     <Compile Include="Services\ClassesServices.cs" />
     <Compile Include="Services\FacultiesServices.cs" />
     <Compile Include="Services\HoursServices.cs" />
