@@ -34,7 +34,7 @@ namespace VinculacionBackend.Reports
         {
             var model = new ProjectFinalReportModel();
             model.Project= _projectRepository.Get(projectId);
-            model.Section = _projectRepository.GetSection(model.Project);
+            model.Section = _projectRepository.GetSection(model.Project.Id);
             model.BeneficiarieGroups = beneficiarieGroups;
             model.BeneficiariesQuantity = beneficiariesQuantity;
             model.Calification = calification;

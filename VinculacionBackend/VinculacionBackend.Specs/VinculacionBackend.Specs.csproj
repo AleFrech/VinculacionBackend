@@ -74,6 +74,7 @@
     </Compile>
     <Compile Include="Features\Reports\FacultiesReports.cs" />
     <Compile Include="Features\Reports\HourNumberReportSteps.cs" />
+    <Compile Include="Features\Reports\ProjectFinalReportSteps.cs" />
     <Compile Include="Features\Reports\StudentReportSteps.cs" />
     <Compile Include="HourNumberReport.feature.cs">
       <AutoGen>True</AutoGen>
