@@ -25,9 +25,9 @@ namespace VinculacionBackend.Data.Repositories
             return found;
         }
 
-        public  Dictionary<User, int> GetStudentsHoursByProject(long projectId)
+        public  Dictionary<User, int> GetStudentsHoursByProject(long sectionId, long projectId)
         {
-            var secProjRel = _db.SectionProjectsRels.Include(a => a.Project).Where(c => c.Project.Id == projectId);
+            var secProjRel = _db.SectionProjectsRels.Include(a => a.Project).Include(b=>b.Section).Where(c => c.Project.Id == projectId &&  c.Section.Id==sectionId);
             var horas = _db.Hours.Include(a => a.SectionProject).Include(b => b.User).Where(c => secProjRel.Any(d => d.Id == c.SectionProject.Id));
             var projectStudents = _db.Users.Include(a => a.Major).Include(f => f.Major.Faculty).Where(b => horas.Any(c => c.User.Id == b.Id)).ToList();
             Dictionary<User, int> studentHours = new Dictionary<User, int>();

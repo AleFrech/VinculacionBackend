@@ -41,7 +41,7 @@ namespace VinculacionBackend.Reports
             model.StudentsInSections= _sectionRepository.GetSectionStudents(sectionId).ToList();
             model.MajorsOfStudents= _studentRepository.GetStudentMajors(model.StudentsInSections);
             model.SectionProject = _sectionProjectRepository.Get(sectionprojectId);
-            model.StudentsHours = _studentRepository.GetStudentsHoursByProject(projectId);
+            model.StudentsHours = _studentRepository.GetStudentsHoursByProject(sectionId,projectId);
             model.ProfessorName = model.Section.User != null ? model.Section.User.Name : "Maestro Pendiente";
             return model;
         }
@@ -99,7 +99,7 @@ namespace VinculacionBackend.Reports
             _textDoucmentServices.AddTextToParagraph("\r\nTiempo y valor del producto ", p3, tableHeadersStyle, doc);
 
             var table3 = _textDoucmentServices.CreateTable(page1);
-            var studentsHours = _studentRepository.GetStudentsHoursByProject(model.Project.Id);
+            var studentsHours = model.StudentsHours;
             var totalHours = 0;
             string[][] table4Data = new string[studentsHours.Count][];
             var i = 0;

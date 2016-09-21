@@ -131,7 +131,7 @@ namespace VinculacionBackend.Specs.Features.Reports
                 var student = new User { AccountId = row["AccountId"], Name = row["Name"] };
                 studentsHour[student] = Int32.Parse(row["Hours"]);
             }
-            _studentRepositoryMock.Setup(repository => repository.GetStudentsHoursByProject(p0)).Returns(studentsHour);
+            _studentRepositoryMock.Setup(repository => repository.GetStudentsHoursByProject(sectionId,p0)).Returns(studentsHour);
         }
 
 

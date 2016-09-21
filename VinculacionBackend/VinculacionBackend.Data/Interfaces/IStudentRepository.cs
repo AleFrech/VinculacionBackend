@@ -11,7 +11,7 @@ namespace VinculacionBackend.Data.Interfaces
         User GetByAccountNumber(string accountNumber);
         User DeleteByAccountNumber(string accountNumber);
         int GetStudentHours(string accountNumber);
-        Dictionary<User, int> GetStudentsHoursByProject(long projectId);
+        Dictionary<User, int> GetStudentsHoursByProject(long sectionId, long projectId);
         string GetStudentMajors(List<User> students);
         IEnumerable<User> GetStudentsByStatus(Status status);
         IEnumerable<User> GetStudentsByStatus(string status);
