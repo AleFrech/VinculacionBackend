@@ -38,7 +38,7 @@ namespace VinculacionBackend.Reports
             model.BeneficiariesQuantity = beneficiariesQuantity;
             model.Calification = calification;
             model.FieldHours = fieldHours;
-            model.StudentsInSections= _sectionRepository.GetSectionStudents(model.Section.Id).ToList();
+            model.StudentsInSections= _sectionRepository.GetSectionStudents(sectionId).ToList();
             model.MajorsOfStudents= _studentRepository.GetStudentMajors(model.StudentsInSections);
             model.SectionProject = _sectionProjectRepository.Get(sectionprojectId);
             model.StudentsHours = _studentRepository.GetStudentsHoursByProject(projectId);

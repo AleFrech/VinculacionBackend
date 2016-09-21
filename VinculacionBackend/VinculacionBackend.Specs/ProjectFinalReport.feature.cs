@@ -80,6 +80,8 @@ namespace VinculacionBackend.Specs
 this.ScenarioSetup(scenarioInfo);
 #line 8
  testRunner.Given("I have a ProjectId 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 9
+ testRunner.And("I have a SectionId 23", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
@@ -95,7 +97,7 @@ this.ScenarioSetup(scenarioInfo);
                         "DescripcionProyect",
                         "False",
                         "Escuela"});
-#line 9
+#line 10
  testRunner.And("The Project with Id 1 is", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -106,7 +108,7 @@ this.ScenarioSetup(scenarioInfo);
                         "23",
                         "s1",
                         "Xavier"});
-#line 12
+#line 13
  testRunner.And("The Section belonging to Project with id 1 is", ((string)(null)), table2, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -124,9 +126,9 @@ this.ScenarioSetup(scenarioInfo);
                         "21324166",
                         "Juan",
                         "Ing. Mecatronica"});
-#line 15
+#line 16
  testRunner.And("The students in Section 23 Are", ((string)(null)), table3, "And ");
-#line 19
+#line 20
  testRunner.And("The Students Majors is \"Ing. Sistema / Ing. Mecatronica\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -135,7 +137,7 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "5",
                         "1000"});
-#line 20
+#line 21
  testRunner.And("The SectionProject with id 5 is", ((string)(null)), table4, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -153,19 +155,19 @@ this.ScenarioSetup(scenarioInfo);
                         "21324166",
                         "Juan",
                         "20"});
-#line 23
+#line 24
  testRunner.And("The students hours for Project 1 are", ((string)(null)), table5, "And ");
-#line 27
- testRunner.And("I have a SectionProjectId 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
- testRunner.And("FieldHours 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a SectionProjectId 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
- testRunner.And("Calification 90", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("FieldHours 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
- testRunner.And("BeneficiariesQuantity 2042", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Calification 90", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
- testRunner.And("BeneficiarieGroups \"UNITEC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("BeneficiariesQuantity 2042", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
+ testRunner.And("BeneficiarieGroups \"UNITEC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
  testRunner.When("I execute GenerateFinalReportModel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -176,7 +178,7 @@ this.ScenarioSetup(scenarioInfo);
                         "10",
                         "90",
                         "2042"});
-#line 33
+#line 34
  testRunner.Then("The Final Report Model Project Should Be", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();

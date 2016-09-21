@@ -6,6 +6,7 @@
 @mytag
 Scenario: Project Final Report Is Valid
 	Given I have a ProjectId 1
+	And I have a SectionId 23
 	And The Project with Id 1 is
 		| Id | ProjectId | Name    | Description        | IsDeleted | BeneficiarieOrganization |
 		| 1  | id-100    | Mohtivo | DescripcionProyect | False     | Escuela                  |
@@ -24,7 +25,7 @@ Scenario: Project Final Report Is Valid
 		| Id | AccountId | Name | Hours |
 		| 1  | 21324124  | Jose | 40    |
 		| 2  | 21324166  | Juan | 20    |
-	And I have a SectionProjectId 2
+	And I have a SectionProjectId 5
 	And FieldHours 10
 	And Calification 90
 	And BeneficiariesQuantity 2042

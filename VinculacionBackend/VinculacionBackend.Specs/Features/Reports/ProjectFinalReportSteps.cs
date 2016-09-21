@@ -25,6 +25,7 @@ namespace VinculacionBackend.Specs.Features.Reports
         private IEnumerable<User> _students;
         public long projectId;
         public long sectionId;
+        public long sectionprojectId;
         public int fieldhours;
         public int calification;
         public int beneficiariesQuantities;
@@ -46,11 +47,18 @@ namespace VinculacionBackend.Specs.Features.Reports
         {
             projectId = p0;
         }
-        
+
+        [Given(@"I have a SectionId (.*)")]
+        public void GivenIHaveASectionId(int p0)
+        {
+            sectionId = p0;
+        }
+
+
         [Given(@"I have a SectionProjectId (.*)")]
         public void GivenIHaveASectionProjectId(int p0)
         {
-            sectionId = p0;
+            sectionprojectId = p0;
         }
         
         [Given(@"FieldHours (.*)")]
@@ -93,7 +101,7 @@ namespace VinculacionBackend.Specs.Features.Reports
                 Code = table.Rows[0]["Code"],
                 User = new User { Name = table.Rows[0]["ProfessorName"] }
             };
-            _projectRepositoryMock.Setup(repository => repository.GetSection(p0)).Returns(section);
+            _sectionRepositoryMock.Setup(repository => repository.Get(sectionId)).Returns(section);
         }
 
         [Given(@"The students in Section (.*) Are")]
@@ -130,7 +138,7 @@ namespace VinculacionBackend.Specs.Features.Reports
         [When(@"I execute GenerateFinalReportModel")]
         public void WhenIExecuteGenerateFinalReportModel()
         {
-            _model = _projectFinalReport.GenerateFinalReportModel(projectId, sectionId, fieldhours, calification, beneficiariesQuantities, beneficiaieGroup);
+            _model = _projectFinalReport.GenerateFinalReportModel(projectId,sectionId,sectionprojectId, fieldhours, calification, beneficiariesQuantities, beneficiaieGroup);
         }
 
         [Given(@"The SectionProject with id (.*) is")]
