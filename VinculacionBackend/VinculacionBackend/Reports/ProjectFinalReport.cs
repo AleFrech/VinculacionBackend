@@ -29,12 +29,11 @@ namespace VinculacionBackend.Reports
 
 
 
-        public ProjectFinalReportModel GenerateFinalReportModel(long projectId, long sectionprojectId, int fieldHours,
-            int calification, int beneficiariesQuantity, string beneficiarieGroups)
+        public ProjectFinalReportModel GenerateFinalReportModel(long projectId, long sectionId, long sectionprojectId, int fieldHours, int calification, int beneficiariesQuantity, string beneficiarieGroups)
         {
             var model = new ProjectFinalReportModel();
             model.Project= _projectRepository.Get(projectId);
-            model.Section = _projectRepository.GetSection(model.Project.Id);
+            model.Section = _sectionRepository.Get(sectionId);
             model.BeneficiarieGroups = beneficiarieGroups;
             model.BeneficiariesQuantity = beneficiariesQuantity;
             model.Calification = calification;
